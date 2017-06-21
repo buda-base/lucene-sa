@@ -1,4 +1,4 @@
-package io.bdrc.lucene;
+package io.bdrc.lucene.sa;
 
 /**
  * Hello world!

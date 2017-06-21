@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.bdrc.lucene</groupId>
-	<artifactId>lucene-sa-pi</artifactId>
+	<artifactId>lucene-sa</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 	<name>lucene-sa-pi</name>
 	<description>Sanskrit and Pali Lucene analyzer and components</description>
-	<url>https://github.com/drupchen/lucene-sa-pi</url>
+	<url>https://github.com/drupchen/lucene-sa</url>
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
@@ -38,9 +38,9 @@
 		</repository>
 	</distributionManagement>
 	<scm>
-		<connection>scm:git:git://github.com/drupchen/lucene-sa-pi.git</connection>
-		<developerConnection>scm:git:ssh://github.com:drupchen/lucene-sa-pi.git</developerConnection>
-		<url>http://github.com/drupchen/lucene-sa-pi/tree/master</url>
+		<connection>scm:git:git://github.com/drupchen/lucene-sa.git</connection>
+		<developerConnection>scm:git:ssh://github.com:drupchen/lucene-sa.git</developerConnection>
+		<url>http://github.com/drupchen/lucene-sa/tree/master</url>
 	</scm>
 	<dependencies>
 		<dependency>

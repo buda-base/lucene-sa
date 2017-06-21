@@ -1,4 +1,4 @@
-package io.bdrc.lucene;
+package io.bdrc.lucene.sa;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
