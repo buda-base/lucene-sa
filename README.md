@@ -1,1 +1,2 @@
-# lucene-sa-pi
+# Lucene Analyzers for Sanskrit and Pali
+
