@@ -1,2 +1,2 @@
-# Lucene Analyzers for Sanskrit and Pali
+# Lucene Analyzers for Sanskrit
 
