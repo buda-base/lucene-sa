@@ -71,6 +71,21 @@ public class TrieTest
 		System.out.println("before the test sequence");
 	}
 
+	@Test
+	public void sylEndTest() throws IOException
+	{
+		System.out.println("Testing isSylEnd()");
+		SskrtSyllableTokenizer test = new SskrtSyllableTokenizer();
+		char V = 'a';
+		char X = 'M';
+		char C = 'k';
+		if (test.isSylEnd(V, C)) {
+			System.out.println("V C: The end of a syllable is reached.");
+		} else if (!test.isSylEnd(V, X)) {
+			System.out.println("V X:  ");
+		}
+		test.close();
+	}
 	
 	@Test
 	public void sylTokenizerTest() throws IOException
