@@ -93,16 +93,53 @@ public final class SskrtSyllableTokenizer extends CharTokenizer {
 		charType.put('y', 'C');
 		charType.put('r', 'C');
 		charType.put('l', 'C');
+		charType.put('v', 'C');
 		charType.put('L', 'C');
 		charType.put('|', 'C');
-		charType.put('v', 'C');
 		charType.put('S', 'C');
 		charType.put('z', 'C');
 		charType.put('s', 'C');
 		charType.put('h', 'C');
 		return charType;
 	}
+	
+	private static final HashMap<Character, Character> SLPPunct = createMap1();
+	private static final HashMap<Character, Character> createMap1()
+	{
+		HashMap<Character, Character> SLPPunct = new HashMap<Character, Character>();
+		SLPPunct.put(',', 'P');
+		SLPPunct.put('.', 'P');
+		SLPPunct.put('?', 'P');
+		SLPPunct.put('-', 'P');
+		SLPPunct.put(' ', 'P');
+		return SLPPunct;
+	}
 
+	private static final HashMap<Character, Character> SLPModifiers = createMap2();
+	private static final HashMap<Character, Character> createMap2()
+	{
+		HashMap<Character, Character> SLPModifiers = new HashMap<Character, Character>();
+		SLPModifiers.put('_', 'M');
+		SLPModifiers.put('=', 'M');
+		SLPModifiers.put('!', 'M');
+		SLPModifiers.put('#', 'M');
+		SLPModifiers.put('1', 'M');
+		SLPModifiers.put('1', 'M');
+		SLPModifiers.put('2', 'M');
+		SLPModifiers.put('3', 'M');
+		SLPModifiers.put('4', 'M');
+		SLPModifiers.put('/', 'M');
+		SLPModifiers.put('\u005C', 'M');
+		SLPModifiers.put('^', 'M');
+		SLPModifiers.put('6', 'M');
+		SLPModifiers.put('7', 'M');
+		SLPModifiers.put('8', 'M');
+		SLPModifiers.put('9', 'M');
+		SLPModifiers.put('+', 'M');
+		SLPModifiers.put('~', 'M');
+		return SLPModifiers;
+	}
+	
 	public boolean isSylEnd(char char1, char char2) {
 		// The existence of both chars in the HashMap is assumed
 		if (charType.get(char1) != 'C' && charType.get(char2) == 'C') {
