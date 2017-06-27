@@ -32,12 +32,12 @@ import org.apache.lucene.analysis.util.CharTokenizer;
  * @author Hélios Hildt
  * 
  */
-public final class SskrtSyllableTokenizer extends CharTokenizer {
+public final class SkrtSylTokenizer extends CharTokenizer {
   
 	/**
 	 * Construct a new TibSyllableTokenizer.
 	 */
-	public SskrtSyllableTokenizer() {
+	public SkrtSylTokenizer() {
 	}
 	
 	private static final HashMap<Character, Character> charType = createMap();
@@ -100,57 +100,64 @@ public final class SskrtSyllableTokenizer extends CharTokenizer {
 		charType.put('z', 'C');
 		charType.put('s', 'C');
 		charType.put('h', 'C');
+		// Modifiers
+		charType.put('_', 'M');
+		charType.put('=', 'M');
+		charType.put('!', 'M');
+		charType.put('#', 'M');
+		charType.put('1', 'M');
+		charType.put('1', 'M');
+		charType.put('2', 'M');
+		charType.put('3', 'M');
+		charType.put('4', 'M');
+		charType.put('/', 'M');
+		charType.put('\\', 'M');
+		charType.put('^', 'M');
+		charType.put('6', 'M');
+		charType.put('7', 'M');
+		charType.put('8', 'M');
+		charType.put('9', 'M');
+		charType.put('+', 'M');
+		charType.put('~', 'M');
 		return charType;
 	}
-	
-	private static final HashMap<Character, Character> SLPPunct = createMap1();
-	private static final HashMap<Character, Character> createMap1()
-	{
-		HashMap<Character, Character> SLPPunct = new HashMap<Character, Character>();
-		SLPPunct.put(',', 'P');
-		SLPPunct.put('.', 'P');
-		SLPPunct.put('?', 'P');
-		SLPPunct.put('-', 'P');
-		SLPPunct.put(' ', 'P');
-		return SLPPunct;
-	}
-
-	private static final HashMap<Character, Character> SLPModifiers = createMap2();
-	private static final HashMap<Character, Character> createMap2()
-	{
-		HashMap<Character, Character> SLPModifiers = new HashMap<Character, Character>();
-		SLPModifiers.put('_', 'M');
-		SLPModifiers.put('=', 'M');
-		SLPModifiers.put('!', 'M');
-		SLPModifiers.put('#', 'M');
-		SLPModifiers.put('1', 'M');
-		SLPModifiers.put('1', 'M');
-		SLPModifiers.put('2', 'M');
-		SLPModifiers.put('3', 'M');
-		SLPModifiers.put('4', 'M');
-		SLPModifiers.put('/', 'M');
-		SLPModifiers.put('\u005C', 'M');
-		SLPModifiers.put('^', 'M');
-		SLPModifiers.put('6', 'M');
-		SLPModifiers.put('7', 'M');
-		SLPModifiers.put('8', 'M');
-		SLPModifiers.put('9', 'M');
-		SLPModifiers.put('+', 'M');
-		SLPModifiers.put('~', 'M');
-		return SLPModifiers;
-	}
-	
+		
 	public boolean isSylEnd(char char1, char char2) {
-		// The existence of both chars in the HashMap is assumed
-		if (charType.get(char1) != 'C' && charType.get(char2) == 'C') {
+		/**
+		 * Returns true if a syllable ends between char1 and char2
+		 * @ return
+		 */
+		// char1\char2 | nonSLP | M | C  | X | V |
+		//-------------|--------|---|----|---|---|
+		//    nonSLP   |   x    | x | x  | x | x |
+		//      M      |   A.   | x | B. | x | x |
+		//      C      |   A.   | x | x  | x | x |
+		//      X      |   A.   | x | C. | x | x |
+		//      V      |   A.   | x | D. | x | x |
+		//---------------------------------------
+		//
+		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
+			// A.
 			return true;
+		} else if (charType.containsKey(char2) && charType.containsKey(char2) && charType.get(char2) == 'C') {
+			if (charType.containsKey(char1) && charType.get(char1) == 'M') {
+				// B.
+				return true;
+			} else if (charType.containsKey(char1) && charType.get(char1) == 'X') {
+				// C.
+				return true;
+			} else if (charType.containsKey(char1) && charType.get(char1) == 'V') {
+				// D.
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
 	}
   
 	/** 
-	 * Collects only characters which satisfy isTibetanLetterOrDigit()
 	 * @return 
 	 */
 	@Override
