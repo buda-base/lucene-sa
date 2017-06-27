@@ -20,9 +20,13 @@
 
 package io.bdrc.lucene.sa;
 
+import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.lucene.analysis.util.CharTokenizer;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+
 
 /** 
  * <p>
@@ -32,7 +36,7 @@ import org.apache.lucene.analysis.util.CharTokenizer;
  * @author Hélios Hildt
  * 
  */
-public final class SkrtSylTokenizer extends CharTokenizer {
+public final class SkrtSylTokenizer extends Tokenizer {
   
 	/**
 	 * Construct a new TibSyllableTokenizer.
@@ -40,6 +44,13 @@ public final class SkrtSylTokenizer extends CharTokenizer {
 	public SkrtSylTokenizer() {
 	}
 	
+	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
+	private static final int MAX_WORD_LEN = 255;
+	private static final int IO_BUFFER_SIZE = 4096;
+	  
+	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
+	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
+
 	private static final HashMap<Character, Character> charType = createMap();
 	private static final HashMap<Character, Character> createMap()
 	{
@@ -125,7 +136,7 @@ public final class SkrtSylTokenizer extends CharTokenizer {
 	public boolean isSylEnd(char char1, char char2) {
 		/**
 		 * Returns true if a syllable ends between char1 and char2
-		 * @ return
+		 * @return
 		 */
 		// char1\char2 | nonSLP | M | C  | X | V |
 		//-------------|--------|---|----|---|---|
@@ -156,12 +167,43 @@ public final class SkrtSylTokenizer extends CharTokenizer {
 			return false;
 		}
 	}
+	public boolean isSylStart(char char1, char char2) {
+		/**
+		 * Returns true if a syllable starts between char1 and char2
+		 * @return
+		 */
+		// char1\char2 | nonSLP | M  |  C  | X  | V  |
+		//-------------|--------|----|-----|----|----|
+		//    nonSLP   |   x    | A. | A.  | A. | A. |
+		//      M      |   x    | x  | B.  | x  | x  |
+		//      C      |   x    | x  | x   | x  | x  |
+		//      X      |   x    | x  | B.  | x  | x  |
+		//      V      |   x    | x  | B.  | x  | x  |
+		//--------------------------------------------
+		//
+		if (!charType.containsKey(char1) && charType.containsKey(char2)) {
+			// A.
+			return true;
+		} else if ((charType.containsKey(char1) && charType.get(char1) != 'C') && (charType.containsKey(char2) && charType.get(char2) == 'C')) {
+			// B.
+			return true;
+		} else {
+			return false;
+		}
+	}
   
 	/** 
 	 * @return 
 	 */
 	@Override
-	protected boolean isTokenChar(int c) {
-		return false;
+	public final boolean incrementToken() throws IOException {
+		clearAttributes();
+		char[] buffer = termAtt.buffer();
+		while (true) {
+			if (bufferIndex >= dataLen) {
+				offset += dataLen;
+				
+			}
+		}
 	}
 }
