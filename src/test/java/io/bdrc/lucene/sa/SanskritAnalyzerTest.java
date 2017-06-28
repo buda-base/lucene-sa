@@ -68,6 +68,20 @@ public class SanskritAnalyzerTest
 	}
 
 	@Test
+	public void sylTokenizerTest() throws IOException
+	{
+//		String unSandhiedTest = ".pfTivyA lABe pAlane ca yAvanty arTa.SAstrARi pUrva.AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa.SAstraM kftam //";
+		System.out.println("Testing SkrtSylTokenizer()");
+		String input = "AtmAatma";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("A", "tmA", "a" ,"tma");
+
+		System.out.print(input + " => ");
+		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
+		assertTokenStream(res, expected);
+	}
+	
+	@Test
 	public void isSylEndTest() throws IOException
 	{
 		System.out.println("Testing isSylEnd()");
@@ -178,20 +192,7 @@ public class SanskritAnalyzerTest
 		test.close();
 		assertThat(Arrays.asList(syl_boundary, no_syl_boundary), everyItem(is(true)));
 	}
-	public String unSandhiedTest = ".pfTivyA lABe pAlane ca yAvanty arTa.SAstrARi pUrva.AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa.SAstraM kftam //";	
-	@Test
-	public void sylTokenizerTest() throws IOException
-	{
-		System.out.println("Testing SkrtSylTokenizer()");
-		String input = "AtmA atma";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("A", "tmA", "a" ,"tma");
-
-		System.out.print(input + " => ");
-		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
-		assertTokenStream(res, expected);
-	}
-
+		
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");

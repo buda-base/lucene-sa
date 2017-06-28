@@ -152,16 +152,16 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		// char1\char2 | nonSLP | OTHER | CONSONNANT | MODIFIER | VOWEL |
 		//-------------|--------|-------|------------|----------|-------|
 		//    nonSLP   |   x    |   x   |     x      |    x     |   x   |
-		//      M      |   A.   |   x   |     B.     |    x     |   x   |
-		//      C      |   A.   |   x   |     x      |    x     |   x   |
-		//      X      |   A.   |   x   |     C.     |    x     |   x   |
-		//      V      |   A.   |   x   |     D.     |    x     |   x   |
+		//     OTHER   |   A.   |   x   |     B.     |    x     |   x   |
+		//   CONSONANT |   A.   |   x   |     x      |    x     |   x   |
+		//    MODIFIER |   A.   |   x   |     C.     |    x     |   x   |
+		//     VOWEL   |   A.   |   x   |     D.     |    x     |   x   |
 		//---------------------------------------------------------------
 		//
 		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
 			// A.
 			return true;
-		} else if (charType.containsKey(char2) && charType.containsKey(char2) && charType.get(char2) == CONSONNANT) {
+		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONNANT) {
 			if (charType.containsKey(char1) && charType.get(char1) == OTHER) {
 				// B.
 				return true;
@@ -178,34 +178,34 @@ public final class SkrtSylTokenizer extends Tokenizer {
 			return false;
 		}
 	}
-	public boolean isSylStart(int char1, int char2) {
-		/**
-		 * Returns true if a syllable starts between char1 and char2
-		 * @return
-		 */
-		// char1\char2 | nonSLP | OTHER | CONSONNANT | MODIFIER | VOWEL |
-		//-------------|--------|-------|------------|----------|-------|
-		//    nonSLP   |   x    |   A.  |     A.     |    A.    |   A.  |
-		//      M      |   x    |   x   |     B.     |    x     |   x   |
-		//      C      |   x    |   x   |     x      |    x     |   x   |
-		//      X      |   x    |   x   |     B.     |    x     |   x   |
-		//      V      |   x    |   x   |     B.     |    x     |   x   |
-		//---------------------------------------------------------------
-		//
-		if (!charType.containsKey(char1) && charType.containsKey(char2)) {
-			// A.
-			return true;
-		} else if ((charType.containsKey(char1) && charType.get(char1) != CONSONNANT) && (charType.containsKey(char2) && charType.get(char2) == CONSONNANT)) {
-			// B.
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	protected boolean isTokenChar(int c) {
+//	public boolean isSylStart(int char1, int char2) {
+//		/**
+//		 * Returns true if a syllable starts between char1 and char2
+//		 * @return
+//		 */
+//		// char1\char2 | nonSLP | OTHER | CONSONNANT | MODIFIER | VOWEL |
+//		//-------------|--------|-------|------------|----------|-------|
+//		//    nonSLP   |   x    |   A.  |     A.     |    A.    |   A.  |
+//		//    OTHER    |   x    |   x   |     B.     |    x     |   x   |
+//		//  CONSONNANT |   x    |   x   |     x      |    x     |   x   |
+//		//   MODIFIER  |   x    |   x   |     B.     |    x     |   x   |
+//		//    VOWEL    |   x    |   x   |     B.     |    x     |   x   |
+//		//---------------------------------------------------------------
+//		//
+//		if (!charType.containsKey(char1) && charType.containsKey(char2)) {
+//			// A.
+//			return true;
+//		} else if ((charType.containsKey(char1) && charType.get(char1) != CONSONNANT) && (charType.containsKey(char2) && charType.get(char2) == CONSONNANT)) {
+//			// B.
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+	
+	protected boolean isSLP(int c) {
 		Integer res = charType.get(c);
-		return (res != null && res != OTHER); 
+		return (res != null); 
 	}
 
 	/** 
@@ -239,7 +239,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 			final int charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
-			if (isTokenChar(c)) {               // if it's a token char
+			if (isSLP(c)) {               // if it's a token char
 				if (length == 0) {                // start of token
 					assert start == -1;
 					start = offset + bufferIndex - charCount;
@@ -249,8 +249,9 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				}
 				end += charCount;
 				length += Character.toChars(c, buffer, length); // buffer it
-				if (isSylStart(previousChar, c) || isSylEnd(previousChar, c)) {
+				if (isSylEnd(previousChar, c)) {
                     previousChar = c;
+//                    end += charCount;
                     break;
 				}
 				if (length >= maxTokenLen) { // buffer overflow! make sure to check for >= surrogate pair could break == test
