@@ -75,7 +75,7 @@ public class SanskritAnalyzerTest
 	{
 //		String unSandhiedTest = ".pfTivyA lABe pAlane ca yAvanty arTa.SAstrARi pUrva.AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa.SAstraM kftam //";
 		System.out.println("Testing SkrtSylTokenizer()");
-		String input = "AtmAatma";
+		String input = "AtmA atma";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("A", "tmA", "a" ,"tma");
 

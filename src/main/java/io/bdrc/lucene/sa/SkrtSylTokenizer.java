@@ -54,7 +54,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 
 	public final static int VOWEL = 0;
 	public final static int MODIFIER = 1;
-	public final static int CONSONNANT = 2;
+	public final static int CONSONANT = 2;
 	public final static int OTHER = 3;
 
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -88,41 +88,41 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'V', MODIFIER);
 		charType.put((int)'Z', MODIFIER);
 		// consonants
-		charType.put((int)'k', CONSONNANT);
-		charType.put((int)'K', CONSONNANT);
-		charType.put((int)'g', CONSONNANT);
-		charType.put((int)'G', CONSONNANT);
-		charType.put((int)'N', CONSONNANT);
-		charType.put((int)'c', CONSONNANT);
-		charType.put((int)'C', CONSONNANT);
-		charType.put((int)'j', CONSONNANT);
-		charType.put((int)'J', CONSONNANT);
-		charType.put((int)'Y', CONSONNANT);
-		charType.put((int)'w', CONSONNANT);
-		charType.put((int)'W', CONSONNANT);
-		charType.put((int)'q', CONSONNANT);
-		charType.put((int)'Q', CONSONNANT);
-		charType.put((int)'R', CONSONNANT);
-		charType.put((int)'t', CONSONNANT);
-		charType.put((int)'T', CONSONNANT);
-		charType.put((int)'d', CONSONNANT);
-		charType.put((int)'D', CONSONNANT);
-		charType.put((int)'n', CONSONNANT);
-		charType.put((int)'p', CONSONNANT);
-		charType.put((int)'P', CONSONNANT);
-		charType.put((int)'b', CONSONNANT);
-		charType.put((int)'B', CONSONNANT);
-		charType.put((int)'m', CONSONNANT);
-		charType.put((int)'y', CONSONNANT);
-		charType.put((int)'r', CONSONNANT);
-		charType.put((int)'l', CONSONNANT);
-		charType.put((int)'v', CONSONNANT);
-		charType.put((int)'L', CONSONNANT);
-		charType.put((int)'|', CONSONNANT);
-		charType.put((int)'S', CONSONNANT);
-		charType.put((int)'z', CONSONNANT);
-		charType.put((int)'s', CONSONNANT);
-		charType.put((int)'h', CONSONNANT);
+		charType.put((int)'k', CONSONANT);
+		charType.put((int)'K', CONSONANT);
+		charType.put((int)'g', CONSONANT);
+		charType.put((int)'G', CONSONANT);
+		charType.put((int)'N', CONSONANT);
+		charType.put((int)'c', CONSONANT);
+		charType.put((int)'C', CONSONANT);
+		charType.put((int)'j', CONSONANT);
+		charType.put((int)'J', CONSONANT);
+		charType.put((int)'Y', CONSONANT);
+		charType.put((int)'w', CONSONANT);
+		charType.put((int)'W', CONSONANT);
+		charType.put((int)'q', CONSONANT);
+		charType.put((int)'Q', CONSONANT);
+		charType.put((int)'R', CONSONANT);
+		charType.put((int)'t', CONSONANT);
+		charType.put((int)'T', CONSONANT);
+		charType.put((int)'d', CONSONANT);
+		charType.put((int)'D', CONSONANT);
+		charType.put((int)'n', CONSONANT);
+		charType.put((int)'p', CONSONANT);
+		charType.put((int)'P', CONSONANT);
+		charType.put((int)'b', CONSONANT);
+		charType.put((int)'B', CONSONANT);
+		charType.put((int)'m', CONSONANT);
+		charType.put((int)'y', CONSONANT);
+		charType.put((int)'r', CONSONANT);
+		charType.put((int)'l', CONSONANT);
+		charType.put((int)'v', CONSONANT);
+		charType.put((int)'L', CONSONANT);
+		charType.put((int)'|', CONSONANT);
+		charType.put((int)'S', CONSONANT);
+		charType.put((int)'z', CONSONANT);
+		charType.put((int)'s', CONSONANT);
+		charType.put((int)'h', CONSONANT);
 		// Modifiers
 		charType.put((int)'_', OTHER);
 		charType.put((int)'=', OTHER);
@@ -149,7 +149,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		 * Returns true if a syllable ends between char1 and char2
 		 * @return
 		 */
-		// char1\char2 | nonSLP | OTHER | CONSONNANT | MODIFIER | VOWEL |
+		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
 		//-------------|--------|-------|------------|----------|-------|
 		//    nonSLP   |   x    |   x   |     x      |    x     |   x   |
 		//     OTHER   |   A.   |   x   |     B.     |    x     |   x   |
@@ -161,7 +161,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
 			// A.
 			return true;
-		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONNANT) {
+		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONANT) {
 			if (charType.containsKey(char1) && charType.get(char1) == OTHER) {
 				// B.
 				return true;
@@ -183,7 +183,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 //		 * Returns true if a syllable starts between char1 and char2
 //		 * @return
 //		 */
-//		// char1\char2 | nonSLP | OTHER | CONSONNANT | MODIFIER | VOWEL |
+//		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
 //		//-------------|--------|-------|------------|----------|-------|
 //		//    nonSLP   |   x    |   A.  |     A.     |    A.    |   A.  |
 //		//    OTHER    |   x    |   x   |     B.     |    x     |   x   |
@@ -235,7 +235,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				bufferIndex = 0;
 			}
 			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
-			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+			int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			final int charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
@@ -249,9 +249,16 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				}
 				end += charCount;
 				length += Character.toChars(c, buffer, length); // buffer it
-				if (isSylEnd(previousChar, c)) {
+				if (previousChar != -1 && isSylEnd(previousChar, c)) {
+					// we need to come back to the previous state for all variables
+					// since the detected boundary is between previousChar and c,
+					// meaning c already pertains to the next syllable
+					bufferIndex = bufferIndex - charCount;
+					length = length - charCount;
+					end = end - charCount;
+					c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+					termAtt.resizeBuffer(length-charCount);
                     previousChar = c;
-//                    end += charCount;
                     break;
 				}
 				if (length >= maxTokenLen) { // buffer overflow! make sure to check for >= surrogate pair could break == test
