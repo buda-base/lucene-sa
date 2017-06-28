@@ -225,15 +225,15 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				}
 				end += charCount;
 				length += Character.toChars(c, buffer, length); // buffer it
-				if (previousChar != -1 && isSylEnd(previousChar, c)) {
+				if (isSylEnd(previousChar, c)) {
 					// we need to come back to the previous state for all variables
 					// since the detected boundary is between previousChar and c,
 					// meaning c already pertains to the next syllable
 					bufferIndex = bufferIndex - charCount;
 					length = length - charCount;
 					end = end - charCount;
+					buffer = termAtt.resizeBuffer(length-charCount);
 					c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
-					termAtt.resizeBuffer(length-charCount);
                     previousChar = c;
                     break;
 				}
