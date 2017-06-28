@@ -178,30 +178,6 @@ public final class SkrtSylTokenizer extends Tokenizer {
 			return false;
 		}
 	}
-//	public boolean isSylStart(int char1, int char2) {
-//		/**
-//		 * Returns true if a syllable starts between char1 and char2
-//		 * @return
-//		 */
-//		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
-//		//-------------|--------|-------|------------|----------|-------|
-//		//    nonSLP   |   x    |   A.  |     A.     |    A.    |   A.  |
-//		//    OTHER    |   x    |   x   |     B.     |    x     |   x   |
-//		//  CONSONNANT |   x    |   x   |     x      |    x     |   x   |
-//		//   MODIFIER  |   x    |   x   |     B.     |    x     |   x   |
-//		//    VOWEL    |   x    |   x   |     B.     |    x     |   x   |
-//		//---------------------------------------------------------------
-//		//
-//		if (!charType.containsKey(char1) && charType.containsKey(char2)) {
-//			// A.
-//			return true;
-//		} else if ((charType.containsKey(char1) && charType.get(char1) != CONSONNANT) && (charType.containsKey(char2) && charType.get(char2) == CONSONNANT)) {
-//			// B.
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
 	
 	protected boolean isSLP(int c) {
 		Integer res = charType.get(c);
