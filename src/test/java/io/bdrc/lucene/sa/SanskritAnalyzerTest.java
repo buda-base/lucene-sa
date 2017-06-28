@@ -26,8 +26,11 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -190,6 +193,14 @@ public class SanskritAnalyzerTest
 		System.out.print(input + " => ");
 		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
 		assertTokenStream(res, expected);
+	}
+	
+	@Test
+	public void testTransliterationFilter() throws Exception {
+	    CharFilter cs = new TransliterationFilter(new StringReader( "k" ) );
+	    TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+	    List<String> expected = Arrays.asList("k");
+	    assertTokenStream(ts, expected);
 	}
 
 	@AfterClass
