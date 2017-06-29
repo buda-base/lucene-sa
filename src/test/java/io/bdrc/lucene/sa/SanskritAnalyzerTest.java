@@ -85,13 +85,13 @@ public class SanskritAnalyzerTest
 		assertTokenStream(res, expected);
 	}
 	
-	@Test
-	public void testTransliterationFilter() throws Exception {
-	    CharFilter cs = new TransliterationFilter(new StringReader( "k" ) );
-	    TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-	    List<String> expected = Arrays.asList("k");
-	    assertTokenStream(ts, expected);
-	}
+    @Test
+    public void testTransliterationFilter() throws Exception {
+        CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
+        TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        List<String> expected = Arrays.asList("ka", "kka", "ki", "kki", "|u");
+        assertTokenStream(ts, expected);
+    }
 	
 	@Test
 	public void isSylEndTest() throws IOException
@@ -203,14 +203,6 @@ public class SanskritAnalyzerTest
 		}
 		test.close();
 		assertThat(Arrays.asList(syl_boundary, no_syl_boundary), everyItem(is(true)));
-	}
-	
-	@Test
-	public void testTransliterationFilter() throws Exception {
-	    CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
-	    TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-	    List<String> expected = Arrays.asList("ka", "kka", "ki", "kki", "|u");
-	    assertTokenStream(ts, expected);
 	}
 
 	@AfterClass
