@@ -11,10 +11,10 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 public class TransliterationFilter extends MappingCharFilter {
 
     public TransliterationFilter(Reader in) {
-        super(getTibNormalizeCharMap(), in);
+        super(getSkrtNormalizeCharMap(), in);
     }
 
-    public final static NormalizeCharMap getTibNormalizeCharMap() {
+    public final static NormalizeCharMap getSkrtNormalizeCharMap() {
         final char VIRAMA_CHAR = '\u094d';
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         final Map<String, String> consonnants = new HashMap<>();
