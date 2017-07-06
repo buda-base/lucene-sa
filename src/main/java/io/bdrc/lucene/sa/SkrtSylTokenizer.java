@@ -21,6 +21,7 @@
 package io.bdrc.lucene.sa;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.lucene.analysis.CharacterUtils;
@@ -41,7 +42,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 public final class SkrtSylTokenizer extends Tokenizer {
 
 	/**
-	 * Construct a new TibSyllableTokenizer.
+	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSylTokenizer() {
 	}
@@ -56,12 +57,22 @@ public final class SkrtSylTokenizer extends Tokenizer {
 	public final static int MODIFIER = 1;
 	public final static int CONSONANT = 2;
 	public final static int OTHER = 3;
+	public final static int PUNCT = 4;
 
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
+	private static final HashMap<Integer, Integer> skrtPunct = punctMap();
+	private static final HashMap<Integer, Integer> punctMap()
+	{
+		HashMap<Integer, Integer> skrtPunct = new HashMap<>();
+		skrtPunct.put((int)'.', PUNCT);
+		skrtPunct.put((int)' ', PUNCT);
+		skrtPunct.put((int)',', PUNCT);
+		return skrtPunct;
+	}
 
 	private static final HashMap<Integer, Integer> charType = createMap();
 	private static final HashMap<Integer, Integer> createMap()
@@ -123,6 +134,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'z', CONSONANT);
 		charType.put((int)'s', CONSONANT);
 		charType.put((int)'h', CONSONANT);
+		
 		// Modifiers
 		charType.put((int)'_', OTHER);
 		charType.put((int)'=', OTHER);
@@ -225,16 +237,15 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				}
 				end += charCount;
 				length += Character.toChars(c, buffer, length); // buffer it
-				if (isSylEnd(previousChar, c)) {
+				
+				if (!isTrailingCluster(ioBuffer, bufferIndex-1) && isSylEnd(previousChar, c)) {
 					// we need to come back to the previous state for all variables
 					// since the detected boundary is between previousChar and c,
 					// meaning c already pertains to the next syllable
 					bufferIndex = bufferIndex - charCount;
 					length = length - charCount;
 					end = end - charCount;
-					buffer = termAtt.resizeBuffer(length-charCount);
-					c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
-                    previousChar = c;
+					previousChar = c;
                     break;
 				}
 				if (length >= maxTokenLen) { // buffer overflow! make sure to check for >= surrogate pair could break == test
@@ -254,5 +265,27 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
 		return true;
 
+	}
+
+	private boolean isTrailingCluster(CharacterBuffer inputBuffer, int bufferIndex ) {
+		// see who comes first, a vowel, a legal punctuation or the end of the buffer
+		int nextSylEndIdx = bufferIndex;
+		char[] buffer = inputBuffer.getBuffer();
+		while (nextSylEndIdx < inputBuffer.getLength()) {
+			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
+				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
+					System.out.print(Arrays.asList(buffer).subList(bufferIndex, nextSylEndIdx).toString());
+					return true;
+				}// if char at nextSylIdx
+				else if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
+					return false;
+				} else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
+					//System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
+					return true;
+				}
+			}
+			nextSylEndIdx++;
+		}
+		return false;
 	}
 }

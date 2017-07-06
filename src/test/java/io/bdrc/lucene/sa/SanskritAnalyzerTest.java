@@ -71,14 +71,14 @@ public class SanskritAnalyzerTest
 	}
 
 	@Test
-	public void sylTokenizerTest() throws IOException
+	public void testSylTokenizer() throws IOException
 	{
 		System.out.println("Testing SkrtSylTokenizer()");
 		String input = "pfTivyA lABe pAlane ca yAvanty arTa SAstrARi pUrva AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa SAstraM kftam //";
 		// output from Sanskrit Library's syllabifier:
 		// pf-Ti-vyA lA-Be pA-la-ne ca yA-vanty a-rTa SA-strA-Ri pU-rva A-cA-ryEH pra-sTA-pi-tA-ni prA-ya-Sas tA-ni saM-hf-tya^e-kam i-dam a-rTa SA-straM kf-tam //
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("pf", "Ti", "vyA", "lA", "Be", "pA", "la", "ne", "ca", "yA", "vanty", "a", "rTa", "SA", "strA", "Ri", "pU", "rva", "A", "cA", "ryEH", "pra", "sTA", "pi", "tA", "ni", "prA", "ya", "Sas", "tA", "ni", "saM", "hf", "tya^e", "kam", "i", "dam", "a", "rTa", "SA", "straM", "kf", "tam");
+		List<String> expected = Arrays.asList("pf", "Ti", "vyA", "lA", "Be", "pA", "la", "ne", "ca", "yA", "vanty", "a", "rTa", "SA", "strA", "Ri", "pU", "rva", "A", "cA", "ryEH", "pra", "sTA", "pi", "tA", "ni", "prA", "ya", "Sas", "tA", "ni", "saM", "hf", "tya^e", "kam", "i", "dam", "a", "rTa", "SA", "straM", "kf", "tam", "//");
 
 		System.out.print(input + "\n => \n");
 		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
@@ -94,7 +94,7 @@ public class SanskritAnalyzerTest
     }
 	
 	@Test
-	public void isSylEndTest() throws IOException
+	public void testIsSylEnd() throws IOException
 	{
 		System.out.println("Testing isSylEnd()");
 		SkrtSylTokenizer test = new SkrtSylTokenizer();
@@ -202,7 +202,9 @@ public class SanskritAnalyzerTest
 			System.out.println("All non-boundaries left aside.");
 		}
 		test.close();
-		assertThat(Arrays.asList(syl_boundary, no_syl_boundary), everyItem(is(true)));
+//		assertThat(Arrays.asList(syl_boundary, no_syl_boundary), everyItem(is(true)));
+		assertTrue(syl_boundary);
+		assertTrue(no_syl_boundary);
 	}
 
 	@AfterClass
