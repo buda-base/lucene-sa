@@ -71,6 +71,16 @@ public class SanskritAnalyzerTest
 	}
 
 	@Test
+	public void testIsTrailingCluster() throws Exception {
+		System.out.println("Testing isTrailingCluster()");
+		String input = "vanty Sas";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("vanty", "Sas");
+		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
+		assertTokenStream(res, expected);
+	}
+	
+	@Test
 	public void testSylTokenizer() throws IOException
 	{
 		System.out.println("Testing SkrtSylTokenizer()");

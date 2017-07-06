@@ -21,7 +21,6 @@
 package io.bdrc.lucene.sa;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.lucene.analysis.CharacterUtils;
@@ -156,46 +155,6 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		return charType;
 	}
 
-	public boolean isSylEnd(int char1, int char2) {
-		/**
-		 * Returns true if a syllable ends between char1 and char2
-		 * @return
-		 */
-		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
-		//-------------|--------|-------|------------|----------|-------|
-		//    nonSLP   |   x    |   x   |     x      |    x     |   x   |
-		//     OTHER   |   A.   |   x   |     B.     |    x     |   x   |
-		//   CONSONANT |   A.   |   x   |     x      |    x     |   x   |
-		//    MODIFIER |   A.   |   x   |     C.     |    x     |   x   |
-		//     VOWEL   |   A.   |   x   |     D.     |    x     |   x   |
-		//---------------------------------------------------------------
-		//
-		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
-			// A.
-			return true;
-		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONANT) {
-			if (charType.containsKey(char1) && charType.get(char1) == OTHER) {
-				// B.
-				return true;
-			} else if (charType.containsKey(char1) && charType.get(char1) == MODIFIER) {
-				// C.
-				return true;
-			} else if (charType.containsKey(char1) && charType.get(char1) == VOWEL) {
-				// D.
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	
-	protected boolean isSLP(int c) {
-		Integer res = charType.get(c);
-		return (res != null); 
-	}
-
 	/** 
 	 * adapted from CharTokenizer
 	 */
@@ -258,15 +217,54 @@ public final class SkrtSylTokenizer extends Tokenizer {
 			}
 			previousChar = c;
 		}
-
 		termAtt.setLength(length);
 		assert start != -1;
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
 		return true;
-
 	}
 
+	
+	protected boolean isSLP(int c) {
+		Integer res = charType.get(c);
+		return (res != null); 
+	}
+	
+	public boolean isSylEnd(int char1, int char2) {
+		/**
+		 * Returns true if a syllable ends between char1 and char2
+		 * @return
+		 */
+		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
+		//-------------|--------|-------|------------|----------|-------|
+		//    nonSLP   |   x    |   x   |     x      |    x     |   x   |
+		//     OTHER   |   A.   |   x   |     B.     |    x     |   x   |
+		//   CONSONANT |   A.   |   x   |     x      |    x     |   x   |
+		//    MODIFIER |   A.   |   x   |     C.     |    x     |   x   |
+		//     VOWEL   |   A.   |   x   |     D.     |    x     |   x   |
+		//---------------------------------------------------------------
+		//
+		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
+			// A.
+			return true;
+		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONANT) {
+			if (charType.containsKey(char1) && charType.get(char1) == OTHER) {
+				// B.
+				return true;
+			} else if (charType.containsKey(char1) && charType.get(char1) == MODIFIER) {
+				// C.
+				return true;
+			} else if (charType.containsKey(char1) && charType.get(char1) == VOWEL) {
+				// D.
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	private boolean isTrailingCluster(CharacterBuffer inputBuffer, int bufferIndex ) {
 		// see who comes first, a vowel, a legal punctuation or the end of the buffer
 		int nextSylEndIdx = bufferIndex;
@@ -274,7 +272,6 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		while (nextSylEndIdx < inputBuffer.getLength()) {
 			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
 				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
-					System.out.print(Arrays.asList(buffer).subList(bufferIndex, nextSylEndIdx).toString());
 					return true;
 				}// if char at nextSylIdx
 				else if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
