@@ -17,44 +17,44 @@ public class TransliterationFilter extends MappingCharFilter {
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
         final char VIRAMA_CHAR = '\u094d';
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
-        final Map<String, String> consonnants = new HashMap<>();
+        final Map<String, String> consonants = new HashMap<>();
         final Map<String, String> vowels = new HashMap<>();
 
-        consonnants.put("\u0915", "k");
-        consonnants.put("\u0916", "K");
-        consonnants.put("\u0917", "g");
-        consonnants.put("\u0918", "G");
-        consonnants.put("\u0919", "N");
-        consonnants.put("\u091A", "c");
-        consonnants.put("\u091B", "C");
-        consonnants.put("\u091C", "j");
-        consonnants.put("\u091D", "J");
-        consonnants.put("\u091E", "Y");
-        consonnants.put("\u091F", "w");
-        consonnants.put("\u0920", "W");
-        consonnants.put("\u0921", "q");
-        consonnants.put("\u0922", "Q");
-        consonnants.put("\u0923", "R");
-        consonnants.put("\u0924", "t");
-        consonnants.put("\u0925", "T");
-        consonnants.put("\u0926", "d");
-        consonnants.put("\u0927", "D");
-        consonnants.put("\u0928", "n");
-        consonnants.put("\u092A", "p");
-        consonnants.put("\u092B", "P");
-        consonnants.put("\u092C", "b");
-        consonnants.put("\u092D", "B");
-        consonnants.put("\u092E", "m");
-        consonnants.put("\u092F", "y");
-        consonnants.put("\u0930", "r");
-        consonnants.put("\u0932", "l");
-        consonnants.put("\u0933", "L");
-        consonnants.put("\u0935", "v");
-        consonnants.put("\u0936", "S");
-        consonnants.put("\u0937", "z");
-        consonnants.put("\u0938", "s");
-        consonnants.put("\u0939", "h");
-        consonnants.put("\u0933\u094d\u0939", "|");
+        consonants.put("\u0915", "k");
+        consonants.put("\u0916", "K");
+        consonants.put("\u0917", "g");
+        consonants.put("\u0918", "G");
+        consonants.put("\u0919", "N");
+        consonants.put("\u091A", "c");
+        consonants.put("\u091B", "C");
+        consonants.put("\u091C", "j");
+        consonants.put("\u091D", "J");
+        consonants.put("\u091E", "Y");
+        consonants.put("\u091F", "w");
+        consonants.put("\u0920", "W");
+        consonants.put("\u0921", "q");
+        consonants.put("\u0922", "Q");
+        consonants.put("\u0923", "R");
+        consonants.put("\u0924", "t");
+        consonants.put("\u0925", "T");
+        consonants.put("\u0926", "d");
+        consonants.put("\u0927", "D");
+        consonants.put("\u0928", "n");
+        consonants.put("\u092A", "p");
+        consonants.put("\u092B", "P");
+        consonants.put("\u092C", "b");
+        consonants.put("\u092D", "B");
+        consonants.put("\u092E", "m");
+        consonants.put("\u092F", "y");
+        consonants.put("\u0930", "r");
+        consonants.put("\u0932", "l");
+        consonants.put("\u0933", "L");
+        consonants.put("\u0935", "v");
+        consonants.put("\u0936", "S");
+        consonants.put("\u0937", "z");
+        consonants.put("\u0938", "s");
+        consonants.put("\u0939", "h");
+        consonants.put("\u0933\u094d\u0939", "|");
 
         vowels.put("\u093E", "A");
         vowels.put("\u093F", "i");
@@ -104,13 +104,13 @@ public class TransliterationFilter extends MappingCharFilter {
         builder.add("\u096E", "8");
         builder.add("\u096F", "9");
 
-        for (Map.Entry<String, String> entry : consonnants.entrySet()) {
-            // CONSONNANT = ca
+        for (Map.Entry<String, String> entry : consonants.entrySet()) {
+            // CONSONANT = ca
             builder.add(entry.getKey(), entry.getValue()+"a");
-            // CONSONNANT + VIRAMA = c
+            // CONSONANT + VIRAMA = c
             builder.add(entry.getKey()+VIRAMA_CHAR, entry.getValue());
             for (Map.Entry<String, String> ventry : vowels.entrySet()) {
-                // CONSONNANT + vowel = cv
+                // CONSONANT + vowel = cv
                 builder.add(entry.getKey()+ventry.getKey(), entry.getValue()+ventry.getValue());
             }
         }
