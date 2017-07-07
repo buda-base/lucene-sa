@@ -1,3 +1,6 @@
 [submodule "resources"]
 	path = resources
 	url = https://github.com/drupchen/sanskrit-stemming-data.git
+[submodule "resources/sanskrit-stemming-data"]
+	path = resources/sanskrit-stemming-data
+	url = https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data.git
