@@ -62,7 +62,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
-
+	
 	private static final HashMap<Integer, Integer> skrtPunct = punctMap();
 	private static final HashMap<Integer, Integer> punctMap()
 	{

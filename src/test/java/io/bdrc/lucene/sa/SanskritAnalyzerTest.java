@@ -72,6 +72,7 @@ public class SanskritAnalyzerTest
 
 	@Test
 	public void testIsTrailingCluster() throws Exception {
+		// testing trailing clusters in two contexts: before a space and before the end of the input string
 		System.out.println("Testing isTrailingCluster()");
 		String input = "vanty Sas";
 		Reader reader = new StringReader(input);
@@ -81,12 +82,10 @@ public class SanskritAnalyzerTest
 	}
 	
 	@Test
-	public void testSylTokenizer() throws IOException
-	{
+	public void testSylTokenizer() throws IOException {
+		// the syllabation in "expected" is the output of Scharf's script
 		System.out.println("Testing SkrtSylTokenizer()");
 		String input = "pfTivyA lABe pAlane ca yAvanty arTa SAstrARi pUrva AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa SAstraM kftam //";
-		// output from Sanskrit Library's syllabifier:
-		// pf-Ti-vyA lA-Be pA-la-ne ca yA-vanty a-rTa SA-strA-Ri pU-rva A-cA-ryEH pra-sTA-pi-tA-ni prA-ya-Sas tA-ni saM-hf-tya^e-kam i-dam a-rTa SA-straM kf-tam //
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("pf", "Ti", "vyA", "lA", "Be", "pA", "la", "ne", "ca", "yA", "vanty", "a", "rTa", "SA", "strA", "Ri", "pU", "rva", "A", "cA", "ryEH", "pra", "sTA", "pi", "tA", "ni", "prA", "ya", "Sas", "tA", "ni", "saM", "hf", "tya^e", "kam", "i", "dam", "a", "rTa", "SA", "straM", "kf", "tam", "//");
 
@@ -97,9 +96,12 @@ public class SanskritAnalyzerTest
 	
     @Test
     public void testTransliterationFilter() throws Exception {
-        CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
-        TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-        List<String> expected = Arrays.asList("ka", "kka", "ki", "kki", "|u");
+        //CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
+    	System.out.println("Testing transliterationFilter()");
+    	String input = "अथ राजकन्या चन्द्रवती नामाभिनवरुपयौवनसम्पन्ना सखीद्वितीयैकस्मिन्महोत्सवदिवसे नगरं निरिक्षमाणास्ति ।"; 
+    	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
         assertTokenStream(ts, expected);
     }
 	
