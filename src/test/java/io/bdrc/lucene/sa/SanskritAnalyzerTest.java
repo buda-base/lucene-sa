@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,7 +106,24 @@ public class SanskritAnalyzerTest
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
         assertTokenStream(ts, expected);
     }
+    
+    @Test
+    public void testZwjZwnjTranscoding() throws Exception {
+    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
+    	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
+    	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	List<String> expected = Arrays.asList("kza", "kza", "kza");
+    	assertTokenStream(ts, expected);
+    }
 	
+    @Test
+    public void thoroughTestTransliterationFilter() throws Exception {
+    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
+    	String result = String.join(" ", lines);
+    	
+    }
+    
 	@Test
 	public void testIsSylEnd() throws IOException
 	{

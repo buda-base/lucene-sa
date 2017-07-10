@@ -103,6 +103,8 @@ public class TransliterationFilter extends MappingCharFilter {
         builder.add("\u096D", "7");
         builder.add("\u096E", "8");
         builder.add("\u096F", "9");
+        builder.add("\u200C", ""); // ZWNJ
+        builder.add("\u200D", ""); // ZWJ
 
         for (Map.Entry<String, String> entry : consonants.entrySet()) {
             // CONSONANT = ca
