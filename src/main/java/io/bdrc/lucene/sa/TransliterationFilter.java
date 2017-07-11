@@ -76,7 +76,7 @@ public class TransliterationFilter extends MappingCharFilter {
         builder.add("\u0951", "^");
         builder.add("\u0901", "~");
         builder.add("\u0952", "\\");
-        builder.add("\u093D", "\"");
+        builder.add("\u093D", "'");
         builder.add("\u0964", ".");
         builder.add("\u0965", "..");
         builder.add("\u0905", "a");
