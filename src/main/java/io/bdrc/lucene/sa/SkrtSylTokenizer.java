@@ -45,18 +45,34 @@ public final class SkrtSylTokenizer extends Tokenizer {
 	 */
 	public SkrtSylTokenizer() {
 	}
-
+	
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
 	private int previousChar = -1;
 	public static final int DEFAULT_MAX_WORD_LEN = 255;
 	private static final int IO_BUFFER_SIZE = 4096;
 	private final int maxTokenLen = 10;
 
+	// valid SLP characters' types
 	public final static int VOWEL = 0;
-	public final static int MODIFIER = 1;
+	public final static int SPECIALPHONEME = 1;
 	public final static int CONSONANT = 2;
-	public final static int OTHER = 3;
+	public final static int MODIFIER = 3;
+	
+	// SLP punctuation
 	public final static int PUNCT = 4;
+
+	// states returned by isTrailingCluster()
+	public final static int CLUSTER_N_VOWEL = 20;
+	public final static int CLUSTER_N_PUNCT = 21;
+	public final static int CLUSTER_N_END = 22;
+	public final static int NOT_A_CLUSTER = 23;
+	
+	// states returned by isSylEnd()
+	public final static int SLP_N_NONSLP = 10;
+	public final static int MODIFIER_N_CONSONANT = 11;
+	public final static int SPECIALPHONEME_N_CONSONANT = 12;
+	public final static int VOWEL_N_CONSONANT = 13;
+	public final static int NOT_SYLL_END = 14;
 
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
@@ -93,10 +109,10 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'o', VOWEL);
 		charType.put((int)'O', VOWEL);
 		// special class for anusvara & visarga, jihvamuliya, upadhmaniya
-		charType.put((int)'M', MODIFIER);
-		charType.put((int)'H', MODIFIER);
-		charType.put((int)'V', MODIFIER);
-		charType.put((int)'Z', MODIFIER);
+		charType.put((int)'M', SPECIALPHONEME);
+		charType.put((int)'H', SPECIALPHONEME);
+		charType.put((int)'V', SPECIALPHONEME);
+		charType.put((int)'Z', SPECIALPHONEME);
 		// consonants
 		charType.put((int)'k', CONSONANT);
 		charType.put((int)'K', CONSONANT);
@@ -135,23 +151,23 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'h', CONSONANT);
 		
 		// Modifiers
-		charType.put((int)'_', OTHER);
-		charType.put((int)'=', OTHER);
-		charType.put((int)'!', OTHER);
-		charType.put((int)'#', OTHER);
-		charType.put((int)'1', OTHER);
-		charType.put((int)'2', OTHER);
-		charType.put((int)'3', OTHER);
-		charType.put((int)'4', OTHER);
-		charType.put((int)'/', OTHER);
-		charType.put((int)'\\', OTHER);
-		charType.put((int)'^', OTHER);
-		charType.put((int)'6', OTHER);
-		charType.put((int)'7', OTHER);
-		charType.put((int)'8', OTHER);
-		charType.put((int)'9', OTHER);
-		charType.put((int)'+', OTHER);
-		charType.put((int)'~', OTHER);
+		charType.put((int)'_', MODIFIER);
+		charType.put((int)'=', MODIFIER);
+		charType.put((int)'!', MODIFIER);
+		charType.put((int)'#', MODIFIER);
+		charType.put((int)'1', MODIFIER);
+		charType.put((int)'2', MODIFIER);
+		charType.put((int)'3', MODIFIER);
+		charType.put((int)'4', MODIFIER);
+		charType.put((int)'/', MODIFIER);
+		charType.put((int)'\\', MODIFIER);
+		charType.put((int)'^', MODIFIER);
+		charType.put((int)'6', MODIFIER);
+		charType.put((int)'7', MODIFIER);
+		charType.put((int)'8', MODIFIER);
+		charType.put((int)'9', MODIFIER);
+		charType.put((int)'+', MODIFIER);
+		charType.put((int)'~', MODIFIER);
 		return charType;
 	}
 
@@ -197,16 +213,37 @@ public final class SkrtSylTokenizer extends Tokenizer {
 				end += charCount;
 				length += Character.toChars(c, buffer, length); // buffer it
 				
-				if (!isTrailingCluster(ioBuffer, bufferIndex-1) && isSylEnd(previousChar, c)) {
-					// we need to come back to the previous state for all variables
-					// since the detected boundary is between previousChar and c,
-					// meaning c already pertains to the next syllable
+				// Here is where the syllabation logic really happens
+				int maybeTrailingConsonants = afterConsonantCluster(ioBuffer, bufferIndex-1);
+				int maybeSylEnd = syllEndingCombinations(previousChar, c);
+				
+				boolean endOfSyllable;
+				if (maybeTrailingConsonants == CLUSTER_N_VOWEL || maybeTrailingConsonants == NOT_A_CLUSTER) {
+					if (maybeSylEnd == VOWEL_N_CONSONANT || maybeSylEnd == SPECIALPHONEME_N_CONSONANT ||
+							maybeSylEnd == MODIFIER_N_CONSONANT || maybeSylEnd == SLP_N_NONSLP ||
+							maybeSylEnd == MODIFIER_N_CONSONANT) {
+						endOfSyllable = true;
+					} else if (maybeSylEnd == NOT_SYLL_END) {
+						endOfSyllable = false;
+					} else {
+						endOfSyllable = false;
+					}
+				} else if (maybeTrailingConsonants == CLUSTER_N_PUNCT || maybeTrailingConsonants == CLUSTER_N_END) {
+					endOfSyllable = false;
+				} else {
+					endOfSyllable = false;
+				}
+
+				if (endOfSyllable) {
+					// previousChar is the end of the current syllable
+					// setting the cursor one step back and ending this token/syllable 
 					bufferIndex = bufferIndex - charCount;
 					length = length - charCount;
 					end = end - charCount;
 					previousChar = c;
                     break;
-				}
+				}  // end of syllabation logic
+				
 				if (length >= maxTokenLen) { // buffer overflow! make sure to check for >= surrogate pair could break == test
 				    previousChar = c;
 					break;
@@ -226,63 +263,68 @@ public final class SkrtSylTokenizer extends Tokenizer {
 
 	
 	protected boolean isSLP(int c) {
+		/**
+		 * filters only legal SLP1 characters
+		 * @return true if c is a SLP character, else false
+		 */
 		Integer res = charType.get(c);
 		return (res != null); 
 	}
 	
-	public boolean isSylEnd(int char1, int char2) {
+	public int syllEndingCombinations(int char1, int char2) {
 		/**
-		 * Returns true if a syllable ends between char1 and char2
-		 * @return
+		 * Finds all combinations that correspond to a syllable ending
+		 * @param corresponds to previousChar
+		 * @param corresponds to c
+		 * @return true if a syllable ends between char1 and char2, else false
 		 */
-		// char1\char2 | nonSLP | OTHER | CONSONANT | MODIFIER | VOWEL |
-		//-------------|--------|-------|------------|----------|-------|
-		//    nonSLP   |   x    |   x   |     x      |    x     |   x   |
-		//     OTHER   |   A.   |   x   |     B.     |    x     |   x   |
-		//   CONSONANT |   A.   |   x   |     x      |    x     |   x   |
-		//    MODIFIER |   A.   |   x   |     C.     |    x     |   x   |
-		//     VOWEL   |   A.   |   x   |     D.     |    x     |   x   |
-		//---------------------------------------------------------------
-		//
+		//   char1\char2  | nonSLP | MODIFIER | CONSONANT | SPECIALPHONEME | VOWEL |
+		//----------------|--------|----------|-----------|----------------|-------|
+		//      nonSLP    |        |          |           |                |       |
+		//     MODIFIER   |   X    |          |     X     |                |       |
+		//    CONSONANT   |   X    |          |           |                |       |
+		// SPECIALPHONEME |   X    |          |     X     |                |       |
+		//       VOWEL    |   X    |          |     X     |                |       |
+		//--------------------------------------------------------------------------
 		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
-			// A.
-			return true;
+			return SLP_N_NONSLP;
 		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONANT) {
-			if (charType.containsKey(char1) && charType.get(char1) == OTHER) {
-				// B.
-				return true;
-			} else if (charType.containsKey(char1) && charType.get(char1) == MODIFIER) {
-				// C.
-				return true;
+			if (charType.containsKey(char1) && charType.get(char1) == MODIFIER) {
+				return MODIFIER_N_CONSONANT;
+			} else if (charType.containsKey(char1) && charType.get(char1) == SPECIALPHONEME) {
+				return SPECIALPHONEME_N_CONSONANT;
 			} else if (charType.containsKey(char1) && charType.get(char1) == VOWEL) {
-				// D.
-				return true;
+				return VOWEL_N_CONSONANT;
 			} else {
-				return false;
+				return NOT_SYLL_END;
 			}
 		} else {
-			return false;
+			return NOT_SYLL_END;
 		}
 	}
 	
-	private boolean isTrailingCluster(CharacterBuffer inputBuffer, int bufferIndex ) {
+	private int afterConsonantCluster(CharacterBuffer inputBuffer, int currentIdx ) {
+		/**
+		 * checks whether the next consonants constitute a trailing cluster of consonants or not.
+		 * @return the combination
+		 */
 		// see who comes first, a vowel, a legal punctuation or the end of the buffer
-		int nextSylEndIdx = bufferIndex;
+		int nextSylEndIdx = currentIdx;
 		char[] buffer = inputBuffer.getBuffer();
 		while (nextSylEndIdx < inputBuffer.getLength()) {
 			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
 				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
-					return true;
+					return CLUSTER_N_END;
 				}// if char at nextSylIdx
 				else if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
-					return false;
+					return CLUSTER_N_VOWEL;
 				} else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
 					//System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
-					return true;
+					return CLUSTER_N_PUNCT;
 				}
 			}
 			nextSylEndIdx++;
 		}
-		return false;
+		return NOT_A_CLUSTER;
 	}
 }
