@@ -118,10 +118,21 @@ public class SanskritAnalyzerTest
     }
 	
     @Test
-    public void thoroughTestTransliterationFilter() throws Exception {
+    public void thoroughTestDevaTransliterationFilter() throws Exception {
     	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
     	String input = String.join(" ", lines);
     	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
+    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
+    	assertTokenStream(ts, expected);
+    }
+    
+    @Test
+    public void thoroughTestRomanTransliterationFilter() throws Exception {
+    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
+    	String input = String.join(" ", lines);
+    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
     	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
