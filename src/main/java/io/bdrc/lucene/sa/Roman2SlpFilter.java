@@ -27,8 +27,6 @@ public class Roman2SlpFilter extends MappingCharFilter {
     	// the square brackets and the curly brackets in the <out> tag were removed as they have no equivalent in SLP
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         
-        builder.add("’", "'"); // dunno what it is
-        
         builder.add("A", "a");
         builder.add("\u0101", "A"); // ā
         builder.add("a\u0304", "A"); // NFD ā 

@@ -22,7 +22,7 @@
 03050011a atha tāṁ vayasi prāpte dāsīnāṁ samalaṁkr̥tam
 03050011c śataṁ sakhīnāṁ ca tathā paryupāste śacīm iva
 03050012a tatra sma bhrājate bhaimī sarvābharaṇabhūṣitā
-03050012c sakhīmadhye ’navadyāṅgī vidyut saudāminī yathā
+03050012c sakhīmadhye 'navadyāṅgī vidyut saudāminī yathā
 03050012e atīva rūpasaṁpannā śrīr ivāyatalocanā
 03050013a na deveṣu na yakṣeṣu tādr̥g rūpavatī kva cit
 03050013c mānuṣeṣv api cānyeṣu dr̥ṣṭapūrvā na ca śrutā
@@ -31,14 +31,14 @@
 03050014c kandarpa iva rūpeṇa mūrtimān abhavat svayam
 03050015a tasyāḥ samīpe tu nalaṁ praśaśaṁsuḥ kutūhalāt
 03050015c naiṣadhasya samīpe tu damayantīṁ punaḥ punaḥ
-03050016a tayor adr̥ṣṭakāmo ’bhūc chr̥ṇvatoḥ satataṁ guṇān
+03050016a tayor adr̥ṣṭakāmo 'bhūc chr̥ṇvatoḥ satataṁ guṇān
 03050016c anyonyaṁ prati kaunteya sa vyavardhata hr̥cchayaḥ
 03050017a aśaknuvan nalaḥ kāmaṁ tadā dhārayituṁ hr̥dā
 03050017c antaḥpurasamīpasthe vana āste rahogataḥ
 03050018a sa dadarśa tadā haṁsāñ jātarūpaparicchadān
 03050018c vane vicaratāṁ teṣām ekaṁ jagrāha pakṣiṇam
-03050019a tato ’ntarikṣago vācaṁ vyājahāra tadā nalam
-03050019c na hantavyo ’smi te rājan kariṣyāmi hi te priyam
+03050019a tato 'ntarikṣago vācaṁ vyājahāra tadā nalam
+03050019c na hantavyo 'smi te rājan kariṣyāmi hi te priyam
 03050020a damayantīsakāśe tvāṁ kathayiṣyāmi naiṣadha
 03050020c yathā tvad anyaṁ puruṣaṁ na sā maṁsyati karhi cit
 03050021a evam uktas tato haṁsam utsasarja mahīpatiḥ
@@ -97,7 +97,7 @@
 03051015a nāradasya vacaḥ śrutvā papraccha balavr̥trahā
 03051015c dharmajñāḥ pr̥thivīpālās tyaktajīvitayodhinaḥ
 03051016a śastreṇa nidhanaṁ kāle ye gacchanty aparāṅmukhāḥ
-03051016c ayaṁ loko ’kṣayas teṣāṁ yathaiva mama kāmadhuk
+03051016c ayaṁ loko 'kṣayas teṣāṁ yathaiva mama kāmadhuk
 03051017a kva nu te kṣatriyāḥ śūrā na hi paśyāmi tān aham
 03051017c āgacchato mahīpālān atithīn dayitān mama
 03051018a evam uktas tu śakreṇa nāradaḥ pratyabhāṣata
@@ -114,13 +114,13 @@
 03051023c śrutvā caivābruvan hr̥ṣṭā gacchāmo vayam apy uta
 03051024a tataḥ sarve mahārāja sagaṇāḥ sahavāhanāḥ
 03051024c vidarbhān abhito jagmur yatra sarve mahīkṣitaḥ
-03051025a nalo ’pi rājā kaunteya śrutvā rājñāṁ samāgamam
+03051025a nalo 'pi rājā kaunteya śrutvā rājñāṁ samāgamam
 03051025c abhyagacchad adīnātmā damayantīm anuvrataḥ
 03051026a atha devāḥ pathi nalaṁ dadr̥śur bhūtale sthitam
 03051026c sākṣād iva sthitaṁ mūrtyā manmathaṁ rūpasaṁpadā
 03051027a taṁ dr̥ṣṭvā lokapālās te bhrājamānaṁ yathā ravim
 03051027c tasthur vigatasaṁkalpā vismitā rūpasaṁpadā
-03051028a tato ’ntarikṣe viṣṭabhya vimānāni divaukasaḥ
+03051028a tato 'ntarikṣe viṣṭabhya vimānāni divaukasaḥ
 03051028c abruvan naiṣadhaṁ rājann avatīrya nabhastalāt
 03051029a bho bho naiṣadha rājendra nala satyavrato bhavān
 03051029c asmākaṁ kuru sāhāyyaṁ dūto bhava narottama
@@ -131,11 +131,11 @@
 03052002c kiṁ ca tatra mayā kāryaṁ kathayadhvaṁ yathātatham
 03052003a evam ukte naiṣadhena maghavān pratyabhāṣata
 03052003c amarān vai nibodhāsmān damayantyartham āgatān
-03052004a aham indro ’yam agniś ca tathaivāyam apāṁpatiḥ
-03052004c śarīrāntakaro nr̥̄ṇāṁ yamo ’yam api pārthiva
+03052004a aham indro 'yam agniś ca tathaivāyam apāṁpatiḥ
+03052004c śarīrāntakaro nr̥̄ṇāṁ yamo 'yam api pārthiva
 03052005a sa vai tvam āgatān asmān damayantyai nivedaya
 03052005c lokapālāḥ sahendrās tvāṁ samāyānti didr̥kṣavaḥ
-03052006a prāptum icchanti devās tvāṁ śakro ’gnir varuṇo yamaḥ
+03052006a prāptum icchanti devās tvāṁ śakro 'gnir varuṇo yamaḥ
 03052006c teṣām anyatamaṁ devaṁ patitve varayasva ha
 03052007a evam uktaḥ sa śakreṇa nalaḥ prāñjalir abravīt
 03052007c ekārthasamavetaṁ māṁ na preṣayitum arhatha
@@ -158,20 +158,20 @@
 03052015a praśaśaṁsuś ca suprītā nalaṁ tā vismayānvitāḥ
 03052015c na cainam abhyabhāṣanta manobhis tv abhyacintayan
 03052016a aho rūpam aho kāntir aho dhairyaṁ mahātmanaḥ
-03052016c ko ’yaṁ devo nu yakṣo nu gandharvo nu bhaviṣyati
+03052016c ko 'yaṁ devo nu yakṣo nu gandharvo nu bhaviṣyati
 03052017a na tv enaṁ śaknuvanti sma vyāhartum api kiṁ cana
 03052017c tejasā dharṣitāḥ sarvā lajjāvatyo varāṅganāḥ
 03052018a athainaṁ smayamāneva smitapūrvābhibhāṣiṇī
 03052018c damayantī nalaṁ vīram abhyabhāṣata vismitā
 03052019a kas tvaṁ sarvānavadyāṅga mama hr̥cchayavardhana
-03052019c prāpto ’sy amaravad vīra jñātum icchāmi te ’nagha
+03052019c prāpto 'sy amaravad vīra jñātum icchāmi te 'nagha
 03052020a katham āgamanaṁ ceha kathaṁ cāsi na lakṣitaḥ
 03052020c surakṣitaṁ hi me veśma rājā caivograśāsanaḥ
 03052021a evam uktas tu vaidarbhyā nalas tāṁ pratyuvāca ha
 03052021c nalaṁ māṁ viddhi kalyāṇi devadūtam ihāgatam
-03052022a devās tvāṁ prāptum icchanti śakro ’gnir varuṇo yamaḥ
+03052022a devās tvāṁ prāptum icchanti śakro 'gnir varuṇo yamaḥ
 03052022c teṣām anyatamaṁ devaṁ patiṁ varaya śobhane
-03052023a teṣām eva prabhāvena praviṣṭo ’ham alakṣitaḥ
+03052023a teṣām eva prabhāvena praviṣṭo 'ham alakṣitaḥ
 03052023c praviśantaṁ hi māṁ kaś cin nāpaśyan nāpy avārayat
 03052024a etadartham ahaṁ bhadre preṣitaḥ surasattamaiḥ
 03052024c etac chrutvā śubhe buddhiṁ prakuruṣva yathecchasi
@@ -196,15 +196,15 @@
 03053009c yena doṣo na bhavitā tava rājan kathaṁ cana
 03053010a tvaṁ caiva hi naraśreṣṭha devāś cāgnipurogamāḥ
 03053010c āyāntu sahitāḥ sarve mama yatra svayaṁvaraḥ
-03053011a tato ’haṁ lokapālānāṁ saṁnidhau tvāṁ nareśvara
+03053011a tato 'haṁ lokapālānāṁ saṁnidhau tvāṁ nareśvara
 03053011c varayiṣye naravyāghra naivaṁ doṣo bhaviṣyati
 03053012a evam uktas tu vaidarbhyā nalo rājā viśāṁ pate
 03053012c ājagāma punas tatra yatra devāḥ samāgatāḥ
 03053013a tam apaśyaṁs tathāyāntaṁ lokapālāḥ saheśvarāḥ
-03053013c dr̥ṣṭvā cainaṁ tato ’pr̥cchan vr̥ttāntaṁ sarvam eva tat
+03053013c dr̥ṣṭvā cainaṁ tato 'pr̥cchan vr̥ttāntaṁ sarvam eva tat
 03053014- devā ūcuḥ
 03053014a kaccid dr̥ṣṭā tvayā rājan damayantī śucismitā
-03053014c kim abravīc ca naḥ sarvān vada bhūmipate ’nagha
+03053014c kim abravīc ca naḥ sarvān vada bhūmipate 'nagha
 03053015- nala uvāca
 03053015a bhavadbhir aham ādiṣṭo damayantyā niveśanam
 03053015c praviṣṭaḥ sumahākakṣyaṁ daṇḍibhiḥ sthavirair vr̥tam
@@ -273,7 +273,7 @@
 03054025a sā samīkṣya tato devān puṇyaślokaṁ ca bhārata
 03054025c naiṣadhaṁ varayām āsa bhaimī dharmeṇa bhārata
 03054026a vilajjamānā vastrānte jagrāhāyatalocanā
-03054026c skandhadeśe ’sr̥jac cāsya srajaṁ paramaśobhanām
+03054026c skandhadeśe 'sr̥jac cāsya srajaṁ paramaśobhanām
 03054026e varayām āsa caivainaṁ patitve varavarṇinī
 03054027a tato hā heti sahasā śabdo mukto narādhipaiḥ
 03054027c devair maharṣibhiś caiva sādhu sādhv iti bhārata
@@ -290,9 +290,9 @@
 03054032c varān evaṁ pradāyāsya devās te tridivaṁ gatāḥ
 03054033a pārthivāś cānubhūyāsyā vivāhaṁ vismayānvitāḥ
 03054033c damayantyāḥ pramuditāḥ pratijagmur yathāgatam
-03054034a avāpya nārīratnaṁ tat puṇyaśloko ’pi pārthivaḥ
+03054034a avāpya nārīratnaṁ tat puṇyaśloko 'pi pārthivaḥ
 03054034c reme saha tayā rājā śacyeva balavr̥trahā
-03054035a atīva mudito rājā bhrājamāno ’ṁśumān iva
+03054035a atīva mudito rājā bhrājamāno 'ṁśumān iva
 03054035c arañjayat prajā vīro dharmeṇa paripālayan
 03054036a īje cāpy aśvamedhena yayātir iva nāhuṣaḥ
 03054036c anyaiś ca kratubhir dhīmān bahubhiś cāptadakṣiṇaiḥ
@@ -305,7 +305,7 @@
 03055001c yānto dadr̥śur āyāntaṁ dvāparaṁ kalinā saha
 03055002a athābravīt kaliṁ śakraḥ saṁprekṣya balavr̥trahā
 03055002c dvāpareṇa sahāyena kale brūhi kva yāsyasi
-03055003a tato ’bravīt kaliḥ śakraṁ damayantyāḥ svayaṁvaram
+03055003a tato 'bravīt kaliḥ śakraṁ damayantyāḥ svayaṁvaram
 03055003c gatvāhaṁ varayiṣye tāṁ mano hi mama tadgatam
 03055004a tam abravīt prahasyendro nirvr̥ttaḥ sa svayaṁvaraḥ
 03055004c vr̥tas tayā nalo rājā patir asmatsamīpataḥ
@@ -321,7 +321,7 @@
 03055009c dhruvāṇi puruṣavyāghre lokapālasame nr̥pe
 03055010a ātmānaṁ sa śapen mūḍho hanyāc cātmānam ātmanā
 03055010c evaṁguṇaṁ nalaṁ yo vai kāmayec chapituṁ kale
-03055011a kr̥cchre sa narake majjed agādhe vipule ’plave
+03055011a kr̥cchre sa narake majjed agādhe vipule 'plave
 03055011c evam uktvā kaliṁ devā dvāparaṁ ca divaṁ yayuḥ
 03055012a tato gateṣu deveṣu kalir dvāparam abravīt
 03055012c saṁhartuṁ notsahe kopaṁ nale vatsyāmi dvāpara
@@ -347,7 +347,7 @@
 03056009a hiraṇyasya suvarṇasya yānayugyasya vāsasām
 03056009c āviṣṭaḥ kalinā dyūte jīyate sma nalas tadā
 03056010a tam akṣamadasaṁmattaṁ suhr̥dāṁ na tu kaś cana
-03056010c nivāraṇe ’bhavac chakto dīvyamānam acetasam
+03056010c nivāraṇe 'bhavac chakto dīvyamānam acetasam
 03056011a tataḥ paurajanaḥ sarvo mantribhiḥ saha bhārata
 03056011c rājānaṁ draṣṭum āgacchan nivārayitum āturam
 03056012a tataḥ sūta upāgamya damayantyai nyavedayat
@@ -391,11 +391,11 @@
 03057012a jānīṣe tvaṁ yathā rājā samyagvr̥ttaḥ sadā tvayi
 03057012c tasya tvaṁ viṣamasthasya sāhāyyaṁ kartum arhasi
 03057013a yathā yathā hi nr̥patiḥ puṣkareṇeha jīyate
-03057013c tathā tathāsya dyūte vai rāgo bhūyo ’bhivardhate
+03057013c tathā tathāsya dyūte vai rāgo bhūyo 'bhivardhate
 03057014a yathā ca puṣkarasyākṣā vartante vaśavartinaḥ
 03057014c tathā viparyayaś cāpi nalasyākṣeṣu dr̥śyate
 03057015a suhr̥tsvajanavākyāni yathāvan na śr̥ṇoti ca
-03057015c nūnaṁ manye na śeṣo ’sti naiṣadhasya mahātmanaḥ
+03057015c nūnaṁ manye na śeṣo 'sti naiṣadhasya mahātmanaḥ
 03057016a yatra me vacanaṁ rājā nābhinandati mohitaḥ
 03057016c śaraṇaṁ tvāṁ prapannāsmi sārathe kuru madvacaḥ
 03057016e na hi me śudhyate bhāvaḥ kadā cid vinaśed iti
@@ -405,19 +405,19 @@
 03057018c aśvāṁś caitān yathākāmaṁ vasa vānyatra gaccha vā
 03057019a damayantyās tu tad vākyaṁ vārṣṇeyo nalasārathiḥ
 03057019c nyavedayad aśeṣeṇa nalāmātyeṣu mukhyaśaḥ
-03057020a taiḥ sametya viniścitya so ’nujñāto mahīpate
+03057020a taiḥ sametya viniścitya so 'nujñāto mahīpate
 03057020c yayau mithunam āropya vidarbhāṁs tena vāhinā
 03057021a hayāṁs tatra vinikṣipya sūto rathavaraṁ ca tam
 03057021c indrasenāṁ ca tāṁ kanyām indrasenaṁ ca bālakam
 03057022a āmantrya bhīmaṁ rājānam ārtaḥ śocan nalaṁ nr̥pam
-03057022c aṭamānas tato ’yodhyāṁ jagāma nagarīṁ tadā
+03057022c aṭamānas tato 'yodhyāṁ jagāma nagarīṁ tadā
 03057023a r̥tuparṇaṁ sa rājānam upatasthe suduḥkhitaḥ
 03057023c bhr̥tiṁ copayayau tasya sārathyena mahīpate
 03058001- br̥hadaśva uvāca
 03058001a tatas tu yāte vārṣṇeye puṇyaślokasya dīvyataḥ
 03058001c puṣkareṇa hr̥taṁ rājyaṁ yac cānyad vasu kiṁ cana
-03058002a hr̥tarājyaṁ nalaṁ rājan prahasan puṣkaro ’bravīt
-03058002c dyūtaṁ pravartatāṁ bhūyaḥ pratipāṇo ’sti kas tava
+03058002a hr̥tarājyaṁ nalaṁ rājan prahasan puṣkaro 'bravīt
+03058002c dyūtaṁ pravartatāṁ bhūyaḥ pratipāṇo 'sti kas tava
 03058003a śiṣṭā te damayanty ekā sarvam anyad dhr̥taṁ mayā
 03058003c damayantyāḥ paṇaḥ sādhu vartatāṁ yadi manyase
 03058004a puṣkareṇaivam uktasya puṇyaślokasya manyunā
@@ -426,15 +426,15 @@
 03058005c utsr̥jya sarvagātrebhyo bhūṣaṇāni mahāyaśāḥ
 03058006a ekavāsā asaṁvītaḥ suhr̥cchokavivardhanaḥ
 03058006c niścakrāma tadā rājā tyaktvā suvipulāṁ śriyam
-03058007a damayanty ekavastrā taṁ gacchantaṁ pr̥ṣṭhato ’nviyāt
-03058007c sa tayā bāhyataḥ sārdhaṁ trirātraṁ naiṣadho ’vasat
+03058007a damayanty ekavastrā taṁ gacchantaṁ pr̥ṣṭhato 'nviyāt
+03058007c sa tayā bāhyataḥ sārdhaṁ trirātraṁ naiṣadho 'vasat
 03058008a puṣkaras tu mahārāja ghoṣayām āsa vai pure
 03058008c nale yaḥ samyag ātiṣṭhet sa gacched vadhyatāṁ mama
 03058009a puṣkarasya tu vākyena tasya vidveṣaṇena ca
 03058009c paurā na tasmin satkāraṁ kr̥tavanto yudhiṣṭhira
 03058010a sa tathā nagarābhyāśe satkārārho na satkr̥taḥ
 03058010c trirātram uṣito rājā jalamātreṇa vartayan
-03058011a kṣudhā saṁpīḍyamānas tu nalo bahutithe ’hani
+03058011a kṣudhā saṁpīḍyamānas tu nalo bahutithe 'hani
 03058011c apaśyac chakunān kāṁś cid dhiraṇyasadr̥śacchadān
 03058012a sa cintayām āsa tadā niṣadhādhipatir balī
 03058012c asti bhakṣo mamādyāyaṁ vasu cedaṁ bhaviṣyati
@@ -446,18 +446,18 @@
 03058015c āgatā na hi naḥ prītiḥ savāsasi gate tvayi
 03058016a tān samīkṣya gatān akṣān ātmānaṁ ca vivāsasam
 03058016c puṇyaślokas tato rājā damayantīm athābravīt
-03058017a yeṣāṁ prakopād aiśvaryāt pracyuto ’ham anindite
+03058017a yeṣāṁ prakopād aiśvaryāt pracyuto 'ham anindite
 03058017c prāṇayātrāṁ na vinde ca duḥkhitaḥ kṣudhayārditaḥ
 03058018a yeṣāṁ kr̥te na satkāram akurvan mayi naiṣadhāḥ
-03058018c ta ime śakunā bhūtvā vāso ’py apaharanti me
+03058018c ta ime śakunā bhūtvā vāso 'py apaharanti me
 03058019a vaiṣamyaṁ paramaṁ prāpto duḥkhito gatacetanaḥ
-03058019c bhartā te ’haṁ nibodhedaṁ vacanaṁ hitam ātmanaḥ
+03058019c bhartā te 'haṁ nibodhedaṁ vacanaṁ hitam ātmanaḥ
 03058020a ete gacchanti bahavaḥ panthāno dakṣiṇāpatham
 03058020c avantīm r̥kṣavantaṁ ca samatikramya parvatam
 03058021a eṣa vindhyo mahāśailaḥ payoṣṇī ca samudragā
 03058021c āśramāś ca maharṣīṇām amī puṣpaphalānvitāḥ
 03058022a eṣa panthā vidarbhāṇām ayaṁ gacchati kosalān
-03058022c ataḥ paraṁ ca deśo ’yaṁ dakṣiṇe dakṣiṇāpathaḥ
+03058022c ataḥ paraṁ ca deśo 'yaṁ dakṣiṇe dakṣiṇāpathaḥ
 03058023a tataḥ sā bāṣpakalayā vācā duḥkhena karśitā
 03058023c uvāca damayantī taṁ naiṣadhaṁ karuṇaṁ vacaḥ
 03058024a udvepate me hr̥dayaṁ sīdanty aṅgāni sarvaśaḥ
@@ -491,7 +491,7 @@
 03059002c paridyūno gamiṣyāmi tava śokavivardhanaḥ
 03059003- br̥hadaśva uvāca
 03059003a iti bruvan nalo rājā damayantīṁ punaḥ punaḥ
-03059003c sāntvayām āsa kalyāṇīṁ vāsaso ’rdhena saṁvr̥tām
+03059003c sāntvayām āsa kalyāṇīṁ vāsaso 'rdhena saṁvr̥tām
 03059004a tāv ekavastrasaṁvītāv aṭamānāv itas tataḥ
 03059004c kṣutpipāsāpariśrāntau sabhāṁ kāṁ cid upeyatuḥ
 03059005a tāṁ sabhām upasaṁprāpya tadā sa niṣadhādhipaḥ
@@ -511,8 +511,8 @@
 03059012a mayā niḥsaṁśayaṁ duḥkham iyaṁ prāpsyaty anuttamā
 03059012c utsarge saṁśayaḥ syāt tu vindetāpi sukhaṁ kva cit
 03059013a sa viniścitya bahudhā vicārya ca punaḥ punaḥ
-03059013c utsarge ’manyata śreyo damayantyā narādhipaḥ
-03059014a so ’vastratām ātmanaś ca tasyāś cāpy ekavastratām
+03059013c utsarge 'manyata śreyo damayantyā narādhipaḥ
+03059014a so 'vastratām ātmanaś ca tasyāś cāpy ekavastratām
 03059014c cintayitvādhyagād rājā vastrārdhasyāvakartanam
 03059015a kathaṁ vāso vikarteyaṁ na ca budhyeta me priyā
 03059015c cintyaivaṁ naiṣadho rājā sabhāṁ paryacarat tadā
@@ -532,7 +532,7 @@
 03059022c ākr̥ṣyamāṇaḥ kalinā sauhr̥denāpakr̥ṣyate
 03059023a dvidheva hr̥dayaṁ tasya duḥkhitasyābhavat tadā
 03059023c doleva muhur āyāti yāti caiva sabhāṁ muhuḥ
-03059024a so ’pakr̥ṣṭas tu kalinā mohitaḥ prādravan nalaḥ
+03059024a so 'pakr̥ṣṭas tu kalinā mohitaḥ prādravan nalaḥ
 03059024c suptām utsr̥jya tāṁ bhāryāṁ vilapya karuṇaṁ bahu
 03059025a naṣṭātmā kalinā spr̥ṣṭas tat tad vigaṇayan nr̥paḥ
 03059025c jagāmaiva vane śūnye bhāryām utsr̥jya duḥkhitaḥ
@@ -546,10 +546,10 @@
 03060004a nanu nāma mahārāja dharmajñaḥ satyavāg asi
 03060004c katham uktvā tathāsatyaṁ suptām utsr̥jya māṁ gataḥ
 03060005a katham utsr̥jya gantāsi vaśyāṁ bhāryām anuvratām
-03060005c viśeṣato ’napakr̥te pareṇāpakr̥te sati
+03060005c viśeṣato 'napakr̥te pareṇāpakr̥te sati
 03060006a śakṣyase tā giraḥ satyāḥ kartuṁ mayi nareśvara
 03060006c yās tvayā lokapālānāṁ saṁnidhau kathitāḥ purā
-03060007a paryāptaḥ parihāso ’yam etāvān puruṣarṣabha
+03060007a paryāptaḥ parihāso 'yam etāvān puruṣarṣabha
 03060007c bhītāham asmi durdharṣa darśayātmānam īśvara
 03060008a dr̥śyase dr̥śyase rājann eṣa tiṣṭhasi naiṣadha
 03060008c āvārya gulmair ātmānaṁ kiṁ māṁ na pratibhāṣase
@@ -596,7 +596,7 @@
 03060029a kasya tvaṁ mr̥gaśāvākṣi kathaṁ cābhyāgatā vanam
 03060029c kathaṁ cedaṁ mahat kr̥cchraṁ prāptavaty asi bhāmini
 03060030a damayantī tathā tena pr̥cchyamānā viśāṁ pate
-03060030c sarvam etad yathāvr̥ttam ācacakṣe ’sya bhārata
+03060030c sarvam etad yathāvr̥ttam ācacakṣe 'sya bhārata
 03060031a tām ardhavastrasaṁvītāṁ pīnaśroṇipayodharām
 03060031c sukumārānavadyāṅgīṁ pūrṇacandranibhānanām
 03060032a arālapakṣmanayanāṁ tathā madhurabhāṣiṇīm
@@ -640,7 +640,7 @@
 03061011c bhartr̥śokaparītāṅgī śilātalasamāśritā
 03061012- damayanty uvāca
 03061012a siṁhoraska mahābāho niṣadhānāṁ janādhipa
-03061012c kva nu rājan gato ’sīha tyaktvā māṁ nirjane vane
+03061012c kva nu rājan gato 'sīha tyaktvā māṁ nirjane vane
 03061013a aśvamedhādibhir vīra kratubhiḥ svāptadakṣiṇaiḥ
 03061013c katham iṣṭvā naravyāghra mayi mithyā pravartase
 03061014a yat tvayoktaṁ naravyāghra matsamakṣaṁ mahādyute
@@ -672,12 +672,12 @@
 03061026c prasthitaṁ vā naraśreṣṭha mama śokavivardhana
 03061027a kaṁ nu pr̥cchāmi duḥkhārtā tvadarthe śokakarśitā
 03061027c kaccid dr̥ṣṭas tvayāraṇye saṁgatyeha nalo nr̥paḥ
-03061028a ko nu me kathayed adya vane ’smin viṣṭhitaṁ nalam
+03061028a ko nu me kathayed adya vane 'smin viṣṭhitaṁ nalam
 03061028c abhirūpaṁ mahātmānaṁ paravyūhavināśanam
 03061029a yam anveṣasi rājānaṁ nalaṁ padmanibhekṣaṇam
 03061029c ayaṁ sa iti kasyādya śroṣyāmi madhurāṁ giram
 03061030a araṇyarāḍ ayaṁ śrīmāṁś caturdaṁṣṭro mahāhanuḥ
-03061030c śārdūlo ’bhimukhaḥ praiti pr̥cchāmy enam aśaṅkitā
+03061030c śārdūlo 'bhimukhaḥ praiti pr̥cchāmy enam aśaṅkitā
 03061031a bhavān mr̥gāṇām adhipas tvam asmin kānane prabhuḥ
 03061031c vidarbharājatanayāṁ damayantīti viddhi mām
 03061032a niṣadhādhipater bhāryāṁ nalasyāmitraghātinaḥ
@@ -697,7 +697,7 @@
 03061038c saridbhiḥ savihaṁgābhiḥ śikharaiś copaśobhitam
 03061038e girirājam imaṁ tāvat pr̥cchāmi nr̥patiṁ prati
 03061039a bhagavann acalaśreṣṭha divyadarśana viśruta
-03061039c śaraṇya bahukalyāṇa namas te ’stu mahīdhara
+03061039c śaraṇya bahukalyāṇa namas te 'stu mahīdhara
 03061040a praṇame tvābhigamyāhaṁ rājaputrīṁ nibodha mām
 03061040c rājñaḥ snuṣāṁ rājabhāryāṁ damayantīti viśrutām
 03061041a rājā vidarbhādhipatiḥ pitā mama mahārathaḥ
@@ -713,13 +713,13 @@
 03061046a tasya rājñaḥ suto vīraḥ śrīmān satyaparākramaḥ
 03061046c kramaprāptaṁ pituḥ svaṁ yo rājyaṁ samanuśāsti ha
 03061047a nalo nāmāridamanaḥ puṇyaśloka iti śrutaḥ
-03061047c brahmaṇyo vedavid vāgmī puṇyakr̥t somapo ’gnicit
+03061047c brahmaṇyo vedavid vāgmī puṇyakr̥t somapo 'gnicit
 03061048a yaṣṭā dātā ca yoddhā ca samyak caiva praśāsitā
 03061048c tasya mām acalaśreṣṭha viddhi bhāryām ihāgatām
 03061049a tyaktaśriyaṁ bhartr̥hīnām anāthāṁ vyasanānvitām
 03061049c anveṣamāṇāṁ bhartāraṁ taṁ vai naravarottamam
 03061050a kham ullikhadbhir etair hi tvayā śr̥ṅgaśatair nr̥paḥ
-03061050c kaccid dr̥ṣṭo ’calaśreṣṭha vane ’smin dāruṇe nalaḥ
+03061050c kaccid dr̥ṣṭo 'calaśreṣṭha vane 'smin dāruṇe nalaḥ
 03061051a gajendravikramo dhīmān dīrghabāhur amarṣaṇaḥ
 03061051c vikrāntaḥ satyavāg dhīro bhartā mama mahāyaśāḥ
 03061051e niṣadhānām adhipatiḥ kaccid dr̥ṣṭas tvayā nalaḥ
@@ -770,10 +770,10 @@
 03061073c vīraḥ saṁgrāmajid vidvān mama bhartā viśāṁ patiḥ
 03061074a devatābhyarcanaparo dvijātijanavatsalaḥ
 03061074c goptā niṣadhavaṁśasya mahābhāgo mahādyutiḥ
-03061075a satyavāg dharmavit prājñaḥ satyasaṁdho ’rimardanaḥ
+03061075a satyavāg dharmavit prājñaḥ satyasaṁdho 'rimardanaḥ
 03061075c brahmaṇyo daivataparaḥ śrīmān parapuraṁjayaḥ
 03061076a nalo nāma nr̥paśreṣṭho devarājasamadyutiḥ
-03061076c mama bhartā viśālākṣaḥ pūrṇenduvadano ’rihā
+03061076c mama bhartā viśālākṣaḥ pūrṇenduvadano 'rihā
 03061077a āhartā kratumukhyānāṁ vedavedāṅgapāragaḥ
 03061077c sapatnānāṁ mr̥dhe hantā ravisomasamaprabhaḥ
 03061078a sa kaiś cin nikr̥tiprajñair akalyāṇair narādhamaiḥ
@@ -787,7 +787,7 @@
 03061081c mahātmānaṁ kr̥tāstraṁ ca vicarāmīha duḥkhitā
 03061082a kaccid bhagavatāṁ puṇyaṁ tapovanam idaṁ nr̥paḥ
 03061082c bhavet prāpto nalo nāma niṣadhānāṁ janādhipaḥ
-03061083a yatkr̥te ’ham idaṁ viprāḥ prapannā bhr̥śadāruṇam
+03061083a yatkr̥te 'ham idaṁ viprāḥ prapannā bhr̥śadāruṇam
 03061083c vanaṁ pratibhayaṁ ghoraṁ śārdūlamr̥gasevitam
 03061084a yadi kaiś cid ahorātrair na drakṣyāmi nalaṁ nr̥pam
 03061084c ātmānaṁ śreyasā yokṣye dehasyāsya vimocanāt
@@ -807,7 +807,7 @@
 03061091c antarhitās tāpasās te sāgnihotrāśramās tadā
 03061092a sā dr̥ṣṭvā mahad āścaryaṁ vismitā abhavat tadā
 03061092c damayanty anavadyāṅgī vīrasenanr̥pasnuṣā
-03061093a kiṁ nu svapno mayā dr̥ṣṭaḥ ko ’yaṁ vidhir ihābhavat
+03061093a kiṁ nu svapno mayā dr̥ṣṭaḥ ko 'yaṁ vidhir ihābhavat
 03061093c kva nu te tāpasāḥ sarve kva tad āśramamaṇḍalam
 03061094a kva sā puṇyajalā ramyā nānādvijaniṣevitā
 03061094c nadī te ca nagā hr̥dyāḥ phalapuṣpopaśobhitāḥ
@@ -851,7 +851,7 @@
 03061113c tvāṁ dr̥ṣṭvā vyathitāḥ smeha kaccit tvam asi mānuṣī
 03061114a vada satyaṁ vanasyāsya parvatasyātha vā diśaḥ
 03061114c devatā tvaṁ hi kalyāṇi tvāṁ vayaṁ śaraṇaṁ gatāḥ
-03061115a yakṣī vā rākṣasī vā tvam utāho ’si varāṅganā
+03061115a yakṣī vā rākṣasī vā tvam utāho 'si varāṅganā
 03061115c sarvathā kuru naḥ svasti rakṣasvāsmān anindite
 03061116a yathāyaṁ sarvathā sārthaḥ kṣemī śīghram ito vrajet
 03061116c tathā vidhatsva kalyāṇi tvāṁ vayaṁ śaraṇaṁ gatāḥ
@@ -873,9 +873,9 @@
 03061123c paśyāmy asmin vane kaṣṭe amanuṣyaniṣevite
 03061123e tathā no yakṣarāḍ adya maṇibhadraḥ prasīdatu
 03061124a sābravīd vaṇijaḥ sarvān sārthavāhaṁ ca taṁ tataḥ
-03061124c kva nu yāsyasi sārtho ’yam etad ākhyātum arhatha
+03061124c kva nu yāsyasi sārtho 'yam etad ākhyātum arhatha
 03061125- sārthavāha uvāca
-03061125a sārtho ’yaṁ cedirājasya subāhoḥ satyavādinaḥ
+03061125a sārtho 'yaṁ cedirājasya subāhoḥ satyavādinaḥ
 03061125c kṣipraṁ janapadaṁ gantā lābhāya manujātmaje
 03062001- br̥hadaśva uvāca
 03062001a sā tac chrutvānavadyāṅgī sārthavāhavacas tadā
@@ -905,13 +905,13 @@
 03062011c vanagulmād viniṣkramya śocanto vaiśasaṁ kr̥tam
 03062011e bhrātaraṁ pitaraṁ putraṁ sakhāyaṁ ca janādhipa
 03062012a aśocat tatra vaidarbhī kiṁ nu me duṣkr̥taṁ kr̥tam
-03062012c yo ’pi me nirjane ’raṇye saṁprāpto ’yaṁ janārṇavaḥ
-03062012e hato ’yaṁ hastiyūthena mandabhāgyān mamaiva tu
+03062012c yo 'pi me nirjane 'raṇye saṁprāpto 'yaṁ janārṇavaḥ
+03062012e hato 'yaṁ hastiyūthena mandabhāgyān mamaiva tu
 03062013a prāptavyaṁ suciraṁ duḥkhaṁ mayā nūnam asaṁśayam
 03062013c nāprāptakālo mriyate śrutaṁ vr̥ddhānuśāsanam
 03062014a yan nāham adya mr̥ditā hastiyūthena duḥkhitā
 03062014c na hy adaivakr̥taṁ kiṁ cin narāṇām iha vidyate
-03062015a na ca me bālabhāve ’pi kiṁ cid vyapakr̥taṁ kr̥tam
+03062015a na ca me bālabhāve 'pi kiṁ cid vyapakr̥taṁ kr̥tam
 03062015c karmaṇā manasā vācā yad idaṁ duḥkham āgatam
 03062016a manye svayaṁvarakr̥te lokapālāḥ samāgatāḥ
 03062016c pratyākhyātā mayā tatra nalasyārthāya devatāḥ
@@ -940,8 +940,8 @@
 03062026c phalamūlāśanām ekāṁ yatrasāyaṁpratiśrayām
 03062027a asaṁkhyeyaguṇo bhartā māṁ ca nityam anuvrataḥ
 03062027c bhartāram api taṁ vīraṁ chāyevānapagā sadā
-03062028a tasya daivāt prasaṅgo ’bhūd atimātraṁ sma devane
-03062028c dyūte sa nirjitaś caiva vanam eko ’bhyupeyivān
+03062028a tasya daivāt prasaṅgo 'bhūd atimātraṁ sma devane
+03062028c dyūte sa nirjitaś caiva vanam eko 'bhyupeyivān
 03062029a tam ekavasanaṁ vīram unmattam iva vihvalam
 03062029c āśvāsayantī bhartāram aham anvagamaṁ vanam
 03062030a sa kadā cid vane vīraḥ kasmiṁś cit kāraṇāntare
@@ -949,7 +949,7 @@
 03062031a tam ekavasanaṁ nagnam unmattaṁ gatacetasam
 03062031c anuvrajantī bahulā na svapāmi niśāḥ sadā
 03062032a tato bahutithe kāle suptām utsr̥jya māṁ kva cit
-03062032c vāsaso ’rdhaṁ paricchidya tyaktavān mām anāgasam
+03062032c vāsaso 'rdhaṁ paricchidya tyaktavān mām anāgasam
 03062033a taṁ mārgamāṇā bhartāraṁ dahyamānā dinakṣapāḥ
 03062033c na vindāmy amaraprakhyaṁ priyaṁ prāṇadhaneśvaram
 03062034a tām aśruparipūrṇākṣīṁ vilapantīṁ tathā bahu
@@ -958,14 +958,14 @@
 03062035c mr̥gayiṣyanti te bhadre bhartāraṁ puruṣā mama
 03062036a atha vā svayam āgacchet paridhāvann itas tataḥ
 03062036c ihaiva vasatī bhadre bhartāram upalapsyase
-03062037a rājamātur vacaḥ śrutvā damayantī vaco ’bravīt
+03062037a rājamātur vacaḥ śrutvā damayantī vaco 'bravīt
 03062037c samayenotsahe vastuṁ tvayi vīraprajāyini
 03062038a ucchiṣṭaṁ naiva bhuñjīyāṁ na kuryāṁ pādadhāvanam
 03062038c na cāhaṁ puruṣān anyān saṁbhāṣeyaṁ kathaṁ cana
 03062039a prārthayed yadi māṁ kaś cid daṇḍyas te sa pumān bhavet
 03062039c bhartur anveṣaṇārthaṁ tu paśyeyaṁ brāhmaṇān aham
 03062040a yady evam iha kartavyaṁ vasāmy aham asaṁśayam
-03062040c ato ’nyathā na me vāso vartate hr̥daye kva cit
+03062040c ato 'nyathā na me vāso vartate hr̥daye kva cit
 03062041a tāṁ prahr̥ṣṭena manasā rājamātedam abravīt
 03062041c sarvam etat kariṣyāmi diṣṭyā te vratam īdr̥śam
 03062042a evam uktvā tato bhaimīṁ rājamātā viśāṁ pate
@@ -975,14 +975,14 @@
 03063001- br̥hadaśva uvāca
 03063001a utsr̥jya damayantīṁ tu nalo rājā viśāṁ pate
 03063001c dadarśa dāvaṁ dahyantaṁ mahāntaṁ gahane vane
-03063002a tatra śuśrāva madhye ’gnau śabdaṁ bhūtasya kasya cit
+03063002a tatra śuśrāva madhye 'gnau śabdaṁ bhūtasya kasya cit
 03063002c abhidhāva nalety uccaiḥ puṇyaśloketi cāsakr̥t
 03063003a mā bhair iti nalaś coktvā madhyam agneḥ praviśya tam
 03063003c dadarśa nāgarājānaṁ śayānaṁ kuṇḍalīkr̥tam
 03063004a sa nāgaḥ prāñjalir bhūtvā vepamāno nalaṁ tadā
 03063004c uvāca viddhi māṁ rājan nāgaṁ karkoṭakaṁ nr̥pa
 03063005a mayā pralabdho brahmarṣir anāgāḥ sumahātapāḥ
-03063005c tena manyuparītena śapto ’smi manujādhipa
+03063005c tena manyuparītena śapto 'smi manujādhipa
 03063006a tasya śāpān na śaknomi padād vicalituṁ padam
 03063006c upadekṣyāmi te śreyas trātum arhati māṁ bhavān
 03063007a sakhā ca te bhaviṣyāmi matsamo nāsti pannagaḥ
@@ -990,53 +990,53 @@
 03063008a evam uktvā sa nāgendro babhūvāṅguṣṭhamātrakaḥ
 03063008c taṁ gr̥hītvā nalaḥ prāyād uddeśaṁ dāvavarjitam
 03063009a ākāśadeśam āsādya vimuktaṁ kr̥ṣṇavartmanā
-03063009c utsraṣṭukāmaṁ taṁ nāgaḥ punaḥ karkoṭako ’bravīt
+03063009c utsraṣṭukāmaṁ taṁ nāgaḥ punaḥ karkoṭako 'bravīt
 03063010a padāni gaṇayan gaccha svāni naiṣadha kāni cit
-03063010c tatra te ’haṁ mahārāja śreyo dhāsyāmi yat param
+03063010c tatra te 'haṁ mahārāja śreyo dhāsyāmi yat param
 03063011a tataḥ saṁkhyātum ārabdham adaśad daśame pade
 03063011c tasya daṣṭasya tad rūpaṁ kṣipram antaradhīyata
 03063012a sa dr̥ṣṭvā vismitas tasthāv ātmānaṁ vikr̥taṁ nalaḥ
 03063012c svarūpadhāriṇaṁ nāgaṁ dadarśa ca mahīpatiḥ
 03063013a tataḥ karkoṭako nāgaḥ sāntvayan nalam abravīt
-03063013c mayā te ’ntarhitaṁ rūpaṁ na tvā vidyur janā iti
+03063013c mayā te 'ntarhitaṁ rūpaṁ na tvā vidyur janā iti
 03063014a yatkr̥te cāsi vikr̥to duḥkhena mahatā nala
 03063014c viṣeṇa sa madīyena tvayi duḥkhaṁ nivatsyati
 03063015a viṣeṇa saṁvr̥tair gātrair yāvat tvāṁ na vimokṣyati
 03063015c tāvat tvayi mahārāja duḥkhaṁ vai sa nivatsyati
 03063016a anāgā yena nikr̥tas tvam anarho janādhipa
 03063016c krodhād asūyayitvā taṁ rakṣā me bhavataḥ kr̥tā
-03063017a na te bhayaṁ naravyāghra daṁṣṭribhyaḥ śatruto ’pi vā
+03063017a na te bhayaṁ naravyāghra daṁṣṭribhyaḥ śatruto 'pi vā
 03063017c brahmavidbhyaś ca bhavitā matprasādān narādhipa
 03063018a rājan viṣanimittā ca na te pīḍā bhaviṣyati
 03063018c saṁgrāmeṣu ca rājendra śaśvaj jayam avāpsyasi
-03063019a gaccha rājann itaḥ sūto bāhuko ’ham iti bruvan
+03063019a gaccha rājann itaḥ sūto bāhuko 'ham iti bruvan
 03063019c samīpam r̥tuparṇasya sa hi vedākṣanaipuṇam
 03063019e ayodhyāṁ nagarīṁ ramyām adyaiva niṣadheśvara
-03063020a sa te ’kṣahr̥dayaṁ dātā rājāśvahr̥dayena vai
+03063020a sa te 'kṣahr̥dayaṁ dātā rājāśvahr̥dayena vai
 03063020c ikṣvākukulajaḥ śrīmān mitraṁ caiva bhaviṣyati
 03063021a bhaviṣyasi yadākṣajñaḥ śreyasā yokṣyase tadā
 03063021c sameṣyasi ca dārais tvaṁ mā sma śoke manaḥ kr̥thāḥ
 03063021e rājyena tanayābhyāṁ ca satyam etad bravīmi te
 03063022a svarūpaṁ ca yadā draṣṭum icchethās tvaṁ narādhipa
-03063022c saṁsmartavyas tadā te ’haṁ vāsaś cedaṁ nivāsayeḥ
+03063022c saṁsmartavyas tadā te 'haṁ vāsaś cedaṁ nivāsayeḥ
 03063023a anena vāsasācchannaḥ svarūpaṁ pratipatsyase
 03063023c ity uktvā pradadāv asmai divyaṁ vāsoyugaṁ tadā
 03063024a evaṁ nalaṁ samādiśya vāso dattvā ca kaurava
 03063024c nāgarājas tato rājaṁs tatraivāntaradhīyata
 03064001- br̥hadaśva uvāca
 03064001a tasminn antarhite nāge prayayau naiṣadho nalaḥ
-03064001c r̥tuparṇasya nagaraṁ prāviśad daśame ’hani
-03064002a sa rājānam upātiṣṭhad bāhuko ’ham iti bruvan
+03064001c r̥tuparṇasya nagaraṁ prāviśad daśame 'hani
+03064002a sa rājānam upātiṣṭhad bāhuko 'ham iti bruvan
 03064002c aśvānāṁ vāhane yuktaḥ pr̥thivyāṁ nāsti matsamaḥ
 03064003a arthakr̥cchreṣu caivāhaṁ praṣṭavyo naipuṇeṣu ca
 03064003c annasaṁskāram api ca jānāmy anyair viśeṣataḥ
-03064004a yāni śilpāni loke ’smin yac cāpy anyat suduṣkaram
+03064004a yāni śilpāni loke 'smin yac cāpy anyat suduṣkaram
 03064004c sarvaṁ yatiṣye tat kartum r̥tuparṇa bharasva mām
 03064005- r̥tuparṇa uvāca
 03064005a vasa bāhuka bhadraṁ te sarvam etat kariṣyasi
 03064005c śīghrayāne sadā buddhir dhīyate me viśeṣataḥ
 03064006a sa tvam ātiṣṭha yogaṁ taṁ yena śīghrā hayā mama
-03064006c bhaveyur aśvādhyakṣo ’si vetanaṁ te śataṁ śatāḥ
+03064006c bhaveyur aśvādhyakṣo 'si vetanaṁ te śataṁ śatāḥ
 03064007a tvām upasthāsyataś cemau nityaṁ vārṣṇeyajīvalau
 03064007c etābhyāṁ raṁsyase sārdhaṁ vasa vai mayi bāhuka
 03064008- br̥hadaśva uvāca
@@ -1046,7 +1046,7 @@
 03064009c sāyaṁ sāyaṁ sadā cemaṁ ślokam ekaṁ jagāda ha
 03064010a kva nu sā kṣutpipāsārtā śrāntā śete tapasvinī
 03064010c smarantī tasya mandasya kaṁ vā sādyopatiṣṭhati
-03064011a evaṁ bruvantaṁ rājānaṁ niśāyāṁ jīvalo ’bravīt
+03064011a evaṁ bruvantaṁ rājānaṁ niśāyāṁ jīvalo 'bravīt
 03064011c kām enāṁ śocase nityaṁ śrotum icchāmi bāhuka
 03064012a tam uvāca nalo rājā mandaprajñasya kasya cit
 03064012c āsīd bahumatā nārī tasyā dr̥ḍhataraṁ ca saḥ
@@ -1056,7 +1056,7 @@
 03064014c niśākāle smaraṁs tasyāḥ ślokam ekaṁ sma gāyati
 03064015a sa vai bhraman mahīṁ sarvāṁ kva cid āsādya kiṁ cana
 03064015c vasaty anarhas tadduḥkhaṁ bhūya evānusaṁsmaran
-03064016a sā tu taṁ puruṣaṁ nārī kr̥cchre ’py anugatā vane
+03064016a sā tu taṁ puruṣaṁ nārī kr̥cchre 'py anugatā vane
 03064016c tyaktā tenālpapuṇyena duṣkaraṁ yadi jīvati
 03064017a ekā bālānabhijñā ca mārgāṇām atathocitā
 03064017c kṣutpipāsāparītā ca duṣkaraṁ yadi jīvati
@@ -1072,12 +1072,12 @@
 03065003a asmin karmaṇi niṣpanne vijñāte niṣadhādhipe
 03065003c gavāṁ sahasraṁ dāsyāmi yo vas tāv ānayiṣyati
 03065003e agrahāraṁ ca dāsyāmi grāmaṁ nagarasaṁmitam
-03065004a na cec chakyāv ihānetuṁ damayantī nalo ’pi vā
-03065004c jñātamātre ’pi dāsyāmi gavāṁ daśaśataṁ dhanam
+03065004a na cec chakyāv ihānetuṁ damayantī nalo 'pi vā
+03065004c jñātamātre 'pi dāsyāmi gavāṁ daśaśataṁ dhanam
 03065005a ity uktās te yayur hr̥ṣṭā brāhmaṇāḥ sarvatodiśam
 03065005c purarāṣṭrāṇi cinvanto naiṣadhaṁ saha bhāryayā
 03065006a tataś cedipurīṁ ramyāṁ sudevo nāma vai dvijaḥ
-03065006c vicinvāno ’tha vaidarbhīm apaśyad rājaveśmani
+03065006c vicinvāno 'tha vaidarbhīm apaśyad rājaveśmani
 03065006e puṇyāhavācane rājñaḥ sunandāsahitāṁ sthitām
 03065007a mandaprakhyāyamānena rūpeṇāpratimena tām
 03065007c pinaddhāṁ dhūmajālena prabhām iva vibhāvasoḥ
@@ -1085,7 +1085,7 @@
 03065008c tarkayām āsa bhaimīti kāraṇair upapādayan
 03065009- sudeva uvāca
 03065009a yatheyaṁ me purā dr̥ṣṭā tathārūpeyam aṅganā
-03065009c kr̥tārtho ’smy adya dr̥ṣṭvemāṁ lokakāntām iva śriyam
+03065009c kr̥tārtho 'smy adya dr̥ṣṭvemāṁ lokakāntām iva śriyam
 03065010a pūrṇacandrānanāṁ śyāmāṁ cāruvr̥ttapayodharām
 03065010c kurvantīṁ prabhayā devīṁ sarvā vitimirā diśaḥ
 03065011a cārupadmapalāśākṣīṁ manmathasya ratīm iva
@@ -1104,7 +1104,7 @@
 03065017c dehaṁ dhārayatīṁ dīnāṁ bhartr̥darśanakāṅkṣayā
 03065018a bhartā nāma paraṁ nāryā bhūṣaṇaṁ bhūṣaṇair vinā
 03065018c eṣā virahitā tena śobhanāpi na śobhate
-03065019a duṣkaraṁ kurute ’tyarthaṁ hīno yad anayā nalaḥ
+03065019a duṣkaraṁ kurute 'tyarthaṁ hīno yad anayā nalaḥ
 03065019c dhārayaty ātmano dehaṁ na śokenāvasīdati
 03065020a imām asitakeśāntāṁ śatapatrāyatekṣaṇām
 03065020c sukhārhāṁ duḥkhitāṁ dr̥ṣṭvā mamāpi vyathate manaḥ
@@ -1113,14 +1113,14 @@
 03065022a asyā nūnaṁ punar lābhān naiṣadhaḥ prītim eṣyati
 03065022c rājā rājyaparibhraṣṭaḥ punar labdhveva medinīm
 03065023a tulyaśīlavayoyuktāṁ tulyābhijanasaṁyutām
-03065023c naiṣadho ’rhati vaidarbhīṁ taṁ ceyam asitekṣaṇā
+03065023c naiṣadho 'rhati vaidarbhīṁ taṁ ceyam asitekṣaṇā
 03065024a yuktaṁ tasyāprameyasya vīryasattvavato mayā
 03065024c samāśvāsayituṁ bhāryāṁ patidarśanalālasām
 03065025a ayam āśvāsayāmy enāṁ pūrṇacandranibhānanām
 03065025c adr̥ṣṭapūrvāṁ duḥkhasya duḥkhārtāṁ dhyānatatparām
 03065026- br̥hadaśva uvāca
 03065026a evaṁ vimr̥śya vividhaiḥ kāraṇair lakṣaṇaiś ca tām
-03065026c upagamya tato bhaimīṁ sudevo brāhmaṇo ’bravīt
+03065026c upagamya tato bhaimīṁ sudevo brāhmaṇo 'bravīt
 03065027a ahaṁ sudevo vaidarbhi bhrātus te dayitaḥ sakhā
 03065027c bhīmasya vacanād rājñas tvām anveṣṭum ihāgataḥ
 03065028a kuśalī te pitā rājñi janitrī bhrātaraś ca te
@@ -1155,14 +1155,14 @@
 03066004c seyam āsāditā bālā tava putraniveśane
 03066005a asyā rūpeṇa sadr̥śī mānuṣī neha vidyate
 03066005c asyāś caiva bhruvor madhye sahajaḥ piplur uttamaḥ
-03066005e śyāmāyāḥ padmasaṁkāśo lakṣito ’ntarhito mayā
+03066005e śyāmāyāḥ padmasaṁkāśo lakṣito 'ntarhito mayā
 03066006a malena saṁvr̥to hy asyās tanvabhreṇeva candramāḥ
 03066006c cihnabhūto vibhūtyartham ayaṁ dhātrā vinirmitaḥ
 03066007a pratipatkaluṣevendor lekhā nāti virājate
 03066007c na cāsyā naśyate rūpaṁ vapur malasamācitam
 03066007e asaṁskr̥tam api vyaktaṁ bhāti kāñcanasaṁnibham
 03066008a anena vapuṣā bālā piplunānena caiva ha
-03066008c lakṣiteyaṁ mayā devī pihito ’gnir ivoṣmaṇā
+03066008c lakṣiteyaṁ mayā devī pihito 'gnir ivoṣmaṇā
 03066009- br̥hadaśva uvāca
 03066009a tac chrutvā vacanaṁ tasya sudevasya viśāṁ pate
 03066009c sunandā śodhayām āsa piplupracchādanaṁ malam
@@ -1171,7 +1171,7 @@
 03066011a pipluṁ dr̥ṣṭvā sunandā ca rājamātā ca bhārata
 03066011c rudantyau tāṁ pariṣvajya muhūrtam iva tasthatuḥ
 03066011e utsr̥jya bāṣpaṁ śanakai rājamātedam abravīt
-03066012a bhaginyā duhitā me ’si piplunānena sūcitā
+03066012a bhaginyā duhitā me 'si piplunānena sūcitā
 03066012c ahaṁ ca tava mātā ca rājanyasya mahātmanaḥ
 03066012e sute daśārṇādhipateḥ sudāmnaś cārudarśane
 03066013a bhīmasya rājñaḥ sā dattā vīrabāhor ahaṁ punaḥ
@@ -1272,10 +1272,10 @@
 03068010c ādhibhir dahyamānasya śyāmā na kroddhum arhati
 03068011a satkr̥tāsatkr̥tā vāpi patiṁ dr̥ṣṭvā tathāgatam
 03068011c bhraṣṭarājyaṁ śriyā hīnaṁ śyāmā na kroddhum arhati
-03068012a tasya tad vacanaṁ śrutvā tvarito ’ham ihāgataḥ
+03068012a tasya tad vacanaṁ śrutvā tvarito 'ham ihāgataḥ
 03068012c śrutvā pramāṇaṁ bhavatī rājñaś caiva nivedaya
 03068013a etac chrutvāśrupūrṇākṣī parṇādasya viśāṁ pate
-03068013c damayantī raho ’bhyetya mātaraṁ pratyabhāṣata
+03068013c damayantī raho 'bhyetya mātaraṁ pratyabhāṣata
 03068014a ayam artho na saṁvedyo bhīme mātaḥ kathaṁ cana
 03068014c tvatsaṁnidhau samādekṣye sudevaṁ dvijasattamam
 03068015a yathā na nr̥patir bhīmaḥ pratipadyeta me matam
@@ -1288,7 +1288,7 @@
 03068018a nale cehāgate vipra bhūyo dāsyāmi te vasu
 03068018c tvayā hi me bahu kr̥taṁ yathā nānyaḥ kariṣyati
 03068018e yad bhartrāhaṁ sameṣyāmi śīghram eva dvijottama
-03068019a evam ukto ’rcayitvā tām āśīrvādaiḥ sumaṅgalaiḥ
+03068019a evam ukto 'rcayitvā tām āśīrvādaiḥ sumaṅgalaiḥ
 03068019c gr̥hān upayayau cāpi kr̥tārthaḥ sa mahāmanāḥ
 03068020a tataś cānāyya taṁ vipraṁ damayantī yudhiṣṭhira
 03068020c abravīt saṁnidhau mātur duḥkhaśokasamanvitā
@@ -1299,7 +1299,7 @@
 03068022c yathā ca gaṇitaḥ kālaḥ śvobhūte sa bhaviṣyati
 03068023a yadi saṁbhāvanīyaṁ te gaccha śīghram ariṁdama
 03068023c sūryodaye dvitīyaṁ sā bhartāraṁ varayiṣyati
-03068023e na hi sa jñāyate vīro nalo jīvan mr̥to ’pi vā
+03068023e na hi sa jñāyate vīro nalo jīvan mr̥to 'pi vā
 03068024a evaṁ tayā yathoktaṁ vai gatvā rājānam abravīt
 03068024c r̥tuparṇaṁ mahārāja sudevo brāhmaṇas tadā
 03069001- br̥hadaśva uvāca
@@ -1357,10 +1357,10 @@
 03069023c vārṣṇeyaś cintayām āsa bāhukasya hayajñatām
 03069024a kiṁ nu syān mātalir ayaṁ devarājasya sārathiḥ
 03069024c tathā hi lakṣaṇaṁ vīre bāhuke dr̥śyate mahat
-03069025a śālihotro ’tha kiṁ nu syād dhayānāṁ kulatattvavit
+03069025a śālihotro 'tha kiṁ nu syād dhayānāṁ kulatattvavit
 03069025c mānuṣaṁ samanuprāpto vapuḥ paramaśobhanam
 03069026a utāho svid bhaved rājā nalaḥ parapuraṁjayaḥ
-03069026c so ’yaṁ nr̥patir āyāta ity evaṁ samacintayat
+03069026c so 'yaṁ nr̥patir āyāta ity evaṁ samacintayat
 03069027a atha vā yāṁ nalo veda vidyāṁ tām eva bāhukaḥ
 03069027c tulyaṁ hi lakṣaye jñānaṁ bāhukasya nalasya ca
 03069028a api cedaṁ vayas tulyam asya manye nalasya ca
@@ -1390,17 +1390,17 @@
 03070005c yojanaṁ samatikrānto na sa śakyas tvayā punaḥ
 03070006a evam ukte nalenātha tadā bhāṅgasvarir nr̥paḥ
 03070006c āsasāda vane rājan phalavantaṁ bibhītakam
-03070007a taṁ dr̥ṣṭvā bāhukaṁ rājā tvaramāṇo ’bhyabhāṣata
+03070007a taṁ dr̥ṣṭvā bāhukaṁ rājā tvaramāṇo 'bhyabhāṣata
 03070007c mamāpi sūta paśya tvaṁ saṁkhyāne paramaṁ balam
 03070008a sarvaḥ sarvaṁ na jānāti sarvajño nāsti kaś cana
 03070008c naikatra pariniṣṭhāsti jñānasya puruṣe kva cit
-03070009a vr̥kṣe ’smin yāni parṇāni phalāny api ca bāhuka
+03070009a vr̥kṣe 'smin yāni parṇāni phalāny api ca bāhuka
 03070009c patitāni ca yāny atra tatraikam adhikaṁ śatam
 03070009e ekapatrādhikaṁ patraṁ phalam ekaṁ ca bāhuka
-03070010a pañca koṭyo ’tha patrāṇāṁ dvayor api ca śākhayoḥ
+03070010a pañca koṭyo 'tha patrāṇāṁ dvayor api ca śākhayoḥ
 03070010c pracinuhy asya śākhe dve yāś cāpy anyāḥ praśākhikāḥ
 03070010e ābhyāṁ phalasahasre dve pañconaṁ śatam eva ca
-03070011a tato rathād avaplutya rājānaṁ bāhuko ’bravīt
+03070011a tato rathād avaplutya rājānaṁ bāhuko 'bravīt
 03070011c parokṣam iva me rājan katthase śatrukarśana
 03070012a atha te gaṇite rājan vidyate na parokṣatā
 03070012c pratyakṣaṁ te mahārāja gaṇayiṣye bibhītakam
@@ -1412,15 +1412,15 @@
 03070015a pratīkṣasva muhūrtaṁ tvam atha vā tvarate bhavān
 03070015c eṣa yāti śivaḥ panthā yāhi vārṣṇeyasārathiḥ
 03070016a abravīd r̥tuparṇas taṁ sāntvayan kurunandana
-03070016c tvam eva yantā nānyo ’sti pr̥thivyām api bāhuka
+03070016c tvam eva yantā nānyo 'sti pr̥thivyām api bāhuka
 03070017a tvatkr̥te yātum icchāmi vidarbhān hayakovida
-03070017c śaraṇaṁ tvāṁ prapanno ’smi na vighnaṁ kartum arhasi
+03070017c śaraṇaṁ tvāṁ prapanno 'smi na vighnaṁ kartum arhasi
 03070018a kāmaṁ ca te kariṣyāmi yan māṁ vakṣyasi bāhuka
 03070018c vidarbhān yadi yātvādya sūryaṁ darśayitāsi me
 03070019a athābravīd bāhukas taṁ saṁkhyāyemaṁ bibhītakam
 03070019c tato vidarbhān yāsyāmi kuruṣvedaṁ vaco mama
 03070020a akāma iva taṁ rājā gaṇayasvety uvāca ha
-03070020c so ’vatīrya rathāt tūrṇaṁ śātayām āsa taṁ drumam
+03070020c so 'vatīrya rathāt tūrṇaṁ śātayām āsa taṁ drumam
 03070021a tataḥ sa vismayāviṣṭo rājānam idam abravīt
 03070021c gaṇayitvā yathoktāni tāvanty eva phalāni ca
 03070022a atyadbhutam idaṁ rājan dr̥ṣṭavān asmi te balam
@@ -1428,11 +1428,11 @@
 03070023a tam uvāca tato rājā tvarito gamane tadā
 03070023c viddhy akṣahr̥dayajñaṁ māṁ saṁkhyāne ca viśāradam
 03070024a bāhukas tam uvācātha dehi vidyām imāṁ mama
-03070024c matto ’pi cāśvahr̥dayaṁ gr̥hāṇa puruṣarṣabha
+03070024c matto 'pi cāśvahr̥dayaṁ gr̥hāṇa puruṣarṣabha
 03070025a r̥tuparṇas tato rājā bāhukaṁ kāryagauravāt
 03070025c hayajñānasya lobhāc ca tathety evābravīd vacaḥ
 03070026a yatheṣṭaṁ tvaṁ gr̥hāṇedam akṣāṇāṁ hr̥dayaṁ param
-03070026c nikṣepo me ’śvahr̥dayaṁ tvayi tiṣṭhatu bāhuka
+03070026c nikṣepo me 'śvahr̥dayaṁ tvayi tiṣṭhatu bāhuka
 03070026e evam uktvā dadau vidyām r̥tuparṇo nalāya vai
 03070027a tasyākṣahr̥dayajñasya śarīrān niḥsr̥taḥ kaliḥ
 03070027c karkoṭakaviṣaṁ tīkṣṇaṁ mukhāt satatam udvaman
@@ -1443,7 +1443,7 @@
 03070030a tam uvāca kalir bhīto vepamānaḥ kr̥tāñjaliḥ
 03070030c kopaṁ saṁyaccha nr̥pate kīrtiṁ dāsyāmi te parām
 03070031a indrasenasya jananī kupitā māśapat purā
-03070031c yadā tvayā parityaktā tato ’haṁ bhr̥śapīḍitaḥ
+03070031c yadā tvayā parityaktā tato 'haṁ bhr̥śapīḍitaḥ
 03070032a avasaṁ tvayi rājendra suduḥkham aparājita
 03070032c viṣeṇa nāgarājasya dahyamāno divāniśam
 03070033a ye ca tvāṁ manujā loke kīrtayiṣyanty atandritāḥ
@@ -1460,7 +1460,7 @@
 03070037c nalaḥ saṁcodayām āsa prahr̥ṣṭenāntarātmanā
 03070038a vidarbhābhimukho rājā prayayau sa mahāmanāḥ
 03070038c nale tu samatikrānte kalir apy agamad gr̥hān
-03070039a tato gatajvaro rājā nalo ’bhūt pr̥thivīpate
+03070039a tato gatajvaro rājā nalo 'bhūt pr̥thivīpate
 03070039c vimuktaḥ kalinā rājan rūpamātraviyojitaḥ
 03071001- br̥hadaśva uvāca
 03071001a tato vidarbhān saṁprāptaṁ sāyāhne satyavikramam
@@ -1491,7 +1491,7 @@
 03071013a na smarāmy anr̥taṁ kiṁ cin na smarāmy anupākr̥tam
 03071013c na ca paryuṣitaṁ vākyaṁ svaireṣv api mahātmanaḥ
 03071014a prabhuḥ kṣamāvān vīraś ca mr̥dur dānto jitendriyaḥ
-03071014c raho ’nīcānuvartī ca klībavan mama naiṣadhaḥ
+03071014c raho 'nīcānuvartī ca klībavan mama naiṣadhaḥ
 03071015a guṇāṁs tasya smarantyā me tatparāyā divāniśam
 03071015c hr̥dayaṁ dīryata idaṁ śokāt priyavinākr̥tam
 03071016- br̥hadaśva uvāca
@@ -1499,25 +1499,25 @@
 03071016c āruroha mahad veśma puṇyaślokadidr̥kṣayā
 03071017a tato madhyamakakṣāyāṁ dadarśa ratham āsthitam
 03071017c r̥tuparṇaṁ mahīpālaṁ sahavārṣṇeyabāhukam
-03071018a tato ’vatīrya vārṣṇeyo bāhukaś ca rathottamāt
+03071018a tato 'vatīrya vārṣṇeyo bāhukaś ca rathottamāt
 03071018c hayāṁs tān avamucyātha sthāpayām āsatū ratham
-03071019a so ’vatīrya rathopasthād r̥tuparṇo narādhipaḥ
+03071019a so 'vatīrya rathopasthād r̥tuparṇo narādhipaḥ
 03071019c upatasthe mahārāja bhīmaṁ bhīmaparākramam
 03071020a taṁ bhīmaḥ pratijagrāha pūjayā parayā tataḥ
 03071020c akasmāt sahasā prāptaṁ strīmantraṁ na sma vindati
-03071021a kiṁ kāryaṁ svāgataṁ te ’stu rājñā pr̥ṣṭaś ca bhārata
+03071021a kiṁ kāryaṁ svāgataṁ te 'stu rājñā pr̥ṣṭaś ca bhārata
 03071021c nābhijajñe sa nr̥patir duhitrarthe samāgatam
-03071022a r̥tuparṇo ’pi rājā sa dhīmān satyaparākramaḥ
+03071022a r̥tuparṇo 'pi rājā sa dhīmān satyaparākramaḥ
 03071022c rājānaṁ rājaputraṁ vā na sma paśyati kaṁ cana
 03071022e naiva svayaṁvarakathāṁ na ca viprasamāgamam
 03071023a tato vigaṇayan rājā manasā kosalādhipaḥ
-03071023c āgato ’smīty uvācainaṁ bhavantam abhivādakaḥ
+03071023c āgato 'smīty uvācainaṁ bhavantam abhivādakaḥ
 03071024a rājāpi ca smayan bhīmo manasābhivicintayat
 03071024c adhikaṁ yojanaśataṁ tasyāgamanakāraṇam
 03071025a grāmān bahūn atikramya nādhyagacchad yathātatham
 03071025c alpakāryaṁ vinirdiṣṭaṁ tasyāgamanakāraṇam
 03071026a naitad evaṁ sa nr̥patis taṁ satkr̥tya vyasarjayat
-03071026c viśrāmyatām iti vadan klānto ’sīti punaḥ punaḥ
+03071026c viśrāmyatām iti vadan klānto 'sīti punaḥ punaḥ
 03071027a sa satkr̥taḥ prahr̥ṣṭātmā prītaḥ prītena pārthivaḥ
 03071027c rājapreṣyair anugato diṣṭaṁ veśma samāviśat
 03071028a r̥tuparṇe gate rājan vārṣṇeyasahite nr̥pe
@@ -1530,8 +1530,8 @@
 03071031c nalasyeva mahān āsīn na ca paśyāmi naiṣadham
 03071032a vārṣṇeyena bhaven nūnaṁ vidyā saivopaśikṣitā
 03071032c tenāsya rathanirghoṣo nalasyeva mahān abhūt
-03071033a āho svid r̥tuparṇo ’pi yathā rājā nalas tathā
-03071033c tato ’yaṁ rathanirghoṣo naiṣadhasyeva lakṣyate
+03071033a āho svid r̥tuparṇo 'pi yathā rājā nalas tathā
+03071033c tato 'yaṁ rathanirghoṣo naiṣadhasyeva lakṣyate
 03071034a evaṁ vitarkayitvā tu damayantī viśāṁ pate
 03071034c dūtīṁ prasthāpayām āsa naiṣadhānveṣaṇe nr̥pa
 03072001- damayanty uvāca
@@ -1557,7 +1557,7 @@
 03072009a śrutvā taṁ prasthito rājā śatayojanayāyibhiḥ
 03072009c hayair vātajavair mukhyair aham asya ca sārathiḥ
 03072010- keśiny uvāca
-03072010a atha yo ’sau tr̥tīyo vaḥ sa kutaḥ kasya vā punaḥ
+03072010a atha yo 'sau tr̥tīyo vaḥ sa kutaḥ kasya vā punaḥ
 03072010c tvaṁ ca kasya kathaṁ cedaṁ tvayi karma samāhitam
 03072011- bāhuka uvāca
 03072011a puṇyaślokasya vai sūto vārṣṇeya iti viśrutaḥ
@@ -1571,11 +1571,11 @@
 03072014a ihaiva putrau nikṣipya nalasyāśubhakarmaṇaḥ
 03072014c gatas tato yathākāmaṁ naiṣa jānāti naiṣadham
 03072015a na cānyaḥ puruṣaḥ kaś cin nalaṁ vetti yaśasvini
-03072015c gūḍhaś carati loke ’smin naṣṭarūpo mahīpatiḥ
+03072015c gūḍhaś carati loke 'smin naṣṭarūpo mahīpatiḥ
 03072016a ātmaiva hi nalaṁ vetti yā cāsya tadanantarā
 03072016c na hi vai tāni liṅgāni nalaṁ śaṁsanti karhi cit
 03072017- keśiny uvāca
-03072017a yo ’sāv ayodhyāṁ prathamaṁ gatavān brāhmaṇas tadā
+03072017a yo 'sāv ayodhyāṁ prathamaṁ gatavān brāhmaṇas tadā
 03072017c imāni nārīvākyāni kathayānaḥ punaḥ punaḥ
 03072018a kva nu tvaṁ kitava chittvā vastrārdhaṁ prasthito mama
 03072018c utsr̥jya vipine suptām anuraktāṁ priyāṁ priya
@@ -1611,7 +1611,7 @@
 03073002c ābruvāṇā samīpasthā caritāny asya lakṣaya
 03073003a yadā ca kiṁ cit kuryāt sa kāraṇaṁ tatra bhāmini
 03073003c tatra saṁceṣṭamānasya saṁlakṣyaṁ te viceṣṭitam
-03073004a na cāsya pratibandhena deyo ’gnir api bhāmini
+03073004a na cāsya pratibandhena deyo 'gnir api bhāmini
 03073004c yācate na jalaṁ deyaṁ samyag atvaramāṇayā
 03073005a etat sarvaṁ samīkṣya tvaṁ caritaṁ me nivedaya
 03073005c yac cānyad api paśyethās tac cākhyeyaṁ tvayā mama
@@ -1620,11 +1620,11 @@
 03073007a sā tat sarvaṁ yathāvr̥ttaṁ damayantyai nyavedayat
 03073007c nimittaṁ yat tadā dr̥ṣṭaṁ bāhuke divyamānuṣam
 03073008- keśiny uvāca
-03073008a dr̥ḍhaṁ śucyupacāro ’sau na mayā mānuṣaḥ kva cit
+03073008a dr̥ḍhaṁ śucyupacāro 'sau na mayā mānuṣaḥ kva cit
 03073008c dr̥ṣṭapūrvaḥ śruto vāpi damayanti tathāvidhaḥ
 03073009a hrasvam āsādya saṁcāraṁ nāsau vinamate kva cit
 03073009c taṁ tu dr̥ṣṭvā yathāsaṅgam utsarpati yathāsukham
-03073009e saṁkaṭe ’py asya sumahad vivaraṁ jāyate ’dhikam
+03073009e saṁkaṭe 'py asya sumahad vivaraṁ jāyate 'dhikam
 03073010a r̥tuparṇasya cārthāya bhojanīyam anekaśaḥ
 03073010c preṣitaṁ tatra rājñā ca māṁsaṁ subahu pāśavam
 03073011a tasya prakṣālanārthāya kumbhas tatropakalpitaḥ
@@ -1664,7 +1664,7 @@
 03073027a idaṁ susadr̥śaṁ bhadre mithunaṁ mama putrayoḥ
 03073027c tato dr̥ṣṭvaiva sahasā bāṣpam utsr̥ṣṭavān aham
 03073028a bahuśaḥ saṁpatantīṁ tvāṁ janaḥ śaṅketa doṣataḥ
-03073028c vayaṁ ca deśātithayo gaccha bhadre namo ’stu te
+03073028c vayaṁ ca deśātithayo gaccha bhadre namo 'stu te
 03074001- br̥hadaśva uvāca
 03074001a sarvaṁ vikāraṁ dr̥ṣṭvā tu puṇyaślokasya dhīmataḥ
 03074001c āgatya keśinī kṣipraṁ damayantyai nyavedayat
@@ -1700,12 +1700,12 @@
 03074016c kalinā tat kr̥taṁ bhīru yac ca tvām aham atyajam
 03074017a tvayā tu dharmabhr̥cchreṣṭhe śāpenābhihataḥ purā
 03074017c vanasthayā duḥkhitayā śocantyā māṁ vivāsasam
-03074018a sa maccharīre tvacchāpād dahyamāno ’vasat kaliḥ
-03074018c tvacchāpadagdhaḥ satataṁ so ’gnāv iva samāhitaḥ
+03074018a sa maccharīre tvacchāpād dahyamāno 'vasat kaliḥ
+03074018c tvacchāpadagdhaḥ satataṁ so 'gnāv iva samāhitaḥ
 03074019a mama ca vyavasāyena tapasā caiva nirjitaḥ
 03074019c duḥkhasyāntena cānena bhavitavyaṁ hi nau śubhe
-03074020a vimucya māṁ gataḥ pāpaḥ sa tato ’ham ihāgataḥ
-03074020c tvadarthaṁ vipulaśroṇi na hi me ’nyat prayojanam
+03074020a vimucya māṁ gataḥ pāpaḥ sa tato 'ham ihāgataḥ
+03074020c tvadarthaṁ vipulaśroṇi na hi me 'nyat prayojanam
 03074021a kathaṁ nu nārī bhartāram anuraktam anuvratam
 03074021c utsr̥jya varayed anyaṁ yathā tvaṁ bhīru karhi cit
 03074022a dūtāś caranti pr̥thivīṁ kr̥tsnāṁ nr̥patiśāsanāt
@@ -1722,12 +1722,12 @@
 03075003a tatas tvāṁ brāhmaṇo vidvān parṇādo nāma pārthiva
 03075003c abhyagacchat kosalāyām r̥tuparṇaniveśane
 03075004a tena vākye hr̥te samyak prativākye tathāhr̥te
-03075004c upāyo ’yaṁ mayā dr̥ṣṭo naiṣadhānayane tava
-03075005a tvām r̥te na hi loke ’nya ekāhnā pr̥thivīpate
+03075004c upāyo 'yaṁ mayā dr̥ṣṭo naiṣadhānayane tava
+03075005a tvām r̥te na hi loke 'nya ekāhnā pr̥thivīpate
 03075005c samartho yojanaśataṁ gantum aśvair narādhipa
-03075006a tathā cemau mahīpāla bhaje ’haṁ caraṇau tava
+03075006a tathā cemau mahīpāla bhaje 'haṁ caraṇau tava
 03075006c yathā nāsatkr̥taṁ kiṁ cin manasāpi carāmy aham
-03075007a ayaṁ carati loke ’smin bhūtasākṣī sadāgatiḥ
+03075007a ayaṁ carati loke 'smin bhūtasākṣī sadāgatiḥ
 03075007c eṣa muñcatu me prāṇān yadi pāpaṁ carāmy aham
 03075008a tathā carati tigmāṁśuḥ pareṇa bhuvanaṁ sadā
 03075008c sa vimuñcatu me prāṇān yadi pāpaṁ carāmy aham
@@ -1739,8 +1739,8 @@
 03075011c naiṣā kr̥tavatī pāpaṁ nala satyaṁ bravīmi te
 03075012a rājañ śīlanidhiḥ sphīto damayantyā surakṣitaḥ
 03075012c sākṣiṇo rakṣiṇaś cāsyā vayaṁ trīn parivatsarān
-03075013a upāyo vihitaś cāyaṁ tvadartham atulo ’nayā
-03075013c na hy ekāhnā śataṁ gantā tvad r̥te ’nyaḥ pumān iha
+03075013a upāyo vihitaś cāyaṁ tvadartham atulo 'nayā
+03075013c na hy ekāhnā śataṁ gantā tvad r̥te 'nyaḥ pumān iha
 03075014a upapannā tvayā bhaimī tvaṁ ca bhaimyā mahīpate
 03075014c nātra śaṅkā tvayā kāryā saṁgaccha saha bhāryayā
 03075015a tathā bruvati vāyau tu puṣpavr̥ṣṭiḥ papāta ha
@@ -1759,7 +1759,7 @@
 03075021c suciraṁ puruṣavyāghraṁ tasthau sāśrupariplutā
 03075022a tataḥ sarvaṁ yathāvr̥ttaṁ damayantyā nalasya ca
 03075022c bhīmāyākathayat prītyā vaidarbhyā jananī nr̥pa
-03075023a tato ’bravīn mahārājaḥ kr̥taśaucam ahaṁ nalam
+03075023a tato 'bravīn mahārājaḥ kr̥taśaucam ahaṁ nalam
 03075023c damayantyā sahopetaṁ kālyaṁ draṣṭā sukhoṣitam
 03075024a tatas tau sahitau rātriṁ kathayantau purātanam
 03075024c vane vicaritaṁ sarvam ūṣatur muditau nr̥pa
@@ -1772,7 +1772,7 @@
 03076001- br̥hadaśva uvāca
 03076001a atha tāṁ vyuṣito rātriṁ nalo rājā svalaṁkr̥taḥ
 03076001c vaidarbhyā sahitaḥ kālyaṁ dadarśa vasudhādhipam
-03076002a tato ’bhivādayām āsa prayataḥ śvaśuraṁ nalaḥ
+03076002a tato 'bhivādayām āsa prayataḥ śvaśuraṁ nalaḥ
 03076002c tasyānu damayantī ca vavande pitaraṁ śubhā
 03076003a taṁ bhīmaḥ pratijagrāha putravat parayā mudā
 03076003c yathārhaṁ pūjayitvā tu samāśvāsayata prabhuḥ
@@ -1785,7 +1785,7 @@
 03076006c siktasaṁmr̥ṣṭapuṣpāḍhyā rājamārgāḥ kr̥tās tadā
 03076007a dvāri dvāri ca paurāṇāṁ puṣpabhaṅgaḥ prakalpitaḥ
 03076007c arcitāni ca sarvāṇi devatāyatanāni ca
-03076008a r̥tuparṇo ’pi śuśrāva bāhukacchadminaṁ nalam
+03076008a r̥tuparṇo 'pi śuśrāva bāhukacchadminaṁ nalam
 03076008c damayantyā samāyuktaṁ jahr̥ṣe ca narādhipaḥ
 03076009a tam ānāyya nalo rājā kṣamayām āsa pārthivam
 03076009c sa ca taṁ kṣamayām āsa hetubhir buddhisaṁmataḥ
@@ -1796,9 +1796,9 @@
 03076012a yadi vā buddhipūrvāṇi yady abuddhāni kāni cit
 03076012c mayā kr̥tāny akāryāṇi tāni me kṣantum arhasi
 03076013- nala uvāca
-03076013a na me ’parādhaṁ kr̥tavāṁs tvaṁ svalpam api pārthiva
-03076013c kr̥te ’pi ca na me kopaḥ kṣantavyaṁ hi mayā tava
-03076014a pūrvaṁ hy asi sakhā me ’si saṁbandhī ca narādhipa
+03076013a na me 'parādhaṁ kr̥tavāṁs tvaṁ svalpam api pārthiva
+03076013c kr̥te 'pi ca na me kopaḥ kṣantavyaṁ hi mayā tava
+03076014a pūrvaṁ hy asi sakhā me 'si saṁbandhī ca narādhipa
 03076014c ata ūrdhvaṁ tu bhūyas tvaṁ prītim āhartum arhasi
 03076015a sarvakāmaiḥ suvihitaḥ sukham asmy uṣitas tvayi
 03076015c na tathā svagr̥he rājan yathā tava gr̥he sadā
@@ -1836,7 +1836,7 @@
 03077011c dhruvam ātmajayaṁ matvā pratyāha pr̥thivīpatim
 03077012a diṣṭyā tvayārjitaṁ vittaṁ pratipāṇāya naiṣadha
 03077012c diṣṭyā ca duṣkr̥taṁ karma damayantyāḥ kṣayaṁ gatam
-03077012e diṣṭyā ca dhriyase rājan sadāro ’rinibarhaṇa
+03077012e diṣṭyā ca dhriyase rājan sadāro 'rinibarhaṇa
 03077013a dhanenānena vaidarbhī jitena samalaṁkr̥tā
 03077013c mām upasthāsyati vyaktaṁ divi śakram ivāpsarāḥ
 03077014a nityaśo hi smarāmi tvāṁ pratīkṣāmi ca naiṣadha
@@ -1849,7 +1849,7 @@
 03077017c paṇāvaḥ kiṁ vyāharase jitvā vai vyāhariṣyasi
 03077018a tataḥ prāvartata dyūtaṁ puṣkarasya nalasya ca
 03077018c ekapāṇena bhadraṁ te nalena sa parājitaḥ
-03077018e saratnakośanicayaḥ prāṇena paṇito ’pi ca
+03077018e saratnakośanicayaḥ prāṇena paṇito 'pi ca
 03077019a jitvā ca puṣkaraṁ rājā prahasann idam abravīt
 03077019c mama sarvam idaṁ rājyam avyagraṁ hatakaṇṭakam
 03077020a vaidarbhī na tvayā śakyā rājāpasada vīkṣitum
@@ -1881,6 +1881,6 @@
 03078002c prasthāpayad ameyātmā bhīmo bhīmaparākramaḥ
 03078003a āgatāyāṁ tu vaidarbhyāṁ saputrāyāṁ nalo nr̥paḥ
 03078003c vartayām āsa mudito devarāḍ iva nandane
-03078004a tathā prakāśatāṁ yāto jambūdvīpe ’tha rājasu
+03078004a tathā prakāśatāṁ yāto jambūdvīpe 'tha rājasu
 03078004c punaḥ sve cāvasad rājye pratyāhr̥tya mahāyaśāḥ
 03078005a īje ca vividhair yajñair vidhivat svāptadakṣiṇaiḥ
