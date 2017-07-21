@@ -121,9 +121,19 @@ public class SanskritAnalyzerTest
     public void testRoman2SlpNfcNfd() throws Exception {
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "\u1e5d \u1e5b\u0304 r\u0323\u0304"; // NFC, semi-NFD and NFD versions of ṝ 
-    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("F", "F", "F");
+    	assertTokenStream(ts, expected);
+    }
+
+    @Test
+    public void testRoman2SlpIso15919() throws Exception {
+    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
+    	String input = "ẏ m̆b ē k͟h"; // normalizations and deletions 
+    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	List<String> expected = Arrays.asList("y", "e");
     	assertTokenStream(ts, expected);
     }
     

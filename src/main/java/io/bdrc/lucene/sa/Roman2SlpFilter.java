@@ -48,7 +48,7 @@ public class Roman2SlpFilter extends MappingCharFilter {
         // Ignored ISO 15919 characters with devanagari:
         // ô (ऑ, transcribes English borrowings), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
         // Ignored ISO 15919 characters with no devanagari equivalent:
-        // æ, ḵ, ǣ, ŭ, n̆, ḵ, n̆g, ĉ, n̆j, n̆ḍ, n̆d, m̆b, ṯ, ş, đ, ḑ, ẓ, ţ
+        // æ, ḵ, ǣ, ŭ, n̆, n̆g, ĉ, n̆j, n̆ḍ, n̆d, m̆b, ṯ, ş, đ, ḑ, ẓ, ţ
         // ṛh (ढ़) is not included below, so it will be processed as the concatenation of two characters
         builder.add("ô", "");
         builder.add("ẖ", "");
@@ -60,7 +60,6 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("ǣ", "");
         builder.add("ŭ", "");
         builder.add("n̆", "");
-        builder.add("ḵ", "");
         builder.add("n̆g", "");
         builder.add("ĉ", "");
         builder.add("n̆j", "");
