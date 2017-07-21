@@ -35,7 +35,7 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("m\u0310", "~"); // m̐
         builder.add("M\u0310", "~"); // M̐
 
-        // simply added to ignore them
+        // Plain normalizations
         builder.add("ē", "e"); // simply normalizes to o, since Sanskrit doesn't distinguish between long and short e vowel
         builder.add("ō", "o"); // same as above for the o vowel
         builder.add("ṟ", "r"); // ऱ not in IAST, yet in the deva unicode table
@@ -43,12 +43,12 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("ṉ", "n"); // ऩ same as above
         builder.add("ẏ", "y"); // य़ same as above
         
-        // here are the ignored ISO 15919 characters:
-        // ô (ऑ), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
-        // characters in ISO 15919 with no equivalent in devanagari are also ignored:
+        // Ignored ISO 15919 characters with devanagari:
+        // ô (ऑ, transcribes English borrowings), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
+        // Ignored ISO 15919 characters with no devanagari equivalent:
         // æ, ḵ, ǣ, ŭ, n̆, ḵ, n̆g, ĉ, n̆j, n̆ḍ, n̆d, m̆b, ṯ, ş, đ, ḑ, ẓ, ţ
         
-        // request help to deal with:
+        // help needed to deal with:
         // ṛh (	ढ़): is composed of a "ḍh+dot", yet the ISO 15919 equivalent is "ṛh" 
         
         // IAST characters and combinations
