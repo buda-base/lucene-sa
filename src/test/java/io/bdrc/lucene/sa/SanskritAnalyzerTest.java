@@ -101,7 +101,7 @@ public class SanskritAnalyzerTest
         //CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
     	System.out.println("Testing transliterationFilter()");
     	String input = "अथ राजकन्या चन्द्रवती नामाभिनवरुपयौवनसम्पन्ना सखीद्वितीयैकस्मिन्महोत्सवदिवसे नगरं निरिक्षमाणास्ति ।"; 
-    	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
         assertTokenStream(ts, expected);
@@ -111,7 +111,7 @@ public class SanskritAnalyzerTest
     public void testZwjZwnjTranscoding() throws Exception {
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
-    	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("kza", "kza", "kza");
     	assertTokenStream(ts, expected);
@@ -121,7 +121,7 @@ public class SanskritAnalyzerTest
     public void thoroughTestDevaTransliterationFilter() throws Exception {
     	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
     	String input = String.join(" ", lines);
-    	CharFilter cs = new TransliterationFilter(new StringReader(input));
+    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
     	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));

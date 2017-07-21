@@ -8,9 +8,9 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
 // Devanagari -> slp1 charfilter, to be generalized
 
-public class TransliterationFilter extends MappingCharFilter {
+public class Deva2SlpFilter extends MappingCharFilter {
 
-    public TransliterationFilter(Reader in) {
+    public Deva2SlpFilter(Reader in) {
         super(getSkrtNormalizeCharMap(), in);
     }
 
