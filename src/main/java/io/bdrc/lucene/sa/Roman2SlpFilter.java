@@ -9,6 +9,8 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  * 
  * Following the naming convention used by Peter Scharf, we use "Roman" instead of "IAST" to show that, on top of supporting the full IAST character set,
  * we support the extra distinctions within devanagari found in ISO 15919
+ * A list of non-Sanskrit and non-Devanagari characters (see below) are deleted. 
+ * Since the further steps of the Analyzer-chain (lemmatization, etc…) will fail, attention will be brought to these non-Sanskrit passages.  
  * 
  * see https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST and the Overview section of the same page
  * 
@@ -47,9 +49,30 @@ public class Roman2SlpFilter extends MappingCharFilter {
         // ô (ऑ, transcribes English borrowings), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
         // Ignored ISO 15919 characters with no devanagari equivalent:
         // æ, ḵ, ǣ, ŭ, n̆, ḵ, n̆g, ĉ, n̆j, n̆ḍ, n̆d, m̆b, ṯ, ş, đ, ḑ, ẓ, ţ
-        
-        // help needed to deal with:
-        // ṛh (	ढ़): is composed of a "ḍh+dot", yet the ISO 15919 equivalent is "ṛh" 
+        // ṛh (ढ़) is not included below, so it will be processed as the concatenation of two characters
+        builder.add("ô", "");
+        builder.add("ẖ", "");
+        builder.add("ḫ", "");
+        builder.add("k͟h", "");
+        builder.add("ġ", "");
+        builder.add("æ", "");
+        builder.add("ḵ", "");
+        builder.add("ǣ", "");
+        builder.add("ŭ", "");
+        builder.add("n̆", "");
+        builder.add("ḵ", "");
+        builder.add("n̆g", "");
+        builder.add("ĉ", "");
+        builder.add("n̆j", "");
+        builder.add("n̆ḍ", "");
+        builder.add("n̆d", "");
+        builder.add("m̆b", "");
+        builder.add("ṯ", "");
+        builder.add("ş", "");
+        builder.add("đ", "");
+        builder.add("ḑ", "");
+        builder.add("ẓ", "");
+        builder.add("ţ", "");  
         
         // IAST characters and combinations
         builder.add("A", "a");

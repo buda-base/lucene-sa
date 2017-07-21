@@ -6,7 +6,15 @@ import java.util.Map;
 import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
-// Devanagari -> slp1 charfilter, to be generalized
+/**
+ * Devanagari -> SLP1 charfilter
+ * 
+ * Based on the devanagari tables found in http://unicode.org/charts/PDF/U0900.pdf
+ * This filter normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
+ * 
+ * @author Hélios Hildt
+ *
+ */
 
 public class Deva2SlpFilter extends MappingCharFilter {
 
@@ -19,7 +27,7 @@ public class Deva2SlpFilter extends MappingCharFilter {
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         final Map<String, String> consonants = new HashMap<>();
         final Map<String, String> vowels = new HashMap<>();
-
+        
         consonants.put("\u0915", "k");
         consonants.put("\u0916", "K");
         consonants.put("\u0917", "g");
@@ -55,6 +63,30 @@ public class Deva2SlpFilter extends MappingCharFilter {
         consonants.put("\u0938", "s");
         consonants.put("\u0939", "h");
         consonants.put("\u0933\u094d\u0939", "|");
+        // lossy normalization of extra consonants and available NFC correspondances
+        // the SLP corresponds to the character without nukta (dot), since we assume is
+        // is a mistyped Sanskrit character.
+        consonants.put("\u0928\u093c", "n"); // NFD ऩ 
+        consonants.put("\u0931", "r"); // ऱ
+        consonants.put("\u0930\u093c", "r"); // NFD ऱ 
+        consonants.put("\u0934", "L"); // ऴ 
+        consonants.put("\u0933\u093c", "L"); // NFD ऴ
+        consonants.put("\u0958", "k"); // क़
+        consonants.put("\u0915\u093c", "k"); // NFD क़
+        consonants.put("\u0959", "K"); // ख़
+        consonants.put("\u0916\u093c", "K"); // NFD ख़
+        consonants.put("\u095a", "g"); // ग़
+        consonants.put("\u0917\093c", "g"); // NFD ग़
+        consonants.put("\u095b", "j"); // ज़
+        consonants.put("\u091c\u093c", "j"); // NFD ज़ 
+        consonants.put("\u095c", "q"); // ड़
+        consonants.put("\u0921\u093c", "q"); // NFD ड़ 
+        consonants.put("\u095d", "Q"); // ढ़
+        consonants.put("\u0922\u093c", "Q"); // NFD ढ़ 
+        consonants.put("\u095e", "P"); // फ़
+        consonants.put("\u092b\u093c", "Q"); // NFD फ़
+        consonants.put("095f", "y"); // य़ 
+        consonants.put("\u092f\u093c", "y"); // NFD य़ 
 
         vowels.put("\u093E", "A");
         vowels.put("\u093F", "i");

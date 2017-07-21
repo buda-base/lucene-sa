@@ -118,7 +118,17 @@ public class SanskritAnalyzerTest
     }
 	
     @Test
-    public void thoroughTestDevaTransliterationFilter() throws Exception {
+    public void testRoman2SlpNfcNfd() throws Exception {
+    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
+    	String input = "\u1e5d \u1e5b\u0304 r\u0323\u0304"; // NFC, semi-NFD and NFD versions of ṝ 
+    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	List<String> expected = Arrays.asList("F", "F", "F");
+    	assertTokenStream(ts, expected);
+    }
+    
+    @Test
+    public void thoroughTestDeva2SlpFilter() throws Exception {
     	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
     	String input = String.join(" ", lines);
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
@@ -129,7 +139,7 @@ public class SanskritAnalyzerTest
     }
     
     @Test
-    public void thoroughTestRomanTransliterationFilter() throws Exception {
+    public void thoroughTestRoman2SlpFilter() throws Exception {
     	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
     	String input = String.join(" ", lines);
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
