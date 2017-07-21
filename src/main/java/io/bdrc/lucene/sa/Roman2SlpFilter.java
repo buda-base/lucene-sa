@@ -23,10 +23,35 @@ public class Roman2SlpFilter extends MappingCharFilter {
     }
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
-    	// This list is based on "roman_slp1.xml" found in "http://sanskritlibrary.org/software/transcodeFile.zip"
+    	// This list is based on "roman_slp1.xml" found in "http://sanskritlibrary.org/software/transcodeFile.zip" and on the table in the link above
     	// the square brackets and the curly brackets in the <out> tag were removed as they have no equivalent in SLP
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         
+        // Sanskrit additions from ISO 15919
+        builder.add("\u1e41", "M"); // ṁ
+        builder.add("m\u0307", "M"); // NFD ṁ
+        builder.add("\u1e40", "M"); // Ṁ
+        builder.add("M\u0307", "M"); // NFD Ṁ
+        builder.add("m\u0310", "~"); // m̐
+        builder.add("M\u0310", "~"); // M̐
+
+        // simply added to ignore them
+        builder.add("ē", "e"); // simply normalizes to o, since Sanskrit doesn't distinguish between long and short e vowel
+        builder.add("ō", "o"); // same as above for the o vowel
+        builder.add("ṟ", "r"); // ऱ not in IAST, yet in the deva unicode table
+        builder.add("r̆", "r"); // ऱ् same as above
+        builder.add("ṉ", "n"); // ऩ same as above
+        builder.add("ẏ", "y"); // य़ same as above
+        
+        // here are the ignored ISO 15919 characters:
+        // ô (ऑ), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
+        // characters in ISO 15919 with no equivalent in devanagari are also ignored:
+        // æ, ḵ, ǣ, ŭ, n̆, ḵ, n̆g, ĉ, n̆j, n̆ḍ, n̆d, m̆b, ṯ, ş, đ, ḑ, ẓ, ţ
+        
+        // request help to deal with:
+        // ṛh (	ढ़): is composed of a "ḍh+dot", yet the ISO 15919 equivalent is "ṛh" 
+        
+        // IAST characters and combinations
         builder.add("A", "a");
         builder.add("\u0101", "A"); // ā
         builder.add("a\u0304", "A"); // NFD ā 
@@ -71,18 +96,16 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("\u1e36\u0304", "X"); // semi-NFD Ḹ
         builder.add("L\u0323\u0304", "X"); // NFD Ḹ
         builder.add("au", "O");
+        builder.add("Au", "O");
         builder.add("AU", "O");
         builder.add("F", "f");
         builder.add("X", "x");
         builder.add("ai", "E");
+        builder.add("Ai", "E");
         builder.add("AI", "E");
         builder.add("E", "e");
         builder.add("O", "o");
         builder.add("M", "m");
-        builder.add("\u1e41", "M"); // ṁ
-        builder.add("m\u0307", "M"); // NFD ṁ
-        builder.add("\u1e40", "M"); // Ṁ
-        builder.add("M\u0307", "M"); // NFD Ṁ
         builder.add("\u1e43", "M"); // ṃ
         builder.add("m\u0323", "M"); // NFD ṃ 
         builder.add("\u1e42", "M"); // Ṃ
@@ -96,9 +119,11 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("V", "v");
         builder.add("K", "k");
         builder.add("kh", "K");
+        builder.add("Kh", "K");
         builder.add("KH", "K");
         builder.add("G", "g");
         builder.add("gh", "G");
+        builder.add("Gh", "G");
         builder.add("GH", "G");
         builder.add("N", "n");
         builder.add("\u1e45", "N"); // ṅ
@@ -107,9 +132,11 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("N\u0307", "N"); // NFD Ṅ
         builder.add("C", "c");
         builder.add("ch", "C");
+        builder.add("Ch", "C");
         builder.add("CH", "C");
         builder.add("J", "j");
         builder.add("jh", "J");
+        builder.add("Jh", "J");
         builder.add("JH", "J");
         builder.add("\u00f1", "Y"); // ñ
         builder.add("n\u0303", "Y"); // NFD ñ
@@ -124,6 +151,8 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("T\u0323", "w"); // NFD Ṭ
         builder.add("\u1e6dh", "W"); // ṭh
         builder.add("t\u0323h", "W"); // NFD ṭh
+        builder.add("\u1e6ch", "W"); // Ṭh
+        builder.add("T\u0323h", "W"); // NFD Ṭh
         builder.add("\u1e6cH", "W"); // ṬH
         builder.add("T\u0323H", "W"); // NFD ṬH
         builder.add("\u1e0d", "q"); // ḍ
@@ -132,6 +161,8 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("D\u0323", "q"); // NFD Ḍ
         builder.add("\u1e0dh", "Q"); // ḍh
         builder.add("d\u0323h", "Q"); // NFD ḍh
+        builder.add("\u1e0ch", "Q"); // Ḍh
+        builder.add("D\u0323h", "Q"); // NFD Ḍh
         builder.add("\u1e0cH", "Q"); // ḌH
         builder.add("D\u0323H", "Q"); // NFD ḌH
         builder.add("\u1e47", "R"); // ṇ
@@ -139,16 +170,20 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("\u1e46", "R"); // Ṇ
         builder.add("N\u0323", "R"); // NFD Ṇ
         builder.add("th", "T"); 
+        builder.add("Th", "T");
         builder.add("TH", "T"); 
         builder.add("T", "t");
         builder.add("D", "d");
         builder.add("dh", "D");
+        builder.add("Dh", "D");
         builder.add("DH", "D");
         builder.add("P", "p");
         builder.add("ph", "P");
+        builder.add("Ph", "P");
         builder.add("PH", "P");
         builder.add("B", "b");
         builder.add("bh", "B");
+        builder.add("Bh", "B");
         builder.add("BH", "B");
         builder.add("S", "s");
         builder.add("\u015b", "S"); // ś
@@ -165,9 +200,11 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("L\u0331", "L"); // NFD Ḻ
         builder.add("\u1e3Bh", "|"); // ḻh
         builder.add("l\u0331h", "L"); // NFD ḻh
+        builder.add("\u1e3Ah", "|"); // Ḻh
+        builder.add("L\u0331h", "L"); // NFD Ḻh
         builder.add("\u1e3AH", "|"); // ḺH
         builder.add("L\u0331H", "L"); // NFD ḺH
-        builder.add("\u0303", "~"); // ̃
+        builder.add("\u0303", "~"); // ̃  
 
         return builder.build();
     }
