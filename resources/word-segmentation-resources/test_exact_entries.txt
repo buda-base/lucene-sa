@@ -1,0 +1,50 @@
+aTa,,/
+aTa,C,/- cC+C
+aTa,c,/- cC+c
+divase,,-1+a/
+divase,C,-1+a/- cC+C
+divase,a,-1+a/- '+a
+divase,a:A:i:u:U:f:e:E:o:O,-1+a/- +
+divase,c,-1+a/- cC+c
+divase,i,-1+a/-+i
+dvitIyA,,-1+a/
+dvitIyA,A,-1+a/-+A
+dvitIyA,C,-1+a/- C+C
+dvitIyA,a,-1+a/-+a
+dvitIyA,c,-1+a/- c+c
+ekasmin,,-4+/
+ekasmin,y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m,-4+/- +
+garam,,-1+/
+garam,a:A:i:I:u:U:f:e:E:o:O,-1+/- +
+kanyA,,/
+kanyA,,;-1+a/
+kanyA,A,-1+a/-+A
+kanyA,A,-2+a/-+A
+kanyA,A,;-1+a/-+A
+kanyA,C,;-1+a/- C+C
+kanyA,a,-1+a/-+a
+kanyA,a,;-1+a/-+a
+kanyA,c,;-1+a/- c+c
+mahA,,-1+at/
+mahA,A,-1+/-+A
+mahA,A,-1+at/-+A
+mahA,C,-1+at/- C+C
+mahA,a,-1+/-+a
+mahA,a,-1+at/-+a
+mahA,c,-1+at/- c+c
+na,,/
+na,C,/- cC+C
+na,c,/- cC+c
+rAja,,-0+n;-1+/
+rAja,A:i:u:U:f:e:E:o:O,-1+i;-0+n;-1+/- +
+rAja,C,-0+n;-1+/- cC+C
+rAja,c,-0+n;-1+/- cC+c
+saKI,,-1+i/
+saKI,C,-1+i/- C+C
+saKI,a:A:i:u:U:f:e:E:o:O,-1+i/- +
+saKI,c,-1+i/- c+c
+saKI,i,-1+i/-+i
+utsava,,/
+utsava,A:i:u:U:f:e:E:o:O,/- +
+utsava,C,/- cC+C
+utsava,c,/- cC+c

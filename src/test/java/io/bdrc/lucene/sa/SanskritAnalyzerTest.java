@@ -38,6 +38,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.bdrc.lucene.sa.SkrtWordTokenizer;
+import io.bdrc.lucene.stemmer.Optimizer;
+import io.bdrc.lucene.stemmer.Row;
+import io.bdrc.lucene.stemmer.Trie;
+
 import static org.hamcrest.CoreMatchers.*;
 
 /**
@@ -158,6 +163,87 @@ public class SanskritAnalyzerTest
     	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
     	assertTokenStream(ts, expected);
     }
+    
+	public void produceOneToken(String toAnalyze, int startCharIndex, Trie t) {
+		// getting the root of the tree
+		System.out.println(toAnalyze);
+		Row now = t.getRow(t.getRoot());
+		int w; // temporary index variable
+		int lastCharIndex = -1; // the index of the last match in the string we analyze
+		int lastCmdIndex = -1; // the index (inside the Trie) of the cmd corresponding to the last match
+		
+		int i = startCharIndex; // the current index in the string
+		while (i < toAnalyze.length()) {
+			Character ch = toAnalyze.charAt(i); // get the current character
+			System.out.println("moving to index "+i+": "+ch);
+			w = now.getCmd(ch); // get the command associated with the current character at next step in the Trie
+			if (w >= 0) {
+				if (i >= toAnalyze.length()-1 || !SkrtSylTokenizer.isSLP(toAnalyze.charAt(i+1))) {
+						System.out.println("current row has an command for it, so it's a match");
+						lastCmdIndex = w;
+						lastCharIndex = i;
+					}
+            } else {
+            	System.out.println("current row does not have a command for it, no match");
+            }
+			w = now.getRef(ch); // get the next row if there is one
+			if (w >= 0) {
+				System.out.println("current row does have a reference for this char, further matches are possible, moving one row forward in the Trie");
+                now = t.getRow(w);
+            } else {
+            	System.out.println("current row does not have a reference to this char, so there's no further possible match, breaking the loop");
+                break; // no more steps possible in our research
+            }
+			i++;
+		}
+		//w = now.getCmd(toAnalyze.charAt(i));
+		if (lastCharIndex == -1) {
+			System.out.println("I have found nothing");
+			return;
+		}
+		System.out.println("I have found a token that goes from "+startCharIndex+" to "
+				+ lastCharIndex);
+		System.out.println("the substring is: "+toAnalyze.substring(startCharIndex, lastCharIndex+1));
+		System.out.println("the command associated with this token in the Trie is: "+t.getCommandVal(lastCmdIndex));
+	}
+	
+	@Test
+	public void produceOneTokenTest() throws IOException
+	{
+		System.out.println("Testing Stemmer Trie (produceOneToken() )");
+		Trie test = new Trie(true);
+		test.add("aTa", "a");
+		test.add("rAja", "a");
+		test.add("kanyA", "a");
+		test.add("candravatI", "a");
+		test.add("nAmABinavarupayOvanasampannA", "a");
+		test.add("saKI", "a");
+		test.add("dvitIyA", "a");
+		test.add("ekasmin", "a");
+		test.add("mahA", "a");
+		test.add("utsava", "a");
+		test.add("divase", "a");
+		test.add("na", "a");
+		test.add("garam", "a");
+		test.add("nirikzamARAsti", "a");
+		Optimizer opt = new Optimizer();
+		test.reduce(opt);
+		produceOneToken("saKI", 0, test);
+		produceOneToken("saKIa", 0, test);
+	}
+    
+    @Test
+	public void wordTokenizerTest() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
+		System.out.print(input + " => ");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
     public void testSylEndingCombinations() throws Exception {

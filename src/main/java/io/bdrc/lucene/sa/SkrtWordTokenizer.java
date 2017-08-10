@@ -65,7 +65,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean lemmatize = true;
 
 	/**
-	 * Constructs a TibWordTokenizer using the file designed by filename
+	 * Constructs a SkrtWordTokenizer using the file designed by filename
 	 * @param filename
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -75,7 +75,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	/**
-	 * Constructs a TibWordTokenizer using a default lexicon file (here "resource/output/total_lexicon.txt") 
+	 * Constructs a SkrtWordTokenizer using a default lexicon file (here "resources/sanskrit-stemming-data/output/total_output.txt") 
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -86,7 +86,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Initializes and populates {@see #scanner} 
 	 * 
-	 * The format of each line in filename must be as follows: inflected-form + space + lemma
+	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>,<diffs>/<initial_diff>"
 	 * @param filename the file containing the entries to be added
 	 * @throws FileNotFoundException 
 	 * @throws IOException
@@ -94,15 +94,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void init(String filename) throws FileNotFoundException, IOException {
 		this.scanner = new Trie(true);
 
-		//		currently only adds the entries without any diff
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				int spaceIndex = line.indexOf(' ');
-				if (spaceIndex == -1) {
+				int endOfFormIndex = line.indexOf(',');
+				if (endOfFormIndex == -1) {
 					throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
 				} else {
-					this.scanner.add(line.substring(0, spaceIndex), line.substring(spaceIndex+1));
+					this.scanner.add(line.substring(0, endOfFormIndex), line.substring(endOfFormIndex+1));
 				}
 			}
 			Optimizer opt = new Optimizer();
@@ -166,7 +165,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final int charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
-			if (isSkrt(c)) {  // if it's a token char
+			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
 					assert(start == -1);
 					now = scanner.getRow(scanner.getRoot());
@@ -185,8 +184,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 					if (now == null) {
 						if (!passedFirstSyllable) {
-							// we're in a broken state (in the first syllable and no match)
-							// we just want to go to the end of the syllable
+							// TODO: is this needed for skrt?
 							if (c == '\u0F0B') {
 								confirmedEnd = end;
 								confirmedEndIndex = bufferIndex;
@@ -197,6 +195,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 							break;
 						}
 					} else {
+						// TODO: this must be why concatenated words don't get split up.
 						if (c == '\u0F0B') {
 							passedFirstSyllable = true;
 							confirmedEnd = end;
@@ -231,50 +230,32 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		termAtt.setLength(end - start);
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
-		if (lemmatize && cmd != null) {
-			applyCmdToTermAtt(cmd);
-		}
 		assert(start != -1);
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
 		return true;
 	}
 
-	private boolean isSkrt(int c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private void applyCmdToTermAtt(String cmd) {
-		if (cmd.charAt(0) == '>') {
-			// resize buffer
-			char operation = cmd.charAt(1);
-			switch(operation) {
-			case 'A':
-				termAtt.setLength(termAtt.length() - 1);
-				break;
-			case 'B':
-				termAtt.setLength(termAtt.length() - 2);
-				break;
-			case 'C':
-				termAtt.setLength(termAtt.length() - 3);
-				break;
-			case 'D':
-				// replaces the last character by a འ
-				char[] buffer = termAtt.buffer();
-				buffer[termAtt.length()-1] = 'འ';
-				break;
-			default:
-				throw new IllegalArgumentException("the operation should be A, B, C or D.");
-			}
-			
-		} else if (cmd.charAt(0) == '/') {
-			// replace content
-			termAtt.setEmpty().append(cmd.substring(1, cmd.length()));
-		} else {
-			
-		}
-
+	private void reconstructLemmas(String cmd, String inflected) {
+		// a,-1+;-6+I/-'+a
+		int commaIdx = cmd.indexOf(',');
+		int slashIdx = cmd.indexOf('/');
+		String[] finalDiffs = cmd.substring(commaIdx+1, slashIdx).split(";"); // diff of every final
+		
+		String initial = cmd.substring(0, commaIdx);
+		String newInitial = cmd.substring(slashIdx+1, cmd.substring(slashIdx).indexOf('+')); 
+		
+		String[] totalLemmas = new String[finalDiffs.length];
+		int i = 0;
+		for (String diff: finalDiffs) {
+			int plusIdx = diff.indexOf('+');
+			String toDelete = diff.substring(1, plusIdx);
+			String toAdd = diff.substring(plusIdx+1);
+			int end = inflected.length()-Integer.parseInt(toDelete);
+			String lemma = inflected.substring(0, end)+toAdd;
+			totalLemmas[i] = lemma;
+			i++;
+		}		
 	}
 
 	@Override
@@ -292,9 +273,5 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		dataLen = 0;
 		finalOffset = 0;
 		ioBuffer.reset(); // make sure to reset the IO buffer!!
-	}
-
-	public void setLemmatize(boolean lemmatize) {
-		this.lemmatize = lemmatize;
 	}
 }

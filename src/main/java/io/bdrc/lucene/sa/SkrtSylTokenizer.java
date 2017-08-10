@@ -262,7 +262,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 	}
 
 	
-	protected boolean isSLP(int c) {
+	public static boolean isSLP(int c) {
 		/**
 		 * filters only legal SLP1 characters
 		 * @return true if c is a SLP character, else false
