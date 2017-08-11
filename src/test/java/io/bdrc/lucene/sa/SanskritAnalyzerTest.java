@@ -23,8 +23,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -142,27 +140,27 @@ public class SanskritAnalyzerTest
     	assertTokenStream(ts, expected);
     }
     
-    @Test
-    public void thoroughTestDeva2SlpFilter() throws Exception {
-    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
-    	String input = String.join(" ", lines);
-    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
-    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
-    	assertTokenStream(ts, expected);
-    }
-    
-    @Test
-    public void thoroughTestRoman2SlpFilter() throws Exception {
-    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
-    	String input = String.join(" ", lines);
-    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
-    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
-    	assertTokenStream(ts, expected);
-    }
+//    @Test
+//    public void thoroughTestDeva2SlpFilter() throws Exception {
+//    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
+//    	String input = String.join(" ", lines);
+//    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+//    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+//    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
+//    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
+//    	assertTokenStream(ts, expected);
+//    }
+//    
+//    @Test
+//    public void thoroughTestRoman2SlpFilter() throws Exception {
+//    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
+//    	String input = String.join(" ", lines);
+//    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+//    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+//    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
+//    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
+//    	assertTokenStream(ts, expected);
+//    }
     
 	public void produceOneToken(String toAnalyze, int startCharIndex, Trie t) {
 		// getting the root of the tree
@@ -207,31 +205,44 @@ public class SanskritAnalyzerTest
 		System.out.println("the command associated with this token in the Trie is: "+t.getCommandVal(lastCmdIndex));
 	}
 	
-	@Test
-	public void produceOneTokenTest() throws IOException
-	{
-		System.out.println("Testing Stemmer Trie (produceOneToken() )");
-		Trie test = new Trie(true);
-		test.add("aTa", "a");
-		test.add("rAja", "a");
-		test.add("kanyA", "a");
-		test.add("candravatI", "a");
-		test.add("nAmABinavarupayOvanasampannA", "a");
-		test.add("saKI", "a");
-		test.add("dvitIyA", "a");
-		test.add("ekasmin", "a");
-		test.add("mahA", "a");
-		test.add("utsava", "a");
-		test.add("divase", "a");
-		test.add("na", "a");
-		test.add("garam", "a");
-		test.add("nirikzamARAsti", "a");
-		Optimizer opt = new Optimizer();
-		test.reduce(opt);
-		produceOneToken("saKI", 0, test);
-		produceOneToken("saKIa", 0, test);
-	}
+//	@Test
+//	public void produceOneTokenTest() throws IOException
+//	{
+//		System.out.println("Testing Stemmer Trie (produceOneToken() )");
+//		Trie test = new Trie(true);
+//		test.add("aTa", "a");
+//		test.add("rAja", "a");
+//		test.add("kanyA", "a");
+//		test.add("candravatI", "a");
+//		test.add("nAmABinavarupayOvanasampannA", "a");
+//		test.add("saKI", "a");
+//		test.add("dvitIyA", "a");
+//		test.add("ekasmin", "a");
+//		test.add("mahA", "a");
+//		test.add("utsava", "a");
+//		test.add("divase", "a");
+//		test.add("na", "a");
+//		test.add("garam", "a");
+//		test.add("nirikzamARAsti", "a");
+//		Optimizer opt = new Optimizer();
+//		test.reduce(opt);
+//		produceOneToken("saKI", 0, test);
+//		produceOneToken("saKII", 0, test);
+//	}
     
+    @Test
+	public void compoundedWordTest() throws IOException
+	{
+		System.out.println("compounded test SkrtWordTokenizer()");
+		String input = "?rAjakanyA.";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("rAja", "kanyA");
+		System.out.print(input + " => ");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+	
     @Test
 	public void wordTokenizerTest() throws IOException
 	{

@@ -170,7 +170,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					assert(start == -1);
 					now = scanner.getRow(scanner.getRoot());
 					cmdIndex = now.getCmd((char) c);
-					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
+					potentialEnd = (cmdIndex >= 0); // TODO: see what this does for skrt: we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
@@ -212,7 +212,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+				if (length >= MAX_WORD_LEN || potentialEnd) { // buffer overflow! make sure to check for >= surrogate pair could break == test
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
