@@ -63,7 +63,8 @@ public class SanskritAnalyzerTest
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
 			}
-			System.out.println(String.join(" ", termList));
+			System.out.println("1 " + String.join(" ", expected));
+			System.out.println("2 " + String.join(" ", termList) + "\n");
 			assertThat(termList, is(expected));
 		} catch (IOException e) {
 			assertTrue(false);
@@ -73,6 +74,7 @@ public class SanskritAnalyzerTest
 	@BeforeClass
 	public static void init() {
 		System.out.println("before the test sequence");
+		System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
 	}
 
 	@Test
@@ -94,7 +96,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("pf", "Ti", "vyA", "lA", "Be", "pA", "la", "ne", "ca", "yA", "vanty", "a", "rTa", "SA", "strA", "Ri", "pU", "rva", "A", "cA", "ryEH", "pra", "sTA", "pi", "tA", "ni", "prA", "ya", "Sas", "tA", "ni", "saM", "hf", "tya^e", "kam", "i", "dam", "a", "rTa", "SA", "straM", "kf", "tam", "//");
 
-		System.out.print(input + "\n => \n");
+		System.out.println("0 " + input);
 		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
 		assertTokenStream(res, expected);
 	}
@@ -105,6 +107,7 @@ public class SanskritAnalyzerTest
     	System.out.println("Testing transliterationFilter()");
     	String input = "अथ राजकन्या चन्द्रवती नामाभिनवरुपयौवनसम्पन्ना सखीद्वितीयैकस्मिन्महोत्सवदिवसे नगरं निरिक्षमाणास्ति ।"; 
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
         assertTokenStream(ts, expected);
@@ -115,6 +118,7 @@ public class SanskritAnalyzerTest
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("kza", "kza", "kza");
     	assertTokenStream(ts, expected);
@@ -125,6 +129,7 @@ public class SanskritAnalyzerTest
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "\u1e5d \u1e5b\u0304 r\u0323\u0304"; // NFC, semi-NFD and NFD versions of ṝ 
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+    	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("F", "F", "F");
     	assertTokenStream(ts, expected);
@@ -135,6 +140,7 @@ public class SanskritAnalyzerTest
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "ẏ m̆b ē k͟h"; // normalizations and deletions 
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+    	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("y", "e");
     	assertTokenStream(ts, expected);
@@ -145,6 +151,7 @@ public class SanskritAnalyzerTest
 //    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
 //    	String input = String.join(" ", lines);
 //    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+//  	System.out.println("0 " + input);  	
 //    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
 //    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
 //    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
@@ -156,93 +163,40 @@ public class SanskritAnalyzerTest
 //    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
 //    	String input = String.join(" ", lines);
 //    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+//  	System.out.println("0 " + input);  	
 //    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
 //    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
 //    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
 //    	assertTokenStream(ts, expected);
 //    }
-    
-	public void produceOneToken(String toAnalyze, int startCharIndex, Trie t) {
-		// getting the root of the tree
-		System.out.println(toAnalyze);
-		Row now = t.getRow(t.getRoot());
-		int w; // temporary index variable
-		int lastCharIndex = -1; // the index of the last match in the string we analyze
-		int lastCmdIndex = -1; // the index (inside the Trie) of the cmd corresponding to the last match
-		
-		int i = startCharIndex; // the current index in the string
-		while (i < toAnalyze.length()) {
-			Character ch = toAnalyze.charAt(i); // get the current character
-			System.out.println("moving to index "+i+": "+ch);
-			w = now.getCmd(ch); // get the command associated with the current character at next step in the Trie
-			if (w >= 0) {
-				if (i >= toAnalyze.length()-1 || !SkrtSylTokenizer.isSLP(toAnalyze.charAt(i+1))) {
-						System.out.println("current row has an command for it, so it's a match");
-						lastCmdIndex = w;
-						lastCharIndex = i;
-					}
-            } else {
-            	System.out.println("current row does not have a command for it, no match");
-            }
-			w = now.getRef(ch); // get the next row if there is one
-			if (w >= 0) {
-				System.out.println("current row does have a reference for this char, further matches are possible, moving one row forward in the Trie");
-                now = t.getRow(w);
-            } else {
-            	System.out.println("current row does not have a reference to this char, so there's no further possible match, breaking the loop");
-                break; // no more steps possible in our research
-            }
-			i++;
-		}
-		//w = now.getCmd(toAnalyze.charAt(i));
-		if (lastCharIndex == -1) {
-			System.out.println("I have found nothing");
-			return;
-		}
-		System.out.println("I have found a token that goes from "+startCharIndex+" to "
-				+ lastCharIndex);
-		System.out.println("the substring is: "+toAnalyze.substring(startCharIndex, lastCharIndex+1));
-		System.out.println("the command associated with this token in the Trie is: "+t.getCommandVal(lastCmdIndex));
-	}
-	
-//	@Test
-//	public void produceOneTokenTest() throws IOException
-//	{
-//		System.out.println("Testing Stemmer Trie (produceOneToken() )");
-//		Trie test = new Trie(true);
-//		test.add("aTa", "a");
-//		test.add("rAja", "a");
-//		test.add("kanyA", "a");
-//		test.add("candravatI", "a");
-//		test.add("nAmABinavarupayOvanasampannA", "a");
-//		test.add("saKI", "a");
-//		test.add("dvitIyA", "a");
-//		test.add("ekasmin", "a");
-//		test.add("mahA", "a");
-//		test.add("utsava", "a");
-//		test.add("divase", "a");
-//		test.add("na", "a");
-//		test.add("garam", "a");
-//		test.add("nirikzamARAsti", "a");
-//		Optimizer opt = new Optimizer();
-//		test.reduce(opt);
-//		produceOneToken("saKI", 0, test);
-//		produceOneToken("saKII", 0, test);
-//	}
+
     
     @Test
-	public void compoundedWordTest() throws IOException
+	public void nonSandhiedCompoundTest() throws IOException
 	{
-		System.out.println("compounded test SkrtWordTokenizer()");
-		String input = "?rAjakanyA.";
+		System.out.println("non-sandhied compound test");
+		String input = "?budDaDarma.";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("rAja", "kanyA");
-		System.out.print(input + " => ");
+		List<String> expected = Arrays.asList("budDa", "Darma");
+		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
 	
+    @Test
+	public void SandhiedCompoundTest() throws IOException
+	{
+		System.out.println("sandhied compound test");
+		String input = "saKIdvitIyEkasminmahotsavadivase";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
     @Test
 	public void wordTokenizerTest() throws IOException
 	{
@@ -250,7 +204,7 @@ public class SanskritAnalyzerTest
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
-		System.out.print(input + " => ");
+		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
