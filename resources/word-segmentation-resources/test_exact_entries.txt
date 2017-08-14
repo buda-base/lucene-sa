@@ -1,52 +1,152 @@
-budDa,,/
-Darma,,/
-aTa,,/
-aTa,C,/- cC+C
+BudDA,a,-A+a/-+a
+BudDA,A,-A+a/-+A
+BudDe,i,-e+a/-+i
+BudDo,u,-o+a/-+u
+BudDo,U,-o+a/-+U
+BudDar,f,-ar+a/-+f
+BudDE,e,-E+a/-+e
+BudDE,E,-E+a/-+E
+BudDO,o,-O+a/-+o
+BudDO,O,-O+a/-+O
+BudDa,c,/- cC+c
+BudDa,C,/- cC+C
+DarmA,a,-A+a/-+a
+DarmA,A,-A+a/-+A
+Darme,i,-e+a/-+i
+Darmo,u,-o+a/-+u
+Darmo,U,-o+a/-+U
+Darmar,f,-ar+a/-+f
+DarmE,e,-E+a/-+e
+DarmE,E,-E+a/-+E
+DarmO,o,-O+a/-+o
+DarmO,O,-O+a/-+O
+Darma,c,/- cC+c
+Darma,C,/- cC+C
+aTA,a,-A+a/-+a
+aTA,A,-A+a/-+A
+aTe,i,-e+a/-+i
+aTo,u,-o+a/-+u
+aTo,U,-o+a/-+U
+aTar,f,-ar+a/-+f
+aTE,e,-E+a/-+e
+aTE,E,-E+a/-+E
+aTO,o,-O+a/-+o
+aTO,O,-O+a/-+O
 aTa,c,/- cC+c
-divase,,-1+a/
-divase,C,-1+a/- cC+C
-divase,a,-1+a/- '+a
-divase,a:A:i:u:U:f:e:E:o:O,-1+a/- +
-divase,c,-1+a/- cC+c
-divase,i,-1+a/-+i
-dvitIyA,,-1+a/
-dvitIyA,A,-1+a/-+A
-dvitIyA,C,-1+a/- C+C
-dvitIyA,a,-1+a/-+a
-dvitIyA,c,-1+a/- c+c
-ekasmin,,-4+/
-ekasmin,y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m,-4+/- +
-garam,,-1+/
-garam,a:A:i:I:u:U:f:e:E:o:O,-1+/- +
-kanyA,,/
-kanyA,,;-1+a/
-kanyA,A,-1+a/-+A
-kanyA,A,-2+a/-+A
-kanyA,A,;-1+a/-+A
-kanyA,C,;-1+a/- C+C
-kanyA,a,-1+a/-+a
-kanyA,a,;-1+a/-+a
-kanyA,c,;-1+a/- c+c
-mahA,,-1+at/
-mahA,A,-1+/-+A
-mahA,A,-1+at/-+A
-mahA,C,-1+at/- C+C
-mahA,a,-1+/-+a
-mahA,a,-1+at/-+a
-mahA,c,-1+at/- c+c
-na,,/
-na,C,/- cC+C
-na,c,/- cC+c
-rAja,,-0+n;-1+/
-rAja,A:i:u:U:f:e:E:o:O,-1+i;-0+n;-1+/- +
-rAja,C,-0+n;-1+/- cC+C
-rAja,c,-0+n;-1+/- cC+c
-saKI,,-1+i/
-saKI,C,-1+i/- C+C
-saKI,a:A:i:u:U:f:e:E:o:O,-1+i/- +
-saKI,c,-1+i/- c+c
-saKI,i,-1+i/-+i
-utsava,,/
-utsava,A:i:u:U:f:e:E:o:O,/- +
-utsava,C,/- cC+C
+aTa,C,/- cC+C
+rAjA,a,-A+a/-+a
+rAjA,A,-A+a/-+A
+rAje,i,-e+a/-+i
+rAjo,u,-o+a/-+u
+rAjo,U,-o+a/-+U
+rAjar,f,-ar+a/-+f
+rAjE,e,-E+a/-+e
+rAjE,E,-E+a/-+E
+rAjO,o,-O+a/-+o
+rAjO,O,-O+a/-+O
+rAja,c,/- cC+c
+rAja,C,/- cC+C
+kanyA,a,/-+a
+kanyA,A,/-+A
+kanye,i,-e+A/-+i
+kanyo,u,-o+A/-+u
+kanyo,U,-o+A/-+U
+kanyar,f,-ar+A/-+f
+kanyE,e,-E+A/-+e
+kanyE,E,-E+A/-+E
+kanyO,o,-O+A/-+o
+kanyO,O,-O+A/-+O
+kanyA,c,/- c+c
+kanyA,C,/- C+C
+candravatya,a,-ya+I/-+a
+candravatyA,A,-yA+I/-+A
+candravatI,i,/-+i
+candravatyu,u,-yu+I/-+u
+candravatyU,U,-yU+I/-+U
+candravatyf,f,-yf+I/-+f
+candravatye,e,-ye+I/-+e
+candravatyE,E,-yE+I/-+E
+candravatyo,o,-yo+I/-+o
+candravatyO,O,-yO+I/-+O
+candravatI,a:A:i:u:U:f:e:E:o:O,-I+I/- +
+candravatI,c,/- c+c
+candravatI,C,/- C+C
+saKya,a,-ya+I/-+a
+saKyA,A,-yA+I/-+A
+saKI,i,/-+i
+saKyu,u,-yu+I/-+u
+saKyU,U,-yU+I/-+U
+saKyf,f,-yf+I/-+f
+saKye,e,-ye+I/-+e
+saKyE,E,-yE+I/-+E
+saKyo,o,-yo+I/-+o
+saKyO,O,-yO+I/-+O
+saKI,a:A:i:u:U:f:e:E:o:O,-I+I/- +
+saKI,c,/- c+c
+saKI,C,/- C+C
+dvitIyA,a,/-+a
+dvitIyA,A,/-+A
+dvitIye,i,-e+A/-+i
+dvitIyo,u,-o+A/-+u
+dvitIyo,U,-o+A/-+U
+dvitIyar,f,-ar+A/-+f
+dvitIyE,e,-E+A/-+e
+dvitIyE,E,-E+A/-+E
+dvitIyO,o,-O+A/-+o
+dvitIyO,O,-O+A/-+O
+dvitIyA,c,/- c+c
+dvitIyA,C,/- C+C
+ekasmin,y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m,/- +
+ekasmiM,l,-M+n/- +
+ekasmiY,S:j:J,-Y+n/- +
+ekasmiY,S,-Y+n/- C+S
+ekasmiMS,c:C,-MS+n/- +
+ekasmiMz,w:W,-Mz+n/- +
+ekasmiR,q:Q,-R+n/- +
+ekasmiMs,t:T,-Ms+n/- +
+ekasminn,a:A:i:I:u:U:f:e:E:o:O,-inn+in/- +
+ekasmin,,/
+mahA,a,/-+a
+mahA,A,/-+A
+mahe,i,-e+A/-+i
+maho,u,-o+A/-+u
+maho,U,-o+A/-+U
+mahar,f,-ar+A/-+f
+mahE,e,-E+A/-+e
+mahE,E,-E+A/-+E
+mahO,o,-O+A/-+o
+mahO,O,-O+A/-+O
+mahA,c,/- c+c
+mahA,C,/- C+C
+utsavA,a,-A+a/-+a
+utsavA,A,-A+a/-+A
+utsave,i,-e+a/-+i
+utsavo,u,-o+a/-+u
+utsavo,U,-o+a/-+U
+utsavar,f,-ar+a/-+f
+utsavE,e,-E+a/-+e
+utsavE,E,-E+a/-+E
+utsavO,o,-O+a/-+o
+utsavO,O,-O+a/-+O
 utsava,c,/- cC+c
+utsava,C,/- cC+C
+divase,a,-e+e/- '+a
+divasa,A:i:u:U:f:e:E:o:O,-a+e/- +
+divase,a:A:i:u:U:f:e:E:o:O,-e+e/- +
+divase,c,/- cC+c
+divase,C,/- cC+C
+nA,a,-A+a/-+a
+nA,A,-A+a/-+A
+ne,i,-e+a/-+i
+no,u,-o+a/-+u
+no,U,-o+a/-+U
+nar,f,-ar+a/-+f
+nE,e,-E+a/-+e
+nE,E,-E+a/-+E
+nO,o,-O+a/-+o
+nO,O,-O+a/-+O
+na,c,/- cC+c
+na,C,/- cC+C
+garaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m,-M+m/- +
+garam,a:A:i:I:u:U:f:e:E:o:O,/- +
+garam,,/

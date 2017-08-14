@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.Tokenizer;
@@ -43,11 +44,10 @@ import io.bdrc.lucene.stemmer.Trie;
  * <br> 
  *  - Unknown syllables are tokenized as separate words.
  * <br>
- *  - All the punctuation is discarded from the produced tokens, including the tsheg that usually follows "ང". 
+ *  - All the punctuation is discarded from the produced tokens 
  * <p>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
- * For example, if both དོན and དོན་གྲུབ exist in the Trie, དོན་གྲུབ will be returned every time the sequence དོན + གྲུབ is found.<br>
- * The sentence སེམས་ཅན་གྱི་དོན་གྲུབ་པར་ཤོག will be tokenized into "སེམས་ཅན + གྱི + དོན་གྲུབ + པར + ཤོག" (སེམས་ཅན + གྱི + དོན + གྲུབ་པར + ཤོག expected).   
+ * For example, (...)   
  * 
  * Derived from Lucene 6.4.1 analysis.
  * 
@@ -62,7 +62,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	// term offset, positionIncrement and type
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
-	private boolean lemmatize = true;
 
 	/**
 	 * Constructs a SkrtWordTokenizer using the file designed by filename
@@ -170,7 +169,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					assert(start == -1);
 					now = scanner.getRow(scanner.getRoot());
 					cmdIndex = now.getCmd((char) c);
-					potentialEnd = (cmdIndex >= 0); // TODO: see what this does for skrt: we may have caught the end, but we must check if next character is a tsheg
+					potentialEnd = (cmdIndex >= 0); // TODO: see what this does for skrt: "we may have caught the end, but we must check if next character is a tsheg"
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
@@ -184,24 +183,25 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 					if (now == null) {
 						if (!passedFirstSyllable) {
-							// TODO: is this needed for skrt?
-							if (c == '\u0F0B') {
-								confirmedEnd = end;
-								confirmedEndIndex = bufferIndex;
-								break;
-							}
+// TODO: is this needed for skrt?
+//							if (c == '\u0F0B') {
+//								confirmedEnd = end;
+//								confirmedEndIndex = bufferIndex;
+//								break;
+//							}
 							end += charCount; // else we're just passing
 						} else {
 							break;
 						}
 					} else {
-						// TODO: this must be why concatenated words don't get split up.
-						if (c == '\u0F0B') {
-							passedFirstSyllable = true;
-							confirmedEnd = end;
-							confirmedEndIndex = bufferIndex;
-						}
+// TODO: idem
+//						if (c == '\u0F0B') {
+//							passedFirstSyllable = true;
+//							confirmedEnd = end;
+//							confirmedEndIndex = bufferIndex;
+//						}
 						end += charCount;
+
 						cmdIndex = now.getCmd((char) c);
 						potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 						if (potentialEnd) {
@@ -210,9 +210,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						w = now.getRef((char) c);
 						now = (w >= 0) ? scanner.getRow(w) : null;
 					}
+					// find if the node linked in now is the unsandhied one from the command
+//					String rowKey = now.getKey();
+//					cmd = scanner.getCommandVal(cmdIndex);
+//					if (cmd != null && cmd.contains(rowKey)) {
+//						
+//					}
 				}
+//				bufferIndex = bufferIndex - charCount;
+//				length = length - charCount;
+//				end = end - charCount;
+//				previousChar = c;
+//              cells  break;
 				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-				if (length >= MAX_WORD_LEN || potentialEnd) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+					break;
+				}
+				if (potentialEnd) { // if 
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
@@ -233,29 +247,43 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		assert(start != -1);
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
+//		ArrayList lemmas = reconstructLemmas(cmd, termAtt.toString());
 		return true;
 	}
+	
+	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
+		// ~/|a:A:i:u:U:f:e:E:o:O~/- +|c~/- cC+c|C~/- cC+C
+		ArrayList<String> totalLemmas = new ArrayList<String>();
+		// 1. find boundaries between the entries of the same inflected form
+		ArrayList<Integer> entriesBoundaries = new ArrayList<Integer>();
+		entriesBoundaries.add(0);
+		for (int i = 0; i < cmd.length(); i++) {
+			if (cmd.charAt(i) == '|') {
+				entriesBoundaries.add(i);
+			}
+		}
+		for (int idx = 0; idx < entriesBoundaries.size(); idx++) {
+			int startIdx = entriesBoundaries.get(idx);
+			int endIdx = entriesBoundaries.get(idx+1);
+			int tildaIdx = cmd.substring(startIdx, endIdx).indexOf('~');
+			int slashIdx = cmd.substring(startIdx, endIdx).indexOf('/');
 
-	private void reconstructLemmas(String cmd, String inflected) {
-		// a,-1+;-6+I/-'+a
-		int commaIdx = cmd.indexOf(',');
-		int slashIdx = cmd.indexOf('/');
-		String[] finalDiffs = cmd.substring(commaIdx+1, slashIdx).split(";"); // diff of every final
-		
-		String initial = cmd.substring(0, commaIdx);
-		String newInitial = cmd.substring(slashIdx+1, cmd.substring(slashIdx).indexOf('+')); 
-		
-		String[] totalLemmas = new String[finalDiffs.length];
-		int i = 0;
-		for (String diff: finalDiffs) {
-			int plusIdx = diff.indexOf('+');
-			String toDelete = diff.substring(1, plusIdx);
-			String toAdd = diff.substring(plusIdx+1);
-			int end = inflected.length()-Integer.parseInt(toDelete);
-			String lemma = inflected.substring(0, end)+toAdd;
-			totalLemmas[i] = lemma;
-			i++;
-		}		
+			String[] finalDiffs = cmd.substring(tildaIdx+1, slashIdx).split(":"); // diff of every final
+
+//maybe these are not useful
+//			String initial = cmd.substring(0, tildaIdx);
+//			String newInitial = cmd.substring(slashIdx+1, cmd.substring(slashIdx).indexOf('+')); 
+			
+			for (String diff: finalDiffs) {
+				int plusIdx = diff.indexOf('+');
+				String toDelete = diff.substring(1, plusIdx);
+				String toAdd = diff.substring(plusIdx+1);
+				int end = inflected.length()-Integer.parseInt(toDelete);
+				String lemma = inflected.substring(0, end)+toAdd;
+				totalLemmas.add(lemma);
+			}
+		}
+		return totalLemmas;
 	}
 
 	@Override

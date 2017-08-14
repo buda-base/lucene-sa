@@ -37,9 +37,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
-import io.bdrc.lucene.stemmer.Optimizer;
-import io.bdrc.lucene.stemmer.Row;
-import io.bdrc.lucene.stemmer.Trie;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -188,9 +185,9 @@ public class SanskritAnalyzerTest
 	public void SandhiedCompoundTest() throws IOException
 	{
 		System.out.println("sandhied compound test");
-		String input = "saKIdvitIyEkasminmahotsavadivase";
+		String input = "dvitIyEkasminmahotsavadivase";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase");
+		List<String> expected = Arrays.asList("dvitIyA", "ekasmin", "mahA", "utsava", "divase");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -205,7 +202,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_exact_entries.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_entries.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
