@@ -169,7 +169,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					assert(start == -1);
 					now = scanner.getRow(scanner.getRoot());
 					cmdIndex = now.getCmd((char) c);
-					potentialEnd = (cmdIndex >= 0); // TODO: see what this does for skrt: "we may have caught the end, but we must check if next character is a tsheg"
+					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
@@ -182,26 +182,26 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 					}
 					if (now == null) {
+						
 						if (!passedFirstSyllable) {
-// TODO: is this needed for skrt?
-//							if (c == '\u0F0B') {
-//								confirmedEnd = end;
-//								confirmedEndIndex = bufferIndex;
-//								break;
-//							}
+							// we're in a broken state (in the first syllable and no match)
+							// we just want to go to the end of the syllable
+							if (c == '\u0F0B') {
+								confirmedEnd = end;
+								confirmedEndIndex = bufferIndex;
+								break;
+							}
 							end += charCount; // else we're just passing
 						} else {
 							break;
 						}
 					} else {
-// TODO: idem
-//						if (c == '\u0F0B') {
-//							passedFirstSyllable = true;
-//							confirmedEnd = end;
-//							confirmedEndIndex = bufferIndex;
-//						}
+						if (c == '\u0F0B') {
+							passedFirstSyllable = true;
+							confirmedEnd = end;
+							confirmedEndIndex = bufferIndex;
+						}
 						end += charCount;
-
 						cmdIndex = now.getCmd((char) c);
 						potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 						if (potentialEnd) {
@@ -210,23 +210,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						w = now.getRef((char) c);
 						now = (w >= 0) ? scanner.getRow(w) : null;
 					}
-					// find if the node linked in now is the unsandhied one from the command
-//					String rowKey = now.getKey();
-//					cmd = scanner.getCommandVal(cmdIndex);
-//					if (cmd != null && cmd.contains(rowKey)) {
-//						
-//					}
 				}
-//				bufferIndex = bufferIndex - charCount;
-//				length = length - charCount;
-//				end = end - charCount;
-//				previousChar = c;
-//              cells  break;
 				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
-					break;
-				}
-				if (potentialEnd) { // if 
+				if (length >= MAX_WORD_LEN || potentialEnd) { // buffer overflow! make sure to check for >= surrogate pair could break == test
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
@@ -244,10 +230,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		termAtt.setLength(end - start);
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
+		if (cmd != null) {
+			reconstructLemmas(cmd, buffer.toString());
+		}
 		assert(start != -1);
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
-//		ArrayList lemmas = reconstructLemmas(cmd, termAtt.toString());
 		return true;
 	}
 	
