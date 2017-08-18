@@ -176,9 +176,9 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("budDa", "Darma");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_entries.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/budDaDarma_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
 	}
 	
     @Test

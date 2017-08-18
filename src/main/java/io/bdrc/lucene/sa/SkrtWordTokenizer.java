@@ -23,7 +23,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.Tokenizer;
@@ -117,6 +119,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
+	private HashMap extraTokens;
+
+	private boolean emitExtraTokens;
+
+	private ArrayList<String> initialDiff = null;
+
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -130,6 +138,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public final boolean incrementToken() throws IOException {
 		//System.out.println("\nincrement token\n");
 		clearAttributes();
+		
+		if (emitExtraTokens) {
+			addExtraToken();
+			return true;
+		}
+		
 		int length = 0;
 		int start = -1; // this variable is always initialized
 		int end = -1;
@@ -140,7 +154,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int cmdIndex = -1;
 		int potentialEndCmdIndex = -1;
 		boolean potentialEnd = false;
-		boolean passedFirstSyllable = false;
 		Row now = null;
 		char[] buffer = termAtt.buffer();
 		while (true) {
@@ -181,26 +194,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 					}
-					if (now == null) {
-						
-						if (!passedFirstSyllable) {
-							// we're in a broken state (in the first syllable and no match)
-							// we just want to go to the end of the syllable
-							if (c == '\u0F0B') {
-								confirmedEnd = end;
-								confirmedEndIndex = bufferIndex;
-								break;
-							}
-							end += charCount; // else we're just passing
-						} else {
-							break;
-						}
-					} else {
-						if (c == '\u0F0B') {
-							passedFirstSyllable = true;
-							confirmedEnd = end;
-							confirmedEndIndex = bufferIndex;
-						}
+					if (now != null) {
 						end += charCount;
 						cmdIndex = now.getCmd((char) c);
 						potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
@@ -212,7 +206,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-				if (length >= MAX_WORD_LEN || potentialEnd) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+					break;
+				}
+				if (potentialEnd) {
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
@@ -231,7 +228,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		termAtt.setLength(end - start);
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
 		if (cmd != null) {
-			reconstructLemmas(cmd, buffer.toString());
+			extraTokens = reconstructLemmas(cmd, termAtt.toString());
+			if (extraTokens.size() != 0) {
+				emitExtraTokens = true;
+			}
 		}
 		assert(start != -1);
 		finalOffset = correctOffset(end);
@@ -239,37 +239,107 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return true;
 	}
 	
-	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
-		// ~/|a:A:i:u:U:f:e:E:o:O~/- +|c~/- cC+c|C~/- cC+C
-		ArrayList<String> totalLemmas = new ArrayList<String>();
-		// 1. find boundaries between the entries of the same inflected form
-		ArrayList<Integer> entriesBoundaries = new ArrayList<Integer>();
-		entriesBoundaries.add(0);
-		for (int i = 0; i < cmd.length(); i++) {
-			if (cmd.charAt(i) == '|') {
-				entriesBoundaries.add(i);
-			}
+	private void addExtraToken() {
+		if (extraTokens.size() > 0) {
+			termAtt.setEmpty().append(extraTokens.get(0).toString());
+			extraTokens.remove(0);
+		} else {
+			emitExtraTokens = false;
 		}
-		for (int idx = 0; idx < entriesBoundaries.size(); idx++) {
-			int startIdx = entriesBoundaries.get(idx);
-			int endIdx = entriesBoundaries.get(idx+1);
-			int tildaIdx = cmd.substring(startIdx, endIdx).indexOf('~');
-			int slashIdx = cmd.substring(startIdx, endIdx).indexOf('/');
-
-			String[] finalDiffs = cmd.substring(tildaIdx+1, slashIdx).split(":"); // diff of every final
-
-//maybe these are not useful
-//			String initial = cmd.substring(0, tildaIdx);
-//			String newInitial = cmd.substring(slashIdx+1, cmd.substring(slashIdx).indexOf('+')); 
+	}
+	
+	private HashMap reconstructLemmas(String cmd, String inflected) {
+		/**
+		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
+		 * 
+		 * This is how cmd is structured, with the names used in this method:
+		 * 
+		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
+		 * [inflected],[cmd                                                                                  ]
+		 *             [entry                                                              ]|[entry          ]
+		 *             [initials               ]~[diffs                                    ]
+		 *             [initial]:[initial]:[...]~[diffFinals                 ]/[diffInitial]
+		 *                                       [diffFinal];[diffFinal];[...]
+		 * 
+		 * [diffFinal                                                      ]
+		 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
+		 * 
+		 * [diffInitial                                   ]
+		 * [-<initialCharsSandhied>+<initialCharsOriginal>]
+		 * 
+		 * @param inflected the basis for reconstructing the lemmas
+		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
+		 * @return: all the reconstructed lemmas. 
+		 */
+		HashMap totalLemmas = new HashMap();
+		String[] entries = cmd.split("\\|");
+		for (String entry: entries) {
+			String[] entryParts = entry.split("~");
+			assert(entryParts.length == 2);
 			
-			for (String diff: finalDiffs) {
-				int plusIdx = diff.indexOf('+');
-				String toDelete = diff.substring(1, plusIdx);
-				String toAdd = diff.substring(plusIdx+1);
-				int end = inflected.length()-Integer.parseInt(toDelete);
-				String lemma = inflected.substring(0, end)+toAdd;
-				totalLemmas.add(lemma);
-			}
+			String initials = entryParts[0];
+			
+			String diffs = entryParts[1];
+			
+			String[] diffParts = diffs.split("/");
+			if (diffParts.length == 0) {
+				// there is no diff to apply. inflected is already the lemma
+			} else if (diffParts.length == 2) {
+				// there is a diff. It is applied only if a sandhi exists
+				String diffInitial = diffParts[1];
+				String[] diffInitialList = diffInitial.substring(1).split("\\+"); // if (initialCharsSandhied == nextCurrentChar) {sandhi is valid}
+				
+				// parse diffInitial
+				
+				String initialCharsSandhied = null;
+				String initialCharsOriginal = null;
+				if (diffInitialList.length == 1 && diffInitialList[0].charAt(0) == ' ') { // diffInitial contains "- +" 
+					// the sandhi character merges the final and the initial
+					initialCharsSandhied = "";
+				} else if (diffInitialList.length == 2){
+					initialCharsSandhied = diffInitialList[0];
+					initialCharsOriginal = diffInitialList[1];
+				} else {
+					System.out.println("cmd is corrupted."); // should never happen
+				}
+				
+				// find nextChar, the first character of next word
+				int nextChar = -1;
+				if (initialCharsSandhied.isEmpty()) {
+					nextChar = inflected.charAt(inflected.length()-1);
+					initialCharsSandhied = Character.toString((char) nextChar);
+				} else {
+					nextChar = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+				}
+				
+				// fill initialDiff for next call of incrementToken() so next word can be unsandhied and found in the Trie 
+				if (initialCharsSandhied.equals(Character.toString((char) nextChar))) {
+					if (initialDiff == null) {
+						initialDiff = new ArrayList<String>();
+					}
+					initialDiff.add(initialCharsSandhied+'+'+initialCharsOriginal);
+				}
+				
+				// checks wether the sandhi in entry can be applied between the current word and the next
+				if ((initials.contains(initialCharsOriginal))
+						|| initialCharsSandhied.equals(Character.toString((char) nextChar))) {
+					// applying the diffs finds all lemmas
+					String diffFinals = diffParts[0];
+					String[] diffFinalsList = diffFinals.split(";");
+					for (String diffFinal: diffFinalsList) {
+						//parse diffFinal
+						String[] diffFinalList = diffFinal.substring(1).split("\\+");
+						assert(diffFinalList.length == 2);
+						int toDelete = Integer.parseInt(diffFinalList[0]);
+						String toAdd = diffFinalList[1];
+						
+						String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
+						totalLemmas.put(lemma, true);
+					}
+				}
+			} else {
+				System.out.println("cmd is corrupted."); // should never happen
+			}	
 		}
 		return totalLemmas;
 	}
@@ -289,5 +359,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		dataLen = 0;
 		finalOffset = 0;
 		ioBuffer.reset(); // make sure to reset the IO buffer!!
+		
+		// for emitting multiple tokens
+		emitExtraTokens = false;
 	}
 }

@@ -1,0 +1,2265 @@
+DarmA,a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C
+DarmABiH,~-4+an;-4+a/
+DarmABis,~-4+an;-4+a/
+DarmAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+an;-5+a/- +
+DarmAByAm,~-5+an;-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+an;-5+a/- +
+DarmAByaH,~-5+an;-5+a/
+DarmAByas,~-5+an;-5+a/
+DarmAH,~-2+an;-2+a/
+DarmAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+an;-2+a/- +|l~-2+a/- +
+DarmAMS,c:C~-3+a/- +
+DarmAMs,t:T~-3+a/- +
+DarmAMz,w:W~-3+a/- +
+DarmAR,q:Q~-2+a/- +
+DarmARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+an;-4+a/- +
+DarmARAm,~-4+an;-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+an;-4+a/- +
+DarmARAvA,A~-5+an/-+A
+DarmARAvE,E~-5+an/-+E
+DarmARAvO,O~-5+an/-+O
+DarmARAvU,U~-5+an/-+U
+DarmARAva,a~-5+an/-+a
+DarmARAve,e~-5+an/-+e
+DarmARAvf,f~-5+an/-+f
+DarmARAvi,i~-5+an/-+i
+DarmARAvo,o~-5+an/-+o
+DarmARAvu,u~-5+an/-+u
+DarmARI,i~-3+an;-3+a/-+i
+DarmARO,~-3+an/|c~-3+an/- c+c|C~-3+an/- C+C
+DarmARaH,~-4+an/
+DarmARaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+an/- +
+DarmARam,~-4+an/|a:A:i:I:u:U:f:e:E:o:O~-4+an/- +
+DarmARas,~-4+an/
+DarmARi,~-3+an;-3+a/|a:A:i:u:U:f:e:E:o:O~-3+an;-3+a/- +|c~-3+an;-3+a/- cC+c|C~-3+an;-3+a/- cC+C
+DarmARyA,A~-4+an;-4+a/-+A
+DarmARyE,E~-4+an;-4+a/-+E
+DarmARyO,O~-4+an;-4+a/-+O
+DarmARyU,U~-4+an;-4+a/-+U
+DarmARya,a~-4+an;-4+a/-+a
+DarmARye,e~-4+an;-4+a/-+e
+DarmARyf,f~-4+an;-4+a/-+f
+DarmARyo,o~-4+an;-4+a/-+o
+DarmARyu,u~-4+an;-4+a/-+u
+DarmAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmAj,j:J~-2+a/- +
+DarmAl,l~-2+a/- +
+DarmAm,~-2+an;-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+an;-2+a/- +
+DarmAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmAnubanDiSlokacaturdaSI,~/|i~/-+i|a:A:i:u:U:f:e:E:o:O~/- +|c~/- c+c|C~/- C+C
+DarmAnubanDiSlokacaturdaSIBiH,~-3+/
+DarmAnubanDiSlokacaturdaSIBis,~-3+/
+DarmAnubanDiSlokacaturdaSIByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+/- +
+DarmAnubanDiSlokacaturdaSIByAm,~-4+/|a:A:i:I:u:U:f:e:E:o:O~-4+/- +
+DarmAnubanDiSlokacaturdaSIByaH,~-4+/
+DarmAnubanDiSlokacaturdaSIByas,~-4+/
+DarmAnubanDiSlokacaturdaSIH,~-1+/
+DarmAnubanDiSlokacaturdaSIM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+DarmAnubanDiSlokacaturdaSIkAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-6+/- +
+DarmAnubanDiSlokacaturdaSIkAByAm,~-6+/|a:A:i:I:u:U:f:e:E:o:O~-6+/- +
+DarmAnubanDiSlokacaturdaSIkAH,~-3+/
+DarmAnubanDiSlokacaturdaSIkAM,l~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAMS,c:C~-4+/- +
+DarmAnubanDiSlokacaturdaSIkAMs,t:T~-4+/- +
+DarmAnubanDiSlokacaturdaSIkAMz,w:W~-4+/- +
+DarmAnubanDiSlokacaturdaSIkAR,q:Q~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAY,S:j:J~-3+/- +|S~-3+/- C+S
+DarmAnubanDiSlokacaturdaSIkAc,S~-3+/- C+S|c:C~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAd,y:r:v:g:G:d:D:b:B~-3+/- +|h~-3+/- D+h|a:A:i:I:u:U:f:e:E:o:O~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAj,j:J~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAl,l~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAn,n:m~-3+/- +|~-3+/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+/- +
+DarmAnubanDiSlokacaturdaSIkAnAm,~-5+/|a:A:i:I:u:U:f:e:E:o:O~-5+/- +
+DarmAnubanDiSlokacaturdaSIkAnI,i~-4+/-+i
+DarmAnubanDiSlokacaturdaSIkAni,~-4+/|a:A:i:u:U:f:e:E:o:O~-4+/- +|c~-4+/- cC+c|C~-4+/- cC+C
+DarmAnubanDiSlokacaturdaSIkAnyA,A~-5+/-+A
+DarmAnubanDiSlokacaturdaSIkAnyE,E~-5+/-+E
+DarmAnubanDiSlokacaturdaSIkAnyO,O~-5+/-+O
+DarmAnubanDiSlokacaturdaSIkAnyU,U~-5+/-+U
+DarmAnubanDiSlokacaturdaSIkAnya,a~-5+/-+a
+DarmAnubanDiSlokacaturdaSIkAnye,e~-5+/-+e
+DarmAnubanDiSlokacaturdaSIkAnyf,f~-5+/-+f
+DarmAnubanDiSlokacaturdaSIkAnyo,o~-5+/-+o
+DarmAnubanDiSlokacaturdaSIkAnyu,u~-5+/-+u
+DarmAnubanDiSlokacaturdaSIkAq,q:Q~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAs,~-3+/
+DarmAnubanDiSlokacaturdaSIkAt,~-3+/|z:s:k:K:t:T:p:P~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAvA,A~-4+/-+A
+DarmAnubanDiSlokacaturdaSIkAvE,E~-4+/-+E
+DarmAnubanDiSlokacaturdaSIkAvO,O~-4+/-+O
+DarmAnubanDiSlokacaturdaSIkAvU,U~-4+/-+U
+DarmAnubanDiSlokacaturdaSIkAva,a~-4+/-+a
+DarmAnubanDiSlokacaturdaSIkAve,e~-4+/-+e
+DarmAnubanDiSlokacaturdaSIkAvf,f~-4+/-+f
+DarmAnubanDiSlokacaturdaSIkAvi,i~-4+/-+i
+DarmAnubanDiSlokacaturdaSIkAvo,o~-4+/-+o
+DarmAnubanDiSlokacaturdaSIkAvu,u~-4+/-+u
+DarmAnubanDiSlokacaturdaSIkAw,w:W~-3+/- +
+DarmAnubanDiSlokacaturdaSIkAyA,a~-4+/-+a|A~-4+/-+A
+DarmAnubanDiSlokacaturdaSIkAyE,e~-4+/-+e|E~-4+/-+E
+DarmAnubanDiSlokacaturdaSIkAyO,o~-4+/-+o|O~-4+/-+O
+DarmAnubanDiSlokacaturdaSIkAya,~-4+/|c~-4+/- cC+c|C~-4+/- cC+C
+DarmAnubanDiSlokacaturdaSIkAyar,f~-5+/-+f
+DarmAnubanDiSlokacaturdaSIkAye,i~-4+/-+i
+DarmAnubanDiSlokacaturdaSIkAyo,u~-4+/-+u|U~-4+/-+U
+DarmAnubanDiSlokacaturdaSIkEH,~-3+/
+DarmAnubanDiSlokacaturdaSIkEs,~-3+/
+DarmAnubanDiSlokacaturdaSIkO,~-2+/|c~-2+/- c+c|C~-2+/- C+C
+DarmAnubanDiSlokacaturdaSIka,A:i:u:U:f:e:E:o:O~-2+/- +
+DarmAnubanDiSlokacaturdaSIkaH,~-3+/
+DarmAnubanDiSlokacaturdaSIkaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+/- +
+DarmAnubanDiSlokacaturdaSIkam,~-3+/|a:A:i:I:u:U:f:e:E:o:O~-3+/- +
+DarmAnubanDiSlokacaturdaSIkas,~-3+/
+DarmAnubanDiSlokacaturdaSIkasyA,a~-5+/-+a|A~-5+/-+A
+DarmAnubanDiSlokacaturdaSIkasyE,e~-5+/-+e|E~-5+/-+E
+DarmAnubanDiSlokacaturdaSIkasyO,o~-5+/-+o|O~-5+/-+O
+DarmAnubanDiSlokacaturdaSIkasya,~-5+/|c~-5+/- cC+c|C~-5+/- cC+C
+DarmAnubanDiSlokacaturdaSIkasyar,f~-6+/-+f
+DarmAnubanDiSlokacaturdaSIkasye,i~-5+/-+i
+DarmAnubanDiSlokacaturdaSIkasyo,u~-5+/-+u|U~-5+/-+U
+DarmAnubanDiSlokacaturdaSIkayoH,~-5+/
+DarmAnubanDiSlokacaturdaSIkayos,~-5+/
+DarmAnubanDiSlokacaturdaSIke,~-2+/|a~-2+/- '+a|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+DarmAnubanDiSlokacaturdaSIkeByaH,~-6+/
+DarmAnubanDiSlokacaturdaSIkeByas,~-6+/
+DarmAnubanDiSlokacaturdaSIkenA,a~-4+/-+a|A~-4+/-+A
+DarmAnubanDiSlokacaturdaSIkenE,e~-4+/-+e|E~-4+/-+E
+DarmAnubanDiSlokacaturdaSIkenO,o~-4+/-+o|O~-4+/-+O
+DarmAnubanDiSlokacaturdaSIkena,~-4+/|c~-4+/- cC+c|C~-4+/- cC+C
+DarmAnubanDiSlokacaturdaSIkenar,f~-5+/-+f
+DarmAnubanDiSlokacaturdaSIkene,i~-4+/-+i
+DarmAnubanDiSlokacaturdaSIkeno,u~-4+/-+u|U~-4+/-+U
+DarmAnubanDiSlokacaturdaSIkezU,u~-4+/-+u|U~-4+/-+U
+DarmAnubanDiSlokacaturdaSIkezu,~-4+/|a:A:i:u:U:f:e:E:o:O~-4+/- +|c~-4+/- cC+c|C~-4+/- cC+C
+DarmAnubanDiSlokacaturdaSIkezvA,A~-5+/-+A
+DarmAnubanDiSlokacaturdaSIkezvE,E~-5+/-+E
+DarmAnubanDiSlokacaturdaSIkezvO,O~-5+/-+O
+DarmAnubanDiSlokacaturdaSIkezva,a~-5+/-+a
+DarmAnubanDiSlokacaturdaSIkezve,e~-5+/-+e
+DarmAnubanDiSlokacaturdaSIkezvf,f~-5+/-+f
+DarmAnubanDiSlokacaturdaSIkezvi,i~-5+/-+i
+DarmAnubanDiSlokacaturdaSIkezvo,o~-5+/-+o
+DarmAnubanDiSlokacaturdaSIm,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+DarmAnubanDiSlokacaturdaSInAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+/- +
+DarmAnubanDiSlokacaturdaSInAm,~-3+/|a:A:i:I:u:U:f:e:E:o:O~-3+/- +
+DarmAnubanDiSlokacaturdaSIs,~-1+/
+DarmAnubanDiSlokacaturdaSIzU,u~-2+/-+u|U~-2+/-+U
+DarmAnubanDiSlokacaturdaSIzu,~-2+/|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+DarmAnubanDiSlokacaturdaSIzvA,A~-3+/-+A
+DarmAnubanDiSlokacaturdaSIzvE,E~-3+/-+E
+DarmAnubanDiSlokacaturdaSIzvO,O~-3+/-+O
+DarmAnubanDiSlokacaturdaSIzva,a~-3+/-+a
+DarmAnubanDiSlokacaturdaSIzve,e~-3+/-+e
+DarmAnubanDiSlokacaturdaSIzvf,f~-3+/-+f
+DarmAnubanDiSlokacaturdaSIzvi,i~-3+/-+i
+DarmAnubanDiSlokacaturdaSIzvo,o~-3+/-+o
+DarmAnubanDiSlokacaturdaSi,~-1+I/|a:A:i:u:U:f:e:E:o:O~-1+I/- +|c~-1+I/- cC+c|C~-1+I/- cC+C
+DarmAnubanDiSlokacaturdaSyA,A~-2+I/-+A|~-2+I/|a~-2+I/-+a|c~-2+I/- c+c|C~-2+I/- C+C|a:A:i:u:U:f:e:E:o:O~-2+I/- +
+DarmAnubanDiSlokacaturdaSyAH,~-3+I/
+DarmAnubanDiSlokacaturdaSyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+I/- +
+DarmAnubanDiSlokacaturdaSyAm,~-3+I/|a:A:i:I:u:U:f:e:E:o:O~-3+I/- +
+DarmAnubanDiSlokacaturdaSyAs,~-3+I/
+DarmAnubanDiSlokacaturdaSyAvA,A~-4+I/-+A
+DarmAnubanDiSlokacaturdaSyAvE,E~-4+I/-+E
+DarmAnubanDiSlokacaturdaSyAvO,O~-4+I/-+O
+DarmAnubanDiSlokacaturdaSyAvU,U~-4+I/-+U
+DarmAnubanDiSlokacaturdaSyAva,a~-4+I/-+a
+DarmAnubanDiSlokacaturdaSyAve,e~-4+I/-+e
+DarmAnubanDiSlokacaturdaSyAvf,f~-4+I/-+f
+DarmAnubanDiSlokacaturdaSyAvi,i~-4+I/-+i
+DarmAnubanDiSlokacaturdaSyAvo,o~-4+I/-+o
+DarmAnubanDiSlokacaturdaSyAvu,u~-4+I/-+u
+DarmAnubanDiSlokacaturdaSyE,E~-2+I/-+E|e~-2+I/-+e|~-2+I/|c~-2+I/- c+c|C~-2+I/- C+C
+DarmAnubanDiSlokacaturdaSyO,O~-2+I/-+O|~-2+I/|c~-2+I/- c+c|C~-2+I/- C+C|o~-2+I/-+o
+DarmAnubanDiSlokacaturdaSyU,U~-2+I/-+U
+DarmAnubanDiSlokacaturdaSya,a~-2+I/-+a
+DarmAnubanDiSlokacaturdaSyaH,~-3+I/
+DarmAnubanDiSlokacaturdaSyar,f~-3+I/-+f
+DarmAnubanDiSlokacaturdaSyas,~-3+I/
+DarmAnubanDiSlokacaturdaSye,e~-2+I/-+e|i~-2+I/-+i
+DarmAnubanDiSlokacaturdaSyf,f~-2+I/-+f
+DarmAnubanDiSlokacaturdaSyo,o~-2+I/-+o|u~-2+I/-+u|U~-2+I/-+U
+DarmAnubanDiSlokacaturdaSyoH,~-3+I/
+DarmAnubanDiSlokacaturdaSyos,~-3+I/
+DarmAnubanDiSlokacaturdaSyu,u~-2+I/-+u
+DarmAq,q:Q~-2+a/- +
+DarmArTakAmamokzA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmArTakAmamokzABiH,~-4+a/
+DarmArTakAmamokzABis,~-4+a/
+DarmArTakAmamokzAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmArTakAmamokzAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmArTakAmamokzAByaH,~-5+a/
+DarmArTakAmamokzAByas,~-5+a/
+DarmArTakAmamokzAH,~-2+a/
+DarmArTakAmamokzAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +|l~-2+a/- +
+DarmArTakAmamokzAMS,c:C~-3+a/- +
+DarmArTakAmamokzAMs,t:T~-3+a/- +
+DarmArTakAmamokzAMz,w:W~-3+a/- +
+DarmArTakAmamokzAR,q:Q~-2+a/- +
+DarmArTakAmamokzARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmArTakAmamokzARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmArTakAmamokzARI,i~-3+a/-+i
+DarmArTakAmamokzARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmArTakAmamokzARyA,A~-4+a/-+A
+DarmArTakAmamokzARyE,E~-4+a/-+E
+DarmArTakAmamokzARyO,O~-4+a/-+O
+DarmArTakAmamokzARyU,U~-4+a/-+U
+DarmArTakAmamokzARya,a~-4+a/-+a
+DarmArTakAmamokzARye,e~-4+a/-+e
+DarmArTakAmamokzARyf,f~-4+a/-+f
+DarmArTakAmamokzARyo,o~-4+a/-+o
+DarmArTakAmamokzARyu,u~-4+a/-+u
+DarmArTakAmamokzAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmArTakAmamokzAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmArTakAmamokzAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmArTakAmamokzAj,j:J~-2+a/- +
+DarmArTakAmamokzAl,l~-2+a/- +
+DarmArTakAmamokzAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmArTakAmamokzAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmArTakAmamokzAq,q:Q~-2+a/- +
+DarmArTakAmamokzAs,~-2+a/
+DarmArTakAmamokzAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmArTakAmamokzAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmArTakAmamokzAsvA,A~-4+a/-+A
+DarmArTakAmamokzAsvE,E~-4+a/-+E
+DarmArTakAmamokzAsvO,O~-4+a/-+O
+DarmArTakAmamokzAsva,a~-4+a/-+a
+DarmArTakAmamokzAsve,e~-4+a/-+e
+DarmArTakAmamokzAsvf,f~-4+a/-+f
+DarmArTakAmamokzAsvi,i~-4+a/-+i
+DarmArTakAmamokzAsvo,o~-4+a/-+o
+DarmArTakAmamokzAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmArTakAmamokzAvA,A~-3+a/-+A
+DarmArTakAmamokzAvE,E~-3+a/-+E
+DarmArTakAmamokzAvO,O~-3+a/-+O
+DarmArTakAmamokzAvU,U~-3+a/-+U
+DarmArTakAmamokzAva,a~-3+a/-+a
+DarmArTakAmamokzAve,e~-3+a/-+e
+DarmArTakAmamokzAvf,f~-3+a/-+f
+DarmArTakAmamokzAvi,i~-3+a/-+i
+DarmArTakAmamokzAvo,o~-3+a/-+o
+DarmArTakAmamokzAvu,u~-3+a/-+u
+DarmArTakAmamokzAw,w:W~-2+a/- +
+DarmArTakAmamokzAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmArTakAmamokzAyAH,~-4+a/
+DarmArTakAmamokzAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmArTakAmamokzAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmArTakAmamokzAyAs,~-4+a/
+DarmArTakAmamokzAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmArTakAmamokzAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmArTakAmamokzAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmArTakAmamokzAyar,f~-4+a/-+f
+DarmArTakAmamokzAye,i~-3+a/-+i
+DarmArTakAmamokzAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmArTakAmamokzE,e~-1+a/-+e|E~-1+a/-+E
+DarmArTakAmamokzEH,~-2+a/
+DarmArTakAmamokzEs,~-2+a/
+DarmArTakAmamokzI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmArTakAmamokzO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmArTakAmamokza,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+DarmArTakAmamokzaH,~-1+/
+DarmArTakAmamokzaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+DarmArTakAmamokzam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+DarmArTakAmamokzar,f~-1+/-+f
+DarmArTakAmamokzas,~-1+/
+DarmArTakAmamokzasyA,a~-3+/-+a|A~-3+/-+A
+DarmArTakAmamokzasyE,e~-3+/-+e|E~-3+/-+E
+DarmArTakAmamokzasyO,o~-3+/-+o|O~-3+/-+O
+DarmArTakAmamokzasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+DarmArTakAmamokzasyar,f~-4+/-+f
+DarmArTakAmamokzasye,i~-3+/-+i
+DarmArTakAmamokzasyo,u~-3+/-+u|U~-3+/-+U
+DarmArTakAmamokzataH,~-3+/
+DarmArTakAmamokzatas,~-3+/
+DarmArTakAmamokzayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmArTakAmamokzayE,e~-2+/-+e|E~-2+/-+E
+DarmArTakAmamokzayO,o~-2+/-+o|O~-2+/-+O
+DarmArTakAmamokzayar,f~-3+/-+f
+DarmArTakAmamokzaye,i~-2+/-+i
+DarmArTakAmamokzayo,u~-2+/-+u|U~-2+/-+U
+DarmArTakAmamokzayoH,~-3+/
+DarmArTakAmamokzayos,~-3+/
+DarmArTakAmamokze,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmArTakAmamokzeByaH,~-5+a/
+DarmArTakAmamokzeByas,~-5+a/
+DarmArTakAmamokzeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmArTakAmamokzeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmArTakAmamokzeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmArTakAmamokzeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmArTakAmamokzeRar,f~-4+a/-+f
+DarmArTakAmamokzeRe,i~-3+a/-+i
+DarmArTakAmamokzeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmArTakAmamokzezU,u~-3+a/-+u|U~-3+a/-+U
+DarmArTakAmamokzezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmArTakAmamokzezvA,A~-4+a/-+A
+DarmArTakAmamokzezvE,E~-4+a/-+E
+DarmArTakAmamokzezvO,O~-4+a/-+O
+DarmArTakAmamokzezva,a~-4+a/-+a
+DarmArTakAmamokzezve,e~-4+a/-+e
+DarmArTakAmamokzezvf,f~-4+a/-+f
+DarmArTakAmamokzezvi,i~-4+a/-+i
+DarmArTakAmamokzezvo,o~-4+a/-+o
+DarmArTakAmamokzo,u~-1+a/-+u|U~-1+a/-+U
+DarmArTakAmamokzyA,A~-2+a/-+A
+DarmArTakAmamokzyE,E~-2+a/-+E
+DarmArTakAmamokzyO,O~-2+a/-+O
+DarmArTakAmamokzyU,U~-2+a/-+U
+DarmArTakAmamokzya,a~-2+a/-+a
+DarmArTakAmamokzye,e~-2+a/-+e
+DarmArTakAmamokzyf,f~-2+a/-+f
+DarmArTakAmamokzyo,o~-2+a/-+o
+DarmArTakAmamokzyu,u~-2+a/-+u
+DarmAs,~-2+an;-2+a/
+DarmAsU,u~-3+an;-3+a/-+u|U~-3+an;-3+a/-+U
+DarmAsu,~-3+an;-3+a/|a:A:i:u:U:f:e:E:o:O~-3+an;-3+a/- +|c~-3+an;-3+a/- cC+c|C~-3+an;-3+a/- cC+C
+DarmAsvA,A~-4+an;-4+a/-+A
+DarmAsvE,E~-4+an;-4+a/-+E
+DarmAsvO,O~-4+an;-4+a/-+O
+DarmAsva,a~-4+an;-4+a/-+a
+DarmAsve,e~-4+an;-4+a/-+e
+DarmAsvf,f~-4+an;-4+a/-+f
+DarmAsvi,i~-4+an;-4+a/-+i
+DarmAsvo,o~-4+an;-4+a/-+o
+DarmAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmAvA,A~-3+a/-+A
+DarmAvE,E~-3+a/-+E
+DarmAvO,O~-3+a/-+O
+DarmAvU,U~-3+a/-+U
+DarmAva,a~-3+a/-+a
+DarmAve,e~-3+a/-+e
+DarmAvf,f~-3+a/-+f
+DarmAvi,i~-3+a/-+i
+DarmAvo,o~-3+a/-+o
+DarmAvu,u~-3+a/-+u
+DarmAw,w:W~-2+a/- +
+DarmAyA,a:A:i:u:U:f:e:E:o:O~-3+an;-3+a/- +|a~-3+a/-+a|A~-3+a/-+A
+DarmAyAH,~-4+an;-4+a/
+DarmAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+an;-4+a/- +
+DarmAyAm,~-4+an;-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+an;-4+a/- +
+DarmAyAs,~-4+an;-4+a/
+DarmAyE,~-3+an;-3+a/|c~-3+an;-3+a/- c+c|C~-3+an;-3+a/- C+C|e~-3+a/-+e|E~-3+a/-+E
+DarmAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmAyar,f~-4+a/-+f
+DarmAye,i~-3+a/-+i
+DarmAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmE,e~-1+an;-1+a/-+e|E~-1+an;-1+a/-+E
+DarmEH,~-2+a/
+DarmEs,~-2+a/
+DarmI,i~-1+in/-+i|~-1+in;-1+a/|i~-1+in;-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+in;-1+a/- +|c~-1+in;-1+a/- c+c|C~-1+in;-1+a/- C+C
+DarmIRI,i~-3+in/-+i
+DarmIRi,~-3+in/|a:A:i:u:U:f:e:E:o:O~-3+in/- +|c~-3+in/- cC+c|C~-3+in/- cC+C
+DarmIRyA,A~-4+in/-+A
+DarmIRyE,E~-4+in/-+E
+DarmIRyO,O~-4+in/-+O
+DarmIRyU,U~-4+in/-+U
+DarmIRya,a~-4+in/-+a
+DarmIRye,e~-4+in/-+e
+DarmIRyf,f~-4+in/-+f
+DarmIRyo,o~-4+in/-+o
+DarmIRyu,u~-4+in/-+u
+DarmO,o~-1+an;-1+a/-+o|O~-1+an;-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmRI,~-2+an/|i~-2+an/-+i|a:A:i:u:U:f:e:E:o:O~-2+an/- +|c~-2+an/- c+c|C~-2+an/- C+C
+DarmRyA,A~-3+an/-+A
+DarmRyE,E~-3+an/-+E
+DarmRyO,O~-3+an/-+O
+DarmRyU,U~-3+an/-+U
+DarmRya,a~-3+an/-+a
+DarmRye,e~-3+an/-+e
+DarmRyf,f~-3+an/-+f
+DarmRyo,o~-3+an/-+o
+DarmRyu,u~-3+an/-+u
+Darma,~/|c~-0+n/- cC+c|C~-0+n/- cC+C|A:i:u:U:f:e:E:o:O~-0+n/- +
+DarmaBiH,~-3+n/
+DarmaBis,~-3+n/
+DarmaByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+n/- +
+DarmaByAm,~-4+n/|a:A:i:I:u:U:f:e:E:o:O~-4+n/- +
+DarmaByaH,~-4+n/
+DarmaByas,~-4+n/
+DarmaH,~-1+/
+DarmaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+n;-1+/- +|l~-1+n/- +
+DarmaMS,c:C~-2+n/- +
+DarmaMs,t:T~-2+n/- +
+DarmaMz,w:W~-2+n/- +
+DarmaR,q:Q~-1+n/- +
+DarmaRA,~-2+n/|a~-2+n/-+a|A~-2+n/-+A|c~-2+n/- c+c|C~-2+n/- C+C
+DarmaRAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+n/- +
+DarmaRAm,~-3+n/|a:A:i:I:u:U:f:e:E:o:O~-3+n/- +
+DarmaRE,e~-2+n/-+e|E~-2+n/-+E
+DarmaRI,~-2+n/|i~-2+n/-+i|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- c+c|C~-2+n/- C+C
+DarmaRO,o~-2+n/-+o|O~-2+n/-+O
+DarmaRa,A:i:u:U:f:e:E:o:O~-2+n/- +
+DarmaRaH,~-3+n/
+DarmaRar,f~-3+n/-+f
+DarmaRas,~-3+n/
+DarmaRe,i~-2+n/-+i|~-2+n/|a~-2+n/- '+a|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmaRi,~-2+n/|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmaRo,u~-2+n/-+u|U~-2+n/-+U
+DarmaRoH,~-3+n/
+DarmaRos,~-3+n/
+DarmaRyA,A~-3+n/-+A
+DarmaRyE,E~-3+n/-+E
+DarmaRyO,O~-3+n/-+O
+DarmaRyU,U~-3+n/-+U
+DarmaRya,a~-3+n/-+a
+DarmaRye,e~-3+n/-+e
+DarmaRyf,f~-3+n/-+f
+DarmaRyo,o~-3+n/-+o
+DarmaRyu,u~-3+n/-+u
+DarmaY,S:j:J~-1+n/- +|S~-1+n/- C+S
+DarmajA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmajABiH,~-4+a/
+DarmajABis,~-4+a/
+DarmajAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmajAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmajAByaH,~-5+a/
+DarmajAByas,~-5+a/
+DarmajAH,~-2+a/
+DarmajAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+DarmajAMS,c:C~-3+a/- +
+DarmajAMs,t:T~-3+a/- +
+DarmajAMz,w:W~-3+a/- +
+DarmajAR,q:Q~-2+a/- +
+DarmajAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmajAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmajAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmajAj,j:J~-2+a/- +
+DarmajAl,l~-2+a/- +
+DarmajAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmajAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmajAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmajAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmajAnI,i~-3+a/-+i
+DarmajAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmajAnyA,A~-4+a/-+A
+DarmajAnyE,E~-4+a/-+E
+DarmajAnyO,O~-4+a/-+O
+DarmajAnyU,U~-4+a/-+U
+DarmajAnya,a~-4+a/-+a
+DarmajAnye,e~-4+a/-+e
+DarmajAnyf,f~-4+a/-+f
+DarmajAnyo,o~-4+a/-+o
+DarmajAnyu,u~-4+a/-+u
+DarmajAq,q:Q~-2+a/- +
+DarmajAs,~-2+a/
+DarmajAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmajAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmajAsvA,A~-4+a/-+A
+DarmajAsvE,E~-4+a/-+E
+DarmajAsvO,O~-4+a/-+O
+DarmajAsva,a~-4+a/-+a
+DarmajAsve,e~-4+a/-+e
+DarmajAsvf,f~-4+a/-+f
+DarmajAsvi,i~-4+a/-+i
+DarmajAsvo,o~-4+a/-+o
+DarmajAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmajAvA,A~-3+a/-+A
+DarmajAvE,E~-3+a/-+E
+DarmajAvO,O~-3+a/-+O
+DarmajAvU,U~-3+a/-+U
+DarmajAva,a~-3+a/-+a
+DarmajAve,e~-3+a/-+e
+DarmajAvf,f~-3+a/-+f
+DarmajAvi,i~-3+a/-+i
+DarmajAvo,o~-3+a/-+o
+DarmajAvu,u~-3+a/-+u
+DarmajAw,w:W~-2+a/- +
+DarmajAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmajAyAH,~-4+a/
+DarmajAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmajAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmajAyAs,~-4+a/
+DarmajAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmajAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmajAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmajAyar,f~-4+a/-+f
+DarmajAye,i~-3+a/-+i
+DarmajAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmajE,e~-1+a/-+e|E~-1+a/-+E
+DarmajEH,~-2+a/
+DarmajEs,~-2+a/
+DarmajI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmajO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+Darmaja,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+DarmajaH,~-1+/
+DarmajaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmajam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmajar,f~-1+/-+f
+Darmajas,~-1+/
+DarmajasyA,a~-3+/-+a|A~-3+/-+A
+DarmajasyE,e~-3+/-+e|E~-3+/-+E
+DarmajasyO,o~-3+/-+o|O~-3+/-+O
+Darmajasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmajasyar,f~-4+/-+f
+Darmajasye,i~-3+/-+i
+Darmajasyo,u~-3+/-+u|U~-3+/-+U
+DarmajataH,~-3+/
+Darmajatas,~-3+/
+DarmajayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmajayE,e~-2+/-+e|E~-2+/-+E
+DarmajayO,o~-2+/-+o|O~-2+/-+O
+Darmajayar,f~-3+/-+f
+Darmajaye,i~-2+/-+i
+Darmajayo,u~-2+/-+u|U~-2+/-+U
+DarmajayoH,~-3+/
+Darmajayos,~-3+/
+Darmaje,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmajeByaH,~-5+a/
+DarmajeByas,~-5+a/
+DarmajenA,a~-3+a/-+a|A~-3+a/-+A
+DarmajenE,e~-3+a/-+e|E~-3+a/-+E
+DarmajenO,o~-3+a/-+o|O~-3+a/-+O
+Darmajena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+Darmajenar,f~-4+a/-+f
+Darmajene,i~-3+a/-+i
+Darmajeno,u~-3+a/-+u|U~-3+a/-+U
+DarmajezU,u~-3+a/-+u|U~-3+a/-+U
+Darmajezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmajezvA,A~-4+a/-+A
+DarmajezvE,E~-4+a/-+E
+DarmajezvO,O~-4+a/-+O
+Darmajezva,a~-4+a/-+a
+Darmajezve,e~-4+a/-+e
+Darmajezvf,f~-4+a/-+f
+Darmajezvi,i~-4+a/-+i
+Darmajezvo,o~-4+a/-+o
+Darmajo,u~-1+a/-+u|U~-1+a/-+U
+DarmajyA,A~-2+a/-+A
+DarmajyE,E~-2+a/-+E
+DarmajyO,O~-2+a/-+O
+DarmajyU,U~-2+a/-+U
+Darmajya,a~-2+a/-+a
+Darmajye,e~-2+a/-+e
+Darmajyf,f~-2+a/-+f
+Darmajyo,o~-2+a/-+o
+Darmajyu,u~-2+a/-+u
+DarmakA,~-1+a/|a~-1+a/-+a|A~-1+a/-+A|c~-1+a/- c+c|C~-1+a/- C+C
+DarmakABiH,~-4+a/
+DarmakABis,~-4+a/
+DarmakAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmakAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmakAByaH,~-5+a/
+DarmakAByas,~-5+a/
+DarmakAH,~-2+a/
+DarmakAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+DarmakAMS,c:C~-3+a/- +
+DarmakAMs,t:T~-3+a/- +
+DarmakAMz,w:W~-3+a/- +
+DarmakAR,q:Q~-2+a/- +
+DarmakARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmakARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmakARI,i~-3+a/-+i
+DarmakARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmakARyA,A~-4+a/-+A
+DarmakARyE,E~-4+a/-+E
+DarmakARyO,O~-4+a/-+O
+DarmakARyU,U~-4+a/-+U
+DarmakARya,a~-4+a/-+a
+DarmakARye,e~-4+a/-+e
+DarmakARyf,f~-4+a/-+f
+DarmakARyo,o~-4+a/-+o
+DarmakARyu,u~-4+a/-+u
+DarmakAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmakAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmakAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmakAj,j:J~-2+a/- +
+DarmakAl,l~-2+a/- +
+DarmakAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmakAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmakAq,q:Q~-2+a/- +
+DarmakAs,~-2+a/
+DarmakAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmakAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmakAsvA,A~-4+a/-+A
+DarmakAsvE,E~-4+a/-+E
+DarmakAsvO,O~-4+a/-+O
+DarmakAsva,a~-4+a/-+a
+DarmakAsve,e~-4+a/-+e
+DarmakAsvf,f~-4+a/-+f
+DarmakAsvi,i~-4+a/-+i
+DarmakAsvo,o~-4+a/-+o
+DarmakAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmakAvA,A~-3+a/-+A
+DarmakAvE,E~-3+a/-+E
+DarmakAvO,O~-3+a/-+O
+DarmakAvU,U~-3+a/-+U
+DarmakAva,a~-3+a/-+a
+DarmakAve,e~-3+a/-+e
+DarmakAvf,f~-3+a/-+f
+DarmakAvi,i~-3+a/-+i
+DarmakAvo,o~-3+a/-+o
+DarmakAvu,u~-3+a/-+u
+DarmakAw,w:W~-2+a/- +
+DarmakAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmakAyAH,~-4+a/
+DarmakAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmakAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmakAyAs,~-4+a/
+DarmakAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmakAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmakAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmakAyar,f~-4+a/-+f
+DarmakAye,i~-3+a/-+i
+DarmakAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmakE,e~-1+a/-+e|E~-1+a/-+E
+DarmakEH,~-2+a/
+DarmakEs,~-2+a/
+DarmakO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+Darmaka,~/|A:i:u:U:f:e:E:o:O~/- +
+DarmakaH,~-1+/
+DarmakaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmakam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmakar,f~-1+/-+f
+Darmakas,~-1+/
+DarmakasyA,a~-3+/-+a|A~-3+/-+A
+DarmakasyE,e~-3+/-+e|E~-3+/-+E
+DarmakasyO,o~-3+/-+o|O~-3+/-+O
+Darmakasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmakasyar,f~-4+/-+f
+Darmakasye,i~-3+/-+i
+Darmakasyo,u~-3+/-+u|U~-3+/-+U
+DarmakayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmakayE,e~-2+/-+e|E~-2+/-+E
+DarmakayO,o~-2+/-+o|O~-2+/-+O
+Darmakayar,f~-3+/-+f
+Darmakaye,i~-2+/-+i
+Darmakayo,u~-2+/-+u|U~-2+/-+U
+DarmakayoH,~-3+/
+Darmakayos,~-3+/
+Darmake,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmakeByaH,~-5+a/
+DarmakeByas,~-5+a/
+DarmakeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmakeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmakeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmakeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmakeRar,f~-4+a/-+f
+DarmakeRe,i~-3+a/-+i
+DarmakeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmakezU,u~-3+a/-+u|U~-3+a/-+U
+Darmakezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmakezvA,A~-4+a/-+A
+DarmakezvE,E~-4+a/-+E
+DarmakezvO,O~-4+a/-+O
+Darmakezva,a~-4+a/-+a
+Darmakezve,e~-4+a/-+e
+Darmakezvf,f~-4+a/-+f
+Darmakezvi,i~-4+a/-+i
+Darmakezvo,o~-4+a/-+o
+Darmako,u~-1+a/-+u|U~-1+a/-+U
+Darmam,~-1+n;-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+n;-1+/- +
+Darman,~/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m~/- +
+Darmann,a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+DarmapravicayA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmapravicayABiH,~-4+a/
+DarmapravicayABis,~-4+a/
+DarmapravicayAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmapravicayAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmapravicayAByaH,~-5+a/
+DarmapravicayAByas,~-5+a/
+DarmapravicayAH,~-2+a/
+DarmapravicayAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +|l~-2+a/- +
+DarmapravicayAMS,c:C~-3+a/- +
+DarmapravicayAMs,t:T~-3+a/- +
+DarmapravicayAMz,w:W~-3+a/- +
+DarmapravicayAR,q:Q~-2+a/- +
+DarmapravicayAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmapravicayAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmapravicayAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmapravicayAj,j:J~-2+a/- +
+DarmapravicayAl,l~-2+a/- +
+DarmapravicayAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmapravicayAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmapravicayAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmapravicayAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmapravicayAnI,i~-3+a/-+i
+DarmapravicayAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmapravicayAnyA,A~-4+a/-+A
+DarmapravicayAnyE,E~-4+a/-+E
+DarmapravicayAnyO,O~-4+a/-+O
+DarmapravicayAnyU,U~-4+a/-+U
+DarmapravicayAnya,a~-4+a/-+a
+DarmapravicayAnye,e~-4+a/-+e
+DarmapravicayAnyf,f~-4+a/-+f
+DarmapravicayAnyo,o~-4+a/-+o
+DarmapravicayAnyu,u~-4+a/-+u
+DarmapravicayAq,q:Q~-2+a/- +
+DarmapravicayAs,~-2+a/
+DarmapravicayAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmapravicayAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmapravicayAsvA,A~-4+a/-+A
+DarmapravicayAsvE,E~-4+a/-+E
+DarmapravicayAsvO,O~-4+a/-+O
+DarmapravicayAsva,a~-4+a/-+a
+DarmapravicayAsve,e~-4+a/-+e
+DarmapravicayAsvf,f~-4+a/-+f
+DarmapravicayAsvi,i~-4+a/-+i
+DarmapravicayAsvo,o~-4+a/-+o
+DarmapravicayAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmapravicayAvA,A~-3+a/-+A
+DarmapravicayAvE,E~-3+a/-+E
+DarmapravicayAvO,O~-3+a/-+O
+DarmapravicayAvU,U~-3+a/-+U
+DarmapravicayAva,a~-3+a/-+a
+DarmapravicayAve,e~-3+a/-+e
+DarmapravicayAvf,f~-3+a/-+f
+DarmapravicayAvi,i~-3+a/-+i
+DarmapravicayAvo,o~-3+a/-+o
+DarmapravicayAvu,u~-3+a/-+u
+DarmapravicayAw,w:W~-2+a/- +
+DarmapravicayAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmapravicayAyAH,~-4+a/
+DarmapravicayAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmapravicayAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmapravicayAyAs,~-4+a/
+DarmapravicayAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmapravicayAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmapravicayAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmapravicayAyar,f~-4+a/-+f
+DarmapravicayAye,i~-3+a/-+i
+DarmapravicayAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmapravicayE,e~-1+a/-+e|E~-1+a/-+E
+DarmapravicayEH,~-2+a/
+DarmapravicayEs,~-2+a/
+DarmapravicayI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmapravicayO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+Darmapravicaya,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+DarmapravicayaH,~-1+/
+DarmapravicayaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmapravicayam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmapravicayar,f~-1+/-+f
+Darmapravicayas,~-1+/
+DarmapravicayasyA,a~-3+/-+a|A~-3+/-+A
+DarmapravicayasyE,e~-3+/-+e|E~-3+/-+E
+DarmapravicayasyO,o~-3+/-+o|O~-3+/-+O
+Darmapravicayasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmapravicayasyar,f~-4+/-+f
+Darmapravicayasye,i~-3+/-+i
+Darmapravicayasyo,u~-3+/-+u|U~-3+/-+U
+DarmapravicayataH,~-3+/
+Darmapravicayatas,~-3+/
+DarmapravicayayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmapravicayayE,e~-2+/-+e|E~-2+/-+E
+DarmapravicayayO,o~-2+/-+o|O~-2+/-+O
+Darmapravicayayar,f~-3+/-+f
+Darmapravicayaye,i~-2+/-+i
+Darmapravicayayo,u~-2+/-+u|U~-2+/-+U
+DarmapravicayayoH,~-3+/
+Darmapravicayayos,~-3+/
+Darmapravicaye,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmapravicayeByaH,~-5+a/
+DarmapravicayeByas,~-5+a/
+DarmapravicayenA,a~-3+a/-+a|A~-3+a/-+A
+DarmapravicayenE,e~-3+a/-+e|E~-3+a/-+E
+DarmapravicayenO,o~-3+a/-+o|O~-3+a/-+O
+Darmapravicayena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+Darmapravicayenar,f~-4+a/-+f
+Darmapravicayene,i~-3+a/-+i
+Darmapravicayeno,u~-3+a/-+u|U~-3+a/-+U
+DarmapravicayezU,u~-3+a/-+u|U~-3+a/-+U
+Darmapravicayezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmapravicayezvA,A~-4+a/-+A
+DarmapravicayezvE,E~-4+a/-+E
+DarmapravicayezvO,O~-4+a/-+O
+Darmapravicayezva,a~-4+a/-+a
+Darmapravicayezve,e~-4+a/-+e
+Darmapravicayezvf,f~-4+a/-+f
+Darmapravicayezvi,i~-4+a/-+i
+Darmapravicayezvo,o~-4+a/-+o
+Darmapravicayo,u~-1+a/-+u|U~-1+a/-+U
+DarmapravicayyA,A~-2+a/-+A
+DarmapravicayyE,E~-2+a/-+E
+DarmapravicayyO,O~-2+a/-+O
+DarmapravicayyU,U~-2+a/-+U
+Darmapravicayya,a~-2+a/-+a
+Darmapravicayye,e~-2+a/-+e
+Darmapravicayyf,f~-2+a/-+f
+Darmapravicayyo,o~-2+a/-+o
+Darmapravicayyu,u~-2+a/-+u
+DarmaprekzA,a~-1+a/-+a|A~-1+a/-+A
+DarmaprekzAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmaprekzAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmaprekzAH,~-2+a/
+DarmaprekzAM,l~-2+a/- +
+DarmaprekzAMS,c:C~-3+a/- +
+DarmaprekzAMs,t:T~-3+a/- +
+DarmaprekzAMz,w:W~-3+a/- +
+DarmaprekzAR,q:Q~-2+a/- +
+DarmaprekzARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmaprekzARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmaprekzARI,i~-3+a/-+i
+DarmaprekzARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmaprekzARyA,A~-4+a/-+A
+DarmaprekzARyE,E~-4+a/-+E
+DarmaprekzARyO,O~-4+a/-+O
+DarmaprekzARyU,U~-4+a/-+U
+DarmaprekzARya,a~-4+a/-+a
+DarmaprekzARye,e~-4+a/-+e
+DarmaprekzARyf,f~-4+a/-+f
+DarmaprekzARyo,o~-4+a/-+o
+DarmaprekzARyu,u~-4+a/-+u
+DarmaprekzAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmaprekzAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmaprekzAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmaprekzAj,j:J~-2+a/- +
+DarmaprekzAl,l~-2+a/- +
+DarmaprekzAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmaprekzAq,q:Q~-2+a/- +
+DarmaprekzAs,~-2+a/
+DarmaprekzAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmaprekzAvA,A~-3+a/-+A
+DarmaprekzAvE,E~-3+a/-+E
+DarmaprekzAvO,O~-3+a/-+O
+DarmaprekzAvU,U~-3+a/-+U
+DarmaprekzAva,a~-3+a/-+a
+DarmaprekzAve,e~-3+a/-+e
+DarmaprekzAvf,f~-3+a/-+f
+DarmaprekzAvi,i~-3+a/-+i
+DarmaprekzAvo,o~-3+a/-+o
+DarmaprekzAvu,u~-3+a/-+u
+DarmaprekzAw,w:W~-2+a/- +
+DarmaprekzAyA,a~-3+a/-+a|A~-3+a/-+A
+DarmaprekzAyE,e~-3+a/-+e|E~-3+a/-+E
+DarmaprekzAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmaprekzAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmaprekzAyar,f~-4+a/-+f
+DarmaprekzAye,i~-3+a/-+i
+DarmaprekzAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmaprekzE,e~-1+a/-+e|E~-1+a/-+E
+DarmaprekzEH,~-2+a/
+DarmaprekzEs,~-2+a/
+DarmaprekzI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmaprekzO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+Darmaprekza,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+DarmaprekzaH,~-1+/
+DarmaprekzaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmaprekzam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmaprekzar,f~-1+/-+f
+Darmaprekzas,~-1+/
+DarmaprekzasyA,a~-3+/-+a|A~-3+/-+A
+DarmaprekzasyE,e~-3+/-+e|E~-3+/-+E
+DarmaprekzasyO,o~-3+/-+o|O~-3+/-+O
+Darmaprekzasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmaprekzasyar,f~-4+/-+f
+Darmaprekzasye,i~-3+/-+i
+Darmaprekzasyo,u~-3+/-+u|U~-3+/-+U
+DarmaprekzataH,~-3+/
+Darmaprekzatas,~-3+/
+DarmaprekzayoH,~-3+/
+Darmaprekzayos,~-3+/
+Darmaprekze,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmaprekzeByaH,~-5+a/
+DarmaprekzeByas,~-5+a/
+DarmaprekzeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmaprekzeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmaprekzeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmaprekzeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmaprekzeRar,f~-4+a/-+f
+DarmaprekzeRe,i~-3+a/-+i
+DarmaprekzeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmaprekzezU,u~-3+a/-+u|U~-3+a/-+U
+Darmaprekzezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmaprekzezvA,A~-4+a/-+A
+DarmaprekzezvE,E~-4+a/-+E
+DarmaprekzezvO,O~-4+a/-+O
+Darmaprekzezva,a~-4+a/-+a
+Darmaprekzezve,e~-4+a/-+e
+Darmaprekzezvf,f~-4+a/-+f
+Darmaprekzezvi,i~-4+a/-+i
+Darmaprekzezvo,o~-4+a/-+o
+Darmaprekzo,u~-1+a/-+u|U~-1+a/-+U
+DarmaprekzyA,A~-2+a/-+A
+DarmaprekzyE,E~-2+a/-+E
+DarmaprekzyO,O~-2+a/-+O
+DarmaprekzyU,U~-2+a/-+U
+Darmaprekzya,a~-2+a/-+a
+Darmaprekzye,e~-2+a/-+e
+Darmaprekzyf,f~-2+a/-+f
+Darmaprekzyo,o~-2+a/-+o
+Darmaprekzyu,u~-2+a/-+u
+DarmaprprekzA,~-6+ekza/|a~-6+ekza/-+a|A~-6+ekza/-+A|c~-6+ekza/- c+c|C~-6+ekza/- C+C
+DarmaprprekzABiH,~-9+ekza/
+DarmaprprekzABis,~-9+ekza/
+DarmaprprekzAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-10+ekza/- +
+DarmaprprekzAByAm,~-10+ekza/|a:A:i:I:u:U:f:e:E:o:O~-10+ekza/- +
+DarmaprprekzAByaH,~-10+ekza/
+DarmaprprekzAByas,~-10+ekza/
+DarmaprprekzAH,~-7+ekza/
+DarmaprprekzAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-7+ekza/- +
+DarmaprprekzARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-9+ekza/- +
+DarmaprprekzARAm,~-9+ekza/|a:A:i:I:u:U:f:e:E:o:O~-9+ekza/- +
+DarmaprprekzAm,~-7+ekza/|a:A:i:I:u:U:f:e:E:o:O~-7+ekza/- +
+DarmaprprekzAs,~-7+ekza/
+DarmaprprekzAsU,u~-8+ekza/-+u|U~-8+ekza/-+U
+DarmaprprekzAsu,~-8+ekza/|a:A:i:u:U:f:e:E:o:O~-8+ekza/- +|c~-8+ekza/- cC+c|C~-8+ekza/- cC+C
+DarmaprprekzAsvA,A~-9+ekza/-+A
+DarmaprprekzAsvE,E~-9+ekza/-+E
+DarmaprprekzAsvO,O~-9+ekza/-+O
+DarmaprprekzAsva,a~-9+ekza/-+a
+DarmaprprekzAsve,e~-9+ekza/-+e
+DarmaprprekzAsvf,f~-9+ekza/-+f
+DarmaprprekzAsvi,i~-9+ekza/-+i
+DarmaprprekzAsvo,o~-9+ekza/-+o
+DarmaprprekzAyA,a:A:i:u:U:f:e:E:o:O~-8+ekza/- +
+DarmaprprekzAyAH,~-9+ekza/
+DarmaprprekzAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-9+ekza/- +
+DarmaprprekzAyAm,~-9+ekza/|a:A:i:I:u:U:f:e:E:o:O~-9+ekza/- +
+DarmaprprekzAyAs,~-9+ekza/
+DarmaprprekzAyE,~-8+ekza/|c~-8+ekza/- c+c|C~-8+ekza/- C+C
+DarmaprprekzE,e~-6+ekza/-+e|E~-6+ekza/-+E
+DarmaprprekzO,o~-6+ekza/-+o|O~-6+ekza/-+O
+Darmaprprekza,A:i:u:U:f:e:E:o:O~-6+ekza/- +
+DarmaprprekzaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-7+ekza/- +
+Darmaprprekzam,~-7+ekza/|a:A:i:I:u:U:f:e:E:o:O~-7+ekza/- +
+Darmaprprekzar,f~-7+ekza/-+f
+DarmaprprekzayA,~-8+ekza/|a~-8+ekza/-+a|A~-8+ekza/-+A|c~-8+ekza/- c+c|C~-8+ekza/- C+C
+DarmaprprekzayE,e~-8+ekza/-+e|E~-8+ekza/-+E
+DarmaprprekzayO,o~-8+ekza/-+o|O~-8+ekza/-+O
+Darmaprprekzayar,f~-9+ekza/-+f
+Darmaprprekzaye,i~-8+ekza/-+i
+Darmaprprekzayo,u~-8+ekza/-+u|U~-8+ekza/-+U
+DarmaprprekzayoH,~-9+ekza/
+Darmaprprekzayos,~-9+ekza/
+Darmaprprekze,~-6+ekza/|a~-6+ekza/- '+a|a:A:i:u:U:f:e:E:o:O~-6+ekza/- +|c~-6+ekza/- cC+c|C~-6+ekza/- cC+C|i~-6+ekza/-+i
+Darmaprprekzo,u~-6+ekza/-+u|U~-6+ekza/-+U
+Darmar,f~-1+n;-1+/-+f
+Darmas,~-1+/
+DarmasU,u~-2+n/-+u|U~-2+n/-+U
+Darmasu,~-2+n/|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmasvA,A~-3+n/-+A
+DarmasvE,E~-3+n/-+E
+DarmasvO,O~-3+n/-+O
+Darmasva,a~-3+n/-+a
+Darmasve,e~-3+n/-+e
+Darmasvf,f~-3+n/-+f
+Darmasvi,i~-3+n/-+i
+Darmasvo,o~-3+n/-+o
+DarmasyA,a~-3+/-+a|A~-3+/-+A
+DarmasyE,e~-3+/-+e|E~-3+/-+E
+DarmasyO,o~-3+/-+o|O~-3+/-+O
+Darmasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmasyar,f~-4+/-+f
+Darmasye,i~-3+/-+i
+Darmasyo,u~-3+/-+u|U~-3+/-+U
+DarmataH,~-3+n;-3+/
+Darmatas,~-3+n;-3+/
+DarmayA,~-2+n;-2+/|a~-2+n;-2+/-+a|A~-2+n;-2+/-+A|c~-2+n;-2+/- c+c|C~-2+n;-2+/- C+C
+DarmayE,e~-2+n;-2+/-+e|E~-2+n;-2+/-+E
+DarmayO,o~-2+n;-2+/-+o|O~-2+n;-2+/-+O
+Darmayar,f~-3+n;-3+/-+f
+Darmaye,i~-2+n;-2+/-+i
+Darmayo,u~-2+n;-2+/-+u|U~-2+n;-2+/-+U
+DarmayoH,~-3+n;-3+/
+Darmayos,~-3+n;-3+/
+Darme,i~-1+an;-1+a/-+i|~-1+an;-1+a/|a~-1+an;-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+an;-1+a/- +|c~-1+an;-1+a/- cC+c|C~-1+an;-1+a/- cC+C
+DarmeByaH,~-5+a/
+DarmeByas,~-5+a/
+DarmeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmeRar,f~-4+a/-+f
+DarmeRe,i~-3+a/-+i
+DarmeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmezU,u~-3+a/-+u|U~-3+a/-+U
+Darmezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmezvA,A~-4+a/-+A
+DarmezvE,E~-4+a/-+E
+DarmezvO,O~-4+a/-+O
+Darmezva,a~-4+a/-+a
+Darmezve,e~-4+a/-+e
+Darmezvf,f~-4+a/-+f
+Darmezvi,i~-4+a/-+i
+Darmezvo,o~-4+a/-+o
+Darmi,~-0+n/|a:A:i:u:U:f:e:E:o:O~-0+n/- +|c~-0+n/- cC+c|C~-0+n/- cC+C
+DarmiBiH,~-3+n/
+DarmiBis,~-3+n/
+DarmiByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+n/- +
+DarmiByAm,~-4+n/|a:A:i:I:u:U:f:e:E:o:O~-4+n/- +
+DarmiByaH,~-4+n/
+DarmiByas,~-4+n/
+DarmiM,l~-1+n/- +
+DarmiMS,c:C~-2+n/- +
+DarmiMs,t:T~-2+n/- +
+DarmiMz,w:W~-2+n/- +
+DarmiR,q:Q~-1+n/- +
+DarmiRA,~-2+n/|a~-2+n/-+a|A~-2+n/-+A|c~-2+n/- c+c|C~-2+n/- C+C
+DarmiRAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+n/- +
+DarmiRAm,~-3+n/|a:A:i:I:u:U:f:e:E:o:O~-3+n/- +
+DarmiRAvA,A~-4+n/-+A
+DarmiRAvE,E~-4+n/-+E
+DarmiRAvO,O~-4+n/-+O
+DarmiRAvU,U~-4+n/-+U
+DarmiRAva,a~-4+n/-+a
+DarmiRAve,e~-4+n/-+e
+DarmiRAvf,f~-4+n/-+f
+DarmiRAvi,i~-4+n/-+i
+DarmiRAvo,o~-4+n/-+o
+DarmiRAvu,u~-4+n/-+u
+DarmiRE,e~-2+n/-+e|E~-2+n/-+E
+DarmiRI,~-2+n/|i~-2+n/-+i|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- c+c|C~-2+n/- C+C
+DarmiRIBiH,~-5+n/
+DarmiRIBis,~-5+n/
+DarmiRIByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-6+n/- +
+DarmiRIByAm,~-6+n/|a:A:i:I:u:U:f:e:E:o:O~-6+n/- +
+DarmiRIByaH,~-6+n/
+DarmiRIByas,~-6+n/
+DarmiRIH,~-3+n/
+DarmiRIM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+n/- +
+DarmiRIm,~-3+n/|a:A:i:I:u:U:f:e:E:o:O~-3+n/- +
+DarmiRInAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+n/- +
+DarmiRInAm,~-5+n/|a:A:i:I:u:U:f:e:E:o:O~-5+n/- +
+DarmiRIs,~-3+n/
+DarmiRIzU,u~-4+n/-+u|U~-4+n/-+U
+DarmiRIzu,~-4+n/|a:A:i:u:U:f:e:E:o:O~-4+n/- +|c~-4+n/- cC+c|C~-4+n/- cC+C
+DarmiRIzvA,A~-5+n/-+A
+DarmiRIzvE,E~-5+n/-+E
+DarmiRIzvO,O~-5+n/-+O
+DarmiRIzva,a~-5+n/-+a
+DarmiRIzve,e~-5+n/-+e
+DarmiRIzvf,f~-5+n/-+f
+DarmiRIzvi,i~-5+n/-+i
+DarmiRIzvo,o~-5+n/-+o
+DarmiRO,~-2+n/|c~-2+n/- c+c|C~-2+n/- C+C|o~-2+n/-+o|O~-2+n/-+O
+DarmiRa,A:i:u:U:f:e:E:o:O~-2+n/- +
+DarmiRaH,~-3+n/
+DarmiRaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+n/- +
+DarmiRam,~-3+n/|a:A:i:I:u:U:f:e:E:o:O~-3+n/- +
+DarmiRar,f~-3+n/-+f
+DarmiRas,~-3+n/
+DarmiRe,i~-2+n/-+i|~-2+n/|a~-2+n/- '+a|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmiRi,~-2+n/|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmiRo,u~-2+n/-+u|U~-2+n/-+U
+DarmiRoH,~-3+n/
+DarmiRos,~-3+n/
+DarmiRyA,A~-3+n/-+A|~-3+n/|a~-3+n/-+a|c~-3+n/- c+c|C~-3+n/- C+C|a:A:i:u:U:f:e:E:o:O~-3+n/- +
+DarmiRyAH,~-4+n/
+DarmiRyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+n/- +
+DarmiRyAm,~-4+n/|a:A:i:I:u:U:f:e:E:o:O~-4+n/- +
+DarmiRyAs,~-4+n/
+DarmiRyAvA,A~-5+n/-+A
+DarmiRyAvE,E~-5+n/-+E
+DarmiRyAvO,O~-5+n/-+O
+DarmiRyAvU,U~-5+n/-+U
+DarmiRyAva,a~-5+n/-+a
+DarmiRyAve,e~-5+n/-+e
+DarmiRyAvf,f~-5+n/-+f
+DarmiRyAvi,i~-5+n/-+i
+DarmiRyAvo,o~-5+n/-+o
+DarmiRyAvu,u~-5+n/-+u
+DarmiRyE,E~-3+n/-+E|e~-3+n/-+e|~-3+n/|c~-3+n/- c+c|C~-3+n/- C+C
+DarmiRyO,O~-3+n/-+O|~-3+n/|c~-3+n/- c+c|C~-3+n/- C+C|o~-3+n/-+o
+DarmiRyU,U~-3+n/-+U
+DarmiRya,a~-3+n/-+a
+DarmiRyaH,~-4+n/
+DarmiRyar,f~-4+n/-+f
+DarmiRyas,~-4+n/
+DarmiRye,e~-3+n/-+e|i~-3+n/-+i
+DarmiRyf,f~-3+n/-+f
+DarmiRyo,o~-3+n/-+o|u~-3+n/-+u|U~-3+n/-+U
+DarmiRyoH,~-4+n/
+DarmiRyos,~-4+n/
+DarmiRyu,u~-3+n/-+u
+DarmiY,S:j:J~-1+n/- +|S~-1+n/- C+S
+DarmikA,~-1+a/|a~-1+a/-+a|A~-1+a/-+A|c~-1+a/- c+c|C~-1+a/- C+C
+DarmikABiH,~-4+a/
+DarmikABis,~-4+a/
+DarmikAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmikAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmikAByaH,~-5+a/
+DarmikAByas,~-5+a/
+DarmikAH,~-2+a/
+DarmikAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+DarmikAMS,c:C~-3+a/- +
+DarmikAMs,t:T~-3+a/- +
+DarmikAMz,w:W~-3+a/- +
+DarmikAR,q:Q~-2+a/- +
+DarmikARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmikARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmikARI,i~-3+a/-+i
+DarmikARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmikARyA,A~-4+a/-+A
+DarmikARyE,E~-4+a/-+E
+DarmikARyO,O~-4+a/-+O
+DarmikARyU,U~-4+a/-+U
+DarmikARya,a~-4+a/-+a
+DarmikARye,e~-4+a/-+e
+DarmikARyf,f~-4+a/-+f
+DarmikARyo,o~-4+a/-+o
+DarmikARyu,u~-4+a/-+u
+DarmikAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmikAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmikAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmikAj,j:J~-2+a/- +
+DarmikAl,l~-2+a/- +
+DarmikAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmikAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmikAq,q:Q~-2+a/- +
+DarmikAs,~-2+a/
+DarmikAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmikAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmikAsvA,A~-4+a/-+A
+DarmikAsvE,E~-4+a/-+E
+DarmikAsvO,O~-4+a/-+O
+DarmikAsva,a~-4+a/-+a
+DarmikAsve,e~-4+a/-+e
+DarmikAsvf,f~-4+a/-+f
+DarmikAsvi,i~-4+a/-+i
+DarmikAsvo,o~-4+a/-+o
+DarmikAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmikAvA,A~-3+a/-+A
+DarmikAvE,E~-3+a/-+E
+DarmikAvO,O~-3+a/-+O
+DarmikAvU,U~-3+a/-+U
+DarmikAva,a~-3+a/-+a
+DarmikAve,e~-3+a/-+e
+DarmikAvf,f~-3+a/-+f
+DarmikAvi,i~-3+a/-+i
+DarmikAvo,o~-3+a/-+o
+DarmikAvu,u~-3+a/-+u
+DarmikAw,w:W~-2+a/- +
+DarmikAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmikAyAH,~-4+a/
+DarmikAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmikAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmikAyAs,~-4+a/
+DarmikAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmikAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmikAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmikAyar,f~-4+a/-+f
+DarmikAye,i~-3+a/-+i
+DarmikAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmikE,e~-1+a/-+e|E~-1+a/-+E
+DarmikEH,~-2+a/
+DarmikEs,~-2+a/
+DarmikO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+Darmika,~/|A:i:u:U:f:e:E:o:O~/- +
+DarmikaH,~-1+/
+DarmikaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmikam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmikar,f~-1+/-+f
+Darmikas,~-1+/
+DarmikasyA,a~-3+/-+a|A~-3+/-+A
+DarmikasyE,e~-3+/-+e|E~-3+/-+E
+DarmikasyO,o~-3+/-+o|O~-3+/-+O
+Darmikasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmikasyar,f~-4+/-+f
+Darmikasye,i~-3+/-+i
+Darmikasyo,u~-3+/-+u|U~-3+/-+U
+DarmikayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmikayE,e~-2+/-+e|E~-2+/-+E
+DarmikayO,o~-2+/-+o|O~-2+/-+O
+Darmikayar,f~-3+/-+f
+Darmikaye,i~-2+/-+i
+Darmikayo,u~-2+/-+u|U~-2+/-+U
+DarmikayoH,~-3+/
+Darmikayos,~-3+/
+Darmike,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmikeByaH,~-5+a/
+DarmikeByas,~-5+a/
+DarmikeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmikeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmikeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmikeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmikeRar,f~-4+a/-+f
+DarmikeRe,i~-3+a/-+i
+DarmikeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmikezU,u~-3+a/-+u|U~-3+a/-+U
+Darmikezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmikezvA,A~-4+a/-+A
+DarmikezvE,E~-4+a/-+E
+DarmikezvO,O~-4+a/-+O
+Darmikezva,a~-4+a/-+a
+Darmikezve,e~-4+a/-+e
+Darmikezvf,f~-4+a/-+f
+Darmikezvi,i~-4+a/-+i
+Darmikezvo,o~-4+a/-+o
+Darmiko,u~-1+a/-+u|U~-1+a/-+U
+Darmin,~/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m~/- +
+Darminn,a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+DarmizU,u~-2+n/-+u|U~-2+n/-+U
+DarmizWA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmizWABiH,~-4+a/
+DarmizWABis,~-4+a/
+DarmizWAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmizWAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmizWAByaH,~-5+a/
+DarmizWAByas,~-5+a/
+DarmizWAH,~-2+a/
+DarmizWAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+DarmizWAMS,c:C~-3+a/- +
+DarmizWAMs,t:T~-3+a/- +
+DarmizWAMz,w:W~-3+a/- +
+DarmizWAR,q:Q~-2+a/- +
+DarmizWAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmizWAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmizWAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmizWAj,j:J~-2+a/- +
+DarmizWAl,l~-2+a/- +
+DarmizWAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmizWAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmizWAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmizWAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmizWAnI,i~-3+a/-+i
+DarmizWAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmizWAnyA,A~-4+a/-+A
+DarmizWAnyE,E~-4+a/-+E
+DarmizWAnyO,O~-4+a/-+O
+DarmizWAnyU,U~-4+a/-+U
+DarmizWAnya,a~-4+a/-+a
+DarmizWAnye,e~-4+a/-+e
+DarmizWAnyf,f~-4+a/-+f
+DarmizWAnyo,o~-4+a/-+o
+DarmizWAnyu,u~-4+a/-+u
+DarmizWAq,q:Q~-2+a/- +
+DarmizWAs,~-2+a/
+DarmizWAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmizWAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmizWAsvA,A~-4+a/-+A
+DarmizWAsvE,E~-4+a/-+E
+DarmizWAsvO,O~-4+a/-+O
+DarmizWAsva,a~-4+a/-+a
+DarmizWAsve,e~-4+a/-+e
+DarmizWAsvf,f~-4+a/-+f
+DarmizWAsvi,i~-4+a/-+i
+DarmizWAsvo,o~-4+a/-+o
+DarmizWAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmizWAvA,A~-3+a/-+A
+DarmizWAvE,E~-3+a/-+E
+DarmizWAvO,O~-3+a/-+O
+DarmizWAvU,U~-3+a/-+U
+DarmizWAva,a~-3+a/-+a
+DarmizWAve,e~-3+a/-+e
+DarmizWAvf,f~-3+a/-+f
+DarmizWAvi,i~-3+a/-+i
+DarmizWAvo,o~-3+a/-+o
+DarmizWAvu,u~-3+a/-+u
+DarmizWAw,w:W~-2+a/- +
+DarmizWAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmizWAyAH,~-4+a/
+DarmizWAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmizWAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmizWAyAs,~-4+a/
+DarmizWAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmizWAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmizWAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmizWAyar,f~-4+a/-+f
+DarmizWAye,i~-3+a/-+i
+DarmizWAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmizWE,e~-1+a/-+e|E~-1+a/-+E
+DarmizWEH,~-2+a/
+DarmizWEs,~-2+a/
+DarmizWI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmizWO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmizWa,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+DarmizWaH,~-1+/
+DarmizWaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+DarmizWam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+DarmizWar,f~-1+/-+f
+DarmizWas,~-1+/
+DarmizWasyA,a~-3+/-+a|A~-3+/-+A
+DarmizWasyE,e~-3+/-+e|E~-3+/-+E
+DarmizWasyO,o~-3+/-+o|O~-3+/-+O
+DarmizWasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+DarmizWasyar,f~-4+/-+f
+DarmizWasye,i~-3+/-+i
+DarmizWasyo,u~-3+/-+u|U~-3+/-+U
+DarmizWataH,~-3+/
+DarmizWatas,~-3+/
+DarmizWayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmizWayE,e~-2+/-+e|E~-2+/-+E
+DarmizWayO,o~-2+/-+o|O~-2+/-+O
+DarmizWayar,f~-3+/-+f
+DarmizWaye,i~-2+/-+i
+DarmizWayo,u~-2+/-+u|U~-2+/-+U
+DarmizWayoH,~-3+/
+DarmizWayos,~-3+/
+DarmizWe,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+DarmizWeByaH,~-5+a/
+DarmizWeByas,~-5+a/
+DarmizWenA,a~-3+a/-+a|A~-3+a/-+A
+DarmizWenE,e~-3+a/-+e|E~-3+a/-+E
+DarmizWenO,o~-3+a/-+o|O~-3+a/-+O
+DarmizWena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmizWenar,f~-4+a/-+f
+DarmizWene,i~-3+a/-+i
+DarmizWeno,u~-3+a/-+u|U~-3+a/-+U
+DarmizWezU,u~-3+a/-+u|U~-3+a/-+U
+DarmizWezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmizWezvA,A~-4+a/-+A
+DarmizWezvE,E~-4+a/-+E
+DarmizWezvO,O~-4+a/-+O
+DarmizWezva,a~-4+a/-+a
+DarmizWezve,e~-4+a/-+e
+DarmizWezvf,f~-4+a/-+f
+DarmizWezvi,i~-4+a/-+i
+DarmizWezvo,o~-4+a/-+o
+DarmizWo,u~-1+a/-+u|U~-1+a/-+U
+DarmizWyA,A~-2+a/-+A
+DarmizWyE,E~-2+a/-+E
+DarmizWyO,O~-2+a/-+O
+DarmizWyU,U~-2+a/-+U
+DarmizWya,a~-2+a/-+a
+DarmizWye,e~-2+a/-+e
+DarmizWyf,f~-2+a/-+f
+DarmizWyo,o~-2+a/-+o
+DarmizWyu,u~-2+a/-+u
+Darmizu,~-2+n/|a:A:i:u:U:f:e:E:o:O~-2+n/- +|c~-2+n/- cC+c|C~-2+n/- cC+C
+DarmizvA,A~-3+n/-+A
+DarmizvE,E~-3+n/-+E
+DarmizvO,O~-3+n/-+O
+Darmizva,a~-3+n/-+a
+Darmizve,e~-3+n/-+e
+Darmizvf,f~-3+n/-+f
+Darmizvi,i~-3+n/-+i
+Darmizvo,o~-3+n/-+o
+Darmo,u~-1+an;-1+a/-+u|U~-1+an;-1+a/-+U
+DarmyA,A~-2+in/-+A|a~-1+a/-+a|A~-1+a/-+A|A~-2+in;-2+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+DarmyABiH,~-4+a/
+DarmyABis,~-4+a/
+DarmyAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+DarmyAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+DarmyAByaH,~-5+a/
+DarmyAByas,~-5+a/
+DarmyAH,~-2+a/
+DarmyAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+DarmyAMS,c:C~-3+a/- +
+DarmyAMs,t:T~-3+a/- +
+DarmyAMz,w:W~-3+a/- +
+DarmyAR,q:Q~-2+a/- +
+DarmyARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmyARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmyARI,i~-3+a/-+i
+DarmyARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmyARyA,A~-4+a/-+A
+DarmyARyE,E~-4+a/-+E
+DarmyARyO,O~-4+a/-+O
+DarmyARyU,U~-4+a/-+U
+DarmyARya,a~-4+a/-+a
+DarmyARye,e~-4+a/-+e
+DarmyARyf,f~-4+a/-+f
+DarmyARyo,o~-4+a/-+o
+DarmyARyu,u~-4+a/-+u
+DarmyAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+DarmyAc,S~-2+a/- C+S|c:C~-2+a/- +
+DarmyAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmyAj,j:J~-2+a/- +
+DarmyAl,l~-2+a/- +
+DarmyAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmyAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+DarmyAq,q:Q~-2+a/- +
+DarmyAs,~-2+a/
+DarmyAsU,u~-3+a/-+u|U~-3+a/-+U
+DarmyAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmyAsvA,A~-4+a/-+A
+DarmyAsvE,E~-4+a/-+E
+DarmyAsvO,O~-4+a/-+O
+DarmyAsva,a~-4+a/-+a
+DarmyAsve,e~-4+a/-+e
+DarmyAsvf,f~-4+a/-+f
+DarmyAsvi,i~-4+a/-+i
+DarmyAsvo,o~-4+a/-+o
+DarmyAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+DarmyAvA,A~-3+a/-+A
+DarmyAvE,E~-3+a/-+E
+DarmyAvO,O~-3+a/-+O
+DarmyAvU,U~-3+a/-+U
+DarmyAva,a~-3+a/-+a
+DarmyAve,e~-3+a/-+e
+DarmyAvf,f~-3+a/-+f
+DarmyAvi,i~-3+a/-+i
+DarmyAvo,o~-3+a/-+o
+DarmyAvu,u~-3+a/-+u
+DarmyAw,w:W~-2+a/- +
+DarmyAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+DarmyAyAH,~-4+a/
+DarmyAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+DarmyAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+DarmyAyAs,~-4+a/
+DarmyAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+DarmyAyO,o~-3+a/-+o|O~-3+a/-+O
+DarmyAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmyAyar,f~-4+a/-+f
+DarmyAye,i~-3+a/-+i
+DarmyAyo,u~-3+a/-+u|U~-3+a/-+U
+DarmyE,E~-2+in/-+E|e~-1+a/-+e|E~-1+a/-+E|E~-2+in;-2+a/-+E
+DarmyEH,~-2+a/
+DarmyEs,~-2+a/
+DarmyI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+DarmyO,O~-2+in/-+O|o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C|O~-2+in;-2+a/-+O
+DarmyU,U~-2+in/-+U|U~-2+in;-2+a/-+U
+Darmya,~/|a~-2+in/-+a|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +|a~-2+in;-2+a/-+a
+DarmyaH,~-1+/
+DarmyaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+Darmyam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+Darmyar,f~-1+/-+f
+Darmyas,~-1+/
+DarmyasyA,a~-3+/-+a|A~-3+/-+A
+DarmyasyE,e~-3+/-+e|E~-3+/-+E
+DarmyasyO,o~-3+/-+o|O~-3+/-+O
+Darmyasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+Darmyasyar,f~-4+/-+f
+Darmyasye,i~-3+/-+i
+Darmyasyo,u~-3+/-+u|U~-3+/-+U
+DarmyataH,~-3+/
+Darmyatas,~-3+/
+DarmyayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+DarmyayE,e~-2+/-+e|E~-2+/-+E
+DarmyayO,o~-2+/-+o|O~-2+/-+O
+Darmyayar,f~-3+/-+f
+Darmyaye,i~-2+/-+i
+Darmyayo,u~-2+/-+u|U~-2+/-+U
+DarmyayoH,~-3+/
+Darmyayos,~-3+/
+Darmye,e~-2+in/-+e|i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C|e~-2+in;-2+a/-+e
+DarmyeByaH,~-5+a/
+DarmyeByas,~-5+a/
+DarmyeRA,a~-3+a/-+a|A~-3+a/-+A
+DarmyeRE,e~-3+a/-+e|E~-3+a/-+E
+DarmyeRO,o~-3+a/-+o|O~-3+a/-+O
+DarmyeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmyeRar,f~-4+a/-+f
+DarmyeRe,i~-3+a/-+i
+DarmyeRo,u~-3+a/-+u|U~-3+a/-+U
+DarmyezU,u~-3+a/-+u|U~-3+a/-+U
+Darmyezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+DarmyezvA,A~-4+a/-+A
+DarmyezvE,E~-4+a/-+E
+DarmyezvO,O~-4+a/-+O
+Darmyezva,a~-4+a/-+a
+Darmyezve,e~-4+a/-+e
+Darmyezvf,f~-4+a/-+f
+Darmyezvi,i~-4+a/-+i
+Darmyezvo,o~-4+a/-+o
+Darmyf,f~-2+in/-+f|f~-2+in;-2+a/-+f
+Darmyo,o~-2+in/-+o|u~-1+a/-+u|U~-1+a/-+U|o~-2+in;-2+a/-+o
+Darmyu,u~-2+in/-+u|u~-2+in;-2+a/-+u
+DarmyyA,A~-2+a/-+A
+DarmyyE,E~-2+a/-+E
+DarmyyO,O~-2+a/-+O
+DarmyyU,U~-2+a/-+U
+Darmyya,a~-2+a/-+a
+Darmyye,e~-2+a/-+e
+Darmyyf,f~-2+a/-+f
+Darmyyo,o~-2+a/-+o
+Darmyyu,u~-2+a/-+u
+budDA,~-1+a/|a~-1+a/-+a|A~-1+a/-+A|c~-1+a/- c+c|C~-1+a/- C+C
+budDABiH,~-4+a/
+budDABis,~-4+a/
+budDAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+budDAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+budDAByaH,~-5+a/
+budDAByas,~-5+a/
+budDAH,~-2+a/
+budDAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+budDAMS,c:C~-3+a/- +
+budDAMs,t:T~-3+a/- +
+budDAMz,w:W~-3+a/- +
+budDAR,q:Q~-2+a/- +
+budDAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+budDAc,S~-2+a/- C+S|c:C~-2+a/- +
+budDAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDAj,j:J~-2+a/- +
+budDAl,l~-2+a/- +
+budDAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDAnI,i~-3+a/-+i
+budDAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDAnyA,A~-4+a/-+A
+budDAnyE,E~-4+a/-+E
+budDAnyO,O~-4+a/-+O
+budDAnyU,U~-4+a/-+U
+budDAnya,a~-4+a/-+a
+budDAnye,e~-4+a/-+e
+budDAnyf,f~-4+a/-+f
+budDAnyo,o~-4+a/-+o
+budDAnyu,u~-4+a/-+u
+budDAq,q:Q~-2+a/- +
+budDAs,~-2+a/
+budDAsU,u~-3+a/-+u|U~-3+a/-+U
+budDAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDAsvA,A~-4+a/-+A
+budDAsvE,E~-4+a/-+E
+budDAsvO,O~-4+a/-+O
+budDAsva,a~-4+a/-+a
+budDAsve,e~-4+a/-+e
+budDAsvf,f~-4+a/-+f
+budDAsvi,i~-4+a/-+i
+budDAsvo,o~-4+a/-+o
+budDAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+budDAvA,A~-3+a;-3+i/-+A
+budDAvE,E~-3+a;-3+i/-+E
+budDAvO,O~-3+a;-3+i/-+O
+budDAvU,U~-3+a;-3+i/-+U
+budDAva,a~-3+a;-3+i/-+a
+budDAve,e~-3+a;-3+i/-+e
+budDAvf,f~-3+a;-3+i/-+f
+budDAvi,i~-3+a;-3+i/-+i
+budDAvo,o~-3+a;-3+i/-+o
+budDAvu,u~-3+a;-3+i/-+u
+budDAw,w:W~-2+a/- +
+budDAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+budDAyAH,~-4+a/
+budDAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDAyAs,~-4+a/
+budDAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+budDAyO,o~-3+a/-+o|O~-3+a/-+O
+budDAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDAyar,f~-4+a/-+f
+budDAye,i~-3+a/-+i
+budDAyo,u~-3+a/-+u|U~-3+a/-+U
+budDE,e~-1+a/-+e|E~-1+a/-+E
+budDEH,~-2+a/
+budDEs,~-2+a/
+budDI,i~-1+i/-+i|~-1+i/|a:A:i:u:U:f:e:E:o:O~-1+i/- +|c~-1+i/- c+c|C~-1+i/- C+C
+budDIH,~-2+i/
+budDIM,l~-2+i/- +
+budDIMS,c:C~-3+i/- +
+budDIMs,t:T~-3+i/- +
+budDIMz,w:W~-3+i/- +
+budDIR,q:Q~-2+i/- +
+budDIY,S:j:J~-2+i/- +|S~-2+i/- C+S
+budDIn,~-2+i/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+i/- +
+budDInAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+i/- +
+budDInAm,~-4+i/|a:A:i:I:u:U:f:e:E:o:O~-4+i/- +
+budDInI,i~-3+i/-+i
+budDIni,~-3+i/|a:A:i:u:U:f:e:E:o:O~-3+i/- +|c~-3+i/- cC+c|C~-3+i/- cC+C
+budDInyA,A~-4+i/-+A
+budDInyE,E~-4+i/-+E
+budDInyO,O~-4+i/-+O
+budDInyU,U~-4+i/-+U
+budDInya,a~-4+i/-+a
+budDInye,e~-4+i/-+e
+budDInyf,f~-4+i/-+f
+budDInyo,o~-4+i/-+o
+budDInyu,u~-4+i/-+u
+budDIs,~-2+i/
+budDO,~-1+a;-1+i/|c~-1+a;-1+i/- c+c|C~-1+a;-1+i/- C+C|o~-1+a/-+o|O~-1+a/-+O
+budDa,~/|A:i:u:U:f:e:E:o:O~-1+i/- +
+budDaH,~-1+/
+budDaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDaSrIjYAnA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDaSrIjYAnABiH,~-4+a/
+budDaSrIjYAnABis,~-4+a/
+budDaSrIjYAnAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+budDaSrIjYAnAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+budDaSrIjYAnAByaH,~-5+a/
+budDaSrIjYAnAByas,~-5+a/
+budDaSrIjYAnAH,~-2+a/
+budDaSrIjYAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +|l~-2+a/- +
+budDaSrIjYAnAMS,c:C~-3+a/- +
+budDaSrIjYAnAMs,t:T~-3+a/- +
+budDaSrIjYAnAMz,w:W~-3+a/- +
+budDaSrIjYAnAR,q:Q~-2+a/- +
+budDaSrIjYAnAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+budDaSrIjYAnAc,S~-2+a/- C+S|c:C~-2+a/- +
+budDaSrIjYAnAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDaSrIjYAnAj,j:J~-2+a/- +
+budDaSrIjYAnAl,l~-2+a/- +
+budDaSrIjYAnAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDaSrIjYAnAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDaSrIjYAnAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDaSrIjYAnAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDaSrIjYAnAnI,i~-3+a/-+i
+budDaSrIjYAnAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDaSrIjYAnAnyA,A~-4+a/-+A
+budDaSrIjYAnAnyE,E~-4+a/-+E
+budDaSrIjYAnAnyO,O~-4+a/-+O
+budDaSrIjYAnAnyU,U~-4+a/-+U
+budDaSrIjYAnAnya,a~-4+a/-+a
+budDaSrIjYAnAnye,e~-4+a/-+e
+budDaSrIjYAnAnyf,f~-4+a/-+f
+budDaSrIjYAnAnyo,o~-4+a/-+o
+budDaSrIjYAnAnyu,u~-4+a/-+u
+budDaSrIjYAnAq,q:Q~-2+a/- +
+budDaSrIjYAnAs,~-2+a/
+budDaSrIjYAnAsU,u~-3+a/-+u|U~-3+a/-+U
+budDaSrIjYAnAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDaSrIjYAnAsvA,A~-4+a/-+A
+budDaSrIjYAnAsvE,E~-4+a/-+E
+budDaSrIjYAnAsvO,O~-4+a/-+O
+budDaSrIjYAnAsva,a~-4+a/-+a
+budDaSrIjYAnAsve,e~-4+a/-+e
+budDaSrIjYAnAsvf,f~-4+a/-+f
+budDaSrIjYAnAsvi,i~-4+a/-+i
+budDaSrIjYAnAsvo,o~-4+a/-+o
+budDaSrIjYAnAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+budDaSrIjYAnAvA,A~-3+a/-+A
+budDaSrIjYAnAvE,E~-3+a/-+E
+budDaSrIjYAnAvO,O~-3+a/-+O
+budDaSrIjYAnAvU,U~-3+a/-+U
+budDaSrIjYAnAva,a~-3+a/-+a
+budDaSrIjYAnAve,e~-3+a/-+e
+budDaSrIjYAnAvf,f~-3+a/-+f
+budDaSrIjYAnAvi,i~-3+a/-+i
+budDaSrIjYAnAvo,o~-3+a/-+o
+budDaSrIjYAnAvu,u~-3+a/-+u
+budDaSrIjYAnAw,w:W~-2+a/- +
+budDaSrIjYAnAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+budDaSrIjYAnAyAH,~-4+a/
+budDaSrIjYAnAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDaSrIjYAnAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDaSrIjYAnAyAs,~-4+a/
+budDaSrIjYAnAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+budDaSrIjYAnAyO,o~-3+a/-+o|O~-3+a/-+O
+budDaSrIjYAnAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDaSrIjYAnAyar,f~-4+a/-+f
+budDaSrIjYAnAye,i~-3+a/-+i
+budDaSrIjYAnAyo,u~-3+a/-+u|U~-3+a/-+U
+budDaSrIjYAnE,e~-1+a/-+e|E~-1+a/-+E
+budDaSrIjYAnEH,~-2+a/
+budDaSrIjYAnEs,~-2+a/
+budDaSrIjYAnI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+budDaSrIjYAnO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDaSrIjYAna,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+budDaSrIjYAnaH,~-1+/
+budDaSrIjYAnaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDaSrIjYAnam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDaSrIjYAnar,f~-1+/-+f
+budDaSrIjYAnas,~-1+/
+budDaSrIjYAnasyA,a~-3+/-+a|A~-3+/-+A
+budDaSrIjYAnasyE,e~-3+/-+e|E~-3+/-+E
+budDaSrIjYAnasyO,o~-3+/-+o|O~-3+/-+O
+budDaSrIjYAnasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+budDaSrIjYAnasyar,f~-4+/-+f
+budDaSrIjYAnasye,i~-3+/-+i
+budDaSrIjYAnasyo,u~-3+/-+u|U~-3+/-+U
+budDaSrIjYAnataH,~-3+/
+budDaSrIjYAnatas,~-3+/
+budDaSrIjYAnayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDaSrIjYAnayE,e~-2+/-+e|E~-2+/-+E
+budDaSrIjYAnayO,o~-2+/-+o|O~-2+/-+O
+budDaSrIjYAnayar,f~-3+/-+f
+budDaSrIjYAnaye,i~-2+/-+i
+budDaSrIjYAnayo,u~-2+/-+u|U~-2+/-+U
+budDaSrIjYAnayoH,~-3+/
+budDaSrIjYAnayos,~-3+/
+budDaSrIjYAne,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+budDaSrIjYAneByaH,~-5+a/
+budDaSrIjYAneByas,~-5+a/
+budDaSrIjYAnenA,a~-3+a/-+a|A~-3+a/-+A
+budDaSrIjYAnenE,e~-3+a/-+e|E~-3+a/-+E
+budDaSrIjYAnenO,o~-3+a/-+o|O~-3+a/-+O
+budDaSrIjYAnena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDaSrIjYAnenar,f~-4+a/-+f
+budDaSrIjYAnene,i~-3+a/-+i
+budDaSrIjYAneno,u~-3+a/-+u|U~-3+a/-+U
+budDaSrIjYAnezU,u~-3+a/-+u|U~-3+a/-+U
+budDaSrIjYAnezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDaSrIjYAnezvA,A~-4+a/-+A
+budDaSrIjYAnezvE,E~-4+a/-+E
+budDaSrIjYAnezvO,O~-4+a/-+O
+budDaSrIjYAnezva,a~-4+a/-+a
+budDaSrIjYAnezve,e~-4+a/-+e
+budDaSrIjYAnezvf,f~-4+a/-+f
+budDaSrIjYAnezvi,i~-4+a/-+i
+budDaSrIjYAnezvo,o~-4+a/-+o
+budDaSrIjYAno,u~-1+a/-+u|U~-1+a/-+U
+budDaSrIjYAnyA,A~-2+a/-+A
+budDaSrIjYAnyE,E~-2+a/-+E
+budDaSrIjYAnyO,O~-2+a/-+O
+budDaSrIjYAnyU,U~-2+a/-+U
+budDaSrIjYAnya,a~-2+a/-+a
+budDaSrIjYAnye,e~-2+a/-+e
+budDaSrIjYAnyf,f~-2+a/-+f
+budDaSrIjYAnyo,o~-2+a/-+o
+budDaSrIjYAnyu,u~-2+a/-+u
+budDam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDapAdamaNgalA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDapAdamaNgalABiH,~-4+a/
+budDapAdamaNgalABis,~-4+a/
+budDapAdamaNgalAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+budDapAdamaNgalAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+budDapAdamaNgalAByaH,~-5+a/
+budDapAdamaNgalAByas,~-5+a/
+budDapAdamaNgalAH,~-2+a/
+budDapAdamaNgalAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+budDapAdamaNgalAMS,c:C~-3+a/- +
+budDapAdamaNgalAMs,t:T~-3+a/- +
+budDapAdamaNgalAMz,w:W~-3+a/- +
+budDapAdamaNgalAR,q:Q~-2+a/- +
+budDapAdamaNgalAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+budDapAdamaNgalAc,S~-2+a/- C+S|c:C~-2+a/- +
+budDapAdamaNgalAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDapAdamaNgalAj,j:J~-2+a/- +
+budDapAdamaNgalAl,l~-2+a/- +
+budDapAdamaNgalAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDapAdamaNgalAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDapAdamaNgalAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDapAdamaNgalAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDapAdamaNgalAnI,i~-3+a/-+i
+budDapAdamaNgalAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDapAdamaNgalAnyA,A~-4+a/-+A
+budDapAdamaNgalAnyE,E~-4+a/-+E
+budDapAdamaNgalAnyO,O~-4+a/-+O
+budDapAdamaNgalAnyU,U~-4+a/-+U
+budDapAdamaNgalAnya,a~-4+a/-+a
+budDapAdamaNgalAnye,e~-4+a/-+e
+budDapAdamaNgalAnyf,f~-4+a/-+f
+budDapAdamaNgalAnyo,o~-4+a/-+o
+budDapAdamaNgalAnyu,u~-4+a/-+u
+budDapAdamaNgalAq,q:Q~-2+a/- +
+budDapAdamaNgalAs,~-2+a/
+budDapAdamaNgalAsU,u~-3+a/-+u|U~-3+a/-+U
+budDapAdamaNgalAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDapAdamaNgalAsvA,A~-4+a/-+A
+budDapAdamaNgalAsvE,E~-4+a/-+E
+budDapAdamaNgalAsvO,O~-4+a/-+O
+budDapAdamaNgalAsva,a~-4+a/-+a
+budDapAdamaNgalAsve,e~-4+a/-+e
+budDapAdamaNgalAsvf,f~-4+a/-+f
+budDapAdamaNgalAsvi,i~-4+a/-+i
+budDapAdamaNgalAsvo,o~-4+a/-+o
+budDapAdamaNgalAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+budDapAdamaNgalAvA,A~-3+a/-+A
+budDapAdamaNgalAvE,E~-3+a/-+E
+budDapAdamaNgalAvO,O~-3+a/-+O
+budDapAdamaNgalAvU,U~-3+a/-+U
+budDapAdamaNgalAva,a~-3+a/-+a
+budDapAdamaNgalAve,e~-3+a/-+e
+budDapAdamaNgalAvf,f~-3+a/-+f
+budDapAdamaNgalAvi,i~-3+a/-+i
+budDapAdamaNgalAvo,o~-3+a/-+o
+budDapAdamaNgalAvu,u~-3+a/-+u
+budDapAdamaNgalAw,w:W~-2+a/- +
+budDapAdamaNgalAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+budDapAdamaNgalAyAH,~-4+a/
+budDapAdamaNgalAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDapAdamaNgalAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDapAdamaNgalAyAs,~-4+a/
+budDapAdamaNgalAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+budDapAdamaNgalAyO,o~-3+a/-+o|O~-3+a/-+O
+budDapAdamaNgalAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDapAdamaNgalAyar,f~-4+a/-+f
+budDapAdamaNgalAye,i~-3+a/-+i
+budDapAdamaNgalAyo,u~-3+a/-+u|U~-3+a/-+U
+budDapAdamaNgalE,e~-1+a/-+e|E~-1+a/-+E
+budDapAdamaNgalEH,~-2+a/
+budDapAdamaNgalEs,~-2+a/
+budDapAdamaNgalO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDapAdamaNgala,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+budDapAdamaNgalaH,~-1+/
+budDapAdamaNgalaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDapAdamaNgalam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDapAdamaNgalar,f~-1+/-+f
+budDapAdamaNgalas,~-1+/
+budDapAdamaNgalasyA,a~-3+/-+a|A~-3+/-+A
+budDapAdamaNgalasyE,e~-3+/-+e|E~-3+/-+E
+budDapAdamaNgalasyO,o~-3+/-+o|O~-3+/-+O
+budDapAdamaNgalasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+budDapAdamaNgalasyar,f~-4+/-+f
+budDapAdamaNgalasye,i~-3+/-+i
+budDapAdamaNgalasyo,u~-3+/-+u|U~-3+/-+U
+budDapAdamaNgalataH,~-3+/
+budDapAdamaNgalatas,~-3+/
+budDapAdamaNgalayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDapAdamaNgalayE,e~-2+/-+e|E~-2+/-+E
+budDapAdamaNgalayO,o~-2+/-+o|O~-2+/-+O
+budDapAdamaNgalayar,f~-3+/-+f
+budDapAdamaNgalaye,i~-2+/-+i
+budDapAdamaNgalayo,u~-2+/-+u|U~-2+/-+U
+budDapAdamaNgalayoH,~-3+/
+budDapAdamaNgalayos,~-3+/
+budDapAdamaNgale,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+budDapAdamaNgaleByaH,~-5+a/
+budDapAdamaNgaleByas,~-5+a/
+budDapAdamaNgalenA,a~-3+a/-+a|A~-3+a/-+A
+budDapAdamaNgalenE,e~-3+a/-+e|E~-3+a/-+E
+budDapAdamaNgalenO,o~-3+a/-+o|O~-3+a/-+O
+budDapAdamaNgalena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDapAdamaNgalenar,f~-4+a/-+f
+budDapAdamaNgalene,i~-3+a/-+i
+budDapAdamaNgaleno,u~-3+a/-+u|U~-3+a/-+U
+budDapAdamaNgalezU,u~-3+a/-+u|U~-3+a/-+U
+budDapAdamaNgalezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDapAdamaNgalezvA,A~-4+a/-+A
+budDapAdamaNgalezvE,E~-4+a/-+E
+budDapAdamaNgalezvO,O~-4+a/-+O
+budDapAdamaNgalezva,a~-4+a/-+a
+budDapAdamaNgalezve,e~-4+a/-+e
+budDapAdamaNgalezvf,f~-4+a/-+f
+budDapAdamaNgalezvi,i~-4+a/-+i
+budDapAdamaNgalezvo,o~-4+a/-+o
+budDapAdamaNgalo,u~-1+a/-+u|U~-1+a/-+U
+budDar,f~-1+/-+f
+budDas,~-1+/
+budDasyA,a~-3+/-+a|A~-3+/-+A
+budDasyE,e~-3+/-+e|E~-3+/-+E
+budDasyO,o~-3+/-+o|O~-3+/-+O
+budDasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+budDasyar,f~-4+/-+f
+budDasye,i~-3+/-+i
+budDasyo,u~-3+/-+u|U~-3+/-+U
+budDavAM,l~-2+at/- +
+budDavAMS,c:C~-3+at/- +
+budDavAMs,t:T~-3+at/- +
+budDavAMz,w:W~-3+at/- +
+budDavAR,q:Q~-2+at/- +
+budDavAY,S:j:J~-2+at/- +|S~-2+at/- C+S
+budDavAn,~-2+at/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+at/- +
+budDavac,S~-1+t/- C+S|c:C~-1+t/- +
+budDavad,y:r:v:g:G:d:D:b:B~-1+t/- +|h~-1+t/- D+h|a:A:i:I:u:U:f:e:E:o:O~-1+t/- +
+budDavadBiH,~-4+t/
+budDavadBis,~-4+t/
+budDavadByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+t/- +
+budDavadByAm,~-5+t/|a:A:i:I:u:U:f:e:E:o:O~-5+t/- +
+budDavadByaH,~-5+t/
+budDavadByas,~-5+t/
+budDavaj,j:J~-1+t/- +
+budDaval,l~-1+t/- +
+budDavan,n:m~-1+t/- +
+budDavantAvA,A~-5+t/-+A
+budDavantAvE,E~-5+t/-+E
+budDavantAvO,O~-5+t/-+O
+budDavantAvU,U~-5+t/-+U
+budDavantAva,a~-5+t/-+a
+budDavantAve,e~-5+t/-+e
+budDavantAvf,f~-5+t/-+f
+budDavantAvi,i~-5+t/-+i
+budDavantAvo,o~-5+t/-+o
+budDavantAvu,u~-5+t/-+u
+budDavantI,i~-3+t/-+i|~-3+t/|a:A:i:u:U:f:e:E:o:O~-3+t/- +|c~-3+t/- c+c|C~-3+t/- C+C
+budDavantO,~-3+t/|c~-3+t/- c+c|C~-3+t/- C+C
+budDavantaH,~-4+t/
+budDavantaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+t/- +
+budDavantam,~-4+t/|a:A:i:I:u:U:f:e:E:o:O~-4+t/- +
+budDavantas,~-4+t/
+budDavanti,~-3+t/|a:A:i:u:U:f:e:E:o:O~-3+t/- +|c~-3+t/- cC+c|C~-3+t/- cC+C
+budDavantyA,A~-4+t/-+A
+budDavantyE,E~-4+t/-+E
+budDavantyO,O~-4+t/-+O
+budDavantyU,U~-4+t/-+U
+budDavantya,a~-4+t/-+a
+budDavantye,e~-4+t/-+e
+budDavantyf,f~-4+t/-+f
+budDavantyo,o~-4+t/-+o
+budDavantyu,u~-4+t/-+u
+budDavaq,q:Q~-1+t/- +
+budDavat,~/|z:s:k:K:t:T:p:P~/- +
+budDavatA,~-1+/|a~-1+/-+a|A~-1+/-+A|c~-1+/- c+c|C~-1+/- C+C
+budDavatAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+/- +
+budDavatAm,~-2+/|a:A:i:I:u:U:f:e:E:o:O~-2+/- +
+budDavatE,e~-1+/-+e|E~-1+/-+E
+budDavatI,i~-1+/-+i|~-1+/|a:A:i:u:U:f:e:E:o:O~-1+/- +|c~-1+/- c+c|C~-1+/- C+C
+budDavatIBiH,~-4+/
+budDavatIBis,~-4+/
+budDavatIByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+/- +
+budDavatIByAm,~-5+/|a:A:i:I:u:U:f:e:E:o:O~-5+/- +
+budDavatIByaH,~-5+/
+budDavatIByas,~-5+/
+budDavatIH,~-2+/
+budDavatIM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+/- +
+budDavatIm,~-2+/|a:A:i:I:u:U:f:e:E:o:O~-2+/- +
+budDavatInAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+/- +
+budDavatInAm,~-4+/|a:A:i:I:u:U:f:e:E:o:O~-4+/- +
+budDavatIs,~-2+/
+budDavatIzU,u~-3+/-+u|U~-3+/-+U
+budDavatIzu,~-3+/|a:A:i:u:U:f:e:E:o:O~-3+/- +|c~-3+/- cC+c|C~-3+/- cC+C
+budDavatIzvA,A~-4+/-+A
+budDavatIzvE,E~-4+/-+E
+budDavatIzvO,O~-4+/-+O
+budDavatIzva,a~-4+/-+a
+budDavatIzve,e~-4+/-+e
+budDavatIzvf,f~-4+/-+f
+budDavatIzvi,i~-4+/-+i
+budDavatIzvo,o~-4+/-+o
+budDavatO,o~-1+/-+o|O~-1+/-+O
+budDavata,A:i:u:U:f:e:E:o:O~-1+/- +
+budDavataH,~-2+/
+budDavatar,f~-2+/-+f
+budDavatas,~-2+/
+budDavate,i~-1+/-+i|~-1+/|a~-1+/- '+a|a:A:i:u:U:f:e:E:o:O~-1+/- +|c~-1+/- cC+c|C~-1+/- cC+C
+budDavati,~-1+/|a:A:i:u:U:f:e:E:o:O~-1+/- +|c~-1+/- cC+c|C~-1+/- cC+C
+budDavato,u~-1+/-+u|U~-1+/-+U
+budDavatoH,~-2+/
+budDavatos,~-2+/
+budDavatsU,u~-2+/-+u|U~-2+/-+U
+budDavatsu,~-2+/|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+budDavatsvA,A~-3+/-+A
+budDavatsvE,E~-3+/-+E
+budDavatsvO,O~-3+/-+O
+budDavatsva,a~-3+/-+a
+budDavatsve,e~-3+/-+e
+budDavatsvf,f~-3+/-+f
+budDavatsvi,i~-3+/-+i
+budDavatsvo,o~-3+/-+o
+budDavatyA,A~-2+/-+A|~-2+/|a~-2+/-+a|c~-2+/- c+c|C~-2+/- C+C|a:A:i:u:U:f:e:E:o:O~-2+/- +
+budDavatyAH,~-3+/
+budDavatyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+/- +
+budDavatyAm,~-3+/|a:A:i:I:u:U:f:e:E:o:O~-3+/- +
+budDavatyAs,~-3+/
+budDavatyAvA,A~-4+/-+A
+budDavatyAvE,E~-4+/-+E
+budDavatyAvO,O~-4+/-+O
+budDavatyAvU,U~-4+/-+U
+budDavatyAva,a~-4+/-+a
+budDavatyAve,e~-4+/-+e
+budDavatyAvf,f~-4+/-+f
+budDavatyAvi,i~-4+/-+i
+budDavatyAvo,o~-4+/-+o
+budDavatyAvu,u~-4+/-+u
+budDavatyE,E~-2+/-+E|e~-2+/-+e|~-2+/|c~-2+/- c+c|C~-2+/- C+C
+budDavatyO,O~-2+/-+O|o~-2+/-+o|~-2+/|c~-2+/- c+c|C~-2+/- C+C
+budDavatyU,U~-2+/-+U
+budDavatya,a~-2+/-+a
+budDavatyaH,~-3+/
+budDavatyar,f~-3+/-+f
+budDavatyas,~-3+/
+budDavatye,e~-2+/-+e|i~-2+/-+i
+budDavatyf,f~-2+/-+f
+budDavatyo,o~-2+/-+o|u~-2+/-+u|U~-2+/-+U
+budDavatyoH,~-3+/
+budDavatyos,~-3+/
+budDavatyu,u~-2+/-+u
+budDavaw,w:W~-1+t/- +
+budDayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDayE,e~-2+/-+e|E~-2+/-+E
+budDayO,o~-2+/-+o|O~-2+/-+O
+budDaya,A:i:u:U:f:e:E:o:O~-3+i/- +
+budDayaH,~-4+i/
+budDayar,f~-3+/-+f
+budDayas,~-4+i/
+budDaye,~-3+i/|a~-3+i/- '+a|a:A:i:u:U:f:e:E:o:O~-3+i/- +|c~-3+i/- cC+c|C~-3+i/- cC+C|i~-2+/-+i
+budDayo,u~-2+/-+u|U~-2+/-+U
+budDayoH,~-3+/
+budDayos,~-3+/
+budDe,~-1+a;-1+i/|a~-1+a;-1+i/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a;-1+i/- +|c~-1+a;-1+i/- cC+c|C~-1+a;-1+i/- cC+C|i~-1+a/-+i
+budDeByaH,~-5+a/
+budDeByas,~-5+a/
+budDeH,~-2+i/
+budDenA,a~-3+a/-+a|A~-3+a/-+A
+budDenE,e~-3+a/-+e|E~-3+a/-+E
+budDenO,o~-3+a/-+o|O~-3+a/-+O
+budDena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDenar,f~-4+a/-+f
+budDene,i~-3+a/-+i
+budDeno,u~-3+a/-+u|U~-3+a/-+U
+budDes,~-2+i/
+budDezU,u~-3+a/-+u|U~-3+a/-+U
+budDezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDezvA,A~-4+a/-+A
+budDezvE,E~-4+a/-+E
+budDezvO,O~-4+a/-+O
+budDezva,a~-4+a/-+a
+budDezve,e~-4+a/-+e
+budDezvf,f~-4+a/-+f
+budDezvi,i~-4+a/-+i
+budDezvo,o~-4+a/-+o
+budDi,~/|a:A:i:u:U:f:e:E:o:O~/- +|c~/- cC+c|C~/- cC+C
+budDiBiH,~-3+/
+budDiBis,~-3+/
+budDiByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+/- +
+budDiByAm,~-4+/|a:A:i:I:u:U:f:e:E:o:O~-4+/- +
+budDiByaH,~-4+/
+budDiByas,~-4+/
+budDiH,~-1+/
+budDiM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDim,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDinA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDinE,e~-2+/-+e|E~-2+/-+E
+budDinI,i~-2+/-+i|~-2+/|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- c+c|C~-2+/- C+C
+budDinO,o~-2+/-+o|O~-2+/-+O
+budDina,A:i:u:U:f:e:E:o:O~-2+/- +
+budDinaH,~-3+/
+budDinar,f~-3+/-+f
+budDinas,~-3+/
+budDine,i~-2+/-+i|~-2+/|a~-2+/- '+a|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+budDini,~-2+/|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+budDino,u~-2+/-+u|U~-2+/-+U
+budDinoH,~-3+/
+budDinos,~-3+/
+budDinyA,A~-3+/-+A
+budDinyE,E~-3+/-+E
+budDinyO,O~-3+/-+O
+budDinyU,U~-3+/-+U
+budDinya,a~-3+/-+a
+budDinye,e~-3+/-+e
+budDinyf,f~-3+/-+f
+budDinyo,o~-3+/-+o
+budDinyu,u~-3+/-+u
+budDis,~-1+/
+budDisTA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDisTABiH,~-4+a/
+budDisTABis,~-4+a/
+budDisTAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+budDisTAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+budDisTAByaH,~-5+a/
+budDisTAByas,~-5+a/
+budDisTAH,~-2+a/
+budDisTAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+budDisTAMS,c:C~-3+a/- +
+budDisTAMs,t:T~-3+a/- +
+budDisTAMz,w:W~-3+a/- +
+budDisTAR,q:Q~-2+a/- +
+budDisTAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+budDisTAc,S~-2+a/- C+S|c:C~-2+a/- +
+budDisTAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDisTAj,j:J~-2+a/- +
+budDisTAl,l~-2+a/- +
+budDisTAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDisTAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDisTAnAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDisTAnAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDisTAnI,i~-3+a/-+i
+budDisTAni,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDisTAnyA,A~-4+a/-+A
+budDisTAnyE,E~-4+a/-+E
+budDisTAnyO,O~-4+a/-+O
+budDisTAnyU,U~-4+a/-+U
+budDisTAnya,a~-4+a/-+a
+budDisTAnye,e~-4+a/-+e
+budDisTAnyf,f~-4+a/-+f
+budDisTAnyo,o~-4+a/-+o
+budDisTAnyu,u~-4+a/-+u
+budDisTAq,q:Q~-2+a/- +
+budDisTAs,~-2+a/
+budDisTAsU,u~-3+a/-+u|U~-3+a/-+U
+budDisTAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDisTAsvA,A~-4+a/-+A
+budDisTAsvE,E~-4+a/-+E
+budDisTAsvO,O~-4+a/-+O
+budDisTAsva,a~-4+a/-+a
+budDisTAsve,e~-4+a/-+e
+budDisTAsvf,f~-4+a/-+f
+budDisTAsvi,i~-4+a/-+i
+budDisTAsvo,o~-4+a/-+o
+budDisTAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+budDisTAvA,A~-3+a/-+A
+budDisTAvE,E~-3+a/-+E
+budDisTAvO,O~-3+a/-+O
+budDisTAvU,U~-3+a/-+U
+budDisTAva,a~-3+a/-+a
+budDisTAve,e~-3+a/-+e
+budDisTAvf,f~-3+a/-+f
+budDisTAvi,i~-3+a/-+i
+budDisTAvo,o~-3+a/-+o
+budDisTAvu,u~-3+a/-+u
+budDisTAw,w:W~-2+a/- +
+budDisTAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+budDisTAyAH,~-4+a/
+budDisTAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDisTAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDisTAyAs,~-4+a/
+budDisTAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+budDisTAyO,o~-3+a/-+o|O~-3+a/-+O
+budDisTAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDisTAyar,f~-4+a/-+f
+budDisTAye,i~-3+a/-+i
+budDisTAyo,u~-3+a/-+u|U~-3+a/-+U
+budDisTE,e~-1+a/-+e|E~-1+a/-+E
+budDisTEH,~-2+a/
+budDisTEs,~-2+a/
+budDisTI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+budDisTO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDisTa,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+budDisTaH,~-1+/
+budDisTaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDisTam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDisTar,f~-1+/-+f
+budDisTas,~-1+/
+budDisTasyA,a~-3+/-+a|A~-3+/-+A
+budDisTasyE,e~-3+/-+e|E~-3+/-+E
+budDisTasyO,o~-3+/-+o|O~-3+/-+O
+budDisTasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+budDisTasyar,f~-4+/-+f
+budDisTasye,i~-3+/-+i
+budDisTasyo,u~-3+/-+u|U~-3+/-+U
+budDisTataH,~-3+/
+budDisTatas,~-3+/
+budDisTayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDisTayE,e~-2+/-+e|E~-2+/-+E
+budDisTayO,o~-2+/-+o|O~-2+/-+O
+budDisTayar,f~-3+/-+f
+budDisTaye,i~-2+/-+i
+budDisTayo,u~-2+/-+u|U~-2+/-+U
+budDisTayoH,~-3+/
+budDisTayos,~-3+/
+budDisTe,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+budDisTeByaH,~-5+a/
+budDisTeByas,~-5+a/
+budDisTenA,a~-3+a/-+a|A~-3+a/-+A
+budDisTenE,e~-3+a/-+e|E~-3+a/-+E
+budDisTenO,o~-3+a/-+o|O~-3+a/-+O
+budDisTena,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDisTenar,f~-4+a/-+f
+budDisTene,i~-3+a/-+i
+budDisTeno,u~-3+a/-+u|U~-3+a/-+U
+budDisTezU,u~-3+a/-+u|U~-3+a/-+U
+budDisTezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDisTezvA,A~-4+a/-+A
+budDisTezvE,E~-4+a/-+E
+budDisTezvO,O~-4+a/-+O
+budDisTezva,a~-4+a/-+a
+budDisTezve,e~-4+a/-+e
+budDisTezvf,f~-4+a/-+f
+budDisTezvi,i~-4+a/-+i
+budDisTezvo,o~-4+a/-+o
+budDisTo,u~-1+a/-+u|U~-1+a/-+U
+budDisTyA,A~-2+a/-+A
+budDisTyE,E~-2+a/-+E
+budDisTyO,O~-2+a/-+O
+budDisTyU,U~-2+a/-+U
+budDisTya,a~-2+a/-+a
+budDisTye,e~-2+a/-+e
+budDisTyf,f~-2+a/-+f
+budDisTyo,o~-2+a/-+o
+budDisTyu,u~-2+a/-+u
+budDitaH,~-3+/
+budDitas,~-3+/
+budDizU,u~-2+/-+u|U~-2+/-+U
+budDizu,~-2+/|a:A:i:u:U:f:e:E:o:O~-2+/- +|c~-2+/- cC+c|C~-2+/- cC+C
+budDizvA,A~-3+/-+A
+budDizvE,E~-3+/-+E
+budDizvO,O~-3+/-+O
+budDizva,a~-3+/-+a
+budDizve,e~-3+/-+e
+budDizvf,f~-3+/-+f
+budDizvi,i~-3+/-+i
+budDizvo,o~-3+/-+o
+budDo,u~-1+a/-+u|U~-1+a/-+U
+budDyA,A~-2+i/-+A|~-2+i/|a~-2+i/-+a|c~-2+i/- c+c|C~-2+i/- C+C|a:A:i:u:U:f:e:E:o:O~-2+i/- +
+budDyAH,~-3+i/
+budDyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-3+i/- +
+budDyAm,~-3+i/|a:A:i:I:u:U:f:e:E:o:O~-3+i/- +
+budDyAs,~-3+i/
+budDyE,E~-2+i/-+E|e~-2+i/-+e|~-2+i/|c~-2+i/- c+c|C~-2+i/- C+C
+budDyO,O~-2+i/-+O|o~-2+i/-+o
+budDyU,U~-2+i/-+U
+budDya,a~-2+i/-+a
+budDyapekzA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDyapekzABiH,~-4+a/
+budDyapekzABis,~-4+a/
+budDyapekzAByAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-5+a/- +
+budDyapekzAByAm,~-5+a/|a:A:i:I:u:U:f:e:E:o:O~-5+a/- +
+budDyapekzAByaH,~-5+a/
+budDyapekzAByas,~-5+a/
+budDyapekzAH,~-2+a/
+budDyapekzAM,l~-2+a/- +|y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-2+a/- +
+budDyapekzAMS,c:C~-3+a/- +
+budDyapekzAMs,t:T~-3+a/- +
+budDyapekzAMz,w:W~-3+a/- +
+budDyapekzAR,q:Q~-2+a/- +
+budDyapekzARAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDyapekzARAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDyapekzARI,i~-3+a/-+i
+budDyapekzARi,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDyapekzARyA,A~-4+a/-+A
+budDyapekzARyE,E~-4+a/-+E
+budDyapekzARyO,O~-4+a/-+O
+budDyapekzARyU,U~-4+a/-+U
+budDyapekzARya,a~-4+a/-+a
+budDyapekzARye,e~-4+a/-+e
+budDyapekzARyf,f~-4+a/-+f
+budDyapekzARyo,o~-4+a/-+o
+budDyapekzARyu,u~-4+a/-+u
+budDyapekzAY,S:j:J~-2+a/- +|S~-2+a/- C+S
+budDyapekzAc,S~-2+a/- C+S|c:C~-2+a/- +
+budDyapekzAd,y:r:v:g:G:d:D:b:B~-2+a/- +|h~-2+a/- D+h|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDyapekzAj,j:J~-2+a/- +
+budDyapekzAl,l~-2+a/- +
+budDyapekzAm,~-2+a/|a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDyapekzAn,n:m~-2+a/- +|~-2+a/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m:a:A:i:I:u:U:f:e:E:o:O~-2+a/- +
+budDyapekzAq,q:Q~-2+a/- +
+budDyapekzAs,~-2+a/
+budDyapekzAsU,u~-3+a/-+u|U~-3+a/-+U
+budDyapekzAsu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDyapekzAsvA,A~-4+a/-+A
+budDyapekzAsvE,E~-4+a/-+E
+budDyapekzAsvO,O~-4+a/-+O
+budDyapekzAsva,a~-4+a/-+a
+budDyapekzAsve,e~-4+a/-+e
+budDyapekzAsvf,f~-4+a/-+f
+budDyapekzAsvi,i~-4+a/-+i
+budDyapekzAsvo,o~-4+a/-+o
+budDyapekzAt,~-2+a/|z:s:k:K:t:T:p:P~-2+a/- +
+budDyapekzAvA,A~-3+a/-+A
+budDyapekzAvE,E~-3+a/-+E
+budDyapekzAvO,O~-3+a/-+O
+budDyapekzAvU,U~-3+a/-+U
+budDyapekzAva,a~-3+a/-+a
+budDyapekzAve,e~-3+a/-+e
+budDyapekzAvf,f~-3+a/-+f
+budDyapekzAvi,i~-3+a/-+i
+budDyapekzAvo,o~-3+a/-+o
+budDyapekzAvu,u~-3+a/-+u
+budDyapekzAw,w:W~-2+a/- +
+budDyapekzAyA,a~-3+a/-+a|A~-3+a/-+A|a:A:i:u:U:f:e:E:o:O~-3+a/- +
+budDyapekzAyAH,~-4+a/
+budDyapekzAyAM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-4+a/- +
+budDyapekzAyAm,~-4+a/|a:A:i:I:u:U:f:e:E:o:O~-4+a/- +
+budDyapekzAyAs,~-4+a/
+budDyapekzAyE,e~-3+a/-+e|E~-3+a/-+E|~-3+a/|c~-3+a/- c+c|C~-3+a/- C+C
+budDyapekzAyO,o~-3+a/-+o|O~-3+a/-+O
+budDyapekzAya,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDyapekzAyar,f~-4+a/-+f
+budDyapekzAye,i~-3+a/-+i
+budDyapekzAyo,u~-3+a/-+u|U~-3+a/-+U
+budDyapekzE,e~-1+a/-+e|E~-1+a/-+E
+budDyapekzEH,~-2+a/
+budDyapekzEs,~-2+a/
+budDyapekzI,~-1+a/|i~-1+a/-+i|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- c+c|C~-1+a/- C+C
+budDyapekzO,o~-1+a/-+o|O~-1+a/-+O|~-1+a/|c~-1+a/- c+c|C~-1+a/- C+C
+budDyapekza,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
+budDyapekzaH,~-1+/
+budDyapekzaM,y:r:l:v:S:z:s:h:k:K:g:G:c:C:j:J:w:W:q:Q:t:T:d:D:p:P:b:B:n:m~-1+/- +
+budDyapekzam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +
+budDyapekzar,f~-1+/-+f
+budDyapekzas,~-1+/
+budDyapekzasyA,a~-3+/-+a|A~-3+/-+A
+budDyapekzasyE,e~-3+/-+e|E~-3+/-+E
+budDyapekzasyO,o~-3+/-+o|O~-3+/-+O
+budDyapekzasya,~-3+/|c~-3+/- cC+c|C~-3+/- cC+C
+budDyapekzasyar,f~-4+/-+f
+budDyapekzasye,i~-3+/-+i
+budDyapekzasyo,u~-3+/-+u|U~-3+/-+U
+budDyapekzataH,~-3+/
+budDyapekzatas,~-3+/
+budDyapekzayA,~-2+/|a~-2+/-+a|A~-2+/-+A|c~-2+/- c+c|C~-2+/- C+C
+budDyapekzayE,e~-2+/-+e|E~-2+/-+E
+budDyapekzayO,o~-2+/-+o|O~-2+/-+O
+budDyapekzayar,f~-3+/-+f
+budDyapekzaye,i~-2+/-+i
+budDyapekzayo,u~-2+/-+u|U~-2+/-+U
+budDyapekzayoH,~-3+/
+budDyapekzayos,~-3+/
+budDyapekze,i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
+budDyapekzeByaH,~-5+a/
+budDyapekzeByas,~-5+a/
+budDyapekzeRA,a~-3+a/-+a|A~-3+a/-+A
+budDyapekzeRE,e~-3+a/-+e|E~-3+a/-+E
+budDyapekzeRO,o~-3+a/-+o|O~-3+a/-+O
+budDyapekzeRa,~-3+a/|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDyapekzeRar,f~-4+a/-+f
+budDyapekzeRe,i~-3+a/-+i
+budDyapekzeRo,u~-3+a/-+u|U~-3+a/-+U
+budDyapekzezU,u~-3+a/-+u|U~-3+a/-+U
+budDyapekzezu,~-3+a/|a:A:i:u:U:f:e:E:o:O~-3+a/- +|c~-3+a/- cC+c|C~-3+a/- cC+C
+budDyapekzezvA,A~-4+a/-+A
+budDyapekzezvE,E~-4+a/-+E
+budDyapekzezvO,O~-4+a/-+O
+budDyapekzezva,a~-4+a/-+a
+budDyapekzezve,e~-4+a/-+e
+budDyapekzezvf,f~-4+a/-+f
+budDyapekzezvi,i~-4+a/-+i
+budDyapekzezvo,o~-4+a/-+o
+budDyapekzo,u~-1+a/-+u|U~-1+a/-+U
+budDyapekzyA,A~-2+a/-+A
+budDyapekzyE,E~-2+a/-+E
+budDyapekzyO,O~-2+a/-+O
+budDyapekzyU,U~-2+a/-+U
+budDyapekzya,a~-2+a/-+a
+budDyapekzye,e~-2+a/-+e
+budDyapekzyf,f~-2+a/-+f
+budDyapekzyo,o~-2+a/-+o
+budDyapekzyu,u~-2+a/-+u
+budDyar,f~-3+i/-+f
+budDye,e~-2+i/-+e|i~-2+i/-+i
+budDyf,f~-2+i/-+f
+budDyo,o~-2+i/-+o|u~-2+i/-+u|U~-2+i/-+U
+budDyoH,~-3+i/
+budDyos,~-3+i/
+budDyu,u~-2+i/-+u
