@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -119,7 +118,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
-	private HashMap extraTokens;
+	private ArrayList<String> extraTokens;
 
 	private boolean emitExtraTokens;
 
@@ -248,7 +247,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	private HashMap reconstructLemmas(String cmd, String inflected) {
+	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
 		/**
 		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
 		 * 
@@ -271,7 +270,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 		 * @return: all the reconstructed lemmas. 
 		 */
-		HashMap totalLemmas = new HashMap();
+		HashMap<String, Boolean> totalLemmas = new HashMap<String, Boolean>();
 		String[] entries = cmd.split("\\|");
 		for (String entry: entries) {
 			String[] entryParts = entry.split("~");
@@ -321,8 +320,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				
 				// checks wether the sandhi in entry can be applied between the current word and the next
-				if ((initials.contains(initialCharsOriginal))
-						|| initialCharsSandhied.equals(Character.toString((char) nextChar))) {
+				String test = Character.toString((char) nextChar);
+				if ((initialCharsSandhied != null && initialCharsOriginal != null)
+						&& (initials.contains(initialCharsOriginal)
+						    || initialCharsSandhied.equals(test))) {
 					// applying the diffs finds all lemmas
 					String diffFinals = diffParts[0];
 					String[] diffFinalsList = diffFinals.split(";");
@@ -341,7 +342,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				System.out.println("cmd is corrupted."); // should never happen
 			}	
 		}
-		return totalLemmas;
+		ArrayList<String> output = new ArrayList<String>(totalLemmas.keySet()); 
+		return output;
 	}
 
 	@Override

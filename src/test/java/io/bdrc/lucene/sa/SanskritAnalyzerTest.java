@@ -174,7 +174,7 @@ public class SanskritAnalyzerTest
 		System.out.println("non-sandhied compound test");
 		String input = "?budDaDarma.";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("budDa", "Darma");
+		List<String> expected = Arrays.asList("budDa", "Darma", "Darman");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/budDaDarma_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
