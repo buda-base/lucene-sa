@@ -245,9 +245,78 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (extraTokens.size() == 0) {
 				emitExtraTokens = false;
 			}
-		} else {
-			emitExtraTokens = false;
 		}
+	}
+	
+	private void parseCmd(String cmd) { // TODO: create a class to parse the cmds
+		/**
+		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
+		 * 
+		 * This is how cmd is structured, with the names used in this method:
+		 * 
+		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
+		 * [inflected],[cmd                                                                                  ]
+		 *             [entry                                                              ]|[entry          ]
+		 *             [initials               ]~[diffs                                    ]
+		 *             [initial]:[initial]:[...]~[diffFinals                 ]/[diffInitial]
+		 *                                       [diffFinal];[diffFinal];[...]
+		 * 
+		 * [diffFinal                                                      ]
+		 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
+		 * 
+		 * [diffInitial                                   ]
+		 * [-<initialCharsSandhied>+<initialCharsOriginal>]
+		 * 
+		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
+		 * @return: parsed structure 
+		 */
+		String[] entries = cmd.split("\\|");
+		for (String entry: entries) {
+			String[] entryParts = entry.split("~");
+			assert(entryParts.length == 2);
+			
+			String initials = entryParts[0];
+			
+			String diffs = entryParts[1];
+			
+			String[] diffParts = diffs.split("/");
+			if (diffParts.length == 0) {
+				// there is no diff to apply. inflected is already the lemma
+			} else if (diffParts.length == 2) {
+				// there is a diff. It is applied only if a sandhi exists
+				String diffInitial = diffParts[1];
+				String[] diffInitialList = diffInitial.substring(1).split("\\+"); // if (initialCharsSandhied == nextCurrentChar) {sandhi is valid}
+				
+				// parse diffInitial
+				
+				String initialCharsSandhied = null;
+				String initialCharsOriginal = null;
+				if (diffInitialList.length == 1 && diffInitialList[0].charAt(0) == ' ') { // diffInitial contains "- +" 
+					// the sandhi character merges the final and the initial
+					initialCharsSandhied = "";
+				} else if (diffInitialList.length == 2){
+					initialCharsSandhied = diffInitialList[0];
+					initialCharsOriginal = diffInitialList[1];
+				} else {
+					System.out.println("cmd is corrupted."); // should never happen
+				}
+								
+				// checks wether the sandhi in entry can be applied between the current word and the next
+				// applying the diffs finds all lemmas
+				String diffFinals = diffParts[0];
+				String[] diffFinalsList = diffFinals.split(";");
+				for (String diffFinal: diffFinalsList) {
+					//parse diffFinal
+					String[] diffFinalList = diffFinal.substring(1).split("\\+");
+					assert(diffFinalList.length == 2);
+					int toDelete = Integer.parseInt(diffFinalList[0]);
+					String toAdd = diffFinalList[1];
+				}
+			} else {
+				System.out.println("cmd is corrupted."); // should never happen
+			}	
+		}
+
 	}
 	
 	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {

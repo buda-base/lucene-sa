@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -52,7 +53,7 @@ public class SanskritAnalyzerTest
 		tokenizer.reset();
 		return tokenizer;
 	}
-		
+	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
 			List<String> termList = new ArrayList<String>();
@@ -167,6 +168,26 @@ public class SanskritAnalyzerTest
 //    	assertTokenStream(ts, expected);
 //    }
 
+    @Test
+    public void testParseCmd() throws IOException
+    {
+    	System.out.println("test parseCmd()");
+    	String entry = "aMSa,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +|A~-1+u/- +";
+    	Map<String, String[]> res = CmdParser.parse("a", "~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +|A~-1+u/- +");
+    }
+    
+    @Test
+	public void SandhiedCompoundTest() throws IOException
+	{
+		System.out.println("sandhied compound test");
+		String input = "DarmAta";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("Darma", "ata");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_entries.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
 	public void nonSandhiedCompoundTest() throws IOException
@@ -179,19 +200,6 @@ public class SanskritAnalyzerTest
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/budDaDarma_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
-	}
-	
-    @Test
-	public void SandhiedCompoundTest() throws IOException
-	{
-		System.out.println("sandhied compound test");
-		String input = "DarmAta";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darma", "ata");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_entries.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
 	}
     
     @Test
