@@ -185,9 +185,9 @@ public class SanskritAnalyzerTest
 	public void SandhiedCompoundTest() throws IOException
 	{
 		System.out.println("sandhied compound test");
-		String input = "dvitIyEkasminmahotsavadivase";
+		String input = "DarmAta";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("dvitIyA", "ekasmin", "mahA", "utsava", "divase");
+		List<String> expected = Arrays.asList("Darma", "ata");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/test_entries.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
