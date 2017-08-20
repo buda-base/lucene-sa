@@ -172,8 +172,9 @@ public class SanskritAnalyzerTest
     public void testParseCmd() throws IOException
     {
     	System.out.println("test parseCmd()");
-    	String entry = "aMSa,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +|A~-1+u/- +";
-    	Map<String, String[]> res = CmdParser.parse("a", "~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +|A~-1+u/- +");
+    	// DarmA,a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C
+    	Map<String, ArrayList<String>> res = CmdParser.parse("A", "a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C");
+    	System.out.println(res.toString());
     }
     
     @Test
