@@ -103,13 +103,10 @@ public class CmdParser {
 						
 						if (initials.length > 0) {
 							for (String initial: initials) {
-								if (initial.equals(sandhiedFinal)) {
-								// filter all contextually impossible sandhis
-									String sandhied = sandhiedFinal+initial;
-									String unsandhied = String.format("%s+%s,%s", toDelete, toAdd, initial);
-									sandhis.putIfAbsent(sandhied, new ArrayList<String>());
-									sandhis.get(sandhied).add(unsandhied);
-								}
+								String sandhied = sandhiedFinal+initial;
+								String unsandhied = String.format("%s+%s,%s", toDelete, toAdd, initial);
+								sandhis.putIfAbsent(sandhied, new ArrayList<String>());
+								sandhis.get(sandhied).add(unsandhied);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
@@ -133,13 +130,10 @@ public class CmdParser {
 							
 							if (initials.length > 0) {
 								for (String initial: initials) {
-									if (initial.equals(sandhiedFinal)) {
-									// filter all contextually impossible sandhis
-										String key = sandhiedFinal+initial+initialCharsSandhied;
-										String value = String.format("%s+%s,%s%s", toDelete, toAdd, initial, initialCharsOriginal);
-										sandhis.putIfAbsent(key, new ArrayList<String>());
-										sandhis.get(key).add(value);
-									}
+									String key = sandhiedFinal+initial+initialCharsSandhied;
+									String value = String.format("%s+%s,%s%s", toDelete, toAdd, initial, initialCharsOriginal);
+									sandhis.putIfAbsent(key, new ArrayList<String>());
+									sandhis.get(key).add(value);
 								}
 							} else {
 								String key = sandhiedFinal+initialCharsSandhied;
