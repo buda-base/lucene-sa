@@ -10,6 +10,12 @@ public class CmdParser {
 		 * 
 		 * This is how cmd is structured, with the names used in this method:
 		 * 
+		 *       DarmA,a                        ~-A+an      ;-A+a             /-+a          |
+		 *             A                        ~-A+an      ;-A+a             /-+A          |
+		 *                                      ~-A+an      ;-A+a             /             |
+		 *             c                        ~-A+an      ;-A+a             /- c+c        |
+		 *             C                        ~-A+an      ;-A+a             /- C+C
+		 *             
 		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
 		 * [inflected],[cmd                                                                                  ]
 		 *             [entry                                                              ]|[entry          ]
@@ -52,13 +58,12 @@ public class CmdParser {
 					initials = new String[0];
 				}
 				
-				
 				// diffFinals / diffInitial
 				if (t[1].equals("/")) {
 					diffFinals = new String[0];
-					diffInitial = "";
+					diffInitial = "";					
 				} else {
-					t = t[1].split("/"); 
+					t = t[1].split("/");
 					if (t[0].contains(";")) {
 						diffFinals = t[0].split(";");
 					} else if (!t[0].equals("")) {
@@ -67,12 +72,17 @@ public class CmdParser {
 					} else {
 						diffFinals = new String[0];
 					}
-					if (!t[1].startsWith("- +") || !t[1].startsWith("-+")) { // filters unchanged initial diffs
+					if (t.length <= 1) {
+						diffInitial = "";
+					} else if (!t[1].startsWith("- +") || !t[1].startsWith("-+")) { // filters unchanged initial diffs
 						diffInitial = t[1].replaceFirst("\\-", "").trim(); // left-strip minus sign. uses regex
 					} else {
 						diffInitial = "";
 					}
 				}
+				
+				// delete non-changing initial diff
+				
 				
 				// 1. reconstruct sandhied + unsandhied pairs that are possible with the value of sandhiedFinal
 				
@@ -128,10 +138,10 @@ public class CmdParser {
 							initialCharsSandhied = t[0];
 							initialCharsOriginal = t[1].trim();
 							
-							if (initials.length > 0) {
+							if (initials.length > 1) {
 								for (String initial: initials) {
-									String key = sandhiedFinal+initial+initialCharsSandhied;
-									String value = String.format("%s+%s,%s%s", toDelete, toAdd, initial, initialCharsOriginal);
+									String key = sandhiedFinal+initial;
+									String value = String.format("%s+%s,%s%s", toDelete, toAdd, initial);
 									sandhis.putIfAbsent(key, new ArrayList<String>());
 									sandhis.get(key).add(value);
 								}

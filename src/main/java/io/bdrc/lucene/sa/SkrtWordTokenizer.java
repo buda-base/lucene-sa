@@ -24,7 +24,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.Tokenizer;
@@ -248,173 +250,47 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	private void parseCmd(String cmd) { // TODO: create a class to parse the cmds
-		/**
-		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
-		 * 
-		 * This is how cmd is structured, with the names used in this method:
-		 * 
-		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
-		 * [inflected],[cmd                                                                                  ]
-		 *             [entry                                                              ]|[entry          ]
-		 *             [initials               ]~[diffs                                    ]
-		 *             [initial]:[initial]:[...]~[diffFinals                 ]/[diffInitial]
-		 *                                       [diffFinal];[diffFinal];[...]
-		 * 
-		 * [diffFinal                                                      ]
-		 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
-		 * 
-		 * [diffInitial                                   ]
-		 * [-<initialCharsSandhied>+<initialCharsOriginal>]
-		 * 
-		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
-		 * @return: parsed structure 
-		 */
-		String[] entries = cmd.split("\\|");
-		for (String entry: entries) {
-			String[] entryParts = entry.split("~");
-			assert(entryParts.length == 2);
-			
-			String initials = entryParts[0];
-			
-			String diffs = entryParts[1];
-			
-			String[] diffParts = diffs.split("/");
-			if (diffParts.length == 0) {
-				// there is no diff to apply. inflected is already the lemma
-			} else if (diffParts.length == 2) {
-				// there is a diff. It is applied only if a sandhi exists
-				String diffInitial = diffParts[1];
-				String[] diffInitialList = diffInitial.substring(1).split("\\+"); // if (initialCharsSandhied == nextCurrentChar) {sandhi is valid}
-				
-				// parse diffInitial
-				
-				String initialCharsSandhied = null;
-				String initialCharsOriginal = null;
-				if (diffInitialList.length == 1 && diffInitialList[0].charAt(0) == ' ') { // diffInitial contains "- +" 
-					// the sandhi character merges the final and the initial
-					initialCharsSandhied = "";
-				} else if (diffInitialList.length == 2){
-					initialCharsSandhied = diffInitialList[0];
-					initialCharsOriginal = diffInitialList[1];
-				} else {
-					System.out.println("cmd is corrupted."); // should never happen
-				}
-								
-				// checks wether the sandhi in entry can be applied between the current word and the next
-				// applying the diffs finds all lemmas
-				String diffFinals = diffParts[0];
-				String[] diffFinalsList = diffFinals.split(";");
-				for (String diffFinal: diffFinalsList) {
-					//parse diffFinal
-					String[] diffFinalList = diffFinal.substring(1).split("\\+");
-					assert(diffFinalList.length == 2);
-					int toDelete = Integer.parseInt(diffFinalList[0]);
-					String toAdd = diffFinalList[1];
-				}
-			} else {
-				System.out.println("cmd is corrupted."); // should never happen
-			}	
-		}
-
-	}
-	
 	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
 		/**
-		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
+		 * Maximum range of characters where sandhi applies:
+		 * - vowel sandhi          : currentCharacter   - currentCharacter+2 (ex. "-O a-"/"-Oa-"  => "-Ava-")
+		 * - consonant sandhi1     : currentCharacter   - currentCharacter+2 (ex. "-k y-"/"-ky-"  => "-g y-"/"-gy-")
+		 * - consonant sandhi2     : currentCharacter   - currentCharacter+3 (ex. "-n W-"/"-nW-"  => "-Mz W-"/"-MzW-")
+		 * - visarga sandhi1       : currentCharacter-1 - currentCharacter+2 (ex. "-aH A-"/"-aHA" => "-A A-"/"-AA")
+		 * - visarga sandhi2       : currentCharacter-1 - currentCharacter+2 (ex. "-aH c-"/"-aHc" => "-aS c-"/"-aSc-")
+		 * - absolute finals sandhi: currentCharacter   - currentCharacter+X (X = consonant cluster ending a word. only one consonant remains)
+		 * - cC words sandhi       : currentCharacter   - currentCharacter+3 (ex. "-a c-"/"-ac-"  => "-a cC-"/"-acC-")
+		 * - punar sandhi          : currentCharacter   - currentCharacter+2 (ex. "-r k-"="-rk-"  => "-H k-"/"-Hk-")
 		 * 
-		 * This is how cmd is structured, with the names used in this method:
-		 * 
-		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
-		 * [inflected],[cmd                                                                                  ]
-		 *             [entry                                                              ]|[entry          ]
-		 *             [initials               ]~[diffs                                    ]
-		 *             [initial]:[initial]:[...]~[diffFinals                 ]/[diffInitial]
-		 *                                       [diffFinal];[diffFinal];[...]
-		 * 
-		 * [diffFinal                                                      ]
-		 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
-		 * 
-		 * [diffInitial                                   ]
-		 * [-<initialCharsSandhied>+<initialCharsOriginal>]
-		 * 
-		 * @param inflected the basis for reconstructing the lemmas
-		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
-		 * @return: all the reconstructed lemmas. 
+		 * The range goes from -1 to +3. TODO: ask to Charles the maximum X can be.
 		 */
 		HashMap<String, Boolean> totalLemmas = new HashMap<String, Boolean>();
-		String[] entries = cmd.split("\\|");
-		for (String entry: entries) {
-			String[] entryParts = entry.split("~");
-			assert(entryParts.length == 2);
+		int inputBufferIndex = bufferIndex-1; // at this stage, bufferIndex has already been incremented
+		String sandhiableRange = Arrays.copyOfRange(ioBuffer.getBuffer(), inputBufferIndex-1, inputBufferIndex+3).toString(); 
+		String[] t = new String[0];
+		
+		HashMap<String, ArrayList<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
+		for (Entry<String, ArrayList<String>> current: parsedCmd.entrySet()) {
+			String sandhied = current.getKey();
 			
-			String initials = entryParts[0];
-			
-			String diffs = entryParts[1];
-			
-			String[] diffParts = diffs.split("/");
-			if (diffParts.length == 0) {
-				// there is no diff to apply. inflected is already the lemma
-			} else if (diffParts.length == 2) {
-				// there is a diff. It is applied only if a sandhi exists
-				String diffInitial = diffParts[1];
-				String[] diffInitialList = diffInitial.substring(1).split("\\+"); // if (initialCharsSandhied == nextCurrentChar) {sandhi is valid}
-				
-				// parse diffInitial
-				
-				String initialCharsSandhied = null;
-				String initialCharsOriginal = null;
-				if (diffInitialList.length == 1 && diffInitialList[0].charAt(0) == ' ') { // diffInitial contains "- +" 
-					// the sandhi character merges the final and the initial
-					initialCharsSandhied = "";
-				} else if (diffInitialList.length == 2){
-					initialCharsSandhied = diffInitialList[0];
-					initialCharsOriginal = diffInitialList[1];
-				} else {
-					System.out.println("cmd is corrupted."); // should never happen
-				}
-				
-				// find nextChar, the first character of next word
-				int nextChar = -1;
-				if (initialCharsSandhied.isEmpty()) {
-					nextChar = inflected.charAt(inflected.length()-1);
-					initialCharsSandhied = Character.toString((char) nextChar);
-				} else {
-					nextChar = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
-				}
-				
-				// fill initialDiff for next call of incrementToken() so next word can be unsandhied and found in the Trie 
-				if (initialCharsSandhied.equals(Character.toString((char) nextChar))) {
-					if (initialDiff == null) {
-						initialDiff = new ArrayList<String>();
+			if (sandhiableRange.contains(sandhied)) {
+				ArrayList<String> diffs = current.getValue(); 
+				for (String lemma: diffs) {
+					t = lemma.split("\\+");
+					assert(t.length == 2); // all lemmas should contain +
+					int toDelete = Integer.parseInt(t[0]);
+					t = t[1].split(",");
+					String toAdd = t[0];
+					String newInitial = "";
+					if (t.length == 2) {
+						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken() 
 					}
-					initialDiff.add(initialCharsSandhied+'+'+initialCharsOriginal);
+					String reconstructedLemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
+					totalLemmas.put(reconstructedLemma, true);
 				}
-				
-				// checks wether the sandhi in entry can be applied between the current word and the next
-				String test = Character.toString((char) nextChar);
-				if ((initialCharsSandhied != null && initialCharsOriginal != null)
-						&& (initials.contains(initialCharsOriginal)
-						    || initialCharsSandhied.equals(test))) {
-					// applying the diffs finds all lemmas
-					String diffFinals = diffParts[0];
-					String[] diffFinalsList = diffFinals.split(";");
-					for (String diffFinal: diffFinalsList) {
-						//parse diffFinal
-						String[] diffFinalList = diffFinal.substring(1).split("\\+");
-						assert(diffFinalList.length == 2);
-						int toDelete = Integer.parseInt(diffFinalList[0]);
-						String toAdd = diffFinalList[1];
-						
-						String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
-						totalLemmas.put(lemma, true);
-					}
-				}
-			} else {
-				System.out.println("cmd is corrupted."); // should never happen
-			}	
+			}
 		}
-		ArrayList<String> output = new ArrayList<String>(totalLemmas.keySet()); 
+		ArrayList<String> output = new ArrayList<String>(totalLemmas.keySet());
 		return output;
 	}
 
