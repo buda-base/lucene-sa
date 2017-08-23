@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -242,7 +241,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					bufferIndex = bufferIndex - charCount;
 				}
 				end = end - charCount;
-				length = length - charCount;
+				length = length - charCount; // may not be useful, since it is reinitialized each time a term is issued
 			}
 		}
 		assert(start != -1);
@@ -267,29 +266,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * only reconstructs the lemmas if there is a match.
 		 * 
 		 * 
-		 * Maximum range of characters where sandhi applies:
-		 * - vowel sandhi          : currentCharacter   - currentCharacter+2 (ex. "-O a-"/"-Oa-"  => "-Ava-")
-		 * - consonant sandhi1     : currentCharacter   - currentCharacter+2 (ex. "-k y-"/"-ky-"  => "-g y-"/"-gy-")
-		 * - consonant sandhi2     : currentCharacter   - currentCharacter+3 (ex. "-n W-"/"-nW-"  => "-Mz W-"/"-MzW-")
-		 * - visarga sandhi1       : currentCharacter-1 - currentCharacter+2 (ex. "-aH A-"/"-aHA" => "-A A-"/"-AA")
-		 * - visarga sandhi2       : currentCharacter-1 - currentCharacter+2 (ex. "-aH c-"/"-aHc" => "-aS c-"/"-aSc-")
-		 * - absolute finals sandhi: currentCharacter   - currentCharacter+X (X = consonant cluster ending a word. only one consonant remains)
-		 * - cC words sandhi       : currentCharacter   - currentCharacter+3 (ex. "-a c-"/"-ac-"  => "-a cC-"/"-acC-")
-		 * - punar sandhi          : currentCharacter   - currentCharacter+2 (ex. "-r k-"="-rk-"  => "-H k-"/"-Hk-")
-		 * The range goes from -1 to +3. TODO: ask to Charles the maximum X can be.
-		 * 
 		 * @return: the list of all the possible lemmas given the current context
 		 */
-		HashSet<String> totalLemmas = new HashSet<String>();
-		int inputBufferIndex = bufferIndex; //-1; // at this stage, bufferIndex has already been incremented
-		String sandhiableRange = String.valueOf(Arrays.copyOfRange(ioBuffer.getBuffer(), inputBufferIndex-1, inputBufferIndex+3)); 
+		HashSet<String> totalLemmas = new HashSet<String>(); 
 		String[] t = new String[0];
 		
 		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 
-			if (sandhiableRange.contains(sandhied)) {
+			if (containsSandhiedCombination(sandhied)) {
 				HashSet<String> diffs = current.getValue(); 
 				for (String lemmaDiff: diffs) {
 					t = lemmaDiff.split("\\+");
@@ -318,6 +304,56 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 		return new LinkedList<String>(totalLemmas);
+	}
+
+	private boolean containsSandhiedCombination(String sandhied) {
+		/**
+ 		 * Tells whether sandhied could be found between the two words.
+ 		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
+ 		 * 
+ 		 * Maximum range of characters where sandhi applies:
+		 * - vowel sandhi          : currentCharacter   - currentCharacter+2 (ex. "-O a-"/"-Oa-"  => "-Ava-")
+		 * - consonant sandhi1     : currentCharacter   - currentCharacter+2 (ex. "-k y-"/"-ky-"  => "-g y-"/"-gy-")
+		 * - consonant sandhi2     : currentCharacter   - currentCharacter+3 (ex. "-n W-"/"-nW-"  => "-Mz W-"/"-MzW-")
+		 * - visarga sandhi1       : currentCharacter-1 - currentCharacter+2 (ex. "-aH A-"/"-aHA" => "-A A-"/"-AA")
+		 * - visarga sandhi2       : currentCharacter-1 - currentCharacter+2 (ex. "-aH c-"/"-aHc" => "-aS c-"/"-aSc-")
+		 * - absolute finals sandhi: currentCharacter   - currentCharacter+X (X = consonant cluster ending a word. only one consonant remains)
+		 * - cC words sandhi       : currentCharacter   - currentCharacter+3 (ex. "-a c-"/"-ac-"  => "-a cC-"/"-acC-")
+		 * - punar sandhi          : currentCharacter   - currentCharacter+2 (ex. "-r k-"="-rk-"  => "-H k-"/"-Hk-")
+		 * 
+		 * Given this, each combination must:
+		 * 		- start either from 0 or -1
+		 * 		- can have a maximal value of 3  
+		 * 
+		 * TODO: ask to Charles the maximum X can be.
+		 * 
+		 * @return: true if sandhied is one of the combinations; else otherwise 
+		 */
+		boolean sandhiable = false;
+		char[] inputBuffer = ioBuffer.getBuffer();
+		int[][] combinations = new int[][]{
+			{0, 1},
+			{0, 2},
+			{0, 3},
+			{-1, 0},
+			{-1, 1},
+			{-1, 2},
+			{-1, 3},
+		};
+		for (int i = 0; i <= 5; i++) {
+			int start = combinations[i][0];
+			int end = combinations[i][1];
+			String current = "";
+			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
+				if (c != ' ') {
+					current = current + Character.toString(c);
+				}
+			}
+			if (sandhied.equals(current)) {
+				sandhiable = true;
+			}
+		}
+		return sandhiable;
 	}
 
 	@Override
