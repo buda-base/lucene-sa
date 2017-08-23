@@ -1,10 +1,10 @@
 package io.bdrc.lucene.sa;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class CmdParser {
-	public static HashMap<String, ArrayList<String>> parse(String sandhiedFinal, String cmd) { // TODO: create a class to parse the cmds
+	public static HashMap<String, HashSet<String>> parse(String sandhiedFinal, String cmd) { // TODO: create a class to parse the cmds
 		/**
 		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
 		 * 
@@ -33,7 +33,7 @@ public class CmdParser {
 		 * @return: parsed structure 
 		 */
 		// <initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		HashMap<String, ArrayList<String>> sandhis = new HashMap<String, ArrayList<String>>();
+		HashMap<String, HashSet<String>> sandhis = new HashMap<String, HashSet<String>>();
 		// variables
 		String[] initials = null;
 		String diffInitial = null; // there can only be one initial diff
@@ -101,7 +101,7 @@ public class CmdParser {
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
 					String unsandhied = String.format("%s+%s,%s", "0", sandhiedFinal,initialCharsOriginal);
-					sandhis.putIfAbsent(sandhied, new ArrayList<String>());
+					sandhis.putIfAbsent(sandhied, new HashSet<String>());
 					sandhis.get(sandhied).add(unsandhied);
 				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
 				// b. diff only on final
@@ -115,13 +115,13 @@ public class CmdParser {
 							for (String initial: initials) {
 								String sandhied = sandhiedFinal+initial;
 								String unsandhied = String.format("%s+%s,%s", toDelete, toAdd, initial);
-								sandhis.putIfAbsent(sandhied, new ArrayList<String>());
+								sandhis.putIfAbsent(sandhied, new HashSet<String>());
 								sandhis.get(sandhied).add(unsandhied);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
 							String unsandhied = String.format("%s+%s", toDelete, toAdd);
-							sandhis.putIfAbsent(sandhied, new ArrayList<String>());
+							sandhis.putIfAbsent(sandhied, new HashSet<String>());
 							sandhis.get(sandhied).add(unsandhied);
 						}
 					}
@@ -141,13 +141,13 @@ public class CmdParser {
 								
 								String key = sandhiedFinal+initialCharsSandhied;
 								String value = String.format("%s+%s,%s", toDelete, toAdd, initialCharsOriginal);
-								sandhis.putIfAbsent(key, new ArrayList<String>());
+								sandhis.putIfAbsent(key, new HashSet<String>());
 								sandhis.get(key).add(value);
 							} else if (t.length < 2 && initials.length > 1) {
 								for (String initial: initials) {
 									String key = sandhiedFinal+initial;
 									String value = String.format("%s+%s,%s", toDelete, toAdd, initial);
-									sandhis.putIfAbsent(key, new ArrayList<String>());
+									sandhis.putIfAbsent(key, new HashSet<String>());
 									sandhis.get(key).add(value);
 								}
 							} else {

@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.CharacterUtils;
@@ -120,11 +122,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
-	private ArrayList<String> extraTokens;
+	private LinkedList<String> extraTokens;
 
 	private boolean emitExtraTokens;
 
-	private ArrayList<String> initialDiff = null;
+	private ArrayList<String> sandhiedInitials = null;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -150,6 +152,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int end = -1;
 		int confirmedEnd = -1;
 		int confirmedEndIndex = -1;
+		int charCount = -1;
 		String cmd = null;
 		int w = -1;
 		int cmdIndex = -1;
@@ -175,7 +178,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
 			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
-			final int charCount = Character.charCount(c);
+			charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
@@ -227,30 +230,36 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		
 		termAtt.setLength(end - start);
+		
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
 		if (cmd != null) {
 			extraTokens = reconstructLemmas(cmd, termAtt.toString());
 			if (extraTokens.size() != 0) {
 				emitExtraTokens = true;
+				// restore state to the character just processed
+				if (charCount != -1) {
+					bufferIndex = bufferIndex - charCount;
+				}
+				end = end - charCount;
 			}
 		}
 		assert(start != -1);
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
 		return true;
+		
 	}
 	
 	private void addExtraToken() {
 		if (extraTokens.size() > 0) {
-			termAtt.setEmpty().append(extraTokens.get(0).toString());
-			extraTokens.remove(0);
+			termAtt.setEmpty().append(extraTokens.pollFirst());
 			if (extraTokens.size() == 0) {
 				emitExtraTokens = false;
 			}
 		}
 	}
 	
-	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
+	private LinkedList<String> reconstructLemmas(String cmd, String inflected) {
 		/**
 		 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(), 
 		 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -270,17 +279,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * 
 		 * @return: the list of all the possible lemmas given the current context
 		 */
-		HashMap<String, Boolean> totalLemmas = new HashMap<String, Boolean>();
-		int inputBufferIndex = bufferIndex-1; // at this stage, bufferIndex has already been incremented
+		HashSet<String> totalLemmas = new HashSet<String>();
+		int inputBufferIndex = bufferIndex; //-1; // at this stage, bufferIndex has already been incremented
 		String sandhiableRange = String.valueOf(Arrays.copyOfRange(ioBuffer.getBuffer(), inputBufferIndex-1, inputBufferIndex+3)); 
 		String[] t = new String[0];
 		
-		HashMap<String, ArrayList<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
-		for (Entry<String, ArrayList<String>> current: parsedCmd.entrySet()) {
+		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
+		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 
 			if (sandhiableRange.contains(sandhied)) {
-				ArrayList<String> diffs = current.getValue(); 
+				HashSet<String> diffs = current.getValue(); 
 				for (String lemmaDiff: diffs) {
 					t = lemmaDiff.split("\\+");
 					assert(t.length == 2); // all lemmaDiffs should contain +
@@ -293,18 +302,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						t = t[1].split(",");
 						toAdd = t[0];
 						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
+						if (sandhiedInitials == null) {
+							sandhiedInitials = new ArrayList<String>();
+						}
+						sandhiedInitials.add(newInitial);
 					} else { 
 					// there no change in initial
 						toAdd = t[1];
 					}
  
 					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
-					totalLemmas.put(lemma, true);
+					totalLemmas.add(lemma);
 				}
 			}
 		}
-		ArrayList<String> output = new ArrayList<String>(totalLemmas.keySet());
-		return output;
+		return new LinkedList<String>(totalLemmas);
 	}
 
 	@Override

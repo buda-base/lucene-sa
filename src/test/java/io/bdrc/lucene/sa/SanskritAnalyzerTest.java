@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -174,12 +175,12 @@ public class SanskritAnalyzerTest
     	System.out.println("test parseCmd()");
     	// DarmA,a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C
     	String input = ",a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C";
-    	String expected = "{A=[1+an,a, 1+a,a, 1+an,A, 1+a,A, -1+an, -1+a], Ac=[1+an,c, 1+a,c], AC=[1+an,C, 1+a,C]}";
+    	String expected = "{A=[1+an,a, 1+a,a, 1+an,A, 1+a,A, 1+an, 1+a], Ac=[1+an,c, 1+a,c], AC=[1+an,C, 1+a,C]}";
     	System.out.println("0 " + input);
-    	Map<String, ArrayList<String>> res = CmdParser.parse("A", input);
-    	assertTrue(res.toString().equals(expected));    	
+    	Map<String, HashSet<String>> res = CmdParser.parse("A", input);    	
     	System.out.println("1 " + expected);
     	System.out.println("2 " + res.toString() + "\n");
+    	assertTrue(res.toString().equals(expected));
     }
     
     @Test
