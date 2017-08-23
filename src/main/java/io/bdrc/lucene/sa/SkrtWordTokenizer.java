@@ -126,7 +126,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private boolean emitExtraTokens;
 
-	private ArrayList<String> sandhiedInitials = null;
+	private HashSet<String> sandhiedInitials = null;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -236,18 +236,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			extraTokens = reconstructLemmas(cmd, termAtt.toString());
 			if (extraTokens.size() != 0) {
 				emitExtraTokens = true;
+				termAtt.setEmpty().append(extraTokens.pollFirst());
 				// restore state to the character just processed
 				if (charCount != -1) {
 					bufferIndex = bufferIndex - charCount;
 				}
 				end = end - charCount;
+				length = length - charCount;
 			}
 		}
 		assert(start != -1);
 		finalOffset = correctOffset(end);
 		offsetAtt.setOffset(correctOffset(start), finalOffset);
 		return true;
-		
 	}
 	
 	private void addExtraToken() {
@@ -303,7 +304,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						toAdd = t[0];
 						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
 						if (sandhiedInitials == null) {
-							sandhiedInitials = new ArrayList<String>();
+							sandhiedInitials = new HashSet<String>();
 						}
 						sandhiedInitials.add(newInitial);
 					} else { 

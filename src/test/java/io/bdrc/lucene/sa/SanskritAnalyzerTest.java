@@ -175,7 +175,7 @@ public class SanskritAnalyzerTest
     	System.out.println("test parseCmd()");
     	// DarmA,a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C
     	String input = ",a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C";
-    	String expected = "{A=[1+an,a, 1+a,a, 1+an,A, 1+a,A, 1+an, 1+a], Ac=[1+an,c, 1+a,c], AC=[1+an,C, 1+a,C]}";
+    	String expected = "{A=[1+an, 1+an,a, 1+an,A, 1+a, 1+a,a, 1+a,A], Ac=[1+an,c, 1+a,c], AC=[1+an,C, 1+a,C]}";
     	System.out.println("0 " + input);
     	Map<String, HashSet<String>> res = CmdParser.parse("A", input);    	
     	System.out.println("1 " + expected);
