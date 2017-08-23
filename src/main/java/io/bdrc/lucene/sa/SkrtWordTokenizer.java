@@ -252,6 +252,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private ArrayList<String> reconstructLemmas(String cmd, String inflected) {
 		/**
+		 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(), 
+		 * iterates through them, checking if the sandhied string is found in the sandhiable range,
+		 * only reconstructs the lemmas if there is a match.
+		 * 
+		 * 
 		 * Maximum range of characters where sandhi applies:
 		 * - vowel sandhi          : currentCharacter   - currentCharacter+2 (ex. "-O a-"/"-Oa-"  => "-Ava-")
 		 * - consonant sandhi1     : currentCharacter   - currentCharacter+2 (ex. "-k y-"/"-ky-"  => "-g y-"/"-gy-")
@@ -261,12 +266,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * - absolute finals sandhi: currentCharacter   - currentCharacter+X (X = consonant cluster ending a word. only one consonant remains)
 		 * - cC words sandhi       : currentCharacter   - currentCharacter+3 (ex. "-a c-"/"-ac-"  => "-a cC-"/"-acC-")
 		 * - punar sandhi          : currentCharacter   - currentCharacter+2 (ex. "-r k-"="-rk-"  => "-H k-"/"-Hk-")
-		 * 
 		 * The range goes from -1 to +3. TODO: ask to Charles the maximum X can be.
+		 * 
+		 * @return: the list of all the possible lemmas given the current context
 		 */
 		HashMap<String, Boolean> totalLemmas = new HashMap<String, Boolean>();
 		int inputBufferIndex = bufferIndex-1; // at this stage, bufferIndex has already been incremented
-		String sandhiableRange = Arrays.copyOfRange(ioBuffer.getBuffer(), inputBufferIndex-1, inputBufferIndex+3).toString(); 
+		String sandhiableRange = String.valueOf(Arrays.copyOfRange(ioBuffer.getBuffer(), inputBufferIndex-1, inputBufferIndex+3)); 
 		String[] t = new String[0];
 		
 		HashMap<String, ArrayList<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);

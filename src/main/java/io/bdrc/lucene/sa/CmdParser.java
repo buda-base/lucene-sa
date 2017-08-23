@@ -135,27 +135,30 @@ public class CmdParser {
 							toAdd = t[1];
 							
 							t = diffInitial.split("\\+");
-							initialCharsSandhied = t[0];
-							initialCharsOriginal = t[1].trim();
-							
-							if (initials.length > 1) {
-								for (String initial: initials) {
-									String key = sandhiedFinal+initial;
-									String value = String.format("%s+%s,%s%s", toDelete, toAdd, initial);
-									sandhis.putIfAbsent(key, new ArrayList<String>());
-									sandhis.get(key).add(value);
-								}
-							} else {
+							if (t.length == 2) {
+								initialCharsSandhied = t[0];
+								initialCharsOriginal = t[1].trim();
+								
 								String key = sandhiedFinal+initialCharsSandhied;
 								String value = String.format("%s+%s,%s", toDelete, toAdd, initialCharsOriginal);
 								sandhis.putIfAbsent(key, new ArrayList<String>());
 								sandhis.get(key).add(value);
+							} else if (t.length < 2 && initials.length > 1) {
+								for (String initial: initials) {
+									String key = sandhiedFinal+initial;
+									String value = String.format("%s+%s,%s", toDelete, toAdd, initial);
+									sandhis.putIfAbsent(key, new ArrayList<String>());
+									sandhis.get(key).add(value);
+								}
+							} else {
+								// raise error. should never happen
+								System.out.println("A.there is a problem with cmd: "+cmd);
 							}
 						}
 					}
 				} else {
 						// raise error. should never happen
-						System.out.println("there is a problem with cmd: "+cmd);
+						System.out.println("B.there is a problem with cmd: "+cmd);
 				}
 			}
 		}
