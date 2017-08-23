@@ -106,7 +106,7 @@ public class CmdParser {
 				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
 				// b. diff only on final
 					for (String finalDiff: diffFinals) {
-						
+						finalDiff = finalDiff.replaceFirst("\\-", ""); // left-strip minus sign. uses regex
 						t = finalDiff.split("\\+");
 						toDelete = t[0];
 						toAdd = t[1];

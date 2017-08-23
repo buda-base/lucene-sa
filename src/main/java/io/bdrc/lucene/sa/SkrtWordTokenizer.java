@@ -278,21 +278,28 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashMap<String, ArrayList<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
 		for (Entry<String, ArrayList<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
-			
+
 			if (sandhiableRange.contains(sandhied)) {
 				ArrayList<String> diffs = current.getValue(); 
-				for (String lemma: diffs) {
-					t = lemma.split("\\+");
-					assert(t.length == 2); // all lemmas should contain +
+				for (String lemmaDiff: diffs) {
+					t = lemmaDiff.split("\\+");
+					assert(t.length == 2); // all lemmaDiffs should contain +
 					int toDelete = Integer.parseInt(t[0]);
-					t = t[1].split(",");
-					String toAdd = t[0];
+					String toAdd;
 					String newInitial = "";
-					if (t.length == 2) {
-						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken() 
+					
+					if (t[1].contains(",")) { 
+					// there is a change in initial
+						t = t[1].split(",");
+						toAdd = t[0];
+						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
+					} else { 
+					// there no change in initial
+						toAdd = t[1];
 					}
-					String reconstructedLemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
-					totalLemmas.put(reconstructedLemma, true);
+ 
+					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
+					totalLemmas.put(lemma, true);
 				}
 			}
 		}
