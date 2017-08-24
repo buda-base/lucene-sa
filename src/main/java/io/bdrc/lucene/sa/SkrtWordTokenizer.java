@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
@@ -127,6 +128,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private HashSet<String> sandhiedInitials = null;
 
+	private int multipleInitialsBufferIndex = -1;
+
+	private int multipleInitialsEnd = -1;
+
+	private Iterator<String> sandhiedInitialsIterator;
+
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -159,6 +166,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		boolean potentialEnd = false;
 		Row now = null;
 		char[] buffer = termAtt.buffer();
+		LinkedList<Character> initialSandhiedBuffer;
 		while (true) {
 			if (bufferIndex >= dataLen) {
 				offset += dataLen;
@@ -179,6 +187,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			charCount = Character.charCount(c);
 			bufferIndex += charCount;
+			
+			// save the indices of the current state to be able to restore it later
+			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
+				multipleInitialsBufferIndex = bufferIndex;
+				multipleInitialsEnd = end;
+//				initialSandhiedBuffer = newsandhiedInitialsIterator.next().toCharArray(); // working on this line
+				// replace 
+			}
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
@@ -242,6 +258,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				end = end - charCount;
 				length = length - charCount; // may not be useful, since it is reinitialized each time a term is issued
+				sandhiedInitialsIterator = sandhiedInitials.iterator();
 			}
 		}
 		assert(start != -1);
