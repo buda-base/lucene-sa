@@ -117,9 +117,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private static final int MAX_WORD_LEN = 255;
 	private static final int IO_BUFFER_SIZE = 4096;
 
-	//	  private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
-	//	  private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
-
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
 	private LinkedList<String> extraTokens;
@@ -165,6 +162,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int potentialEndCmdIndex = -1;
 		boolean potentialEnd = false;
 		Row now = null;
+		Row root = null;
 		char[] buffer = termAtt.buffer();
 		LinkedList<Character> initialSandhiedBuffer;
 		while (true) {
@@ -188,7 +186,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount;
 			System.out.println((char) c);
-			System.out.println(bufferIndex);
+//			System.out.println(bufferIndex);
 			
 //			// save the indices of the current state to be able to restore it later
 //			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
@@ -200,48 +198,53 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
-					System.out.println("\tstart of new token");
+//					System.out.println("\tstart of new token");
 					assert(start == -1);
-					now = scanner.getRow(scanner.getRoot());
-					cmdIndex = now.getCmd((char) c);
-					System.out.println("is there a cmd? "+cmdIndex);
+					root = scanner.getRow(scanner.getRoot());
+					cmdIndex = root.getCmd((char) c);
+//					System.out.println("is there a cmd? "+cmdIndex);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
-					w = now.getRef((char) c);
-					System.out.println("is there a next row? "+w);
+					w = root.getRef((char) c);
+//					System.out.println("is there a next row? "+w);
 					now = (w >= 0) ? scanner.getRow(w) : null;
 					start = offset + bufferIndex - charCount;
 					end = start + charCount;
-					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-					System.out.println(String.valueOf(buffer));
-					if (now == null) {
-						System.out.println("(now == null)");
-						// we want to return the current character as a non-word token
-						confirmedEnd = end;
-						confirmedEndIndex = bufferIndex;
-						break;
-					}
 				} else {
 					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 					}
-					System.out.println("now != null");
+//					System.out.println("now != null");
 					end += charCount;
-					cmdIndex = now.getCmd((char) c);
-					System.out.println("is there a cmd? "+cmdIndex);
-					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
-					if (potentialEnd) {
-						potentialEndCmdIndex = cmdIndex;
+					if (now != null) {
+						cmdIndex = now.getCmd((char) c);
+	//					System.out.println("is there a cmd? "+cmdIndex);
+						potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
+						if (potentialEnd) {
+							potentialEndCmdIndex = cmdIndex;
+						}
+						w = now.getRef((char) c);
+						now = (w >= 0) ? scanner.getRow(w) : null;
+					} 
+				}
+				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
+//				System.out.println(String.valueOf(buffer));
+				
+				if (now == null) {
+					System.out.println("(now == null)");
+					
+					if (bufferIndex < ioBuffer.getLength()) {
+						final int nextC = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+						if (root.getRef((char) nextC) != -1) {
+							confirmedEnd = end;
+							confirmedEndIndex = bufferIndex;
+							break;
+						}
 					}
-					w = now.getRef((char) c);
-					now = (w >= 0) ? scanner.getRow(w) : null;
-					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
-					System.out.println(String.valueOf(buffer));
-					if (now == null) {
-						System.out.println("(now == null)");
-						// we want to return the current character as a non-word token
+					
+					if (potentialEndCmdIndex != -1) {
 						confirmedEnd = end;
 						confirmedEndIndex = bufferIndex;
 						break;
