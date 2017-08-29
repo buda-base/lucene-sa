@@ -195,6 +195,19 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
+
+    @Test
+	public void testStartingWithNonword() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "ABCDEaTaFGH IJaTa"; // Darm is not in the Trie, aTa is
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "aTa");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
 	public void nonSandhiedCompoundTest() throws IOException

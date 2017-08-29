@@ -187,54 +187,74 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			charCount = Character.charCount(c);
 			bufferIndex += charCount;
+			System.out.println((char) c);
+			System.out.println(bufferIndex);
 			
-			// save the indices of the current state to be able to restore it later
-			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
-				multipleInitialsBufferIndex = bufferIndex;
-				multipleInitialsEnd = end;
-//				initialSandhiedBuffer = newsandhiedInitialsIterator.next().toCharArray(); // working on this line
-				// replace 
-			}
+//			// save the indices of the current state to be able to restore it later
+//			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
+//				multipleInitialsBufferIndex = bufferIndex;
+//				multipleInitialsEnd = end;
+////				initialSandhiedBuffer = newsandhiedInitialsIterator.next().toCharArray(); // working on this line
+//				// replace 
+//			}
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
+					System.out.println("\tstart of new token");
 					assert(start == -1);
 					now = scanner.getRow(scanner.getRoot());
 					cmdIndex = now.getCmd((char) c);
+					System.out.println("is there a cmd? "+cmdIndex);
+					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
+					if (potentialEnd) {
+						potentialEndCmdIndex = cmdIndex;
+					}
+					w = now.getRef((char) c);
+					System.out.println("is there a next row? "+w);
+					now = (w >= 0) ? scanner.getRow(w) : null;
+					start = offset + bufferIndex - charCount;
+					end = start + charCount;
+					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
+					System.out.println(String.valueOf(buffer));
+					if (now == null) {
+						System.out.println("(now == null)");
+						// we want to return the current character as a non-word token
+						confirmedEnd = end;
+						confirmedEndIndex = bufferIndex;
+						break;
+					}
+				} else {
+					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
+						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
+					}
+					System.out.println("now != null");
+					end += charCount;
+					cmdIndex = now.getCmd((char) c);
+					System.out.println("is there a cmd? "+cmdIndex);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
 					w = now.getRef((char) c);
 					now = (w >= 0) ? scanner.getRow(w) : null;
-					start = offset + bufferIndex - charCount;
-					end = start + charCount;
-				} else {
-					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
-						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
-					}
-					if (now != null) {
-						end += charCount;
-						cmdIndex = now.getCmd((char) c);
-						potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
-						if (potentialEnd) {
-							potentialEndCmdIndex = cmdIndex;
-						}
-						w = now.getRef((char) c);
-						now = (w >= 0) ? scanner.getRow(w) : null;
+					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
+					System.out.println(String.valueOf(buffer));
+					if (now == null) {
+						System.out.println("(now == null)");
+						// we want to return the current character as a non-word token
+						confirmedEnd = end;
+						confirmedEndIndex = bufferIndex;
+						break;
 					}
 				}
-				length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
 				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
-					break;
-				}
-				if (potentialEnd) {
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
 				break;                           // return 'em
 			}
 		}
+		
 		if (potentialEnd) {
 			confirmedEnd = end;
 			confirmedEndIndex = bufferIndex;
