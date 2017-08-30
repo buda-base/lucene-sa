@@ -271,6 +271,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// We are within a potential token: we add c to both buffer and nonWordChars. 
 					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
 					nonWordChars.append((char) c);
+					
+					if (end == dataLen) {
+					// if we reached the end of the input, reset length and nonWordEnd and break since on next iteration, we are going to enter if (bufferIndex >= dataLen){} then exit incrementToken with "false"
+						if (length > 0) {
+							// we reinitialize buffer (through the index of length and end)
+							length = 0;
+							end = start + charCount;
+						}
+						nonWordEnd = end; // we reached the end of a non-word that is followed by a nonSLP char (current c)
+						break;
+					}
 				}
 				System.out.println(String.valueOf(buffer));
 				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
