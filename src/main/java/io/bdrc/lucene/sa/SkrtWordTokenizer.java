@@ -313,9 +313,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (nonWord.length() > 0) {
 		// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
 			extraTokens = new LinkedHashMap<String, Integer[]>(); // in case there is no nonWord to add, extraTokens is initialized at (3)
-			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd});
+			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length()});
 			if (length > 0) {
-				extraTokens.put(String.valueOf(buffer), new Integer[] {start, end});
+				final String token = String.copyValueOf(buffer, 0, termAtt.length());  
+				extraTokens.put(token, new Integer[] {start, end, token.length()});
 			}
 			emitExtraTokens = true;
 		}
@@ -328,7 +329,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					extraTokens = new LinkedHashMap<String, Integer[]>(); // (3) there was no nonWord, but there are extra lemmas
 				}
 				for (String l: lemmas) {
-					extraTokens.put(l, new Integer[] {start, end}); // adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
+					extraTokens.put(l, new Integer[] {start, end, l.length()}); // adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
 				}
 				emitExtraTokens = true;
 
@@ -345,7 +346,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			extraTokensIterator = extraTokens.entrySet().iterator();
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
-			termAtt.setLength(extra.getKey().length());								// its size is declared
+			termAtt.setLength(extra.getValue()[2]);								// its size is declared
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);	// its offsets are set
 			return true;															// we exit incrementToken()
@@ -363,6 +364,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (extraTokensIterator.hasNext()) {
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());
+			termAtt.setLength(extra.getValue()[2]);
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
 		} else {

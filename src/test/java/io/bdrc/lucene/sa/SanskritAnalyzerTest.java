@@ -202,7 +202,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing input starting with non-word");
 		String input = "ABCDEaTaFGH IJaTa"; // Darm is not in the Trie, aTa is
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "aTa");
+		List<String> expected = Arrays.asList("ABCDE", "aTa", "FGH", "IJ", "aTa");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -222,18 +222,18 @@ public class SanskritAnalyzerTest
 		assertTokenStream(words, expected);
 	}
     
-    @Test
-	public void wordTokenizerTest() throws IOException
-	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
+//    @Test
+//	public void wordTokenizerTest() throws IOException
+//	{
+//		System.out.println("Testing SkrtWordTokenizer()");
+//		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
+//		Reader reader = new StringReader(input);
+//		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
+//		System.out.println("0 " + input);
+//		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+//		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+//		assertTokenStream(syllables, expected);
+//	}
     
     @Test
     public void testSylEndingCombinations() throws Exception {
