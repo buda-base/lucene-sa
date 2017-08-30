@@ -57,7 +57,7 @@ public class SanskritAnalyzerTest
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
-			List<String> termList = new ArrayList<String>();
+		List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());

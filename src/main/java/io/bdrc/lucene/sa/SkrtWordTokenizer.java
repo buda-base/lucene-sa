@@ -27,8 +27,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.Tokenizer;
@@ -122,8 +125,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
-	private LinkedList<String> extraTokens;
-
+	private LinkedHashMap<String, Integer[]> extraTokens;
+	private Iterator<?> extraTokensIterator;
 	private boolean emitExtraTokens;
 
 	private HashSet<String> sandhiedInitials = null;
@@ -150,7 +153,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		if (emitExtraTokens) {
 			addExtraToken();
-			return true;
+			if (emitExtraTokens) {
+				return true;
+			}
 		}
 		
 		int length = 0;
@@ -158,6 +163,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int end = -1;
 		int confirmedEnd = -1;
 		int confirmedEndIndex = -1;
+		int nonWordStart = -1;
+		int nonWordEnd = -1;
 		int charCount = -1;
 		String cmd = null;
 		int w = -1;
@@ -169,6 +176,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		StringBuilder nonWordChars = new StringBuilder();
 		char[] buffer = termAtt.buffer();
 		LinkedList<Character> initialSandhiedBuffer;
+		System.out.println("----------------------");
 		while (true) {
 			if (bufferIndex >= dataLen) {
 				offset += dataLen;
@@ -190,7 +198,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount;
 			System.out.println((char) c);
-			System.out.println(bufferIndex);
 			
 //			// save the indices of the current state to be able to restore it later
 //			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
@@ -202,17 +209,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
-					System.out.println("\tstart of new token");
 //					assert(start == -1);
 //					now = scanner.getRow(scanner.getRoot());
 					cmdIndex = root.getCmd((char) c);
-					System.out.println("is there a cmd? "+cmdIndex);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
 					w = root.getRef((char) c);
-					System.out.println("is there a next row? "+w);
 					now = (w >= 0) ? scanner.getRow(w) : null;
 					start = offset + bufferIndex - charCount;
 					end = start + charCount;
@@ -220,10 +224,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 					}
-					System.out.println("now != null");
 					end += charCount;
 					cmdIndex = now.getCmd((char) c);
-					System.out.println("is there a cmd? "+cmdIndex);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
@@ -238,15 +240,22 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						length = 0;
 						end = start + charCount;
 					}
+					if (nonWordStart == -1) {
+						nonWordStart = start;
+					}
 				} else if (now == null && potentialEnd == true) {
 				// We reached the end of the token: we add c to buffer and resize nonWordChars to exclude the token
-					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
+					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized 
 					nonWordChars.setLength(nonWordChars.length() - (length - charCount));
+					nonWordEnd = end - length;
 					break;
 				} else {
 				// We are within one token: we add c to both buffer and nonWordChars
 					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
 					nonWordChars.append((char) c);
+					if (nonWordStart == -1) {
+						nonWordStart = start;
+					}
 				}
 				System.out.println(String.valueOf(buffer));
 //				if (now == null) {
@@ -262,7 +271,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			} else if (length > 0) {           // at non-Letter w/ chars
 				break;                           // return 'em
 			} else if (nonWordChars.toString().length() != 0) {
-				length = nonWordChars.length();
+//				if (length == 0) {
+//					length = nonWordChars.length();
+//				}
+				nonWordEnd = end;
 				break;
 			}
 		}
@@ -275,13 +287,28 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			bufferIndex = confirmedEndIndex;
 			end = confirmedEnd;
 		}
-		
 		termAtt.setLength(end - start);
+		
+		final String nonWord = nonWordChars.toString();
+		if (nonWord.length() > 0) {
+			extraTokens = new LinkedHashMap<String, Integer[]>();
+			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd});
+			if (length > 0) {
+				extraTokens.put(String.valueOf(buffer), new Integer[] {start, end});
+			}
+			emitExtraTokens = true;
+		}
 		
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
 		if (cmd != null) {
-			extraTokens = reconstructLemmas(cmd, termAtt.toString());
-			if (extraTokens.size() != 0) {
+			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString());
+			for (String l: lemmas) {
+				extraTokens.put(l, new Integer[] {start, end});
+			}
+			if (lemmas.size() != 0) {
+				if (extraTokens == null) {
+					extraTokens = new LinkedHashMap<String, Integer[]>();
+				}
 				emitExtraTokens = true;
 				// restore state to the character just processed
 				if (charCount != -1) {
@@ -291,34 +318,34 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				sandhiedInitialsIterator = sandhiedInitials.iterator();
 			}
 		}
-		final String nonWord = nonWordChars.toString();
-		if (nonWord.length() > 0) {
-			extraTokens.addFirst(String.valueOf(buffer));
-			extraTokens.addFirst(nonWord);
-			termAtt.setLength(length);
-			emitExtraTokens = true;
-		}
 		
 		if (emitExtraTokens) {
-			termAtt.setEmpty().append(extraTokens.pollFirst());
+			extraTokensIterator = extraTokens.entrySet().iterator();
+			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
+			termAtt.setEmpty().append(extra.getKey());
+			finalOffset = correctOffset(extra.getValue()[1]);
+			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
+			return true;
+		} else {
+			assert(start != -1);
+			finalOffset = correctOffset(end);
+			offsetAtt.setOffset(correctOffset(start), finalOffset);
+			return true;
 		}
-		
-		assert(start != -1);
-		finalOffset = correctOffset(end);
-		offsetAtt.setOffset(correctOffset(start), finalOffset);
-		return true;
 	}
 	
 	private void addExtraToken() {
-		if (extraTokens.size() > 0) {
-			termAtt.setEmpty().append(extraTokens.pollFirst());
-			if (extraTokens.size() == 0) {
-				emitExtraTokens = false;
-			}
+		if (extraTokensIterator.hasNext()) {
+			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
+			termAtt.setEmpty().append(extra.getKey());
+			finalOffset = correctOffset(extra.getValue()[1]);
+			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
+		} else {
+			emitExtraTokens = false;
 		}
 	}
 	
-	private LinkedList<String> reconstructLemmas(String cmd, String inflected) {
+	private HashSet<String> reconstructLemmas(String cmd, String inflected) {
 		/**
 		 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(), 
 		 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -326,8 +353,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * 
 		 * 
 		 * @return: the list of all the possible lemmas given the current context
-		 */
-		HashSet<String> totalLemmas = new HashSet<String>(); 
+		 */ 
+		HashSet<String> totalLemmas = new HashSet<String>(); // using HashSet to avoid duplicates
 		String[] t = new String[0];
 		
 		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
@@ -362,7 +389,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 			}
 		}
-		return new LinkedList<String>(totalLemmas);
+		return totalLemmas;
 	}
 
 	private boolean containsSandhiedCombination(String sandhied) {
