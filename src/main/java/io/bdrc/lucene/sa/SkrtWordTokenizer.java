@@ -164,12 +164,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int nonWordEnd = -1;
 		int charCount = -1;
 		String cmd = null;
-		int w = -1;
+		int trieTmp = -1;
 		int cmdIndex = -1;
 		int potentialEndCmdIndex = -1;
 		boolean potentialEnd = false;
-		Row now = null;
-		Row root = scanner.getRow(scanner.getRoot()); // initialized here because it will be used at every new non-word char
+		Row currentRow = null;
+		Row rootRow = scanner.getRow(scanner.getRoot()); // initialized here because it will be used at every new non-word char
 		StringBuilder nonWordChars = new StringBuilder();
 		char[] buffer = termAtt.buffer();
 		LinkedList<Character> initialSandhiedBuffer;
@@ -215,14 +215,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// this way, we catch the start of new tokens even after any number of non-word characters
 
 					// checking if there is a match in the root of the Trie
-					cmdIndex = root.getCmd((char) c);
+					cmdIndex = rootRow.getCmd((char) c);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
 					// checking if we can continue down the Trie or not
-					w = root.getRef((char) c);
-					now = (w >= 0) ? scanner.getRow(w) : null;
+					trieTmp = rootRow.getRef((char) c);
+					currentRow = (trieTmp >= 0) ? scanner.getRow(trieTmp) : null;
 					tokenStart = offset + bufferIndex - charCount;
 					tokenEnd = tokenStart + charCount; // end must always be one char in front of start, because the ending index is exclusive in Java
 					if (nonWordStart == -1) {
@@ -239,18 +239,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					tokenEnd += charCount; // incrementing end to correspond to the index of c
 					
 					// checking if there is a match
-					cmdIndex = now.getCmd((char) c);
+					cmdIndex = currentRow.getCmd((char) c);
 					potentialEnd = (cmdIndex >= 0);
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
 					// checking if we can continue down the Trie
-					w = now.getRef((char) c);
-					now = (w >= 0) ? scanner.getRow(w) : null;
+					trieTmp = currentRow.getRef((char) c);
+					currentRow = (trieTmp >= 0) ? scanner.getRow(trieTmp) : null;
 				}
 
 				// checking that we can't continue down the Trie (now == null) ensures we do maximal matching.
-				if (now == null && potentialEnd == false) {
+				if (currentRow == null && potentialEnd == false) {
 				// (1) in case we can't continue anymore in the Trie (now == null), but we don't have any match,
 				// we consider no word ever started in the first place (length = 0). it was just a false positive
 					
@@ -260,7 +260,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						tokenLength = 0;
 						tokenEnd = tokenStart + charCount;
 					}
-				} else if (now == null && potentialEnd == true) {
+				} else if (currentRow == null && potentialEnd == true) {
 				// We reached the end of the token: we add c to buffer and resize nonWordChars to exclude the token
 					
 					tokenLength += Character.toChars(normalize(c), buffer, tokenLength); // buffer it, normalized 
