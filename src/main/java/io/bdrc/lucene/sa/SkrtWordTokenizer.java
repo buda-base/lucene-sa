@@ -273,13 +273,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					nonWordChars.append((char) c);
 				}
 				System.out.println(String.valueOf(buffer));
-//				if (now == null) {
-//					System.out.println("(now == null)");
-//					// we want to return the current character as a non-word token
-//					confirmedEnd = end;
-//					confirmedEndIndex = bufferIndex;
-//					break;
-//				}
 				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
 					break;
 				}
