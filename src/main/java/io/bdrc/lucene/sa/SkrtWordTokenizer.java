@@ -31,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.PrimitiveIterator.OfInt;
 import java.util.Set;
 
 import org.apache.lucene.analysis.CharacterUtils;
@@ -191,22 +190,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				dataLen = ioBuffer.getLength();
 				bufferIndex = 0;
 			}
-
-			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
+			
+			// take the next char in the input (ioBuffer) for processing it and increment bufferIndex for next value of c
+			// (use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone)
 			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; // the index for next c
 			System.out.println((char) c);
 			
-//			// save the indices of the current state to be able to restore it later
-//			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
-//				multipleInitialsBufferIndex = bufferIndex;
-//				multipleInitialsEnd = tokenEnd;
-//				final String initials =  sandhiedInitialsIterator.next(); // working on this line
-//				
-//				OfInt ofit = initials.chars().iterator();
-//				// replace 
-//			}
+			// save the indices of the current state to be able to restore it later
+			if (sandhiedInitials != null && sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
+				multipleInitialsBufferIndex = bufferIndex;
+				multipleInitialsEnd = tokenEnd;
+				final String initials =  sandhiedInitialsIterator.next(); // working on this line
+				
+			}
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (tokenLength == 0) {                // start of token
@@ -283,11 +281,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						break;
 					}
 				}
-				if (tokenLength >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
+				if (tokenLength >= MAX_WORD_LEN) { // ioBuffer corner case: buffer overflow! make sure to check for >= surrogate pair could break == test
 					break;
 				}
-			} else if (tokenLength > 0) {           // at non-Letter w/ chars
-				break;                           // return 'em
+			} else if (tokenLength > 0) {        
+				break; // found a non-SLP char that is preceded by non-word chars, so break while to return them as a token
 			} else if (nonWordChars.toString().length() != 0) {
 				nonWordEnd = tokenEnd; // (2) we reached the end of a non-word that is followed by a nonSLP char (current c)
 				break;
@@ -303,7 +301,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			bufferIndex = confirmedEndIndex;
 			tokenEnd = confirmedEnd;
 		}
-		termAtt.setLength(tokenEnd - tokenStart);
+		termAtt.setLength(tokenEnd - tokenStart); // (4)
 		
 		final String nonWord = nonWordChars.toString();
 		if (nonWord.length() > 0) {
@@ -343,7 +341,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			@SuppressWarnings("unchecked")
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
-			termAtt.setLength(extra.getValue()[2]);								// its size is declared
+			termAtt.setLength(extra.getValue()[2]);									// its size is declared
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);	// its offsets are set
 			return true;															// we exit incrementToken()
