@@ -126,15 +126,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 
 	private LinkedHashMap<String, Integer[]> extraTokens;
-	private Iterator<?> extraTokensIterator;
-	private boolean emitExtraTokens;
+	private Iterator extraTokensIterator;
+	private boolean emitExtraTokens;  // we could maybe do without this variable since we now have iterator.hasNext()
 
 	private HashSet<String> sandhiedInitials = null;
-
 	private int multipleInitialsBufferIndex = -1;
-
 	private int multipleInitialsEnd = -1;
-
 	private Iterator<String> sandhiedInitialsIterator;
 
 	/**
@@ -148,12 +145,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-		//System.out.println("\nincrement token\n");
 		clearAttributes();
 		
 		if (emitExtraTokens) {
 			addExtraToken();
-			if (emitExtraTokens) {
+			if (emitExtraTokens) { // need to test this because otherwise we will return intrementToken() while all extra tokens have been added
 				return true;
 			}
 		}
@@ -163,7 +159,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int end = -1;
 		int confirmedEnd = -1;
 		int confirmedEndIndex = -1;
-		int nonWordStart = -1;
+		int nonWordStart = -1; // indices for non-word characters
 		int nonWordEnd = -1;
 		int charCount = -1;
 		String cmd = null;
@@ -172,12 +168,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int potentialEndCmdIndex = -1;
 		boolean potentialEnd = false;
 		Row now = null;
-		Row root = scanner.getRow(scanner.getRoot());
+		Row root = scanner.getRow(scanner.getRoot()); // initialized here because it will be used at every new non-word char
 		StringBuilder nonWordChars = new StringBuilder();
 		char[] buffer = termAtt.buffer();
 		LinkedList<Character> initialSandhiedBuffer;
 		System.out.println("----------------------");
 		while (true) {
+			// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
 			if (bufferIndex >= dataLen) {
 				offset += dataLen;
 				CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
@@ -193,10 +190,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				dataLen = ioBuffer.getLength();
 				bufferIndex = 0;
 			}
+
 			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
 			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			charCount = Character.charCount(c);
-			bufferIndex += charCount;
+			bufferIndex += charCount; // the index for next c
 			System.out.println((char) c);
 			
 //			// save the indices of the current state to be able to restore it later
@@ -209,53 +207,70 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (length == 0) {                // start of token
-//					assert(start == -1);
-//					now = scanner.getRow(scanner.getRoot());
+				// we enter on two occasions: at the actual start of a token, at each new non-word character. 
+				// see (1) for how non-matching word characters are handled
+				// this way, we catch the start of new tokens even after any number of non-word characters
+					
+//					assert(start == -1); // this assert statement from CharTokenizer conflicts the current strategy to regroup non-word chars 
+//					now = scanner.getRow(scanner.getRoot()); // root is in a different variable because we have to access it every new non-word to check wether it could be the start of a new token
+
+					// checking if there is a match in the root of the Trie
 					cmdIndex = root.getCmd((char) c);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
+					// checking if we can continue down the Trie or not
 					w = root.getRef((char) c);
 					now = (w >= 0) ? scanner.getRow(w) : null;
 					start = offset + bufferIndex - charCount;
-					end = start + charCount;
+					end = start + charCount; // end must always be one char in front of start, because the ending index is exclusive in Java
+					if (nonWordStart == -1) {
+						nonWordStart = start; // the start of a non-word token won't increment like start will. the value is attributed only once
+					} 
 				} else {
+				// we enter here on all other occasions: while we have word characters, but we don't know yet if there will be a match or not
+					
+					// corner case for ioBuffer
 					if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 						buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 					}
-					end += charCount;
+
+					end += charCount; // incrementing end to correspond to the index of c
+					
+					// checking if there is a match
 					cmdIndex = now.getCmd((char) c);
 					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
+					// checking if we can continue down the Trie
 					w = now.getRef((char) c);
 					now = (w >= 0) ? scanner.getRow(w) : null;
 				}
+
+				// checking that we can't continue down the Trie (now == null) ensure we do maximal matching.
 				if (now == null && potentialEnd == false) {
+				// (1) in case we can't continue anymore in the Trie (now == null), but we don't have any match,
+				// we consider no word ever started in the first place (length = 0). it was just a false positive
+					
 					nonWordChars.append((char) c);
 					if (length > 0) {
 					// we reinitialize buffer (through the index of length and end)
 						length = 0;
 						end = start + charCount;
 					}
-					if (nonWordStart == -1) {
-						nonWordStart = start;
-					}
 				} else if (now == null && potentialEnd == true) {
 				// We reached the end of the token: we add c to buffer and resize nonWordChars to exclude the token
+					
 					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized 
 					nonWordChars.setLength(nonWordChars.length() - (length - charCount));
-					nonWordEnd = end - length;
+					nonWordEnd = end - length; // the end of a non-word can either be: when a matching word starts (potentialEnd == true) or when a non SLP char follows a non-word. see (2)
 					break;
 				} else {
-				// We are within one token: we add c to both buffer and nonWordChars
+				// We are within a potential token: we add c to both buffer and nonWordChars. 
 					length += Character.toChars(normalize(c), buffer, length); // buffer it, normalized
 					nonWordChars.append((char) c);
-					if (nonWordStart == -1) {
-						nonWordStart = start;
-					}
 				}
 				System.out.println(String.valueOf(buffer));
 //				if (now == null) {
@@ -274,11 +289,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 //				if (length == 0) {
 //					length = nonWordChars.length();
 //				}
-				nonWordEnd = end;
+				nonWordEnd = end; // (2) we reached the end of a non-word that is followed by a nonSLP char (current c)
 				break;
 			}
 		}
-		
+
+		// not too sure what these two if(){} do
 		if (potentialEnd) {
 			confirmedEnd = end;
 			confirmedEndIndex = bufferIndex;
@@ -291,7 +307,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		final String nonWord = nonWordChars.toString();
 		if (nonWord.length() > 0) {
-			extraTokens = new LinkedHashMap<String, Integer[]>();
+		// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
+			extraTokens = new LinkedHashMap<String, Integer[]>(); // in case there is no nonWord to add, extraTokens is initialized at (3)
 			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd});
 			if (length > 0) {
 				extraTokens.put(String.valueOf(buffer), new Integer[] {start, end});
@@ -302,31 +319,35 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
 		if (cmd != null) {
 			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString());
-			for (String l: lemmas) {
-				extraTokens.put(l, new Integer[] {start, end});
-			}
 			if (lemmas.size() != 0) {
 				if (extraTokens == null) {
-					extraTokens = new LinkedHashMap<String, Integer[]>();
+					extraTokens = new LinkedHashMap<String, Integer[]>(); // (3) there was no nonWord, but there are extra lemmas
+				}
+				for (String l: lemmas) {
+					extraTokens.put(l, new Integer[] {start, end}); // adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
 				}
 				emitExtraTokens = true;
-				// restore state to the character just processed
+
+				// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
 				if (charCount != -1) {
 					bufferIndex = bufferIndex - charCount;
 				}
 				end = end - charCount;
-				sandhiedInitialsIterator = sandhiedInitials.iterator();
+				sandhiedInitialsIterator = sandhiedInitials.iterator(); // there might be many unsandhied initials behind the current sandhied initial
 			}
 		}
 		
 		if (emitExtraTokens) {
 			extraTokensIterator = extraTokens.entrySet().iterator();
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
-			termAtt.setEmpty().append(extra.getKey());
+			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
+			termAtt.setLength(extra.getKey().length());								// its size is declared
 			finalOffset = correctOffset(extra.getValue()[1]);
-			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
-			return true;
+			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);	// its offsets are set
+			return true;															// we exit incrementToken()
 		} else {
+		// we enter here when there is no non-word nor any extra lemma to add 
+			// termAtt.setLength() is needed before reconstructing lemmas, so termAtt.toString() doesn't return an empty string. that is why it is not here
 			assert(start != -1);
 			finalOffset = correctOffset(end);
 			offsetAtt.setOffset(correctOffset(start), finalOffset);
