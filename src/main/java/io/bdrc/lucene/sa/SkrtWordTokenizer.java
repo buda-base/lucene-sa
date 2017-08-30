@@ -201,7 +201,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 //			if (sandhiedInitials.size() != 1 && sandhiedInitialsIterator.hasNext()) {
 //				multipleInitialsBufferIndex = bufferIndex;
 //				multipleInitialsEnd = end;
-////				initialSandhiedBuffer = newsandhiedInitialsIterator.next().toCharArray(); // working on this line
+//				final char initial =  sandhiedInitialsIterator.next().toCharArray()[0]; // working on this line
 //				// replace 
 //			}
 
@@ -210,9 +210,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// we enter on two occasions: at the actual start of a token, at each new non-word character. 
 				// see (1) for how non-matching word characters are handled
 				// this way, we catch the start of new tokens even after any number of non-word characters
-					
-//					assert(start == -1); // this assert statement from CharTokenizer conflicts the current strategy to regroup non-word chars 
-//					now = scanner.getRow(scanner.getRoot()); // root is in a different variable because we have to access it every new non-word to check wether it could be the start of a new token
 
 					// checking if there is a match in the root of the Trie
 					cmdIndex = root.getCmd((char) c);
@@ -240,7 +237,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					// checking if there is a match
 					cmdIndex = now.getCmd((char) c);
-					potentialEnd = (cmdIndex >= 0); // we may have caught the end, but we must check if next character is a tsheg
+					potentialEnd = (cmdIndex >= 0);
 					if (potentialEnd) {
 						potentialEndCmdIndex = cmdIndex;
 					}
@@ -249,7 +246,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					now = (w >= 0) ? scanner.getRow(w) : null;
 				}
 
-				// checking that we can't continue down the Trie (now == null) ensure we do maximal matching.
+				// checking that we can't continue down the Trie (now == null) ensures we do maximal matching.
 				if (now == null && potentialEnd == false) {
 				// (1) in case we can't continue anymore in the Trie (now == null), but we don't have any match,
 				// we consider no word ever started in the first place (length = 0). it was just a false positive
@@ -283,16 +280,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						break;
 					}
 				}
-				System.out.println(String.valueOf(buffer));
 				if (length >= MAX_WORD_LEN) { // buffer overflow! make sure to check for >= surrogate pair could break == test
 					break;
 				}
 			} else if (length > 0) {           // at non-Letter w/ chars
 				break;                           // return 'em
 			} else if (nonWordChars.toString().length() != 0) {
-//				if (length == 0) {
-//					length = nonWordChars.length();
-//				}
 				nonWordEnd = end; // (2) we reached the end of a non-word that is followed by a nonSLP char (current c)
 				break;
 			}
@@ -352,6 +345,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return true;															// we exit incrementToken()
 		} else {
 		// we enter here when there is no non-word nor any extra lemma to add 
+
 			// termAtt.setLength() is needed before reconstructing lemmas, so termAtt.toString() doesn't return an empty string. that is why it is not here
 			assert(start != -1);
 			finalOffset = correctOffset(end);

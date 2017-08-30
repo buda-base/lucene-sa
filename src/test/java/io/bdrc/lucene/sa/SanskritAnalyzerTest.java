@@ -189,7 +189,7 @@ public class SanskritAnalyzerTest
 		System.out.println("sandhied compound test");
 		String input = "DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darma", "aTa");
+		List<String> expected = Arrays.asList("Darman", "Darma", "aTa");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
