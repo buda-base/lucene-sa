@@ -38,6 +38,7 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.CharacterUtils.CharacterBuffer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Row;
@@ -66,10 +67,10 @@ import io.bdrc.lucene.stemmer.Trie;
 public final class SkrtWordTokenizer extends Tokenizer {
 	private Trie scanner;
 
-	// this tokenizer generates three attributes:
-	// term offset, positionIncrement and type
+	// attributes allowing to modify the values of the generated terms
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
+	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class); // TODO: attribute a "non-word" type to non-word tokens for subsequent filter
 
 	/**
 	 * Constructs a SkrtWordTokenizer using the file designed by filename
@@ -115,20 +116,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			this.scanner.reduce(opt);
 		}
 	}
-
+	// ioBuffer related (contains the input string)
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
 	private static final int MAX_WORD_LEN = 255;
 	private static final int IO_BUFFER_SIZE = 4096;
-
-	//	  private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
-	//	  private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
-
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
-
+	// extraTokens related
 	private LinkedHashMap<String, Integer[]> extraTokens;
-	private Iterator extraTokensIterator;
+	private Iterator<Entry<String, Integer[]>> extraTokensIterator;
 	private boolean emitExtraTokens;  // we could maybe do without this variable since we now have iterator.hasNext()
-
+	// initials related
 	private HashSet<String> sandhiedInitials = null;
 	private int multipleInitialsBufferIndex = -1;
 	private int multipleInitialsEnd = -1;
@@ -153,24 +150,29 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				return true;
 			}
 		}
-		
+		// current token related (accessed through attributes)
 		int tokenLength = 0;
 		int tokenStart = -1; // this variable is always initialized
 		int tokenEnd = -1;
+		char[] tokenBuffer = termAtt.buffer();
+		// ???
 		int confirmedEnd = -1;
 		int confirmedEndIndex = -1;
-		int nonWordStart = -1; // indices for non-word characters
-		int nonWordEnd = -1;
-		int charCount = -1;
-		String cmd = null;
-		int trieTmp = -1;
-		int cmdIndex = -1;
 		int potentialEndCmdIndex = -1;
 		boolean potentialEnd = false;
+		// non-word characters related
+		int nonWordStart = -1; 
+		int nonWordEnd = -1;
+		StringBuilder nonWordChars = new StringBuilder();
+		// ioBuffer related
+		int charCount = -1;
+		// Trie related
+		int trieTmp = -1;
 		Row currentRow = null;
 		Row rootRow = scanner.getRow(scanner.getRoot()); // initialized here because it will be used at every new non-word char
-		StringBuilder nonWordChars = new StringBuilder();
-		char[] tokenBuffer = termAtt.buffer();
+		String cmd = null;
+		int cmdIndex = -1;
+		// initals related
 		LinkedList<Character> initialSandhiedBuffer;
 		System.out.println("----------------------");
 		while (true) {
@@ -338,7 +340,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		if (emitExtraTokens) {
 			extraTokensIterator = extraTokens.entrySet().iterator();
-			@SuppressWarnings("unchecked")
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
 			termAtt.setLength(extra.getValue()[2]);									// its size is declared
@@ -358,7 +359,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private void addExtraToken() {
 		if (extraTokensIterator.hasNext()) {
-			@SuppressWarnings("unchecked")
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());
 			termAtt.setLength(extra.getValue()[2]);
