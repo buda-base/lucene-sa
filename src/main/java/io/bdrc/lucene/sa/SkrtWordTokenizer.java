@@ -124,7 +124,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	// extraTokens related
 	private LinkedHashMap<String, Integer[]> extraTokens;
 	private Iterator<Entry<String, Integer[]>> extraTokensIterator;
-	private boolean emitExtraTokens;  // we could maybe do without this variable since we now have iterator.hasNext()
+	private boolean emitExtraTokens;
 	// initials related
 	private HashSet<String> sandhiedInitials = null;
 	private int multipleInitialsBufferIndex = -1;
@@ -145,11 +145,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		clearAttributes();
 		
 		if (emitExtraTokens) {
+		// we want to add all extra tokens, and once that is done, we resume looping over ioBuffer
 			addExtraToken();
 			if (emitExtraTokens) { // need to test this because otherwise we will return intrementToken() while all extra tokens have been added
 				return true;
 			}
 		}
+		
 		// current token related (accessed through attributes)
 		int tokenLength = 0;
 		int tokenStart = -1; // this variable is always initialized
@@ -224,7 +226,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					trieTmp = rootRow.getRef((char) c);
 					currentRow = (trieTmp >= 0) ? scanner.getRow(trieTmp) : null;
 					tokenStart = offset + bufferIndex - charCount;
-					tokenEnd = tokenStart + charCount; // tokenEnd must always be one char in front of tokenStart, because the ending index is exclusive
+					tokenEnd = tokenStart + charCount; // tokenEnd must always be one char ahead of tokenStart, because the ending index is exclusive
 					if (nonWordStart == -1) {
 						nonWordStart = tokenStart; // the starting index of a non-word token won't increment like tokenStart will. the value is attributed only once
 					} 
@@ -256,14 +258,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					nonWordChars.append((char) c);
 					if (tokenLength > 0) {
-					// we reinitialize buffer (through the index of tokenLength and tokenEnd)
+					// we reinitialize tokenBuffer (through the index of tokenLength and tokenEnd)
 						tokenLength = 0;
 						tokenEnd = tokenStart + charCount;
 					}
 				} else if (currentRow == null && potentialEnd == true) {
 				// We reached the end of the token: we add c to buffer and resize nonWordChars to exclude the token
 					
-					tokenLength += Character.toChars(normalize(c), tokenBuffer, tokenLength); // buffer it, normalized 
+					tokenLength += Character.toChars(normalize(c), tokenBuffer, tokenLength); // normalize c and add it to tokenBuffer 
 					nonWordChars.setLength(nonWordChars.length() - (tokenLength - charCount));
 					nonWordEnd = tokenEnd - tokenLength; // the end of a non-word can either be: when a matching word starts (potentialEnd == true) or when a non SLP char follows a non-word. see (2)
 					break;
@@ -309,10 +311,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (nonWord.length() > 0) {
 		// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
 			extraTokens = new LinkedHashMap<String, Integer[]>(); // in case there is no nonWord to add, extraTokens is initialized at (3)
-			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length()});
+			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5)
 			if (tokenLength > 0) {
 				final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());  
-				extraTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length()});
+				extraTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1}); // (5)
 			}
 			emitExtraTokens = true;
 		}
@@ -325,7 +327,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					extraTokens = new LinkedHashMap<String, Integer[]>(); // (3) there was no nonWord, but there are extra lemmas
 				}
 				for (String l: lemmas) {
-					extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length()}); // adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
+					extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length(), 1}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
 				}
 				emitExtraTokens = true;
 
@@ -342,6 +344,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			extraTokensIterator = extraTokens.entrySet().iterator();
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
+			if (extra.getValue()[3] == 0) {											// type changed to "non-word" or left on default value ("word")
+				typeAtt.setType("non-word"); // value declared at (5)
+			}
 			termAtt.setLength(extra.getValue()[2]);									// its size is declared
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);	// its offsets are set
@@ -357,10 +362,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	private void addExtraToken() {
+	private void addExtraToken() { // for comments, see after "if (emitExtraTokens) {...}"
 		if (extraTokensIterator.hasNext()) {
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());
+			if (extra.getValue()[3] == 0) {
+				typeAtt.setType("non-word");
+			}
 			termAtt.setLength(extra.getValue()[2]);
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
