@@ -184,21 +184,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		System.out.println("----------------------");
 		while (true) {
-			// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
-			if (bufferIndex >= dataLen) {
-				offset += dataLen;
-				CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
-				if (ioBuffer.getLength() == 0) {
-					dataLen = 0; // so next offset += dataLen won't decrement offset
-					if (tokenLength > 0) {
-						break;
-					} else {
-						finalOffset = correctOffset(offset);
-						return false;
+			// if (iterator == null || (iterator != null && iterator.hasNext()) ) {
+				// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
+				if (bufferIndex >= dataLen) {
+					offset += dataLen;
+					CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
+					if (ioBuffer.getLength() == 0) {
+						dataLen = 0; // so next offset += dataLen won't decrement offset
+						if (tokenLength > 0) {
+							break;
+						} else {
+							finalOffset = correctOffset(offset);
+							return false;
+						}
 					}
-				}
-				dataLen = ioBuffer.getLength();
-				bufferIndex = 0;
+					dataLen = ioBuffer.getLength();
+					bufferIndex = 0;
+			//}
 			}			
 			
 			// 1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
@@ -454,6 +456,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 		
+		//TODO: put all up here in "if (!potentialTokens.isEmpty()) {}"
+		// else: decide what to do with potentialTokens
+		
 		if (initials != null && initials.isEmpty()) {
 		// reinitialize variable when all initials have been consumed, so we don't create an empty iterator
 			initials = null;
@@ -486,7 +491,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	private void addExtraToken() { // for comments, see after "if (emitExtraTokens) {...}"
+	private void addExtraToken() { // for comments, see after "if (!extraTokens.isEmpty()) {...}"
 		if (extraTokensIterator.hasNext()) {
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());
