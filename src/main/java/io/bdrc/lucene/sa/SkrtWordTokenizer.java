@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -124,15 +123,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private static final int IO_BUFFER_SIZE = 4096;
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 	// extraTokens related
-	private LinkedHashMap<String, Integer[]> extraTokens;
+	private LinkedHashMap<String, Integer[]> extraTokens = new LinkedHashMap<String, Integer[]>(); // always initialized. value reset when emitExtraToken == false
 	private Iterator<Entry<String, Integer[]>> extraTokensIterator;
 	private boolean emitExtraToken;
 	// initials related
 	private HashSet<String> initials = null;
-	private Iterator<String> initialsIterator;
+	private Iterator<String> initialsIterator = null;
 	private StringCharacterIterator initialCharsIterator = null;
 	private int initialsOrigBufferIndex = -1;
+	private int initialsOrigTokenStart = -1;
 	private int initialsOrigTokenEnd = -1;
+	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>();
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -152,6 +153,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			addExtraToken();
 			if (emitExtraToken) { // need to test this because otherwise we will return intrementToken() while all extra tokens have been added
 				return true;
+			} else {
+				extraTokens = new LinkedHashMap<String, Integer[]>();
 			}
 		}
 		
@@ -197,27 +200,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				dataLen = ioBuffer.getLength();
 				bufferIndex = 0;
 			}			
-			// if initialsChars != null, save current buffer index to return there for subsequent initials
-			//                           run down ioBuffer untill 1. the end of a non-word or 2. match in the Trie
-			//							 add the results in a list
-			//                           choose what to keep as token:
 			
-			// if there is 1 or more matches:
-			//          if there is 1 match:
-			//                     return the match
-			//          if there are more matches:
-			//                     return all matches
-			// 		
-			
+			// 1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
 			// We want to replace the sandhied initials from ioBuffer by the unsandhied initials in "initials" if there is a sandhi
 			// the unsandhied initials (in "initials") replace the sandhied ones (in ioBuffer), then we resume to ioBuffer
 			// when the token is consumed (either a match in the Trie or a non-word), 
 			// we come back to the sandhied character index in ioBuffer and reiterate as long as there are alternative initials			
 			int c = -1;
 			if (initials != null && initialCharsIterator == null) {
-			// we enter here on first initials
+			// we enter here on first initials. when all initials are consumed, initials == []
+				
+				// save the indices of the current state to be able to restore it later
+				initialsOrigBufferIndex = bufferIndex;
+				initialsOrigTokenStart = tokenStart;
+				initialsOrigTokenEnd = tokenEnd;
 				
 				initialCharsIterator = new StringCharacterIterator(initialsIterator.next()); // initialize the iterator with the first initials
+				initialsIterator.remove();
 				
 				c = initialCharsIterator.current();
 				initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
@@ -226,17 +225,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
 				bufferIndex += charCount; // the index for next c
 				
-				// save the indices of the current state to be able to restore it later
-				initialsOrigBufferIndex = bufferIndex;
-				initialsOrigTokenEnd = tokenEnd;
-				
 			} else if (initials != null && initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
 			// we enter here if all initial chars are not yet consumed
 				
 				if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
 				// either first time or initialCharsIterator has been reset AND there are more initials to process
 				// when we reach the end of a token (either a Trie match or a non-word), the char iterator is reinitialized (see (a) )
-					initialCharsIterator.setText(initialsIterator.next()); // reset the iterator with the next initials
+					initialCharsIterator.setText(initialsIterator.next()); // reset the iterator with the next initials, to avoid a re-allocation
+					initialsIterator.remove();
 				}
 
 				c = initialCharsIterator.current();
@@ -260,14 +256,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			assert(c != -1); // c must have received a value, either a char from ioBuffer or a character from the current initial
 			System.out.println((char) c);
 
-			
-			
-			
-			
-			
-			
+			// 2. PROCESSING c
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
-				if (tokenLength == 0) {                // start of token
+				if (tokenLength == 0) {       // start of token
 				// we enter on two occasions: at the actual start of a token, at each new non-word character. 
 				// see (1) for how non-matching word characters are handled
 				// this way, we catch the start of new tokens even after any number of non-word characters
@@ -326,8 +317,26 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					nonWordEnd = tokenEnd - tokenLength; // the end of a non-word can either be: when a matching word starts (potentialEnd == true) or when a non SLP char follows a non-word. see (2)
 					
 					if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
-					// (a) reset initialCharsIterator now: all initials are consumed and we have a match in the Trie 
+					// (a) all initial chars are consumed and we have a match in the Trie 
+						
+						// add the token just found to extraTokens
+						final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
+						potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1});
+						
+						if (!initialsIterator.hasNext()) {
+						// if all initials are consumed, no reset. we resume looping over ioBuffer
+							break;
+						}
+						
+						// reset initialCharsIterator
 						initialCharsIterator.setIndex(0);
+						
+						// restore the previous state, return to the beginning of the token in ioBuffer 
+						bufferIndex = initialsOrigBufferIndex;
+						tokenStart = initialsOrigTokenStart;
+						tokenEnd = initialsOrigTokenEnd;
+						tokenLength = 0;
+						currentRow = rootRow;
 					} else {
 						break;
 					}
@@ -354,8 +363,27 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			// found a non-SLP char that is preceded by non-word chars, so break while to return them as a token
 				
 				if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
-				// (a) reset initialCharsIterator now: all initials are consumed and we have a non-word token 
+				// all initial chars are consumed and we have a non-word token 
+					nonWordEnd = tokenEnd; 
+					
+					// add the token just found to extraTokens
+					final String potentialToken = nonWordChars.toString();
+					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0});
+					
+					if (!initialsIterator.hasNext()) {
+					// if all initials are consumed, no reset. we resume looping over ioBuffer
+						break;
+					}
+					
+					// (a) reset initialCharsIterator
 					initialCharsIterator.setIndex(0);
+					
+					// restore the previous state, return to the beginning of the token in ioBuffer 
+					bufferIndex = initialsOrigBufferIndex;
+					tokenStart = initialsOrigTokenStart;
+					tokenEnd = initialsOrigTokenEnd;
+					tokenLength = 0;
+					currentRow = rootRow;
 				} else {
 					break;
 				}
@@ -363,8 +391,26 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				nonWordEnd = tokenEnd; // (2) we reached the end of a non-word that is followed by a nonSLP char (current c)
 				
 				if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
-				// (a) reset initialCharsIterator now: all initials are consumed and we have a non-word token 
+				// all initial chars are consumed and we have a non-word token 
+					
+					// add the token just found to extraTokens
+					final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
+					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0});
+					
+					if (!initialsIterator.hasNext()) {
+					// if all initials are consumed, no reset. we resume looping over ioBuffer
+						break;
+					}
+					
+					// (a) reset initialCharsIterator
 					initialCharsIterator.setIndex(0);
+					
+					// restore the previous state, return to the beginning of the token in ioBuffer 
+					bufferIndex = initialsOrigBufferIndex;
+					tokenStart = initialsOrigTokenStart;
+					tokenEnd = initialsOrigTokenEnd;
+					tokenLength = 0;
+					currentRow = rootRow;
 				} else {
 					break;
 				}
@@ -385,26 +431,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		final String nonWord = nonWordChars.toString();
 		if (nonWord.length() > 0) {
 		// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
-			extraTokens = new LinkedHashMap<String, Integer[]>(); // in case there is no nonWord to add, extraTokens is initialized at (3)
 			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5)
 			if (tokenLength > 0) {
 				final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());  
 				extraTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1}); // (5)
 			}
-			emitExtraToken = true;
 		}
 		
 		cmd = scanner.getCommandVal(potentialEndCmdIndex);
 		if (cmd != null) {
 			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString()); // (4)
 			if (lemmas.size() != 0) {
-				if (extraTokens == null) {
-					extraTokens = new LinkedHashMap<String, Integer[]>(); // (3) there was no nonWord, but there are extra lemmas
-				}
 				for (String l: lemmas) {
 					extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length(), 1}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
 				}
-				emitExtraToken = true;
 
 				// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
 				if (charCount != -1) {
@@ -414,11 +454,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 		
-		if (initials != null) {
+		if (initials != null && initials.isEmpty()) {
+		// reinitialize variable when all initials have been consumed, so we don't create an empty iterator
+			initials = null;
+			initialsIterator = null;
+		}
+		if (initials != null && !initials.isEmpty()) {
 			initialsIterator = initials.iterator(); // there might be many unsandhied initials behind the current sandhied initial
 		}
 		
-		if (emitExtraToken) {
+		if (!extraTokens.isEmpty()) {
+			emitExtraToken = true;
 			extraTokensIterator = extraTokens.entrySet().iterator();
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) extraTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());								// the string of the first token is fed into buffer
