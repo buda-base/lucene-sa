@@ -360,7 +360,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 							tokenEnd = tokenStart + charCount;
 						}
 						nonWordEnd = tokenEnd; // we reached the end of a non-word that is followed by a nonSLP char (current c)
-//						break; // testing for what is below
 						if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
 							// all initial chars are consumed and we have a non-word token 
 							nonWordEnd = tokenEnd;
@@ -401,12 +400,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					// add the token just found to extraTokens
 					final String potentialToken = nonWordChars.toString();
-					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0, -1});
+					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0, -1}); 
 					
 					if (!initialsIterator.hasNext()) {
 					// if all initials are consumed, no reset. we resume looping over ioBuffer
 						break;
 					}
+					// reset through index
+					nonWordChars.setLength(0); 
 					
 					// (a) reset initialCharsIterator
 					initialCharsIterator.setIndex(0);
@@ -434,6 +435,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					// if all initials are consumed, no reset. we resume looping over ioBuffer
 						break;
 					}
+					// reset through index
+					nonWordChars.setLength(0); 
 					
 					// (a) reset initialCharsIterator
 					initialCharsIterator.setIndex(0);
