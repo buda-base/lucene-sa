@@ -155,7 +155,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (emitExtraToken) { // need to test this because otherwise we will return intrementToken() while all extra tokens have been added
 				return true;
 			} else {
-				extraTokens = new LinkedHashMap<String, Integer[]>();
+				extraTokens.clear(); // empty extraTokens when they have all been added
 			}
 		}
 		
@@ -206,7 +206,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			//}
 			}			
 			
-			// 1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
+			// A.1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
 			// We want to replace the sandhied initials from ioBuffer by the unsandhied initials in "initials" if there is a sandhi
 			// the unsandhied initials (in "initials") replace the sandhied ones (in ioBuffer), then we resume to ioBuffer
 			// when the token is consumed (either a match in the Trie or a non-word), 
@@ -261,7 +261,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			assert(c != -1); // c must have received a value, either a char from ioBuffer or a character from the current initial
 			System.out.println((char) c);
 
-			// 2. PROCESSING c
+			// A.2. PROCESSING c
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
 				if (tokenLength == 0) {       // start of token
 				// we enter on two occasions: at the actual start of a token, at each new non-word character. 
@@ -472,6 +472,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5) ignore all potential tokens. add the non-word with sandhied initials
 				}
 			}
+			// all potential tokens have been consumed, empty the variable 
+			potentialTokens.clear();
 		} else {
 		// general case: there are no potential tokens from unsandhying the initials. 
 			
