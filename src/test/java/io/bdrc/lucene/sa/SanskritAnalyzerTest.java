@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -187,9 +189,9 @@ public class SanskritAnalyzerTest
 	public void SandhiedCompoundTest() throws IOException
 	{
 		System.out.println("sandhied compound test");
-		String input = "DarmADa DarmATa";
+		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darman", "Darma", "ADa", "Darman", "Darma", "aTa");
+		List<String> expected = Arrays.asList("Darman", "Darma", "aTa", "Darman", "Darma", "ADa", "Darman", "Darma", "aTa");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -222,18 +224,31 @@ public class SanskritAnalyzerTest
 		assertTokenStream(words, expected);
 	}
     
-//    @Test
-//	public void wordTokenizerTest() throws IOException
-//	{
-//		System.out.println("Testing SkrtWordTokenizer()");
-//		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
-//		Reader reader = new StringReader(input);
-//		List<String> expected = Arrays.asList("aTa", "rAja", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKI", "dvitIyA", "ekasmin", "mahA", "utsava", "divase", "na", "garam", "nirikzamARAsti");
-//		System.out.println("0 " + input);
-//		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
-//		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-//		assertTokenStream(syllables, expected);
-//	}
+    @Test
+	public void bug1WordTokenizerTest() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "aTa rAjakanyA";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAj", "rAjan", "kanyA");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void wordTokenizerTest() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAj", "rAjan", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKi", "dvitIya", "ekasmin", "mahA", "utsava", "divase", "na", "garaM", "nirikzamARAsti");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
     public void testSylEndingCombinations() throws Exception {

@@ -134,6 +134,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int initialsOrigTokenStart = -1;
 	private int initialsOrigTokenEnd = -1;
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>(); // Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), (isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
+	private boolean changesInitials = false;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -527,8 +528,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 
 					// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
-					if (charCount != -1) {
+					if (charCount != -1 && changesInitials) { // TODO: the condition should include if the sandhi changes the initials or not
 						bufferIndex = bufferIndex - charCount;
+						changesInitials = false;
 					}
 					tokenEnd = tokenEnd - charCount;
 				}
@@ -602,14 +604,28 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (containsSandhiedCombination(sandhied)) {
 				HashSet<String> diffs = current.getValue(); 
 				for (String lemmaDiff: diffs) {
+					assert(lemmaDiff.contains("+")); // all lemmaDiffs should contain +
 					t = lemmaDiff.split("\\+");
-					assert(t.length == 2); // all lemmaDiffs should contain +
+					
+					// ensures t has alway two elements
+					if (lemmaDiff.endsWith("+")) {
+						t = new String[2];
+						t[0] = lemmaDiff.split("\\+")[0];
+						t[1] = "";
+					}
+					if (lemmaDiff.startsWith("+")) {
+						t = new String[2];
+						t[0] = "";
+						t[1] = lemmaDiff.split("\\+")[0];
+					}
+					
 					int toDelete = Integer.parseInt(t[0]);
 					String toAdd;
 					String newInitial = "";
 					
 					if (t[1].contains(",")) { 
 					// there is a change in initial
+						changesInitials = true;
 						t = t[1].split(",");
 						toAdd = t[0];
 						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
