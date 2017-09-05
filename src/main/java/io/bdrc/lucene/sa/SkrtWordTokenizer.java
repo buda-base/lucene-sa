@@ -133,7 +133,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int initialsOrigBufferIndex = -1;
 	private int initialsOrigTokenStart = -1;
 	private int initialsOrigTokenEnd = -1;
-	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>();
+	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>(); // Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), (isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -148,6 +148,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public final boolean incrementToken() throws IOException {
 		clearAttributes();
 		
+		// B.3. ADDING REMAINING EXTRA TOKENS
 		if (emitExtraToken) {
 		// we want to add all extra tokens, and once that is done, we resume looping over ioBuffer
 			addExtraToken();
@@ -181,8 +182,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		String cmd = null;
 		int cmdIndex = -1;
 		// initals related
+		boolean potentialTokensContainMatches = false;
 		
 		System.out.println("----------------------");
+		// A. FINDING TOKENS
 		while (true) {
 			// if (iterator == null || (iterator != null && iterator.hasNext()) ) {
 				// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
@@ -323,7 +326,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						
 						// add the token just found to extraTokens
 						final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
-						potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1});
+						potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1, potentialEndCmdIndex});
 						
 						if (!initialsIterator.hasNext()) {
 						// if all initials are consumed, no reset. we resume looping over ioBuffer
@@ -366,11 +369,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				
 				if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
 				// all initial chars are consumed and we have a non-word token 
-					nonWordEnd = tokenEnd; 
+					nonWordEnd = tokenEnd;
+					potentialTokensContainMatches = true;
 					
 					// add the token just found to extraTokens
 					final String potentialToken = nonWordChars.toString();
-					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0});
+					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0, -1});
 					
 					if (!initialsIterator.hasNext()) {
 					// if all initials are consumed, no reset. we resume looping over ioBuffer
@@ -397,7 +401,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					// add the token just found to extraTokens
 					final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
-					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0});
+					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0, -1});
 					
 					if (!initialsIterator.hasNext()) {
 					// if all initials are consumed, no reset. we resume looping over ioBuffer
@@ -419,6 +423,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 
+		// B. HANDING THEM TO LUCENE
+		
+		// all the initials from last sandhi have been consumed, reinitializing "initials". new initials can be added by next call(s) of reconstructLemmas() 
+		initials = null;
+		
 		// not too sure what these two "if(){}" do
 		if (potentialEnd) {
 			confirmedEnd = tokenEnd;
@@ -430,37 +439,72 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		termAtt.setLength(tokenEnd - tokenStart); // (4)
 		
-		final String nonWord = nonWordChars.toString();
-		if (nonWord.length() > 0) {
-		// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
-			extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5)
-			if (tokenLength > 0) {
-				final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());  
-				extraTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1}); // (5)
-			}
-		}
-		
-		cmd = scanner.getCommandVal(potentialEndCmdIndex);
-		if (cmd != null) {
-			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString()); // (4)
-			if (lemmas.size() != 0) {
-				for (String l: lemmas) {
-					extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length(), 1}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
+		// B.1. FILLING extraTokens
+		if (!potentialTokens.isEmpty()) {
+		// unsandhying the initials of the present inflected form gave one or more possible tokens.
+		System.out.println("ok");
+			
+			if (potentialTokensContainMatches) {
+			// there is one or more potential tokens that are matches in the Trie (second last value of potentialTokens[potentialToken] == 1)
+				 
+				for (Entry<String, Integer[]> entry: potentialTokens.entrySet()) {
+				// add all potential tokens except if they are non-words (value[3] == 0)
+					final String key = entry.getKey();
+					final Integer[] value = entry.getValue();
+					if (value[3] == 1) {
+						cmd = scanner.getCommandVal(value[4]);
+						final Set<String> lemmas = reconstructLemmas(cmd, key); // (4) note: there can be more than one call of reconstructLemmas(), but initials filters duplicates (HashSet) and all potential lemmas yield the same initials because they only differ on initials
+						if (lemmas.size() != 0) {
+						// there are more than one lemma. this can happen because eventhough we have unsandhied the initials of the current form, the finals have not been analyzed   
+							for (String l: lemmas) {
+								extraTokens.put(l, new Integer[] {value[0], value[1], value[2], value[3]}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
+							}
+						} else {
+						// the finals of the current form are not sandhied, so there is only one token to add
+							extraTokens.put(key, new Integer[] {value[0], value[1], value[2], value[3]}); // (5)
+						}
+					}
 				}
+			} else {
+			// there are only non-words in potentialTokens (last value of potentialTokens[potentialToken] == 0)
+				final String nonWord = nonWordChars.toString();
+				if (nonWord.length() > 0) {
+					extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5) ignore all potential tokens. add the non-word with sandhied initials
+				}
+			}
+		} else {
+		// general case: there are no potential tokens from unsandhying the initials. 
+			
+			final String nonWord = nonWordChars.toString();
+			if (nonWord.length() > 0) {
+			// there is a non-word. we want to keep the order of the tokens, so we add it with its indices before any extra lemmas.
+				extraTokens.put(nonWord, new Integer[] {nonWordStart, nonWordEnd, nonWord.length(), 0}); // (5)
+				if (tokenLength > 0) {
+					final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());  
+					extraTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1}); // (5)
+				}
+			}
+			
+			cmd = scanner.getCommandVal(potentialEndCmdIndex);
+			if (cmd != null) {
+				final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString()); // (4)
+				if (lemmas.size() != 0) {
+					for (String l: lemmas) {
+						extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length(), 1}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
+					}
 
-				// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
-				if (charCount != -1) {
-					bufferIndex = bufferIndex - charCount;
+					// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
+					if (charCount != -1) {
+						bufferIndex = bufferIndex - charCount;
+					}
+					tokenEnd = tokenEnd - charCount;
 				}
-				tokenEnd = tokenEnd - charCount;
 			}
 		}
 		
-		//TODO: put all up here in "if (!potentialTokens.isEmpty()) {}"
-		// else: decide what to do with potentialTokens
-		
+		// B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM extraTokens)
 		if (initials != null && initials.isEmpty()) {
-		// reinitialize variable when all initials have been consumed, so we don't create an empty iterator
+		// reinitialize "initials" when all initials have been consumed, so we don't create an empty iterator
 			initials = null;
 			initialsIterator = null;
 		}
