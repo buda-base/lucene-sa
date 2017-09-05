@@ -187,7 +187,7 @@ public class SanskritAnalyzerTest
 	public void SandhiedCompoundTest() throws IOException
 	{
 		System.out.println("sandhied compound test");
-		String input = "DarmATa DarmATa";
+		String input = "DarmADa DarmATa";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("Darman", "Darma", "aTa", "Darman", "Darma", "aTa");
 		System.out.println("0 " + input);
