@@ -1,13 +1,13 @@
-aTa,~/|c~/- cC+c|C~/- cC+C
-rAja,~-0+n;-1+/|c~-0+n;-1+/- cC+c|C~-0+n;-1+/- cC+C|A:i:u:U:f:e:E:o:O~-1+i;-0+n;-1+/- +
-kanyA,a~-1+a/-+a|A~-1+a/-+A|~/|a~-1+a/-+a|A~-1+a/-+A|c~-1+a/- c+c|C~-1+a/- C+C|A~-2+a/-+A
-saKI,~-1+i/|i~-1+i/-+i|a:A:i:u:U:f:e:E:o:O~-1+i/- +|c~-1+i/- c+c|C~-1+i/- C+C|i~-1+i/-+i
-dvitIyA,a~-1+a/-+a|A~-1+a/-+A|~-1+a/|a~-1+a/-+a|A~-1+a/-+A|c~-1+a/- c+c|C~-1+a/- C+C
-dvitIyE,e~-1+a/-+e|E~-1+a/-+E|e~-1+a/-+e|E~-1+a/-+E
-ekasmin,~-4+/|y:r:v:z:s:h:k:K:g:G:d:D:p:P:b:B:n:m~-4+/- +|~-4+/
-mahA,~-1+at/|a~-1+at/-+a|A~-1+at/-+A|c~-1+at/- c+c|C~-1+at/- C+C|a~-1+/-+a|A~-1+/-+A
-maho,u~-1+at/-+u|U~-1+at/-+U|u~-1+/-+u|U~-1+/-+U
-utsava,~/|c~/- cC+c|C~/- cC+C|A:i:u:U:f:e:E:o:O~/- +
-divase,i~-1+a/-+i|i~-1+a/-+i|~-1+a/|a~-1+a/- '+a|a:A:i:u:U:f:e:E:o:O~-1+a/- +|c~-1+a/- cC+c|C~-1+a/- cC+C
-na,~/|c~/- cC+c|C~/- cC+C
-garam,~-1+/|a:A:i:I:u:U:f:e:E:o:O~-1+/- +|~-1+/
+aTa,~/=0|c~/- cC+c=6|C~/- cC+C=6
+rAja,~-0+n;-1+/=0|c~-0+n;-1+/- cC+c=6|C~-0+n;-1+/- cC+C=6|A:i:u:U:f:e:E:o:O~-1+i;-0+n;-1+/- +=1
+kanyA,a~-1+a/-+a=1|A~-1+a/-+A=1|~/=0|c~-1+a/- c+c=6|C~-1+a/- C+C=6|A~-2+a/-+A=1
+saKI,~-1+i/=0|i~-1+i/-+i=1|a:A:i:u:U:f:e:E:o:O~-1+i/- +=1|c~-1+i/- c+c=6|C~-1+i/- C+C=6
+dvitIyA,a~-1+a/-+a=1|A~-1+a/-+A=1|~-1+a/=0|c~-1+a/- c+c=6|C~-1+a/- C+C=6
+dvitIyE,e~-1+a/-+e=1|E~-1+a/-+E=1
+ekasmin,~-4+/=0|y:r:v:z:s:h~-4+/- +=2|k:K:g:G:d:D:p:P:b:B:n:m~-4+/- +=3|~-4+/=5
+mahA,~-1+at/=0|a~-1+at/-+a=1|A~-1+at/-+A=1|c~-1+at/- c+c=6|C~-1+at/- C+C=6|a~-1+/-+a=1|A~-1+/-+A=1
+maho,u~-1+at/-+u=1|U~-1+at/-+U=1|u~-1+/-+u=1|U~-1+/-+U=1
+utsava,~/=0|c~/- cC+c=6|C~/- cC+C=6|A:i:u:U:f:e:E:o:O~/- +=1
+divase,i~-1+a/-+i=1|~-1+a/=0|a~-1+a/- '+a=1|a:A:i:u:U:f:e:E:o:O~-1+a/- +=1|c~-1+a/- cC+c=6|C~-1+a/- cC+C=6
+na,~/=0|c~/- cC+c=6|C~/- cC+C=6
+garam,~-1+/=0|a:A:i:I:u:U:f:e:E:o:O~-1+/- +=4|~-1+/=5

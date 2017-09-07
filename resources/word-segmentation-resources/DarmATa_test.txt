@@ -1,2 +1,2 @@
-DarmA,a~-1+an;-1+a/-+a|A~-1+an;-1+a/-+A|~-1+an;-1+a/|c~-1+an;-1+a/- c+c|C~-1+an;-1+a/- C+C
-aTa,~/
+Darma,~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1
+aTa,~/=0|c~/- cC+c=6|C~/- cC+C=6
