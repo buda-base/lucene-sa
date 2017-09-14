@@ -38,10 +38,17 @@ public class CmdParser {
 		String[] initials = null;
 		String diffInitial = null; // there can only be one initial diff
 		String[] diffFinals = null;
+		int sandhiType = -1; 
+
 		String[] t; // temporary variable
+		String entry = null;
 		
 		String[] entries = cmd.split("\\|"); // split into entries
-		for (String entry: entries) {
+		for (String fullEntry: entries) {
+			t = fullEntry.split("=");
+			assert(t.length == 2); // there should always be a sandhi type for an entry
+			sandhiType = Integer.parseInt(t[1]);
+			entry = t[0];
 			if (entry.equals("~/") || entry.contains("~/- +")) {
 				// filters all non-modifying sandhis: either there is no change or words are separated by a space.
 			} else {
@@ -100,7 +107,7 @@ public class CmdParser {
 					initialCharsOriginal = t[1];
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					String unsandhied = String.format("%s+%s,%s", "0", sandhiedFinal,initialCharsOriginal);
+					String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal,initialCharsOriginal, sandhiType);
 					sandhis.putIfAbsent(sandhied, new HashSet<String>());
 					sandhis.get(sandhied).add(unsandhied);
 				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
@@ -119,13 +126,13 @@ public class CmdParser {
 						if (initials.length > 0) {
 							for (String initial: initials) {
 								String sandhied = sandhiedFinal+initial;
-								String unsandhied = String.format("%s+%s,%s", toDelete, toAdd, initial);
+								String unsandhied = String.format("%s+%s/%s=%s", toDelete, toAdd, initial, sandhiType);
 								sandhis.putIfAbsent(sandhied, new HashSet<String>());
 								sandhis.get(sandhied).add(unsandhied);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
-							String unsandhied = String.format("%s+%s", toDelete, toAdd);
+							String unsandhied = String.format("%s+%s=%s", toDelete, toAdd, sandhiType);
 							sandhis.putIfAbsent(sandhied, new HashSet<String>());
 							sandhis.get(sandhied).add(unsandhied);
 						}
@@ -149,13 +156,13 @@ public class CmdParser {
 								initialCharsOriginal = t[1].trim();
 								
 								String key = sandhiedFinal+initialCharsSandhied;
-								String value = String.format("%s+%s,%s", toDelete, toAdd, initialCharsOriginal);
+								String value = String.format("%s+%s/%s=%s", toDelete, toAdd, initialCharsOriginal, sandhiType);
 								sandhis.putIfAbsent(key, new HashSet<String>());
 								sandhis.get(key).add(value);
 							} else if (t.length < 2 && initials.length > 1) {
 								for (String initial: initials) {
 									String key = sandhiedFinal+initial;
-									String value = String.format("%s+%s,%s", toDelete, toAdd, initial);
+									String value = String.format("%s+%s/%s=%s", toDelete, toAdd, initial, sandhiType);
 									sandhis.putIfAbsent(key, new HashSet<String>());
 									sandhis.get(key).add(value);
 								}

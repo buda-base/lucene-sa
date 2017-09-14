@@ -71,7 +71,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	// attributes allowing to modify the values of the generated terms
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
-	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class); // TODO: attribute a "non-word" type to non-word tokens for subsequent filter
+	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 
 	/**
 	 * Constructs a SkrtWordTokenizer using the file designed by filename
@@ -600,23 +600,29 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
-
-			if (containsSandhiedCombination(sandhied)) {
-				HashSet<String> diffs = current.getValue(); 
-				for (String lemmaDiff: diffs) {
-					assert(lemmaDiff.contains("+")); // all lemmaDiffs should contain +
-					t = lemmaDiff.split("\\+");
+			HashSet<String> diffs = current.getValue();
+			
+//			 
+			for (String lemmaDiff: diffs) {
+				assert(lemmaDiff.contains("+")); // all lemmaDiffs should contain +
+				
+				t = lemmaDiff.split("=");
+				int sandhiType = Integer.parseInt(t[1]); 
+				String diff = t[0];
+				if (containsSandhiedCombination(ioBuffer.getBuffer(), bufferIndex, sandhied, sandhiType)) {
+				
+					t = diff.split("\\+");
 					
 					// ensures t has alway two elements
-					if (lemmaDiff.endsWith("+")) {
+					if (diff.endsWith("+")) {
 						t = new String[2];
-						t[0] = lemmaDiff.split("\\+")[0];
+						t[0] = diff.split("\\+")[0];
 						t[1] = "";
 					}
-					if (lemmaDiff.startsWith("+")) {
+					if (diff.startsWith("+")) {
 						t = new String[2];
 						t[0] = "";
-						t[1] = lemmaDiff.split("\\+")[0];
+						t[1] = diff.split("\\+")[0];
 					}
 					
 					int toDelete = Integer.parseInt(t[0]);
@@ -646,7 +652,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return totalLemmas;
 	}
 
-	private boolean containsSandhiedCombination(String sandhied) {
+	public static boolean containsSandhiedCombination(char[] buffer, int bufferIndex, String sandhied, int sandhiType) {
 		/**
  		 * Tells whether sandhied could be found between the two words.
  		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
@@ -665,35 +671,73 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		 * 		- start either from 0 or -1
 		 * 		- can have a maximal value of 3  
 		 * 
-		 * TODO: ask to Charles the maximum X can be.
-		 * 
 		 * @return: true if sandhied is one of the combinations; else otherwise 
 		 */
-		boolean sandhiable = false;
-		char[] inputBuffer = ioBuffer.getBuffer();
-		int[][] combinations = new int[][]{
-			{0, 1},
-			{0, 2},
-			{0, 3},
-			{-1, 0},
-			{-1, 1},
-			{-1, 2},
-			{-1, 3},
-		};
-		for (int i = 0; i <= 5; i++) {
+		int[][] combinations;
+		
+		switch(sandhiType) {
+		case 0: // no sandhi
+			return false; // no sandhi is possible
+		
+		case 1: // vowel sandhi
+			combinations = new int[][]{{0, 1}, {0, 2}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 2: // consonant sandhi 1
+			combinations = new int[][]{{0, 1}, {0, 2}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 3: // consonant sandhi 2
+			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 4: // visarga sandhi
+			combinations = new int[][]{{0, 1}, {0, 2}, {-1, 0}, {-1, 1}, {-1, 2}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 5: // absolute finals sandhi
+			// calculate the size of the consonant cluster (stop incrementing when a nonSLP or stringEnd found)
+			int end = 0;
+			while (bufferIndex+end < buffer.length-1 && SkrtSylTokenizer.isSLP(Character.codePointAt(buffer, bufferIndex+end))) {
+				end++;
+			}
+			
+			// fill combinations[][]_with the correct values
+			combinations = new int[end+1][];
+			for (int i = 0; i <= end; i++) {
+				combinations[i] = new int[]{0, i};
+			}
+			
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 6: // "cC"-words sandhi
+			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		case 7: // special sandhi: "punar"
+			combinations = new int[][]{{0, 1}, {0, 2}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		
+		default:
+			return false;
+		}
+	}
+
+	private static boolean isSandhiedCombination(char[] inputBuffer, int bufferIndex, String sandhied, int[][] combinations) {
+		for (int i = 0; i <= combinations.length-1; i++) {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
 			String current = "";
 			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
 				if (c != ' ') {
-					current = current + Character.toString(c);
+					current += Character.toString(c);
 				}
 			}
 			if (sandhied.equals(current)) {
-				sandhiable = true;
+				return true;
 			}
 		}
-		return sandhiable;
+		return false;
 	}
 
 	@Override
