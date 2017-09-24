@@ -311,7 +311,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					nonWordChars.append((char) c);
 					if (tokenLength > 0) {
-					// we reinitialize tokenBuffer (through the index of tokenLength and tokenEnd)
+					// we reinitialize tokenBuffer (through the index of tokenLength) and tokenEnd
 						tokenLength = 0;
 						tokenEnd = tokenStart + charCount;
 					}
@@ -474,7 +474,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		// B.1. FILLING extraTokens
 		if (!potentialTokens.isEmpty()) {
 		// unsandhying the initials of the present inflected form gave one or more possible tokens.
-		System.out.println("ok");
+			System.out.println("ok");
 			
 			if (potentialTokensContainMatches) {
 			// there is one or more potential tokens that are matches in the Trie (second last value of potentialTokens[potentialToken] == 1)
@@ -629,10 +629,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					String toAdd;
 					String newInitial = "";
 					
-					if (t[1].contains(",")) { 
+					if (t[1].contains("/")) { 
 					// there is a change in initial
 						changesInitials = true;
-						t = t[1].split(",");
+						t = t[1].split("/");
 						toAdd = t[0];
 						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
 						if (initials == null) {
@@ -728,7 +728,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
 			String current = "";
-			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
+			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex - 1 + start, bufferIndex - 1 + end)) {
 				if (c != ' ') {
 					current += Character.toString(c);
 				}

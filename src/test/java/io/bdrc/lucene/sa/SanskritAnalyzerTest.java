@@ -190,7 +190,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "budDaDarma".toCharArray();
-    	int bufferIdx = 4;
+    	int bufferIdx = 5;
     	String sandhied = "a";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
     	assertFalse(res);
@@ -201,7 +201,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "DarmATa".toCharArray();
-    	int bufferIdx = 4;
+    	int bufferIdx = 5;
     	String sandhied = "A";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
     	assertTrue(res);
@@ -212,7 +212,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "Darmaprsti".toCharArray();
-    	int bufferIdx = 5;
+    	int bufferIdx = 6;
     	String sandhied = "p";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
     	assertTrue(res);
@@ -263,7 +263,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing SkrtWordTokenizer()");
 		String input = "aTa rAjakanyA";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAj", "rAjan", "kanyA");
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -276,7 +276,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing SkrtWordTokenizer()");
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAj", "rAjan", "kanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKi", "dvitIya", "ekasmin", "mahA", "utsava", "divase", "na", "garaM", "nirikzamARAsti");
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABinavarupayOvanasampannA", "saKi", "dvitIya", "ekasmin", "mahA", "utsava", "divase", "na", "garaM", "nirikzamARAsti");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
