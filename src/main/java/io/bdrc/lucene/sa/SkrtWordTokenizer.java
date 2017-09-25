@@ -609,7 +609,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				t = lemmaDiff.split("=");
 				int sandhiType = Integer.parseInt(t[1]); 
 				String diff = t[0];
-				if (containsSandhiedCombination(ioBuffer.getBuffer(), bufferIndex, sandhied, sandhiType)) {
+				if (containsSandhiedCombination(ioBuffer.getBuffer(), bufferIndex - 1, sandhied, sandhiType)) {
 				
 					t = diff.split("\\+");
 					
@@ -728,7 +728,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
 			String current = "";
-			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex - 1 + start, bufferIndex - 1 + end)) {
+			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
 				if (c != ' ') {
 					current += Character.toString(c);
 				}

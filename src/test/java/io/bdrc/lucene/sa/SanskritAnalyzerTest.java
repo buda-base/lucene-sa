@@ -190,7 +190,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "budDaDarma".toCharArray();
-    	int bufferIdx = 5;
+    	int bufferIdx = 4;
     	String sandhied = "a";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
     	assertFalse(res);
@@ -201,7 +201,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "DarmATa".toCharArray();
-    	int bufferIdx = 5;
+    	int bufferIdx = 4;
     	String sandhied = "A";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
     	assertTrue(res);
@@ -212,7 +212,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "Darmaprsti".toCharArray();
-    	int bufferIdx = 6;
+    	int bufferIdx = 5;
     	String sandhied = "p";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
     	assertTrue(res);
