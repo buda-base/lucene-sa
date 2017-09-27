@@ -134,7 +134,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int initialsOrigTokenStart = -1;
 	private int initialsOrigTokenEnd = -1;
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>(); // Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), (isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
-	private boolean changesInitials = false;
+	private boolean mergesInitials = false;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -188,24 +188,22 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		System.out.println("----------------------");
 		// A. FINDING TOKENS
 		while (true) {
-			// if (iterator == null || (iterator != null && iterator.hasNext()) ) {
-				// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
-				if (bufferIndex >= dataLen) {
-					offset += dataLen;
-					CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
-					if (ioBuffer.getLength() == 0) {
-						dataLen = 0; // so next offset += dataLen won't decrement offset
-						if (tokenLength > 0) {
-							break;
-						} else {
-							finalOffset = correctOffset(offset);
-							return false;
-						}
+			// this if(){} deals with the beginning and end of the input string (bufferIndex == 0 and bufferIndex == input.length)
+			if (bufferIndex >= dataLen) {
+				offset += dataLen;
+				CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
+				if (ioBuffer.getLength() == 0) {
+					dataLen = 0; // so next offset += dataLen won't decrement offset
+					if (tokenLength > 0) {
+						break;
+					} else {
+						finalOffset = correctOffset(offset);
+						return false;
 					}
-					dataLen = ioBuffer.getLength();
-					bufferIndex = 0;
-			//}
-			}			
+				}
+				dataLen = ioBuffer.getLength();
+				bufferIndex = 0;
+			}
 			
 			// A.1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
 			// We want to replace the sandhied initials from ioBuffer by the unsandhied initials in "initials" if there is a sandhi
@@ -213,52 +211,79 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			// when the token is consumed (either a match in the Trie or a non-word), 
 			// we come back to the sandhied character index in ioBuffer and reiterate as long as there are alternative initials			
 			int c = -1;
-			if (initials != null && initialCharsIterator == null) {
-			// we enter here on first initials. when all initials are consumed, initials == []
-				
-				// save the indices of the current state to be able to restore it later
-				initialsOrigBufferIndex = bufferIndex;
-				initialsOrigTokenStart = tokenStart;
-				initialsOrigTokenEnd = tokenEnd;
-				
-				initialCharsIterator = new StringCharacterIterator(initialsIterator.next()); // initialize the iterator with the first initials
-				initialsIterator.remove();
-				
-				c = initialCharsIterator.current();
-				initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
-
-				charCount = Character.charCount(c);
-				// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
-				bufferIndex += charCount; // the index for next c
-				
-			} else if (initials != null && initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
-			// we enter here if all initial chars are not yet consumed
-				
-				if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
-				// either first time or initialCharsIterator has been reset AND there are more initials to process
-				// when we reach the end of a token (either a Trie match or a non-word), the char iterator is reinitialized (see (a) )
-					initialCharsIterator.setText(initialsIterator.next()); // reset the iterator with the next initials, to avoid a re-allocation
+			
+			// test
+			c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+			charCount = Character.charCount(c);
+			bufferIndex += charCount; // the index for next c
+			
+			if (initials != null) {
+				// test
+				if (c == ' ') {
+				// this allows to move beyond the space in case there is a sandhi that is separated by a space.
+				// reaching here, we have already added the preceding term, so we can safely move ahead to the next char in ioBuffer
+					continue;
+				} else if (initials != null && initialCharsIterator == null) {
+				// we enter here on first initials. when all initials are consumed, initials == []
+					
+					// save the indices of the current state to be able to restore it later
+					initialsOrigBufferIndex = bufferIndex;
+					initialsOrigTokenStart = tokenStart;
+					initialsOrigTokenEnd = tokenEnd;
+					
+					initialCharsIterator = new StringCharacterIterator(initialsIterator.next()); // initialize the iterator with the first initials
 					initialsIterator.remove();
+					
+					// test
+					c = initialCharsIterator.current();
+					initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
+					
+					charCount = Character.charCount(c);
+//					bufferIndex += charCount; // increment bufferIndex with the char of the initial
+					// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
+					
+					
+				} else if (initials != null && initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
+				// we enter here if all initial chars are not yet consumed
+					
+					if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
+					// either first time or initialCharsIterator has been reset AND there are more initials to process
+					// when we reach the end of a token (either a Trie match or a non-word), the char iterator is reinitialized (see (a) )
+						initialCharsIterator.setText(initialsIterator.next()); // reset the iterator with the next initials, to avoid a re-allocation
+						initialsIterator.remove();
+					}
+	
+					c = initialCharsIterator.current();
+					initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
+					
+					charCount = Character.charCount(c);
+	//				test
+	//				if (initialCharsIterator.getIndex() == 1) {
+					if (initialCharsIterator.getIndex() > 1) {
+					// TODO update comment
+					// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
+						// test
+	//					bufferIndex += charCount; // the index for next c
+						bufferIndex -= charCount; // the index for next c 
+					}
 				}
-
-				c = initialCharsIterator.current();
-				initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
-				
-				charCount = Character.charCount(c);
-				if (initialCharsIterator.getIndex() == 1) {
-				// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
-					bufferIndex += charCount; // the index for next c 
-				}
-
-			} else { 
-			// we enter here either in a non-sandhi context or when all initials are consumed but the token is not finished yet
-				
-				// take the next char in the input (ioBuffer) for processing it and increment bufferIndex for next value of c
-				// (use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone)
-				c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
-				charCount = Character.charCount(c);
-				bufferIndex += charCount; // the index for next c
 			}
+//			else if (initials != null && initialCharsIterator.getIndex() == initialCharsIterator.getEndIndex()) {
+//				// TODO see what to do here
+//				c = initialCharsIterator.current();
+//				charCount = Character.charCount(c);
+//				bufferIndex += charCount; // the index for next c
+//			} 
+				// test
+//			else {
+//			// we enter here either in a non-sandhi context or when all initials are consumed but the token is not finished yet
+//				
+//				// take the next char in the input (ioBuffer) for processing it and increment bufferIndex for next value of c
+//				// (use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone)
+//				c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+//				charCount = Character.charCount(c);
+//				bufferIndex += charCount; // the index for next c
+//			}
 			assert(c != -1); // c must have received a value, either a char from ioBuffer or a character from the current initial
 			System.out.println((char) c);
 
@@ -431,11 +456,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					// add the token just found to extraTokens
 					final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
 					potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordEnd, potentialToken.length(), 0, -1});
+		
 					
 					if (!initialsIterator.hasNext()) {
 					// if all initials are consumed, no reset. we resume looping over ioBuffer
 						break;
 					}
+					
 					// reset through index
 					nonWordChars.setLength(0); 
 					
@@ -473,8 +500,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		// B.1. FILLING extraTokens
 		if (!potentialTokens.isEmpty()) {
+			
 		// unsandhying the initials of the present inflected form gave one or more possible tokens.
-			System.out.println("ok");
 			
 			if (potentialTokensContainMatches) {
 			// there is one or more potential tokens that are matches in the Trie (second last value of potentialTokens[potentialToken] == 1)
@@ -528,9 +555,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 
 					// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
-					if (charCount != -1 && changesInitials) { // TODO: the condition should include if the sandhi changes the initials or not
+					if (charCount != -1 && mergesInitials) { // TODO: the condition should include if the sandhi changes the initials or not
 						bufferIndex = bufferIndex - charCount;
-						changesInitials = false;
+						mergesInitials = false;
 					}
 					tokenEnd = tokenEnd - charCount;
 				}
@@ -602,7 +629,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			String sandhied = current.getKey();
 			HashSet<String> diffs = current.getValue();
 			
-//			 
 			for (String lemmaDiff: diffs) {
 				assert(lemmaDiff.contains("+")); // all lemmaDiffs should contain +
 				
@@ -631,7 +657,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					if (t[1].contains("/")) { 
 					// there is a change in initial
-						changesInitials = true;
 						t = t[1].split("/");
 						toAdd = t[0];
 						newInitial = t[1]; // TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
@@ -680,7 +705,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return false; // no sandhi is possible
 		
 		case 1: // vowel sandhi
-			combinations = new int[][]{{0, 1}, {0, 2}};
+			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 		
 		case 2: // consonant sandhi 1
@@ -729,11 +754,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			int end = combinations[i][1];
 			String current = "";
 			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
-				if (c != ' ') {
-					current += Character.toString(c);
-				}
+				current += Character.toString(c);
 			}
-			if (sandhied.equals(current)) {
+			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
 				return true;
 			}
 		}

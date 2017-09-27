@@ -91,7 +91,7 @@ public class SanskritAnalyzerTest
 	
 	@Test
 	public void testSylTokenizer() throws IOException {
-		// the syllabation in "expected" is the output of Scharf's script
+		// the syllabation in "expected(char) c" is the output of Scharf's script
 		System.out.println("Testing SkrtSylTokenizer()");
 		String input = "pfTivyA lABe pAlane ca yAvanty arTa SAstrARi pUrva AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa SAstraM kftam //";
 		Reader reader = new StringReader(input);
@@ -240,6 +240,19 @@ public class SanskritAnalyzerTest
 		List<String> expected = Arrays.asList("ABCDE", "aTa", "FGH", "IJ", "aTa");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
+	}
+    
+    @Test
+	public void testSandhiWithSpace() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "te 'pi te'pi"; // Darm is not in the Trie, aTa is
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("tad", "api", "tad", "api");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/te'pi_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
