@@ -135,6 +135,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int initialsOrigTokenEnd = -1;
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>(); // Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), (isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
 	private static boolean mergesInitials = false;
+	private int finalsIndex = -1;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -217,17 +218,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; // the index for next c
 			
-			if (initials != null) {
+			if (initials != null && !initials.isEmpty()) {
 				// test
-				if (c == ' ') {
+ 				if (c == ' ' && bufferIndex == finalsIndex + 1) {  // detects spaces between sandhis
 				// this allows to move beyond the space in case there is a sandhi that is separated by a space.
 				// reaching here, we have already added the preceding term, so we can safely move ahead to the next char in ioBuffer
 					continue;
-				} else if (initials != null && initialCharsIterator == null) {
-				// we enter here on first initials. when all initials are consumed, initials == []
+				} else if (initialCharsIterator == null) {
+				// we enter here on finalOffset ==  first initials. when all initials are consumed, initials == []
 					
 					// save the indices of the current state to be able to restore it later
-					initialsOrigBufferIndex = bufferIndex;
+					initialsOrigBufferIndex = bufferIndex - 1;
 					initialsOrigTokenStart = tokenStart;
 					initialsOrigTokenEnd = tokenEnd;
 					
@@ -243,7 +244,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
 					
 					
-				} else if (initials != null && initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
+				} else if (initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
 				// we enter here if all initial chars are not yet consumed
 					
 					if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
@@ -257,15 +258,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
 					
 					charCount = Character.charCount(c);
-	//				test
-	//				if (initialCharsIterator.getIndex() == 1) {
-					if (initialCharsIterator.getIndex() > 1) {
-					// TODO update comment
-					// we are at the first initial char, it needs to replace the sandhied initial at current position in ioBuffer, so we increment bufferIndex
-						// test
-	//					bufferIndex += charCount; // the index for next c
-						bufferIndex -= charCount; // the index for next c 
-					}
 				}
 			}
 //			else if (initials != null && initialCharsIterator.getIndex() == initialCharsIterator.getEndIndex()) {
@@ -499,13 +491,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		termAtt.setLength(tokenEnd - tokenStart); // (4)
 		
 		// B.1. FILLING extraTokens
-		if (!potentialTokens.isEmpty()) {
-			
+		if (!potentialTokens.isEmpty()) {	
 		// unsandhying the initials of the present inflected form gave one or more possible tokens.
 			
 			if (potentialTokensContainMatches) {
 			// there is one or more potential tokens that are matches in the Trie (second last value of potentialTokens[potentialToken] == 1)
-				 
+				
 				for (Entry<String, Integer[]> entry: potentialTokens.entrySet()) {
 				// add all potential tokens except if they are non-words (value[3] == 0)
 					final String key = entry.getKey();
@@ -553,7 +544,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					for (String l: lemmas) {
 						extraTokens.put(l, new Integer[] {tokenStart, tokenEnd, l.length(), 1}); // (5) adding every extra lemma, using the same indices for all of them, since they correspond to the same inflected form from the input
 					}
-
+					
+					// save the index of the finals
+					finalsIndex = bufferIndex;
+					
 					// restore state to the character just processed, so we can unsandhi the initial and successfully find the start of a potential word in the Trie 
 					if (charCount != -1 && mergesInitials) { // TODO: the condition should include if the sandhi changes the initials or not
 						bufferIndex = bufferIndex - charCount;
@@ -781,6 +775,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		dataLen = 0;
 		finalOffset = 0;
 		ioBuffer.reset(); // make sure to reset the IO buffer!!
+		
+		finalsIndex = -1;
 		
 		// for emitting multiple tokens
 		emitExtraToken = false;
