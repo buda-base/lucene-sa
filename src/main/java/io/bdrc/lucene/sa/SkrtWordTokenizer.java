@@ -134,7 +134,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int initialsOrigTokenStart = -1;
 	private int initialsOrigTokenEnd = -1;
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>(); // Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), (isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
-	private boolean mergesInitials = false;
+	private static boolean mergesInitials = false;
 
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -705,6 +705,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return false; // no sandhi is possible
 		
 		case 1: // vowel sandhi
+			if (sandhied.length() == 1) {
+				mergesInitials = true;
+			}
 			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 		
@@ -731,7 +734,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[end+1][];
 			for (int i = 0; i <= end; i++) {
 				combinations[i] = new int[]{0, i};
-			}
+			}System.out.println("ok");
 			
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 		
