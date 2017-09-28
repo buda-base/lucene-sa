@@ -228,18 +228,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; // the index for next c
 			
-			if (initials != null && !initials.isEmpty()) {
- 				if (c == ' ' && bufferIndex == finalsIndex + 1) {
-				// this allows to move beyond the space in case there is a sandhi that is separated by a space.
-					continue;
-				
- 				} else if (initialCharsIterator == null) {
+			if (thereAreInitialsToConsume()) {
+ 				if (currentCharIsSpaceWithinSandhi(c)) {
+					continue;  // this allows to move beyond the space in case there is a sandhi that is separated by a space.				
+ 				
+ 				} else if (startConsumingInitials()) {
 				// we enter here on finalOffset ==  first initials. when all initials are consumed, initials == []
 					storeCurrentState(tokenStart, tokenEnd);  // save the indices of the current state to be able to restore it later
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();  // charCount is not updated with the new value of c since we only process SLP, so there are never surrogate pairs
 				
-				} else if (initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
+				} else if (stillConsumingInitials()) {
 				// we enter here if all initial chars are not yet consumed
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();  // idem
@@ -492,6 +491,34 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
+
+	private boolean startConsumingInitials() {
+		if (initialCharsIterator == null) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean stillConsumingInitials() {
+		if (initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean currentCharIsSpaceWithinSandhi(int c) {
+		if (c == ' ' && bufferIndex == finalsIndex + 1) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean thereAreInitialsToConsume() {
+		if (initials != null && !initials.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 
 	private void reinitializeTokenBufferIfNeeded(int charCount) {
 		// we reinitialize tokenBuffer (through the index of tokenLength) and tokenEnd
