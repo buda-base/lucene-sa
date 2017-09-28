@@ -342,7 +342,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					addFoundTokenToPotentialTokens(tokenBuffer);
 					if (allInitialsAreConsumed()) {
 						break; // and resume looping over ioBuffer
-					} 			
+					} 
+					resetInitialCharsIterator();
+					restorePreviousState();					
 				} else {
 					break;
 				}
