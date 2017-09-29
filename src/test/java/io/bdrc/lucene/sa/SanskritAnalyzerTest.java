@@ -23,8 +23,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -146,30 +144,6 @@ public class SanskritAnalyzerTest
     	List<String> expected = Arrays.asList("y", "e");
     	assertTokenStream(ts, expected);
     }
-    
-//    @Test
-//    public void thoroughTestDeva2SlpFilter() throws Exception {
-//    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-deva.txt"));
-//    	String input = String.join(" ", lines);
-//    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
-//  	System.out.println("0 " + input);  	
-//    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-//    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
-//    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
-//    	assertTokenStream(ts, expected);
-//    }
-//    
-//    @Test
-//    public void thoroughTestRoman2SlpFilter() throws Exception {
-//    	List<String> lines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-roman.txt"));
-//    	String input = String.join(" ", lines);
-//    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-//  	System.out.println("0 " + input);  	
-//    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-//    	List<String> llines = Files.readAllLines(Paths.get("resources/transcoding-test-data/nala-slp.txt"));
-//    	List<String> expected = Arrays.asList(String.join(" ", llines).split(" "));
-//    	assertTokenStream(ts, expected);
-//    }
 
     @Test
     public void testParseCmd() throws IOException
