@@ -284,7 +284,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					checkIfCanContinueDownTheTrie(currentRow, c);
 				}
 
-				if (wentTooFarDownTheTrie()) {
+				if (wentBeyondLongestMatch()) {
 					restoreNonMaxMatchState();
 					nonWordEnd = tokenEnd; // needed for term indices
 					break;
@@ -555,7 +555,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (foundMatch) {
 			foundMatchCmdIndex = cmdIndex;
 			foundNonMaxMatch = storeNonMaxMatchState();
-			
 		}
 	}
 
@@ -650,7 +649,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	final private boolean wentTooFarDownTheTrie() {
+	final private boolean wentBeyondLongestMatch() {
 		return foundNonMaxMatch && currentRow == null && foundMatch == false;
 	}
 
