@@ -219,12 +219,25 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void testAbab() throws IOException
+	public void testNonMaximalMatch() throws IOException
 	{
 		System.out.println("Testing input starting with non-word");
 		String input = "abab";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ab", "ab");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
+	}
+
+    @Test
+	public void testNonMaximalMatchPrecededWithNonWord() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "auieabab";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("auie", "ab", "ab");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);

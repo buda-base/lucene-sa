@@ -158,6 +158,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int nonMaxTokenEnd;
 	private int nonMaxTokenLength;
 	private int nonMaxBufferIndex;
+	private int nonMaxNonWordLength;
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -191,7 +192,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		foundMatch = false;
 		nonWordStart = -1;
 		nonWordEnd = -1;
-		resetNonWordChars();
+		resetNonWordChars(0);
 		charCount = -1;
 		// Trie related
 		rootRow = scanner.getRow(scanner.getRoot());
@@ -204,6 +205,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenEnd = -1;
 		nonMaxTokenLength = -1;
 		nonMaxBufferIndex = -1;
+		nonMaxNonWordLength = 0;
 
 		System.out.println("----------------------");
 		// A. FINDING TOKENS
@@ -284,6 +286,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 				if (foundNonMaxMatch && currentRow == null && foundMatch == false) {
 					restoreNonMaxMatchState();
+					nonWordEnd = tokenEnd; // needed for term indices
 					break;
 					
 				} else if (reachedNonwordCharacter()) {
@@ -338,7 +341,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (allInitialsAreConsumed()) {
 						break; // and resume looping over ioBuffer
 					}
-					resetNonWordChars();
+					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
@@ -551,16 +554,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		foundMatch = (cmdIndex >= 0);
 		if (foundMatch) {
 			foundMatchCmdIndex = cmdIndex;
-			foundNonMaxMatch = true;
-			storeNonMaxMatchState();
+			foundNonMaxMatch = storeNonMaxMatchState();
+			
 		}
 	}
 
-	private void storeNonMaxMatchState() {
+	private boolean storeNonMaxMatchState() {
 		nonMaxBufferIndex = bufferIndex;
 		nonMaxTokenStart = tokenStart;
 		nonMaxTokenEnd = tokenEnd;
 		nonMaxTokenLength = tokenLength;
+		nonMaxNonWordLength = nonWordChars.length()-1;
+		return true;
 	}
 
 	private void restoreNonMaxMatchState() {
@@ -569,9 +574,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		tokenEnd = nonMaxTokenEnd;
 		tokenLength = nonMaxTokenLength;
 		currentRow = rootRow;
-		resetNonWordChars();
+		resetNonWordChars(nonMaxNonWordLength);
 	}
-	
+
 	private void reinitializeTokenBufferIfNeeded() {
 		// we reinitialize tokenBuffer (through the index of tokenLength) and tokenEnd
 		if (tokenLength > 0) {
@@ -589,8 +594,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		currentRow = rootRow;
 	}
 
-	private void resetNonWordChars() {
-		nonWordChars.setLength(0);
+	private void resetNonWordChars(int i) {
+		nonWordChars.setLength(i);
 	}
 
 	private void addNonwordToPotentialTokens() {
