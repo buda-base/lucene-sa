@@ -650,7 +650,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean wentBeyondLongestMatch() {
-		return foundNonMaxMatch && currentRow == null && foundMatch == false;
+		return foundNonMaxMatch && foundMatch == false;
 	}
 
 	final private boolean thereAreTokensToReturn() {
@@ -889,5 +889,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		// for emitting multiple tokens
 		hasTokenToEmit = false;
+
 	}
 }
