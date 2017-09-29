@@ -209,11 +209,24 @@ public class SanskritAnalyzerTest
 	public void testStartingWithNonword() throws IOException
 	{
 		System.out.println("Testing input starting with non-word");
-		String input = "ABCDEaTaFGH IJaTa"; // Darm is not in the Trie, aTa is
+		String input = "aTaAB CDEaTaFGH IJaTa"; // Darm is not in the Trie, aTa is
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ABCDE", "aTa", "FGH", "IJ", "aTa");
+		List<String> expected = Arrays.asList("aTa", "AB", "CDE", "aTa", "FGH", "IJ", "aTa");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/DarmATa_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
+	}
+    
+    @Test
+	public void testAbab() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "abab";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("ab", "ab");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}

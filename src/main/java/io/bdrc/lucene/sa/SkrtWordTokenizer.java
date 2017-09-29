@@ -147,12 +147,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private Row currentRow;
 	private Row rootRow;
 	private int cmdIndex;
-	private boolean potentialEnd;
-	private int potentialEndCmdIndex;
+	private boolean foundMatch;
+	private int foundMatchCmdIndex;
+	private boolean foundNonMaxMatch;
 	private int nonWordStart;
 	private int nonWordEnd;
 	private int charCount;
 
+	private int nonMaxTokenStart;
+	private int nonMaxTokenEnd;
+	private int nonMaxTokenLength;
+	private int nonMaxBufferIndex;
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -181,10 +186,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		tokenEnd = -1;		
 		char[] tokenBuffer = termAtt.buffer();
 		// ???
-		int confirmedEnd = -1;
-		int confirmedEndIndex = -1;
-		potentialEndCmdIndex = -1;
-		potentialEnd = false;
+		foundNonMaxMatch = false;
+		foundMatchCmdIndex = -1;
+		foundMatch = false;
 		nonWordStart = -1;
 		nonWordEnd = -1;
 		resetNonWordChars();
@@ -195,6 +199,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		cmdIndex = -1;
 		// initals related
 		boolean potentialTokensContainMatches = false;
+		// nonMaxToken related
+		nonMaxTokenStart = -1;
+		nonMaxTokenEnd = -1;
+		nonMaxTokenLength = -1;
+		nonMaxBufferIndex = -1;
 
 		System.out.println("----------------------");
 		// A. FINDING TOKENS
@@ -255,8 +264,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// we enter on two occasions: at the actual start of a token, at each new non-word character.
 				// see (1) for how non-matching word characters are handled
 				// this way, we catch the start of new tokens even after any number of non-word characters
-					checkIfThereIsMatchIn(rootRow, c);
-					checkIfCanContinueDownTheTrie(rootRow, c);
+					checkIfThereIsMatchIn(rootRow, c); // if potentialEnd == true, there is a match 
+					checkIfCanContinueDownTheTrie(rootRow, c); // if currentRow != null, we can continue
 					incrementTokenIndices();
 					attributeStartingIndexOfNonword();
 
@@ -273,7 +282,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					checkIfCanContinueDownTheTrie(currentRow, c);
 				}
 
-				if (reachedNonwordCharacter()) {
+				if (foundNonMaxMatch && currentRow == null && foundMatch == false) {
+					restoreNonMaxMatchState();
+					break;
+					
+				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
 					reinitializeTokenBufferIfNeeded();  // because no word ever started in the first place
 
@@ -354,16 +367,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		// all the initials from last sandhi have been consumed, reinitializing "initials". new initials can be added by next call(s) of reconstructLemmas()
 		initials = null;
 		initialCharsIterator = null;
-
-		// not too sure what these two "if(){}" do
-		if (potentialEnd) {
-			confirmedEnd = tokenEnd;
-			confirmedEndIndex = bufferIndex;
-		}
-		if (confirmedEnd > 0) {
-			bufferIndex = confirmedEndIndex;
-			tokenEnd = confirmedEnd;
-		}
 		
 		setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
 
@@ -463,7 +466,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private boolean ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens() {
-		String cmd = scanner.getCommandVal(potentialEndCmdIndex);
+		String cmd = scanner.getCommandVal(foundMatchCmdIndex);
 		if (cmd != null) {
 			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString()); // (4)
 			if (lemmas.size() != 0) {
@@ -537,7 +540,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void checkIfCanContinueDownTheTrie(Row row, int c) {
-		// checking if we can continue down the Trie or not
+		// check done modifying values in place.
 		int ref = row.getRef((char) c);
 		currentRow = (ref >= 0) ? scanner.getRow(ref) : null;
 	}
@@ -545,12 +548,30 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void checkIfThereIsMatchIn(Row row, int c) {
 		// check done modifying values in place.
 		cmdIndex = row.getCmd((char) c);
-		potentialEnd = (cmdIndex >= 0);
-		if (potentialEnd) {
-			potentialEndCmdIndex = cmdIndex;
+		foundMatch = (cmdIndex >= 0);
+		if (foundMatch) {
+			foundMatchCmdIndex = cmdIndex;
+			foundNonMaxMatch = true;
+			storeNonMaxMatchState();
 		}
 	}
 
+	private void storeNonMaxMatchState() {
+		nonMaxBufferIndex = bufferIndex;
+		nonMaxTokenStart = tokenStart;
+		nonMaxTokenEnd = tokenEnd;
+		nonMaxTokenLength = tokenLength;
+	}
+
+	private void restoreNonMaxMatchState() {
+		bufferIndex = nonMaxBufferIndex;
+		tokenStart = nonMaxTokenStart;
+		tokenEnd = nonMaxTokenEnd;
+		tokenLength = nonMaxTokenLength;
+		currentRow = rootRow;
+		resetNonWordChars();
+	}
+	
 	private void reinitializeTokenBufferIfNeeded() {
 		// we reinitialize tokenBuffer (through the index of tokenLength) and tokenEnd
 		if (tokenLength > 0) {
@@ -581,7 +602,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void addFoundTokenToPotentialTokens(char[] tokenBuffer) {
 		// add the token just found to totalTokens
 		final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
-		potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1, potentialEndCmdIndex});
+		potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1, foundMatchCmdIndex});
 	}
 
 	private void initializeInitialCharsIteratorIfNeeded() {
@@ -630,7 +651,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	final private boolean reachedNonwordCharacter() {
 		// (1) in case we can't continue anymore in the Trie (currentRow == null), but we don't have any match,
-		return currentRow == null && potentialEnd == false;
+		return currentRow == null && foundMatch == false;
 		// checking that we can't continue down the Trie (currentRow == null) ensures we do maximal matching.
 	}
 	
@@ -683,7 +704,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean reachedEndOfToken() {
-		return currentRow == null && potentialEnd == true;
+		return currentRow == null && foundMatch == true;
 	}
 
 	private HashSet<String> reconstructLemmas(String cmd, String inflected) {
