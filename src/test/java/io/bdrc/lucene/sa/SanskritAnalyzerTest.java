@@ -219,12 +219,12 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void testNonMaximalMatch() throws IOException
+	public void testNonMaximalMatchEd() throws IOException
 	{
 		System.out.println("Testing input starting with non-word");
-		String input = "abab";
+		String input = "eded";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ab", "ab");
+		List<String> expected = Arrays.asList("ed", "ed");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -232,12 +232,38 @@ public class SanskritAnalyzerTest
 	}
 
     @Test
+	public void testNonMaximalMatch() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "abab";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aba", "b");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
+	}
+    
+    @Test
 	public void testNonMaximalMatchFollowedWithNonWord() throws IOException
 	{
 		System.out.println("Testing input starting with non-word");
 		String input = "ababa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ab", "ab", "a");
+		List<String> expected = Arrays.asList("aba", "ba");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
+	}
+    
+    @Test
+	public void testNonMaximalMatchFollowedWithNonWordEd() throws IOException
+	{
+		System.out.println("Testing input starting with non-word");
+		String input = "edede";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("ed", "ed", "e");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -250,7 +276,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing input starting with non-word");
 		String input = "auieabab";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("auie", "ab", "ab");
+		List<String> expected = Arrays.asList("auie", "aba", "b");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -290,6 +316,19 @@ public class SanskritAnalyzerTest
 		String input = "aTa rAjakanyA";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+
+    @Test
+	public void testDeletingInitialsOnEndOfInput() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "kanyA";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("kanya", "kana");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);

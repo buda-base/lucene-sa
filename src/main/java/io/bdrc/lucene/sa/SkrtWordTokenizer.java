@@ -159,6 +159,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int nonMaxTokenLength;
 	private int nonMaxBufferIndex;
 	private int nonMaxNonWordLength;
+
+	private boolean thing;
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -206,6 +208,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenLength = -1;
 		nonMaxBufferIndex = -1;
 		nonMaxNonWordLength = 0;
+		
+		thing = false;
 
 		System.out.println("----------------------");
 		// A. FINDING TOKENS
@@ -217,7 +221,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				CharacterUtils.fill(ioBuffer, input); // read supplementary char aware with CharacterUtils
 				if (ioBuffer.getLength() == 0) {
 					dataLen = 0; // so next offset += dataLen won't decrement offset
-					if (tokenLength > 0) {
+					if (tokenLength > 0 || nonWordChars.length() > 0) {
 						break;
 					} else {
 						finalOffset = correctOffset(offset);
@@ -262,14 +266,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 			// A.2. PROCESSING c
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
-				if (isStartOfTokenOrIsNonwordChar()) {
+				if (isStartOfTokenOrIsNonwordChar(c)) {
 				// we enter on two occasions: at the actual start of a token, at each new non-word character.
 				// see (1) for how non-matching word characters are handled
 				// this way, we catch the start of new tokens even after any number of non-word characters
-					checkIfThereIsMatchIn(rootRow, c); // if potentialEnd == true, there is a match 
-					checkIfCanContinueDownTheTrie(rootRow, c); // if currentRow != null, we can continue
+					tryToFindMatchIn(rootRow, c); // if foundMatch == true, there is a match 
+					tryToContinueDownTheTrie(rootRow, c); // if currentRow != null, we can continue
 					incrementTokenIndices();
-					attributeStartingIndexOfNonword();
+					ifIsNeededAttributeStartingIndexOfNonword();
+					nonWordChars.setLength(nonWordChars.length());
 
 				} else {
 				// we enter here on all other occasions: while we have word characters, but we don't know yet if there will be a match or not
@@ -280,8 +285,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					// **********************************
 
 					tokenEnd += charCount; // incrementing to correspond to the index of c					
-					checkIfThereIsMatchIn(currentRow, c);
-					checkIfCanContinueDownTheTrie(currentRow, c);
+					tryToFindMatchIn(currentRow, c);
+					tryToContinueDownTheTrie(currentRow, c);
+					if (reachedNonwordCharacter()) {
+						tryToFindMatchIn(rootRow, c);
+						tryToContinueDownTheTrie(rootRow, c);
+						ifNeededReinitializeTokenBuffer();  // because no word ever started in the first place
+
+					}
 				}
 
 				if (wentBeyondLongestMatch()) {
@@ -291,7 +302,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
-					reinitializeTokenBufferIfNeeded();  // because no word ever started in the first place
+					ifNeededReinitializeTokenBuffer();  // because no word ever started in the first place
+					nonWordEnd = tokenEnd; // needed for term indices
 
 				} else if (reachedEndOfToken()) {
 				// We reached the end of the token: we add c to buffer and cut off the token from nonWordChars
@@ -314,7 +326,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					nonWordChars.append((char) c); // now adds every char, but will cut off found tokens
 
 					if (reachedEndOfInputString()) {
-						reinitializeTokenBufferIfNeeded();
+						ifNeededReinitializeTokenBuffer();
 						nonWordEnd = tokenEnd; // needed for term indices
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
@@ -529,7 +541,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		tokenLength += Character.toChars(normalize(c), tokenBuffer, tokenLength);
 	}
 
-	private void attributeStartingIndexOfNonword() {
+	private void ifIsNeededAttributeStartingIndexOfNonword() {
 		// the starting index of a non-word token is attributed once.
 		// it doesn't increment like token indices
 		if (nonWordStart == -1) {
@@ -542,13 +554,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		tokenEnd = tokenStart + charCount; // tokenEnd must always be one char ahead of tokenStart, because the ending index is exclusive
 	}
 
-	private void checkIfCanContinueDownTheTrie(Row row, int c) {
+	private void tryToContinueDownTheTrie(Row row, int c) {
 		// check done modifying values in place.
 		int ref = row.getRef((char) c);
 		currentRow = (ref >= 0) ? scanner.getRow(ref) : null;
 	}
 
-	private void checkIfThereIsMatchIn(Row row, int c) {
+	private void tryToFindMatchIn(Row row, int c) {
 		// check done modifying values in place.
 		cmdIndex = row.getCmd((char) c);
 		foundMatch = (cmdIndex >= 0);
@@ -563,7 +575,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenStart = tokenStart;
 		nonMaxTokenEnd = tokenEnd;
 		nonMaxTokenLength = tokenLength;
-		nonMaxNonWordLength = nonWordChars.length()-1;
+		if (nonWordChars.length() - 2 <= 0) {
+			nonMaxNonWordLength = 0;
+		} else {
+			nonMaxNonWordLength = nonWordChars.length()-2;
+		}
 		return true;
 	}
 
@@ -576,7 +592,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		resetNonWordChars(nonMaxNonWordLength);
 	}
 
-	private void reinitializeTokenBufferIfNeeded() {
+	private void ifNeededReinitializeTokenBuffer() {
 		// we reinitialize tokenBuffer (through the index of tokenLength) and tokenEnd
 		if (tokenLength > 0) {
 			tokenLength = 0;
@@ -594,7 +610,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void resetNonWordChars(int i) {
-		nonWordChars.setLength(i);
+		if (nonWordChars.length() - i > 1) {
+			nonWordChars.setLength(i);
+		} else {
+			nonWordChars.setLength(0);
+		}
 	}
 
 	private void addNonwordToPotentialTokens() {
@@ -683,7 +703,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return initials != null && initialCharsIterator.current() == CharacterIterator.DONE;
 	}
 
-	final private boolean isStartOfTokenOrIsNonwordChar() {
+	final private boolean isStartOfTokenOrIsNonwordChar(int c) {
+//		return tokenLength == 0 || tokenLength == 1 && currentRow != null && currentRow.getRef((char) c) == -1;
 		return tokenLength == 0;
 	}
 
