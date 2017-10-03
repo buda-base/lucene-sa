@@ -160,7 +160,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int nonMaxBufferIndex;
 	private int nonMaxNonWordLength;
 
-	private boolean thing;
 	/**
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
@@ -208,8 +207,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenLength = -1;
 		nonMaxBufferIndex = -1;
 		nonMaxNonWordLength = 0;
-		
-		thing = false;
 
 		System.out.println("----------------------");
 		// A. FINDING TOKENS
@@ -305,7 +302,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					ifNeededReinitializeTokenBuffer();  // because no word ever started in the first place
 					nonWordEnd = tokenEnd; // needed for term indices
 
-				} else if (reachedEndOfToken()) {
+				} else if (foundAToken()) {
 				// We reached the end of the token: we add c to buffer and cut off the token from nonWordChars
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
 					cutOffTokenFromNonWordChars();
@@ -395,6 +392,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				ifThereIsNonwordAddItToTotalTokens();
 			}
 			potentialTokens.clear();  // all potential tokens have been consumed, empty the variable
+
+			ifSandhiMergesStayOnSameCurrentChar(); // so we can unsandhi the initial and successfully find the start of a potential word in the Trie
 		} else {  // general case: no potential tokens
 
 			boolean aNonwordWasAdded = ifThereIsNonwordAddItToTotalTokens();
@@ -410,7 +409,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				finalsIndex = bufferIndex; // save index of finals for currentCharIsSpaceWithinSandhi()
 			}
 		}
-
+		
 		// B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens)
 		ifConsumedAllInitialsResetInitialsAndIterator();  //  so we don't create an empty iterator
 		ifThereAreInitialsFillIterator();  // for next iteration of incrementToken()
@@ -740,7 +739,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return initials != null && !initials.isEmpty() && bufferIndex != dataLen;
 	}
 
-	final private boolean reachedEndOfToken() {
+	final private boolean foundAToken() {
 		return currentRow == null && foundMatch == true;
 	}
 
@@ -863,10 +862,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 
 			// fill combinations[][]_with the correct values
-			combinations = new int[end+1][];
-			for (int i = 0; i <= end; i++) {
+			combinations = new int[end+2][];
+			for (int i = 0; i <= end+1; i++) {
 				combinations[i] = new int[]{0, i};
-			}System.out.println("ok");
+			}
 
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
@@ -883,7 +882,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private static boolean isSandhiedCombination(char[] inputBuffer, int bufferIndex, String sandhied, int[][] combinations) {
+	public static boolean isSandhiedCombination(char[] inputBuffer, int bufferIndex, String sandhied, int[][] combinations) {
 		for (int i = 0; i <= combinations.length-1; i++) {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
