@@ -414,6 +414,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		// B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens)
 		ifConsumedAllInitialsResetInitialsAndIterator();  //  so we don't create an empty iterator
 		ifThereAreInitialsFillIterator();  // for next iteration of incrementToken()
+		ifEndOfInputReachedEmptyInitials();
 
 		if (thereAreTokensToReturn()) {
 			hasTokenToEmit = true;
@@ -427,6 +428,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			assert(tokenStart != -1);
 			finalizeSettingTermAttribute();
 			return true;  // we exit incrementToken()
+		}
+	}
+
+	private void ifEndOfInputReachedEmptyInitials() {
+		if (bufferIndex + 1 == dataLen) {
+			initials = null;
 		}
 	}
 
@@ -461,7 +468,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void ifThereAreInitialsFillIterator() {
-		if (initials != null && !initials.isEmpty()) {
+		if (initials != null && !initials.isEmpty()) {  // 
 			initialsIterator = initials.iterator(); // there might be many unsandhied initials behind the current sandhied initial
 		}
 	}
@@ -475,7 +482,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifSandhiMergesStayOnSameCurrentChar() {
 		if (charCount != -1 && mergesInitials) {
-			bufferIndex -= charCount;
+			if (bufferIndex < dataLen) {
+				bufferIndex -= charCount;
+			}
 			mergesInitials = false;
 		}
 	}
@@ -704,7 +713,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean isStartOfTokenOrIsNonwordChar(int c) {
-//		return tokenLength == 0 || tokenLength == 1 && currentRow != null && currentRow.getRef((char) c) == -1;
 		return tokenLength == 0;
 	}
 
@@ -729,7 +737,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean thereAreInitialsToConsume() {
-		return initials != null && !initials.isEmpty();
+		return initials != null && !initials.isEmpty() && bufferIndex != dataLen;
 	}
 
 	final private boolean reachedEndOfToken() {

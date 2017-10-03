@@ -334,6 +334,32 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
+
+    @Test
+	public void testExtraTokenWithInitialsBug() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "kanyA candravatI";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void testMissingTokenBug() throws IOException
+	{
+		System.out.println("Testing SkrtWordTokenizer()");
+		String input = "saKIdvitIyEkasmin";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("saKi", "dvitIya", "ekasmin");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/word-segmentation-resources/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
 	public void wordTokenizerTest() throws IOException
