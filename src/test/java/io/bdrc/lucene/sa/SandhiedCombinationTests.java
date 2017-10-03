@@ -284,7 +284,18 @@ public class SandhiedCombinationTests
     }
     
     @Test
-    public void testcCWordsCombination() throws IOException
+    public void testcCWordsCombination1() throws IOException
+    {
+    	char[] sandhiedString = "rAmasyacCAtraH".toCharArray(); // rAmasya CAtraH => rAmasyacCAtraH
+    	int sandhiStartIdx = 6;
+    	String sandhiedSubString = "acC";
+    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	assertTrue(res);
+    }
+    
+    @Test
+    public void testcCWordsCombination2() throws IOException
     {
     	char[] sandhiedString = "rAmasya cCAtraH".toCharArray(); // rAmasya CAtraH => rAmasya cCAtraH
     	int sandhiStartIdx = 6;
@@ -295,12 +306,23 @@ public class SandhiedCombinationTests
     }
     
     @Test
-    public void testPunarSandhiCombination() throws IOException
+    public void testPunarSandhiCombination1() throws IOException
+    {
+    	char[] sandhiedString = "punaHpunaH".toCharArray(); // punar punar => punaHpunaH 
+    	int sandhiStartIdx = 4;
+    	String sandhiedSubString = "punaHp";
+    	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 2}};
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	assertTrue(res);
+    }
+    
+    @Test
+    public void testPunarSandhiCombination2() throws IOException
     {
     	char[] sandhiedString = "punaH punaH".toCharArray(); // punar punar => punaH punaH 
     	int sandhiStartIdx = 4;
-    	String sandhiedSubString = "aHp";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
+    	String sandhiedSubString = "punaHp";
+    	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 3}};
     	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }

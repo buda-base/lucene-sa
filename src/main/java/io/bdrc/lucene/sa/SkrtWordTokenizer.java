@@ -813,19 +813,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  		 * Tells whether sandhied could be found between the two words.
  		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
  		 *
- 		 * Maximum range of characters where sandhi applies:
-		 * - vowel sandhi          : currentCharacter   - currentCharacter+2 (ex. "-O a-"/"-Oa-"  => "-Ava-")
-		 * - consonant sandhi1     : currentCharacter   - currentCharacter+2 (ex. "-k y-"/"-ky-"  => "-g y-"/"-gy-")
-		 * - consonant sandhi2     : currentCharacter   - currentCharacter+3 (ex. "-n W-"/"-nW-"  => "-Mz W-"/"-MzW-")
-		 * - visarga sandhi1       : currentCharacter-1 - currentCharacter+2 (ex. "-aH A-"/"-aHA" => "-A A-"/"-AA")
-		 * - visarga sandhi2       : currentCharacter-1 - currentCharacter+2 (ex. "-aH c-"/"-aHc" => "-aS c-"/"-aSc-")
-		 * - absolute finals sandhi: currentCharacter   - currentCharacter+X (X = consonant cluster ending a word. only one consonant remains)
-		 * - cC words sandhi       : currentCharacter   - currentCharacter+3 (ex. "-a c-"/"-ac-"  => "-a cC-"/"-acC-")
-		 * - punar sandhi          : currentCharacter   - currentCharacter+2 (ex. "-r k-"="-rk-"  => "-H k-"/"-Hk-")
-		 *
-		 * Given this, each combination must:
-		 * 		- start either from 0 or -1
-		 * 		- can have a maximal value of 3
+		 * See SamdhiedCombinationTests for how these figures were obtained
 		 *
 		 * @return: true if sandhied is one of the combinations; else otherwise
 		 */
@@ -846,12 +834,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[][]{{0, 1}, {0, 2}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
+//		 case 3: // consonant sandhi 1 vowels
+//			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
+//			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+			
 		case 3: // consonant sandhi 2
-			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
+			combinations = new int[][]{{0, 2}, {0, 3}, {0, 4}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 4: // visarga sandhi
-			combinations = new int[][]{{0, 1}, {0, 2}, {-1, 0}, {-1, 1}, {-1, 2}};
+			combinations = new int[][]{{-1, 1}, {-1, 2}, {-1, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 5: // absolute finals sandhi (consonant clusters are always reduced to the first consonant)
@@ -859,11 +851,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 6: // "cC"-words sandhi
-			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}};
+			combinations = new int[][]{{0, 3}, {0, 4}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 7: // special sandhi: "punar"
-			combinations = new int[][]{{0, 1}, {0, 2}};
+			combinations = new int[][]{{-4, 2}, {-4, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		default:
