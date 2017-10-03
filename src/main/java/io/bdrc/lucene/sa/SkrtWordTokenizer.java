@@ -854,19 +854,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[][]{{0, 1}, {0, 2}, {-1, 0}, {-1, 1}, {-1, 2}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 5: // absolute finals sandhi
-			// calculate the size of the consonant cluster (stop incrementing when a nonSLP or stringEnd found)
-			int end = 0;
-			while (bufferIndex+end < buffer.length-1 && SkrtSylTokenizer.isSLP(Character.codePointAt(buffer, bufferIndex+end))) {
-				end++;
-			}
-
-			// fill combinations[][]_with the correct values
-			combinations = new int[end+2][];
-			for (int i = 0; i <= end+1; i++) {
-				combinations[i] = new int[]{0, i};
-			}
-
+		case 5: // absolute finals sandhi (consonant clusters are always reduced to the first consonant)
+			combinations = new int[][]{{0, 1}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 6: // "cC"-words sandhi
