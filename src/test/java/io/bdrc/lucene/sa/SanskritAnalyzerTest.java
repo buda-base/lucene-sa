@@ -341,7 +341,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing SkrtWordTokenizer()\noutputs an empty token. couldn't find a way to prevent this from happening");
 		String input = "kanyA candravatI";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("kanya", "kana", "", "candravatI");
+		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -354,7 +354,7 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing SkrtWordTokenizer()\noutputs an empty token. couldn't find a way to prevent this from happening");
 		String input = "divase na";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("divasa", "", "na");
+		List<String> expected = Arrays.asList("divasa", "na");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -383,7 +383,7 @@ public class SanskritAnalyzerTest
 		// We do lemmatization and "nAmA..." is split because "na" exists in the Trie 
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "ekasmin", "maho", "maha", "utsava", "divasa", "", "na", "garaM", "nirikzamARAsti");
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "ekasmin", "maho", "maha", "utsava", "divasa", "na", "garaM", "nirikzamARAsti");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);

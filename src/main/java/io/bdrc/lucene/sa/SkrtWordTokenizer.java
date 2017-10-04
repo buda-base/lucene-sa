@@ -46,10 +46,10 @@ import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
 
 /**
- * A maximal-matching word tokenizer for Tibetan that uses a {@link Trie}.
+ * A maximal-matching word tokenizer for Sanskrit that uses a {@link Trie}.
  *
  * <p>
- * Takes a syllable at a time and returns the longest sequence of syllable that form a word within the Trie.<br>
+ * Loops over a <br>
  * {@link #isTibLetter(int)} is used to distinguish clusters of letters forming syllables and {@code u\0F0B}(tsheg) to distinguish syllables within a word.
  * <br>
  *  - Unknown syllables are tokenized as separate words.
@@ -297,7 +297,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restoreNonMaxMatchState();
 					nonWordEnd = tokenEnd; // needed for term indices
 					setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
-					break;
+					
+					cleanupPotentialTokens();
+					cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 					
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
@@ -314,12 +317,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						potentialTokensContainMatches = true; // because we reachedEndOfToken
 						addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 						if (allInitialsAreConsumed()) {
-							break; // and resume looping over ioBuffer
+							
+							cleanupPotentialTokens();
+							cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+							if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
 						}
 						resetInitialCharsIterator();
 						restorePreviousState();
 					} else {
-						break;
+						cleanupPotentialTokens();
+						cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 					}
 				} else { // we are within a potential token
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
@@ -331,20 +339,25 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
 							addNonwordToPotentialTokens(); // we have a non-word token
-//							setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
 							if (allInitialsAreConsumed()) {
-								break;
+								cleanupPotentialTokens();
+								cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+								if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 							}
 						} else {
 							setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
-							break;
+							cleanupPotentialTokens();
+							cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+							if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 						}					
 					}
 				}
 				// **** ioBuffer corner case: buffer overflow! ****
 				// make sure to check for >= surrogate pair could break == test
 				if (tokenLength >= MAX_WORD_LEN) {
-					break;
+					cleanupPotentialTokens();
+					cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 				}
 				// ************************************************
 			} else if (isNonSLPprecededByNonword()) {
@@ -352,15 +365,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// all initial chars are consumed and we have a non-word token
 					nonWordEnd = tokenEnd; // needed for term indices
 					addNonwordToPotentialTokens();
-//					setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
 					if (allInitialsAreConsumed()) {
-						break; // and resume looping over ioBuffer
+						cleanupPotentialTokens();
+						cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
-					break;
+					cleanupPotentialTokens();
+					cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
 				nonWordEnd = tokenEnd; // needed for term indices
@@ -370,22 +386,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// all initial chars are consumed and we have a non-word token
 					addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 					if (allInitialsAreConsumed()) {
-						break; // and resume looping over ioBuffer
+						cleanupPotentialTokens();
+						cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens()  
+						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
-					break;
+					cleanupPotentialTokens();
+					cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
+					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 				}
 			}
 		}
 
 		// B. HANDING THEM TO LUCENE
 
-		cleanupPotentialTokens();
-		cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
-		
 		// all the initials from last sandhi have been consumed, reinitializing "initials". new initials can be added by next call(s) of reconstructLemmas()
 		initials = null;
 		initialCharsIterator = null;
@@ -709,6 +726,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		} else {
 			hasTokenToEmit = false;
 		}
+	}
+	
+	final private boolean thereIsNoTokenAndNoNonword() {
+		return tokenLength == 0 && nonWordChars.length() == 0;
 	}
 	
 	final private boolean wentBeyondLongestMatch() {
