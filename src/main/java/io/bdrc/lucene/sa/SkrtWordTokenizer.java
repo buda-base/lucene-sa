@@ -297,9 +297,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					nonWordEnd = tokenEnd; // needed for term indices
 					setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
 					
-					cleanupPotentialTokens();
-					cleanupNonWords(); // resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens() 
-					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+					cleanupPotentialTokensAndNonwords();
+					break;
 					
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
@@ -317,13 +316,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 						if (allInitialsAreConsumed()) {
 							cleanupPotentialTokensAndNonwords();
-							if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
+							break;
 						}
 						resetInitialCharsIterator();
 						restorePreviousState();
 					} else {
 						cleanupPotentialTokensAndNonwords(); 
-						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+						break;
 					}
 				} else { // we are within a potential token
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
@@ -337,12 +336,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 							addNonwordToPotentialTokens(); // we have a non-word token
 							if (allInitialsAreConsumed()) {
 								cleanupPotentialTokensAndNonwords(); 
-								if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+								break;
 							}
 						} else {
 							setTermLength();  // so string in tokenBuffer is correct. (part of Lucene's non-allocation policy)
 							cleanupPotentialTokensAndNonwords(); 
-							if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+							break;
 						}					
 					}
 				}
@@ -350,8 +349,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				// make sure to check for >= surrogate pair could break == test
 				if (tokenLength >= MAX_WORD_LEN) {
 					break;
-//					cleanupPotentialTokensAndNonwords(); 
-//					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
 				}
 				// ************************************************
 			} else if (isNonSLPprecededByNonword()) {
@@ -361,14 +358,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					addNonwordToPotentialTokens();
 					if (allInitialsAreConsumed()) {
 						cleanupPotentialTokensAndNonwords();
-						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
+						break;
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
 					cleanupPotentialTokensAndNonwords(); 
-					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+					break;
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
 				nonWordEnd = tokenEnd; // needed for term indices
@@ -379,14 +376,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 					if (allInitialsAreConsumed()) {
 						cleanupPotentialTokensAndNonwords();  
-						if (thereIsNoTokenAndNoNonword()) {continue;} else {break;} // if break, resume looping over ioBuffer
+						if (thereIsNoTokenAndNoNonword()) {
+							continue;
+						} else {
+							break;  // and resume looping over ioBuffer
+						} 
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
 					cleanupPotentialTokensAndNonwords(); 
-					if (thereIsNoTokenAndNoNonword()) {continue;} else {break;}
+					break;
 				}
 			}
 		}
