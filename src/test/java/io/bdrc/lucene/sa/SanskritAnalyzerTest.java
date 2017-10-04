@@ -73,7 +73,6 @@ public class SanskritAnalyzerTest
 	@BeforeClass
 	public static void init() {
 		System.out.println("before the test sequence");
-		System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
 	}
 
 	@Test
@@ -351,7 +350,7 @@ public class SanskritAnalyzerTest
     @Test
 	public void testExtraTokenBug() throws IOException
 	{
-		System.out.println("Testing SkrtWordTokenizer()\noutputs an empty token. couldn't find a way to prevent this from happening");
+		System.out.println("Testing SkrtWordTokenizer()");
 		String input = "divase na";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("divasa", "na");
@@ -398,5 +397,6 @@ public class SanskritAnalyzerTest
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");
+		System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
 	}
 }

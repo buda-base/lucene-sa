@@ -264,10 +264,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 			// A.2. PROCESSING c
 			if (SkrtSylTokenizer.isSLP(c)) {  // if it's a token char
+				// go down the Trie, trying to find a match
 				if (isStartOfTokenOrIsNonwordChar(c)) {
 				// we enter on two occasions: at the actual start of a token, at each new non-word character.
-				// see (1) for how non-matching word characters are handled
-				// this way, we catch the start of new tokens even after any number of non-word characters
 					tryToFindMatchIn(rootRow, c); // if foundMatch == true, there is a match 
 					tryToContinueDownTheTrie(rootRow, c); // if currentRow != null, we can continue
 					incrementTokenIndices();
@@ -291,7 +290,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 					}
 				}
-
+				
+				
 				if (wentBeyondLongestMatch()) {
 					restoreNonMaxMatchState();
 					nonWordEnd = tokenEnd; // needed for term indices
@@ -380,7 +380,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 							continue;
 						} else {
 							break;  // and resume looping over ioBuffer
-						} 
+						}
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
@@ -447,26 +447,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void cleanupPotentialTokensAndNonwords() {
-		cleanupPotentialTokens();
-		cleanupNonWords();  
-	}
-
-	private void cleanupNonWords() {  // !!! resets storeInitials to null, so must be executed after setTermLength() and cleanupPotentialTokens()
 		if (storedInitials != null) {
-			final String nonword = nonWordChars.toString();
-			if (storedInitials.contains(nonword)) {
-				resetNonWordChars(0);
-				storedInitials = null; // !!! only reset after executing cleanupPotentialTokens() and setTermLength()
-			}
-		}
-	}
-
-	private void cleanupPotentialTokens() {
-		if (storedInitials != null) {
+			// cleanup potentialTokens
 			for (String key: storedInitials) {
 				 if (potentialTokens.containsKey(key)) {
 					 potentialTokens.remove(key);
 				 }
+			}
+			// cleanup nonwords
+			final String nonword = nonWordChars.toString();
+			if (storedInitials.contains(nonword)) {
+				resetNonWordChars(0);
+				storedInitials = null; // !!! only reset after executing setTermLength()
 			}
 		}
 	}
@@ -499,8 +491,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void fillTermAttributeWith(Entry<String, Integer[]> token) {
 		termAtt.setEmpty().append(token.getKey());	// add the token string
-		termAtt.setLength(token.getValue()[2]);  // declare its size
-		finalOffset = correctOffset(token.getValue()[1]);  // get final offset 
+		termAtt.setLength(token.getValue()[2]);	// declare its size
+		finalOffset = correctOffset(token.getValue()[1]);	// get final offset 
 		offsetAtt.setOffset(correctOffset(token.getValue()[0]), finalOffset);	// set its offsets (initial & final)
 
 	}
