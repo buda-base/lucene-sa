@@ -678,7 +678,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void addFoundTokenToPotentialTokensIfThereIsOne(char[] tokenBuffer) {
 		if (tokenLength > 0) {																// avoid empty tokens
 			final String potentialToken = String.copyValueOf(tokenBuffer, 0, tokenLength);
-			potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1, foundMatchCmdIndex});
+			potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenEnd, potentialToken.length(), 1, 
+																							foundMatchCmdIndex});
 		}
 	}
 
