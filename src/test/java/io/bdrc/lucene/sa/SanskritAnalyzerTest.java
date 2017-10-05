@@ -199,7 +199,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("Darman", "Darma", "aTa", "Darman", "Darma", "ADa", "Darman", "Darma", "aTa");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/DarmATa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/DarmATa_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -212,7 +212,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "AB", "CDE", "aTa", "FGH", "IJ", "aTa");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/DarmATa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/DarmATa_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -225,7 +225,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed", "ed");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -238,7 +238,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "b");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -251,7 +251,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "ba");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -264,7 +264,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed", "ed", "e");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -277,7 +277,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("auie", "aba", "b");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -290,7 +290,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("tad", "api", "tad", "api");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/te'pi_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/te'pi_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -303,7 +303,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("budDa", "Darma");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/budDaDarma_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/budDaDarma_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -316,7 +316,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -329,7 +329,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya", "kana");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -337,12 +337,12 @@ public class SanskritAnalyzerTest
     @Test
 	public void testExtraTokenWithInitialsBug() throws IOException
 	{
-		System.out.println("Testing SkrtWordTokenizer()\noutputs an empty token. couldn't find a way to prevent this from happening");
+		System.out.println("Testing SkrtWordTokenizer()");
 		String input = "kanyA candravatI";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -355,7 +355,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("divasa", "na");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -368,7 +368,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("saKi", "dvitIya", "ekasmin");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -384,7 +384,20 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "ekasmin", "maho", "maha", "utsava", "divasa", "na", "garaM", "nirikzamARAsti");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void testNonSLPString() throws IOException
+	{
+		System.out.println("Testing nonSLP input");
+		String input = "«»(**-éàÀ%$–@)";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList();
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
