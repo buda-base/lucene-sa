@@ -403,6 +403,32 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
+	public void tesSLPStringWithModifiers() throws IOException
+	{
+		System.out.println("Testing nonSLP input");
+		String input = "a+Ta/8 rA+ja^1k~a\\nyA^97";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void testMixedSLPNonSLPString() throws IOException
+	{
+		System.out.println("Testing nonSLP input");
+		String input = "«»(**-éàÀ%$–@)aTa rAjakanyA«»(**- éàÀ%$–@)aTa rAjakanyA «»(**- éàÀ%$–@)";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "aTa", "rAja", "kanya", "kana");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(false, "src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
     public void testSylEndingCombinations() throws Exception {
     	
     }

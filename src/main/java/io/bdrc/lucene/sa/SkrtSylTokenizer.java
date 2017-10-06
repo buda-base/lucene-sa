@@ -89,7 +89,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		return skrtPunct;
 	}
 
-	private static final HashMap<Integer, Integer> charType = createMap();
+	static final HashMap<Integer, Integer> charType = createMap();
 	private static final HashMap<Integer, Integer> createMap()
 	{
 		HashMap<Integer, Integer> charType = new HashMap<>();

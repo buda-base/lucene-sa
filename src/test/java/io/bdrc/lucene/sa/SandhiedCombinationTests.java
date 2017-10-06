@@ -48,7 +48,7 @@ public class SandhiedCombinationTests
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "A";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1);
     	assertTrue(res);
     }
 

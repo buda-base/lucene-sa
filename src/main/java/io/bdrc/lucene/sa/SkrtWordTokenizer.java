@@ -49,15 +49,15 @@ import io.bdrc.lucene.stemmer.Trie;
  * A maximal-matching word tokenizer for Sanskrit that uses a {@link Trie}.
  *
  * <p>
- * Loops over a <br>
- * {@link #isTibLetter(int)} is used to distinguish clusters of letters forming syllables and {@code u\0F0B}(tsheg) to distinguish syllables within a word.
- * <br>
- *  - Unknown syllables are tokenized as separate words.
- * <br>
- *  - All the punctuation is discarded from the produced tokens
+ * 	The expected input is an SLP string<br>
+ *	{@link SkrtSylTokenizer#isSLP(int)} is used to filter out nonSLP characters.
+ *
  * <p>
+ * The necessary information for unsandhying finals and initials are obtained from 
+ * 
+ * <br>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
- * For example, (...)
+ * For example, "nagaraM" could either be a word of its own or "na" + "garam"
  *
  * Derived from Lucene 6.4.1 analysis.
  *
@@ -75,13 +75,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 
 	/**
-	 * Constructs a SkrtWordTokenizer using the file designed by filename
-	 * @param filename
+	 * Constructs a SkrtWordTokenizer using a file
+	 * @param filepath: input file
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
-		init(filename);
+	public SkrtWordTokenizer(String filepath) throws FileNotFoundException, IOException {
+		init(filepath);
 	}
 
 	/**
@@ -89,17 +89,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * 		- a line of dashes at each iteration of incrementToken()
 	 * 		- the current character
 	 * @param debug
-	 * @param filename
+	 * @param filepath
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
-		init(filename);
+	public SkrtWordTokenizer(boolean debug, String filepath) throws FileNotFoundException, IOException {
+		init(filepath);
 		this.debug = debug;
 	}
 	
 	/**
-	 * Constructs a SkrtWordTokenizer using a default lexicon file (here "resources/sanskrit-stemming-data/output/total_output.txt")
+	 * Constructs a SkrtWordTokenizer using a default lexicon file
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -110,7 +110,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Initializes and populates {@see #scanner}
 	 *
-	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>,<diffs>/<initial_diff>"
+	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>~<diffs>/<initial_diff>"
 	 * @param filename the file containing the entries to be added
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -281,7 +281,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			/* A.2. PROCESSING c */
 			
 			/* A.2.1) if it's a token char */
-			if (SkrtSylTokenizer.isSLP(c)) {
+			if (isSLPTokenChar(c)) {
 				
 				/* Go one step down the Trie */
 				if (isStartOfTokenOrIsNonwordChar(c)) {
@@ -384,7 +384,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restorePreviousState();					
 				} else {
 					cleanupPotentialTokensAndNonwords(); 
-					break;
+					if (isSLPModifier(c)) {
+						continue;								// move on and do as if the modifier didn't exist
+					} else {
+						break;
+					}
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
 				nonWordEnd = tokenEnd;							// needed for term indices
@@ -406,7 +410,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					cleanupPotentialTokensAndNonwords(); 
 					break;
 				}
-			}
+			} 
 		}
 
 		/* B. HANDING THEM TO LUCENE */
@@ -723,6 +727,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
+	final private boolean isSLPTokenChar(int c) {
+		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) != SkrtSylTokenizer.MODIFIER;
+		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
+		// If a modifier occurs between two sandhied words, second word won't be considered sandhied
+	}
+	
+	final private boolean isSLPModifier(int c) {
+		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) == SkrtSylTokenizer.MODIFIER;
+	}
+	
 	final private boolean thereIsNoTokenAndNoNonword() {
 		return tokenLength == 0 && nonWordChars.length() == 0;
 	}
@@ -791,7 +805,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return currentRow == null && foundMatch == true;
 	}
 
-	private HashSet<String> reconstructLemmas(String cmd, String inflected) {
+	HashSet<String> reconstructLemmas(String cmd, String inflected) {
 		/**
 		 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 		 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -859,7 +873,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return totalLemmas;
 	}
 
-	public static boolean containsSandhiedCombination(char[] buffer, int bufferIndex, String sandhied, int sandhiType) {
+	static boolean containsSandhiedCombination(char[] buffer, int bufferIndex, String sandhied, int sandhiType) {
 		/**
  		 * Tells whether sandhied could be found between the two words.
  		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
@@ -914,7 +928,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	public static boolean isSandhiedCombination(char[] inputBuffer, int bufferIndex, String sandhied, int[][] combinations) {
+	static boolean isSandhiedCombination(char[] inputBuffer, int bufferIndex, String sandhied, int[][] combinations) {
 		for (int i = 0; i <= combinations.length-1; i++) {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
