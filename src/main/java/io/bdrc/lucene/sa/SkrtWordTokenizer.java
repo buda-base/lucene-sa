@@ -372,8 +372,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			/* A.2.2) if it is not a token char */
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
+				setTermLength();								// same as above
 				if (allCharsFromCurrentInitialAreConsumed()) {
-					nonWordEnd = tokenEnd;						// needed for term indices
 					addNonwordToPotentialTokens();
 					if (allInitialsAreConsumed()) {
 						cleanupPotentialTokensAndNonwords();
@@ -384,7 +384,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restorePreviousState();					
 				} else {
 					cleanupPotentialTokensAndNonwords(); 
-					nonWordEnd = tokenEnd;
 					if (isSLPModifier(c)) {
 						continue;								// move on and do as if the modifier didn't exist
 					} else {
@@ -560,7 +559,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void ifThereIsMatchAddItToTotalTokens(char[] tokenBuffer) {
-		if (tokenLength > 0 && termAtt.length() > 0) {
+		if (tokenLength > 0) {
 			final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());
 			totalTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1});
 		}
