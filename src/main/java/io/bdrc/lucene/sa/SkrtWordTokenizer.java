@@ -384,6 +384,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restorePreviousState();					
 				} else {
 					cleanupPotentialTokensAndNonwords(); 
+					nonWordEnd = tokenEnd;
 					if (isSLPModifier(c)) {
 						continue;								// move on and do as if the modifier didn't exist
 					} else {
@@ -559,7 +560,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void ifThereIsMatchAddItToTotalTokens(char[] tokenBuffer) {
-		if (tokenLength > 0) {
+		if (tokenLength > 0 && termAtt.length() > 0) {
 			final String token = String.copyValueOf(tokenBuffer, 0, termAtt.length());
 			totalTokens.put(token, new Integer[] {tokenStart, tokenEnd, token.length(), 1});
 		}

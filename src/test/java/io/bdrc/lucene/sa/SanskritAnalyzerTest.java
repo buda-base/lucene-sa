@@ -388,6 +388,19 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
+
+    @Test
+	public void testBugNonSLP() throws IOException
+	{
+		System.out.println("Testing nonSLP input");
+		String input = "ka%nyA";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("ka", "nyA");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
     
     @Test
 	public void testNonSLPString() throws IOException
@@ -403,7 +416,7 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void tesSLPStringWithModifiers() throws IOException
+	public void testSLPStringWithModifiers() throws IOException
 	{
 		System.out.println("Testing nonSLP input");
 		String input = "a+Ta/8 rA+ja^1k~a\\nyA^97";
