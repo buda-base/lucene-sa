@@ -1,2 +1,2 @@
-tad,~/=0|y:r:v~/- +=2|h~/- D+h=2|g:G:d:D:b:B~/- +=3|a:A:i:I:u:U:f:e:E:o:O~-1+t/- +=4
-eva,~/=0|c~/- cC+c=6|C~/- cC+C=6
+tad,$/=0|y:r:v$/- +=2|h$/- D+h=2|g:G:d:D:b:B$/- +=3|a:A:i:I:u:U:f:e:E:o:O$-1+t/- +=4
+eva,$/=0|c$/- cC+c=6|C$/- cC+C=6
