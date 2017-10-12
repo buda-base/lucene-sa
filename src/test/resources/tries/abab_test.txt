@@ -1,5 +1,5 @@
-ab,~/=0
-aba,~/=0
-abaac,~/=0
-ed,~/=0
-edeef,~/=0
+ab,$/=0
+aba,$/=0
+abaac,$/=0
+ed,$/=0
+edeef,$/=0

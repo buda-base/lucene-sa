@@ -149,7 +149,7 @@ public class SanskritAnalyzerTest
     {
     	System.out.println("test parseCmd()");
     	// Darma,~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1
-    	String input = "~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1";
+    	String input = "$/=0|c$-0+n/- cC+c=6|C$-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O$-0+n/- +=1";
     	String expected = "{cC=[0+n/c=6, 0+n/C=6], A=[0+n/A=1], u=[0+n/u=1], U=[0+n/U=1], e=[0+n/e=1], E=[0+n/E=1], f=[0+n/f=1], i=[0+n/i=1], o=[0+n/o=1], O=[0+n/O=1]}";
     	System.out.println("0 " + input);
     	Map<String, HashSet<String>> res = CmdParser.parse("", input);    	

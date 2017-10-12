@@ -1,2 +1,2 @@
-budDa,~/=0|A:i:u:U:f:e:E:o:O~-1+i/- +=1
-Darma,~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1
+budDa,$/=0|A:i:u:U:f:e:E:o:O$-1+i/- +=1
+Darma,$/=0|c$-0+n/- cC+c=6|C$-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O$-0+n/- +=1

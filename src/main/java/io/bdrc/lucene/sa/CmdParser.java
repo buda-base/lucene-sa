@@ -10,17 +10,17 @@ public class CmdParser {
 		 * 
 		 * This is how cmd is structured, with the names used in this method:
 		 * 
-		 *       DarmA,a                        ~-A+an      ;-A+a             /-+a          |
-		 *             A                        ~-A+an      ;-A+a             /-+A          |
-		 *                                      ~-A+an      ;-A+a             /             |
-		 *             c                        ~-A+an      ;-A+a             /- c+c        |
-		 *             C                        ~-A+an      ;-A+a             /- C+C
+		 *       DarmA,a                        $-A+an      ;-A+a             /-+a          |
+		 *             A                        $-A+an      ;-A+a             /-+A          |
+		 *                                      $-A+an      ;-A+a             /             |
+		 *             c                        $-A+an      ;-A+a             /- c+c        |
+		 *             C                        $-A+an      ;-A+a             /- C+C
 		 *             
-		 *      <form>,<initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>~<...>/<...>|
+		 *      <form>,<initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>$<...>/<...>|
 		 * [inflected],[cmd                                                                                  ]
 		 *             [entry                                                              ]|[entry          ]
-		 *             [initials               ]~[diffs                                    ]
-		 *             [initial]:[initial]:[...]~[diffFinals                 ]/[diffInitial]
+		 *             [initials               ]$[diffs                                    ]
+		 *             [initial]:[initial]:[...]$[diffFinals                 ]/[diffInitial]
 		 *                                       [diffFinal];[diffFinal];[...]
 		 * 
 		 * [diffFinal                                                      ]
@@ -32,7 +32,7 @@ public class CmdParser {
 		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 		 * @return: parsed structure 
 		 */
-		// <initial>:<initial>:<...>~<finalDiff>;<finalDiff>;<...>/<initialDiff>|
+		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
 		HashMap<String, HashSet<String>> sandhis = new HashMap<String, HashSet<String>>();
 		// variables
 		String[] initials = null;
@@ -49,13 +49,13 @@ public class CmdParser {
 			assert(t.length == 2); // there should always be a sandhi type for an entry
 			sandhiType = Integer.parseInt(t[1]);
 			entry = t[0];
-			if (entry.equals("~/") || entry.contains("~/- +")) {
+			if (entry.equals("$/") || entry.contains("$/- +")) {
 				// filters all non-modifying sandhis: either there is no change or words are separated by a space.
 			} else {
 				// 0. populate variables for the current entry
 				
-				// initials ~ diffs
-				t = entry.split("~");
+				// initials $ diffs
+				t = entry.split("\\$");
 				if (t[0].contains(":")) {
 					initials = t[0].split("\\:");
 				} else if (!t[0].equals("")) {
