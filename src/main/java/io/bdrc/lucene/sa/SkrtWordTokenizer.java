@@ -899,27 +899,27 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[][]{{0, 2}, {0, 1}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-//		 case 3:																		// consonant sandhi 1 vowels
-//			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
-//			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+		case 3:																		// consonant sandhi 1 vowels
+			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 			
-		case 3:																			// consonant sandhi 2
+		case 4:																			// consonant sandhi 2
 			combinations = new int[][]{{0, 4}, {0, 3}, {0, 2}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 4:																			// visarga sandhi
+		case 5:																			// visarga sandhi
 			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 5:																			// absolute finals sandhi
+		case 6:																			// absolute finals sandhi
 			combinations = new int[][]{{0, 1}};		// (consonant clusters are always reduced to the first consonant)
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 6:																			// "cC"-words sandhi
+		case 7:																			// "cC"-words sandhi
 			combinations = new int[][]{{0, 4}, {0, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 7:																			// special sandhi: "punar"
+		case 8:																			// special sandhi: "punar"
 			combinations = new int[][]{{-4, 3}, {-4, 2}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
