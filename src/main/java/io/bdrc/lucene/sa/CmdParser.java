@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class CmdParser {
-	public static HashMap<String, HashSet<String>> parse(String sandhiedFinal, String cmd) { // TODO: create a class to parse the cmds
+	public static HashMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
 		/**
 		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
 		 * 
@@ -48,6 +48,7 @@ public class CmdParser {
 			t = fullEntry.split("=");
 			assert(t.length == 2); // there should always be a sandhi type for an entry
 			sandhiType = Integer.parseInt(t[1]);
+			
 			entry = t[0];
 			if (entry.equals("$/") || entry.contains("$/- +")) {
 				// filters all non-modifying sandhis: either there is no change or words are separated by a space.
@@ -94,6 +95,7 @@ public class CmdParser {
 				// 1. reconstruct sandhied + unsandhied pairs that are possible with the value of sandhiedFinal
 				
 				// for sandhied (HashMap key)
+				String sandhiedFinal = findSandhiedFinals(inflected, sandhiType);
 				String toDelete = "";
 				String initialCharsSandhied = ""; // remember to trim space used by resources/sansksrit-stemming-data/sandhify/sandhifier.py
 				// for unsandhied (HashMap value)
@@ -107,7 +109,7 @@ public class CmdParser {
 					initialCharsOriginal = t[1];
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal,initialCharsOriginal, sandhiType);
+					String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal, initialCharsOriginal, sandhiType);
 					sandhis.putIfAbsent(sandhied, new HashSet<String>());
 					sandhis.get(sandhied).add(unsandhied);
 				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
@@ -179,5 +181,40 @@ public class CmdParser {
 			}
 		}
 		return sandhis;
+	}
+
+	private static String findSandhiedFinals(String inflected, int sandhiType) {
+		switch(sandhiType){
+		case 1:
+			return inflected.substring(inflected.length()-1);
+	
+		case 2:
+			return inflected.substring(inflected.length()-1);
+		
+		case 3:
+			return inflected.substring(inflected.length()-1);
+		
+		case 4:
+			return inflected.substring(inflected.length()-1);
+			
+		case 5:
+			return inflected.substring(inflected.length()-1);
+		
+		case 6:
+			return inflected.substring(inflected.length()-1);
+			
+		case 7:
+			return inflected.substring(inflected.length()-1);
+			
+		case 8:
+			return inflected.substring(inflected.length()-1);
+		
+		case 9:
+			return inflected.substring(inflected.length()-1);
+		
+		default:
+			return inflected.substring(inflected.length()-1);
+			
+		}
 	}
 }

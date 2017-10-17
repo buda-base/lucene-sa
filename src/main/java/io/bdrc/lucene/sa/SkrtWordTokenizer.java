@@ -817,7 +817,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
 		String[] t = new String[0];
 
-		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected.substring(inflected.length()-1), cmd);
+		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected, cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 			HashSet<String> diffs = current.getValue();
@@ -923,6 +923,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[][]{{-4, 3}, {-4, 2}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
+		case 9:
+			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}}; // TODO check if it is ok
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+			
 		default:
 			return false;
 		}
