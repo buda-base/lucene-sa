@@ -75,7 +75,7 @@ public class SandhiTests
 	static private void assertSandhi(String input, List<String> expected, int trieNumber) throws FileNotFoundException, IOException {
 		Reader reader = new StringReader(input);
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)+".txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)+".txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -95,7 +95,7 @@ public class SandhiTests
     @Test
 	public void testSandhi2() throws IOException
 	{
-		assertSandhi("samyag asti", Arrays.asList("samyak", "samyac", "asti"),  2);
+		assertSandhi("samyag asti", Arrays.asList("samyak", "asti"),  2);
 	}
 
     @Test
@@ -106,7 +106,7 @@ public class SandhiTests
 
     @Test
 	public void testSandhi4() throws IOException
-	{
+	{ 
 		assertSandhi("mAstu", Arrays.asList("mA", "astu"),  4);
 	}
 
@@ -287,13 +287,13 @@ public class SandhiTests
     @Test
 	public void testSandhi34() throws IOException
 	{
-		assertSandhi("Bavant", Arrays.asList("Bavan"),  34);
+		assertSandhi("Bavan", Arrays.asList("Bavant"),  34);
 	}
 
     @Test
 	public void testSandhi35() throws IOException
 	{
-		assertSandhi("Bavantkgtrnp", Arrays.asList("Bavan"),  35);
+		assertSandhi("Bavan", Arrays.asList("Bavantkgtrnp"),  35);
 	}
 
     @Test
@@ -371,7 +371,7 @@ public class SandhiTests
     @Test
 	public void testSandhi48() throws IOException
 	{
-		assertSandhi("tAM lokAn", Arrays.asList("tAn", "lokAn"),  48);
+		assertSandhi("tAl~ lokAn", Arrays.asList("tAn", "lokAn"),  48);
 	}
 
     @Test

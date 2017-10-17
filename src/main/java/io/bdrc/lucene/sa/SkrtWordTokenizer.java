@@ -371,6 +371,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 			
 			/* A.2.2) if it is not a token char */
+			} else if (isNonSLPprecededByNonMaxMatch()) {
+				//IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
+				cutOffTokenFromNonWordChars();
+				setTermLength();
+				break;
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
 				setTermLength();								// same as above
 				if (allCharsFromCurrentInitialAreConsumed()) {
@@ -727,6 +732,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
+	final private boolean isNonSLPprecededByNonMaxMatch() {
+		return currentRow != null && foundMatch == true;
+	}
+	
 	final private boolean isSLPTokenChar(int c) {
 		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) != SkrtSylTokenizer.MODIFIER;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
@@ -896,7 +905,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 2:																			// consonant sandhi 1
-			combinations = new int[][]{{0, 2}, {0, 1}};
+			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
 		case 3:																		// consonant sandhi 1 vowels
@@ -911,20 +920,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 6:																			// absolute finals sandhi
+		case 6:																			// visarga sandhi 2
+			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
+			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
+			
+		case 7:																			// absolute finals sandhi
 			combinations = new int[][]{{0, 1}};		// (consonant clusters are always reduced to the first consonant)
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 7:																			// "cC"-words sandhi
+		case 8:																			// "cC"-words sandhi
 			combinations = new int[][]{{0, 4}, {0, 3}};
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 
-		case 8:																			// special sandhi: "punar"
+		case 9:																			// special sandhi: "punar"
 			combinations = new int[][]{{-4, 3}, {-4, 2}};
-			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
-
-		case 9:
-			combinations = new int[][]{{0, 1}, {0, 2}, {0, 3}}; // TODO check if it is ok
 			return isSandhiedCombination(buffer, bufferIndex, sandhied, combinations);
 			
 		default:

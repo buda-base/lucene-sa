@@ -113,6 +113,7 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'H', SPECIALPHONEME);
 		charType.put((int)'V', SPECIALPHONEME);
 		charType.put((int)'Z', SPECIALPHONEME);
+		charType.put((int)'~', SPECIALPHONEME);
 		// consonants
 		charType.put((int)'k', CONSONANT);
 		charType.put((int)'K', CONSONANT);
@@ -167,7 +168,6 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		charType.put((int)'8', MODIFIER);
 		charType.put((int)'9', MODIFIER);
 		charType.put((int)'+', MODIFIER);
-		charType.put((int)'~', MODIFIER);
 		return charType;
 	}
 

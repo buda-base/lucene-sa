@@ -82,7 +82,7 @@ public class CmdParser {
 					}
 					if (t.length <= 1) {
 						diffInitial = "";
-					} else if (!t[1].startsWith("- +") || !t[1].startsWith("-+")) { // filters unchanged initial diffs
+					} else if (!t[1].equals("- +") && !t[1].equals("-+")) { // filters unchanged initial diffs
 						diffInitial = t[1].replaceFirst("\\-", "").trim(); // left-strip minus sign. uses regex
 					} else {
 						diffInitial = "";
@@ -109,7 +109,8 @@ public class CmdParser {
 					initialCharsOriginal = t[1];
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal, initialCharsOriginal, sandhiType);
+					//String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal, initialCharsOriginal, sandhiType);
+					String unsandhied = String.format("0+/%s=%s", initialCharsOriginal, sandhiType);
 					sandhis.putIfAbsent(sandhied, new HashSet<String>());
 					sandhis.get(sandhied).add(unsandhied);
 				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
@@ -184,37 +185,13 @@ public class CmdParser {
 	}
 
 	private static String findSandhiedFinals(String inflected, int sandhiType) {
-		switch(sandhiType){
-		case 1:
+		if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
+		// if consonants1_vowels, visarga1 or visarga2
+			return inflected.substring(inflected.length()-2);
+		} else if (sandhiType == 9) {
+			return inflected;
+		} else {
 			return inflected.substring(inflected.length()-1);
-	
-		case 2:
-			return inflected.substring(inflected.length()-1);
-		
-		case 3:
-			return inflected.substring(inflected.length()-1);
-		
-		case 4:
-			return inflected.substring(inflected.length()-1);
-			
-		case 5:
-			return inflected.substring(inflected.length()-1);
-		
-		case 6:
-			return inflected.substring(inflected.length()-1);
-			
-		case 7:
-			return inflected.substring(inflected.length()-1);
-			
-		case 8:
-			return inflected.substring(inflected.length()-1);
-		
-		case 9:
-			return inflected.substring(inflected.length()-1);
-		
-		default:
-			return inflected.substring(inflected.length()-1);
-			
 		}
 	}
 }
