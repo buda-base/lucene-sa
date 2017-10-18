@@ -150,9 +150,9 @@ public class SanskritAnalyzerTest
     	System.out.println("test parseCmd()");
     	// Darma,~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1
     	String input = "$/=0|c$-0+n/- cC+c=6|C$-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O$-0+n/- +=1";
-    	String expected = "{cC=[0+n/c=6, 0+n/C=6], A=[0+n/A=1], u=[0+n/u=1], U=[0+n/U=1], e=[0+n/e=1], E=[0+n/E=1], f=[0+n/f=1], i=[0+n/i=1], o=[0+n/o=1], O=[0+n/O=1]}";
+    	String expected = "{aA=[0+n/A=1], au=[0+n/u=1], aU=[0+n/U=1], ae=[0+n/e=1], aE=[0+n/E=1], af=[0+n/f=1], macC=[0+n/c=6, 0+n/C=6], ai=[0+n/i=1], ao=[0+n/o=1], aO=[0+n/O=1]}";
     	System.out.println("0 " + input);
-    	Map<String, HashSet<String>> res = CmdParser.parse("", input);    	
+    	Map<String, HashSet<String>> res = CmdParser.parse("Darma", input);    	
     	System.out.println("1 " + expected);
     	System.out.println("2 " + res.toString() + "\n");
     	assertTrue(res.toString().equals(expected));
@@ -186,7 +186,7 @@ public class SanskritAnalyzerTest
     	System.out.println("test containsSandhiedCombination()");
     	char[] buffer = "Darmaprsti".toCharArray();
     	int bufferIdx = 5;
-    	String sandhied = "p";
+    	String sandhied = "ap";
     	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
     	assertTrue(res);
     }
@@ -419,7 +419,7 @@ public class SanskritAnalyzerTest
 	public void testSLPStringWithModifiers() throws IOException
 	{
 		System.out.println("Testing nonSLP input");
-		String input = "a+Ta/8 rA+ja^1k~a\\nyA^97";
+		String input = "a+Ta/8 rA+ja^1ka\\nyA^97";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
 		System.out.println("0 " + input);
