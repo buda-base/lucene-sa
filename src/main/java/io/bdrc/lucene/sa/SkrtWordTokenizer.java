@@ -139,7 +139,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean foundMatch;
 	
 	/* nonMaxMatch related */
-	private boolean foundNonMaxMatch;
+	private boolean foundNonMaxMatch, wentToMaxDownTheTrie;;
 	private int nonMaxTokenStart, nonMaxTokenEnd, nonMaxTokenLength, nonMaxBufferIndex, nonMaxNonWordLength;
 	
 	/* tokens related */
@@ -205,6 +205,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		foundMatch = false;
 
 		foundNonMaxMatch = false;
+		wentToMaxDownTheTrie = false;
 		nonMaxTokenStart = -1;		
 		nonMaxTokenEnd = -1;
 		nonMaxTokenLength = -1;
@@ -304,10 +305,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					tryToFindMatchIn(currentRow, c);
 					tryToContinueDownTheTrie(currentRow, c);
 					if (reachedNonwordCharacter()) {
+						wentToMaxDownTheTrie = true;
 						tryToFindMatchIn(rootRow, c);
 						tryToContinueDownTheTrie(rootRow, c);
 						ifNeededReinitializeTokenBuffer();			// because no word ever started in the first place
-
 					}
 				}
 				
@@ -316,7 +317,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restoreNonMaxMatchState();
 					nonWordEnd = tokenEnd;				// needed for term indices
 					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
-					cleanupPotentialTokensAndNonwords();
+					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					break;
 					
 				} else if (reachedNonwordCharacter()) {
@@ -333,13 +334,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						potentialTokensContainMatches = true;					// because we reachedEndOfToken
 						addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 						if (allInitialsAreConsumed()) {
-							cleanupPotentialTokensAndNonwords();
+							ifNoInitialsCleanupPotentialTokensAndNonwords();
 							break;
 						}
 						resetInitialCharsIterator();
 						restorePreviousState();
 					} else {
-						cleanupPotentialTokensAndNonwords(); 
+						ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 						break;
 					}
 				} else {													// we are within a potential token
@@ -353,13 +354,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						if (allCharsFromCurrentInitialAreConsumed()) {
 							addNonwordToPotentialTokens();					// we do have a non-word token
 							if (allInitialsAreConsumed()) {
-								cleanupPotentialTokensAndNonwords(); 
+								ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 								break;
 							}
 						} else {
-							setTermLength();								// same as above
-							cleanupPotentialTokensAndNonwords(); 
+							if (foundNonMaxMatch) {
+								restoreNonMaxMatchState();
+								nonWordEnd = tokenEnd;				// needed for term indices
+								setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+								ifNoInitialsCleanupPotentialTokensAndNonwords();
+								break;
+							} else {
+								setTermLength();								// same as above
+								ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 							break;
+							}
 						}					
 					}
 				}
@@ -371,6 +380,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 			
 			/* A.2.2) if it is not a token char */
+			} else if (foundNonMaxMatch) {
+				restoreNonMaxMatchState();
+				nonWordEnd = tokenEnd;				// needed for term indices
+				setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+				ifNoInitialsCleanupPotentialTokensAndNonwords();
+				resetNonWordChars(0);
+				break;
 			} else if (isNonSLPprecededByNonMaxMatch()) {
 				//IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
 				cutOffTokenFromNonWordChars();
@@ -381,14 +397,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (allCharsFromCurrentInitialAreConsumed()) {
 					addNonwordToPotentialTokens();
 					if (allInitialsAreConsumed()) {
-						cleanupPotentialTokensAndNonwords();
+						ifNoInitialsCleanupPotentialTokensAndNonwords();
 						break;
 					}
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
-					cleanupPotentialTokensAndNonwords(); 
+					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 					if (isSLPModifier(c)) {
 						continue;								// move on and do as if the modifier didn't exist
 					} else {
@@ -401,7 +417,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (allCharsFromCurrentInitialAreConsumed()) {
 					addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 					if (allInitialsAreConsumed()) {
-						cleanupPotentialTokensAndNonwords();  
+						ifNoInitialsCleanupPotentialTokensAndNonwords();  
 						if (thereIsNoTokenAndNoNonword()) {
 							continue;							// resume looping over ioBuffer
 						} else {
@@ -412,7 +428,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
-					cleanupPotentialTokensAndNonwords(); 
+					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 					break;
 				}
 			} 
@@ -461,7 +477,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return true;						// we exit incrementToken()
 
 		} else if (reachedEndOfInputString() && thereIsNoTokenAndNoNonword()) {
-			return false;													// exit the tokenizer. input was only nonSLP
+			return false;						// exit the tokenizer. input was only nonSLP
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
 			assert(tokenStart != -1);
@@ -470,7 +486,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private void cleanupPotentialTokensAndNonwords() {
+	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
 		if (storedInitials != null) {
 			
 			/* cleanup potentialTokens */
@@ -751,7 +767,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean wentBeyondLongestMatch() {
-		return foundNonMaxMatch && foundMatch == false;
+		return foundNonMaxMatch && wentToMaxDownTheTrie && foundMatch == false;
 	}
 
 	final private boolean thereAreTokensToReturn() {
