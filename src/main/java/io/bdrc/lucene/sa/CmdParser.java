@@ -170,14 +170,12 @@ public class CmdParser {
 									sandhis.get(key).add(value);
 								}
 							} else {
-								// raise error. should never happen
-								System.out.println("A.there is a problem with cmd: "+cmd);
+								throw new IllegalArgumentException("A.there is a problem with cmd: "+cmd);
 							}
 						}
 					}
 				} else {
-						// raise error. should never happen
-						System.out.println("B.there is a problem with cmd: "+cmd);
+					throw new IllegalArgumentException("A.there is a problem with cmd: "+cmd);	
 				}
 			}
 		}
