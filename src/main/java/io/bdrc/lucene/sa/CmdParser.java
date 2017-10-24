@@ -104,7 +104,7 @@ public class CmdParser {
 						addEntry(sandhied, unsandhied);
 					}
 				}
-			} else if (isNonModifying(fullEntry)) {
+			} else if (thereAreNoModifications(fullEntry)) {
 				// pass
 			} else {
 				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
@@ -186,7 +186,7 @@ public class CmdParser {
 		return initials.length > 0;
 	}
 	
-	final private boolean isNonModifying(String fullEntry) {
+	final private boolean thereAreNoModifications(String fullEntry) {
 		return fullEntry.contains("$/");
 	}
 	
