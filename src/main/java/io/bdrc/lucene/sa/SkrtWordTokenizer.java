@@ -910,8 +910,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int[][] combinations;
 
 		switch(sandhiType) {
-		case 0:																			// no sandhi
-			return false;
 
 		case 1:																			// vowel sandhi
 			if (sandhied.length() == 1) {
