@@ -4,7 +4,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class CmdParser {
-	public static HashMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
+	private String[] t = new String[2];  // temporary variable constantly reused
+	
+	private int sandhiType = -1;
+	private String entry = null;
+	
+	private String[] initials = null;
+	
+	private String diffInitial = null;   // there can only be one initial diff
+	private String[] diffFinals = null;
+	
+	// for sandhied (HashMap key)
+	private String toDelete = null;
+	private String initialCharsSandhied = null;
+	
+	// for unsandhied (HashMap value)
+	private String initialCharsOriginal = null;
+	private String toAdd = null;
+	private HashMap<String, HashSet<String>> sandhis = null;
+
+	public HashMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
 		/**
 		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
 		 * 
@@ -33,156 +52,152 @@ public class CmdParser {
 		 * @return: parsed structure 
 		 */
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		HashMap<String, HashSet<String>> sandhis = new HashMap<String, HashSet<String>>();
-		// variables
-		String[] initials = null;
-		String diffInitial = null; // there can only be one initial diff
-		String[] diffFinals = null;
-		int sandhiType = -1; 
-
-		String[] t; // temporary variable
-		String entry = null;
+		sandhis = new HashMap<String, HashSet<String>>();
 		
-		String[] entries = cmd.split("\\|"); // split into entries
-		for (String fullEntry: entries) {
-			t = fullEntry.split("=");
-			assert(t.length == 2); // there should always be a sandhi type for an entry
-			sandhiType = Integer.parseInt(t[1]);
+		String[] fullEntries = cmd.split("\\|");								// <fullEntry>|<fullEntry>|<...>
+		for (String fullEntry: fullEntries) {
+			splitFullEntry(fullEntry, t);										// <entry>=<sandhiType>
 			
-			entry = t[0];
-			if (entry.equals("$/") || entry.contains("$/- +")) {
-				// filters all non-modifying sandhis: either there is no change or words are separated by a space.
-			} else {
-				// 0. populate variables for the current entry
+			if (thereAreModifications()) {
+				splitEntryAndInitials();										// <initial>:<initial>:<...> $ <diffs>
+				splitDiffs();													// <diffFinals>/<diffInitial>				
 				
-				// initials $ diffs
-				t = entry.split("\\$");
-				if (t[0].contains(":")) {
-					initials = t[0].split("\\:");
-				} else if (!t[0].equals("")) {
-					initials = new String[1];
-					initials[0] = t[0];
-				} else {
-					initials = new String[0];
-				}
-				
-				// diffFinals / diffInitial
-				if (t[1].equals("/")) {
-					diffFinals = new String[0];
-					diffInitial = "";					
-				} else {
-					t = t[1].split("/");
-					if (t[0].contains(";")) {
-						diffFinals = t[0].split(";");
-					} else if (!t[0].equals("")) {
-						diffFinals = new String[1];
-						diffFinals[0] = t[0].replaceFirst("\\-", "").trim(); // left-strip minus sign. uses regex 
-					} else {
-						diffFinals = new String[0];
-					}
-					if (t.length <= 1) {
-						diffInitial = "";
-					} else if (!t[1].equals("- +") && !t[1].equals("-+")) { // filters unchanged initial diffs
-						diffInitial = t[1].replaceFirst("\\-", "").trim(); // left-strip minus sign. uses regex
-					} else {
-						diffInitial = "";
-					}
-				}
-				
-				// delete non-changing initial diff
-				
-				
-				// 1. reconstruct sandhied + unsandhied pairs that are possible with the value of sandhiedFinal
-				
-				// for sandhied (HashMap key)
 				String sandhiedFinal = findSandhiedFinals(inflected, sandhiType);
-				String toDelete = "";
-				String initialCharsSandhied = ""; // remember to trim space used by resources/sansksrit-stemming-data/sandhify/sandhifier.py
-				// for unsandhied (HashMap value)
-				String toAdd = "";				
-				String initialCharsOriginal = "";
+				toDelete = "";
+				initialCharsSandhied = "";
 				
-				if (diffFinals.length == 0 && !diffInitial.equals("")) {
-				// a. diff only on initial
-					t = diffInitial.split("\\+");
-					initialCharsSandhied = t[0].trim();
-					initialCharsOriginal = t[1];
+				toAdd = "";				
+				initialCharsOriginal = "";
+				
+				if (onlyInitialsChange()) {
+					splitDiffInitial();											// -<sandhiedInitial>+<unsandhiedInitial>
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					//String unsandhied = String.format("%s+%s/%s=%s", "0", sandhiedFinal, initialCharsOriginal, sandhiType);
 					String unsandhied = String.format("0+/%s=%s", initialCharsOriginal, sandhiType);
-					sandhis.putIfAbsent(sandhied, new HashSet<String>());
-					sandhis.get(sandhied).add(unsandhied);
-				} else if (diffFinals.length > 0 && diffInitial.equals("")) { 
-				// b. diff only on final
-					for (String finalDiff: diffFinals) {
-						finalDiff = finalDiff.replaceFirst("\\-", ""); // left-strip minus sign. uses regex
-						t = finalDiff.split("\\+");
-						toDelete = t[0];
-						if (t.length == 2) {
-							toAdd = t[1];
-						} else {
-							toAdd = "";
-						}
+					addEntry(sandhied, unsandhied);
+					
+				} else if (onlyFinalsChange()) {
+					for (String diffFinal: diffFinals) {
+						diffFinal = trimDiff(diffFinal);				
+						splitFinalDiff(diffFinal);								// -<toDelete>+<toAdd>
 						
-						
-						if (initials.length > 0) {
+						if (thereAreInitials()) {
 							for (String initial: initials) {
 								String sandhied = sandhiedFinal+initial;
 								String unsandhied = String.format("%s+%s/%s=%s", toDelete, toAdd, initial, sandhiType);
-								sandhis.putIfAbsent(sandhied, new HashSet<String>());
-								sandhis.get(sandhied).add(unsandhied);
+								addEntry(sandhied, unsandhied);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
 							String unsandhied = String.format("%s+%s=%s", toDelete, toAdd, sandhiType);
-							sandhis.putIfAbsent(sandhied, new HashSet<String>());
-							sandhis.get(sandhied).add(unsandhied);
+							addEntry(sandhied, unsandhied);
 						}
 					}
-				} else if (diffFinals.length > 0 && !diffInitial.equals("")) { 
-				// c. diff on both final and initial
-					for (String finalDiff: diffFinals) {
-						finalDiff = finalDiff.replaceFirst("\\-", ""); // left-strip minus sign. uses regex
-						if (finalDiff.contains("+") && diffInitial.contains("+")) { // diff on both final and initial
-							t = finalDiff.split("\\+");
-							toDelete = t[0];
-							if (t.length == 2) {
-								toAdd = t[1];
-							} else {
-								toAdd = "";
-							}
-							
-							t = diffInitial.split("\\+");
-							if (t.length == 2) {
-								initialCharsSandhied = t[0];
-								initialCharsOriginal = t[1].trim();
-								
-								String key = sandhiedFinal+initialCharsSandhied;
-								String value = String.format("%s+%s/%s=%s", toDelete, toAdd, initialCharsOriginal, sandhiType);
-								sandhis.putIfAbsent(key, new HashSet<String>());
-								sandhis.get(key).add(value);
-							} else if (t.length < 2 && initials.length > 1) {
-								for (String initial: initials) {
-									String key = sandhiedFinal+initial;
-									String value = String.format("%s+%s/%s=%s", toDelete, toAdd, initial, sandhiType);
-									sandhis.putIfAbsent(key, new HashSet<String>());
-									sandhis.get(key).add(value);
-								}
-							} else {
-								throw new IllegalArgumentException("A.there is a problem with cmd: "+cmd);
-							}
-						}
+				} else {	// both initials and finals change
+					for (String diffFinal: diffFinals) {
+						diffFinal = trimDiff(diffFinal);
+						splitFinalDiff(diffFinal);								// -<toDelete>+<toAdd>
+						splitDiffInitial();										// -<sandhiedInitial>+<unsandhiedInitial>
+
+						String sandhied = sandhiedFinal+initialCharsSandhied;
+						String unsandhied = String.format("%s+%s/%s=%s", toDelete, toAdd, initialCharsOriginal, sandhiType);
+						addEntry(sandhied, unsandhied);
 					}
-				} else {
-					throw new IllegalArgumentException("A.there is a problem with cmd: "+cmd);	
 				}
+			} else if (isNonModifying(fullEntry)) {
+				// pass
+			} else {
+				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
 			}
 		}
 		return sandhis;
 	}
 
-	private static String findSandhiedFinals(String inflected, int sandhiType) {
+	private void splitFinalDiff(String finalDiff) {
+		t = finalDiff.split("\\+");
+		toDelete = t[0];
+		if (t.length == 2) {
+			toAdd = t[1];
+		} else {
+			toAdd = "";
+		}
+	}
+
+	private void addEntry(String sandhied, String unsandhied) {
+		sandhis.putIfAbsent(sandhied, new HashSet<String>());
+		sandhis.get(sandhied).add(unsandhied);
+	}
+
+	private void splitDiffInitial() {
+		t = diffInitial.split("\\+"); 
+		initialCharsSandhied = t[0];
+		initialCharsOriginal = t[1];
+	}
+
+	private void splitDiffs() {
+		t = t[1].split("/");
+		if (t[0].contains(";")) {
+			diffFinals = t[0].split(";");
+		} else if (!t[0].equals("")) {
+			diffFinals = new String[1];
+			diffFinals[0] = trimDiff(t[0]); 
+		} else {
+			diffFinals = new String[0];
+		}
+		if (t.length <= 1) {
+			diffInitial = "";
+		} else if (!t[1].equals("- +") && !t[1].equals("-+")) { // filters unchanged initial diffs
+			diffInitial = trimDiff(t[1]); 
+		} else {
+			diffInitial = "";
+		}
+	}
+
+	private String trimDiff(String diff) {
+		return diff.replaceFirst("\\-", "").trim();  // remove "-" and extra space
+	}
+
+	private void splitEntryAndInitials() {
+		t = entry.split("\\$");
+		if (t[0].contains(":")) {
+			initials = t[0].split("\\:");
+		} else if (!t[0].equals("")) {
+			initials = new String[1];
+			initials[0] = t[0];
+		} else {
+			initials = new String[0];
+		}
+	}
+
+	final private boolean thereAreModifications() {
+		// there is no change || no change and a space is added
+		return !entry.equals("$/") && !entry.contains("$/- +");
+	}
+	
+	final private boolean onlyInitialsChange() {
+		return diffFinals.length == 0 && !diffInitial.equals("");
+	}
+
+	final private boolean onlyFinalsChange() {
+		return diffFinals.length > 0 && diffInitial.equals("");
+	}
+	
+	final private boolean thereAreInitials() {
+		return initials.length > 0;
+	}
+	
+	final private boolean isNonModifying(String fullEntry) {
+		return fullEntry.contains("$/");
+	}
+	
+	private void splitFullEntry(String fullEntry, String[] t) {
+		t = fullEntry.split("=");
+		assert(t.length == 2); // there should always be a sandhi type for an entry
+		entry = t[0];
+		sandhiType = Integer.parseInt(t[1]);
+	}
+
+	private String findSandhiedFinals(String inflected, int sandhiType) {
 		if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
 		// if consonants1_vowels, visarga1 or visarga2
 			return inflected.substring(inflected.length()-2);

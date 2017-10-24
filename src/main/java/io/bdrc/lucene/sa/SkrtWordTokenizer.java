@@ -82,6 +82,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	public SkrtWordTokenizer(String filepath) throws FileNotFoundException, IOException {
 		init(filepath);
+		this.debug = false;
 	}
 
 	/**
@@ -105,6 +106,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
 		init("resources/sanskrit-stemming-data/output/total_output.txt");
+		this.debug = false;
 	}
 
 	/**
@@ -122,10 +124,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			String line;
 			while ((line = br.readLine()) != null) {
 				int endOfFormIndex = line.indexOf(',');
-				if (endOfFormIndex == -1) {
-					throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
-				} else {
+				if (endOfFormIndex != -1) {
 					this.scanner.add(line.substring(0, endOfFormIndex), line.substring(endOfFormIndex+1));
+				} else {
+					throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
 				}
 			}
 			Optimizer opt = new Optimizer();
@@ -387,11 +389,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
 				resetNonWordChars(0);
 				break;
-			} else if (isNonSLPprecededByNonMaxMatch()) {
-				//IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
-				cutOffTokenFromNonWordChars();
-				setTermLength();
-				break;
+//			} else if (isNonSLPprecededByNonMaxMatch()) {
+//				//IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
+//				cutOffTokenFromNonWordChars();
+//				setTermLength();
+//				break;
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
 				setTermLength();								// same as above
 				if (allCharsFromCurrentInitialAreConsumed()) {
@@ -465,7 +467,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		
 		/* B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens) */
-		ifConsumedAllInitialsResetInitialsAndIterator();	// so we don't create an empty iterator
+//		ifConsumedAllInitialsResetInitialsAndIterator();	// so we don't create an empty iterator
 		ifThereAreInitialsFillIterator();
 		ifEndOfInputReachedEmptyInitials();
 
@@ -476,8 +478,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			changeTypeOfNonwords(firstToken);
 			return true;						// we exit incrementToken()
 
-		} else if (reachedEndOfInputString() && thereIsNoTokenAndNoNonword()) {
-			return false;						// exit the tokenizer. input was only nonSLP
+//		} else if (reachedEndOfInputString() && thereIsNoTokenAndNoNonword()) {
+//			return false;						// exit the tokenizer. input was only nonSLP
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
 			assert(tokenStart != -1);
@@ -548,12 +550,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private void ifConsumedAllInitialsResetInitialsAndIterator() {
-		if (initials != null && initials.isEmpty()) {
-			initials = null;
-			initialsIterator = null;
-		}
-	}
+//	private void ifConsumedAllInitialsResetInitialsAndIterator() {
+//		if (initials != null && initials.isEmpty()) {
+//			initials = null;
+//			initialsIterator = null;
+//		}
+//	}
 
 	private void ifSandhiMergesStayOnSameCurrentChar() {
 		if (charCount != -1 && mergesInitials) {
@@ -737,9 +739,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (totalTokensIterator.hasNext()) {
 			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) totalTokensIterator.next();
 			termAtt.setEmpty().append(extra.getKey());
-			if (extra.getValue()[3] == 0) {
-				typeAtt.setType("non-word");
-			}
+			changeTypeOfNonwords(extra);
 			termAtt.setLength(extra.getValue()[2]);
 			finalOffset = correctOffset(extra.getValue()[1]);
 			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
@@ -748,9 +748,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	final private boolean isNonSLPprecededByNonMaxMatch() {
-		return currentRow != null && foundMatch == true;
-	}
+//	final private boolean isNonSLPprecededByNonMaxMatch() {
+//		return currentRow != null && foundMatch == true;
+//	}
 	
 	final private boolean isSLPTokenChar(int c) {
 		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) != SkrtSylTokenizer.MODIFIER;
@@ -842,7 +842,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
 		String[] t = new String[0];
 
-		HashMap<String, HashSet<String>> parsedCmd = CmdParser.parse(inflected, cmd);
+		HashMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 			HashSet<String> diffs = current.getValue();
@@ -865,11 +865,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						t[0] = diff.split("\\+")[0];
 						t[1] = "";
 					}
-					if (diff.startsWith("+")) {
-						t = new String[2];
-						t[0] = "";
-						t[1] = diff.split("\\+")[0];
-					}
+//					if (diff.startsWith("+")) {
+//						t = new String[2];
+//						t[0] = "";
+//						t[1] = diff.split("\\+")[0];
+//					}
 
 					int toDelete = Integer.parseInt(t[0]);
 					String toAdd;
