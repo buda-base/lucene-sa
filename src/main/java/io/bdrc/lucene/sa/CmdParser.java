@@ -79,7 +79,7 @@ public class CmdParser {
 				} else if (onlyFinalsChange()) {
 					for (String diffFinal: diffFinals) {
 						diffFinal = trimDiff(diffFinal);				
-						splitFinalDiff(diffFinal);								// -<toDelete>+<toAdd>
+						splitDiffFinal(diffFinal);								// -<toDelete>+<toAdd>
 						
 						if (thereAreInitials()) {
 							for (String initial: initials) {
@@ -96,7 +96,7 @@ public class CmdParser {
 				} else {	// both initials and finals change
 					for (String diffFinal: diffFinals) {
 						diffFinal = trimDiff(diffFinal);
-						splitFinalDiff(diffFinal);								// -<toDelete>+<toAdd>
+						splitDiffFinal(diffFinal);								// -<toDelete>+<toAdd>
 						splitDiffInitial();										// -<sandhiedInitial>+<unsandhiedInitial>
 
 						String sandhied = sandhiedFinal+initialCharsSandhied;
@@ -113,25 +113,33 @@ public class CmdParser {
 		return sandhis;
 	}
 
-	private void splitFinalDiff(String finalDiff) {
-		t = finalDiff.split("\\+");
-		toDelete = t[0];
-		if (t.length == 2) {
-			toAdd = t[1];
+	private String findSandhiedFinals(String inflected, int sandhiType) {
+		if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
+		// if consonants1_vowels, visarga1 or visarga2
+			return inflected.substring(inflected.length()-2);
+		} else if (sandhiType == 9) {
+			return inflected;
 		} else {
-			toAdd = "";
+			return inflected.substring(inflected.length()-1);
 		}
 	}
 
-	private void addEntry(String sandhied, String unsandhied) {
-		sandhis.putIfAbsent(sandhied, new HashSet<String>());
-		sandhis.get(sandhied).add(unsandhied);
+	private void splitFullEntry(String fullEntry, String[] t) {
+		t = fullEntry.split("=");
+		entry = t[0];
+		sandhiType = Integer.parseInt(t[1]);
 	}
-
-	private void splitDiffInitial() {
-		t = diffInitial.split("\\+"); 
-		initialCharsSandhied = t[0];
-		initialCharsOriginal = t[1];
+	
+	private void splitEntryAndInitials() {
+		t = entry.split("\\$");
+		if (t[0].contains(":")) {
+			initials = t[0].split("\\:");
+		} else if (!t[0].equals("")) {
+			initials = new String[1];
+			initials[0] = t[0];
+		} else {
+			initials = new String[0];
+		}
 	}
 
 	private void splitDiffs() {
@@ -152,26 +160,39 @@ public class CmdParser {
 			diffInitial = "";
 		}
 	}
-
+	
+	private void splitDiffInitial() {
+		t = diffInitial.split("\\+"); 
+		initialCharsSandhied = t[0];
+		initialCharsOriginal = t[1];
+	}
+	
+	private void splitDiffFinal(String finalDiff) {
+		t = finalDiff.split("\\+");
+		toDelete = t[0];
+		if (t.length == 2) {
+			toAdd = t[1];
+		} else {
+			toAdd = "";
+		}
+	}
+	
 	private String trimDiff(String diff) {
 		return diff.replaceFirst("\\-", "").trim();  // remove "-" and extra space
 	}
-
-	private void splitEntryAndInitials() {
-		t = entry.split("\\$");
-		if (t[0].contains(":")) {
-			initials = t[0].split("\\:");
-		} else if (!t[0].equals("")) {
-			initials = new String[1];
-			initials[0] = t[0];
-		} else {
-			initials = new String[0];
-		}
+	
+	private void addEntry(String sandhied, String unsandhied) {
+		sandhis.putIfAbsent(sandhied, new HashSet<String>());
+		sandhis.get(sandhied).add(unsandhied);
 	}
-
+	
 	final private boolean thereAreModifications() {
 		// there is no change || no change and a space is added
 		return !entry.equals("$/") && !entry.contains("$/- +");
+	}
+	
+	final private boolean thereAreNoModifications(String fullEntry) {
+		return fullEntry.contains("$/");
 	}
 	
 	final private boolean onlyInitialsChange() {
@@ -184,27 +205,5 @@ public class CmdParser {
 	
 	final private boolean thereAreInitials() {
 		return initials.length > 0;
-	}
-	
-	final private boolean thereAreNoModifications(String fullEntry) {
-		return fullEntry.contains("$/");
-	}
-	
-	private void splitFullEntry(String fullEntry, String[] t) {
-		t = fullEntry.split("=");
-		assert(t.length == 2); // there should always be a sandhi type for an entry
-		entry = t[0];
-		sandhiType = Integer.parseInt(t[1]);
-	}
-
-	private String findSandhiedFinals(String inflected, int sandhiType) {
-		if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
-		// if consonants1_vowels, visarga1 or visarga2
-			return inflected.substring(inflected.length()-2);
-		} else if (sandhiType == 9) {
-			return inflected;
-		} else {
-			return inflected.substring(inflected.length()-1);
-		}
 	}
 }
