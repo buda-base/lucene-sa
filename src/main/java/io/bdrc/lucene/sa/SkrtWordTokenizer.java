@@ -171,7 +171,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/* ioBuffer related (contains the input string) */
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
 	private int charCount;
-	private static final int MAX_WORD_LEN = 255, IO_BUFFER_SIZE = 4096;
+	int MAX_WORD_LEN = 255, IO_BUFFER_SIZE = 4096;
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 	
 	/**
@@ -279,7 +279,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 			}
 
-			if (debug) {System.out.println((char) c);}
+			if (debug) {
+				System.out.println((char) c);
+			}
 
 			/* A.2. PROCESSING c */
 			
@@ -317,59 +319,61 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/* Decide what to do with the SLP chars currently processed */
 				if (wentBeyondLongestMatch()) {
 					restoreNonMaxMatchState();
-					nonWordEnd = tokenEnd;				// needed for term indices
-					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
+					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 					break;
 					
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
-					ifNeededReinitializeTokenBuffer();		// because no word ever started in the first place
 					nonWordEnd = tokenEnd;					// needed for term indices
+					ifNeededReinitializeTokenBuffer();		// because no word ever started in the first place
 
 				} else if (foundAToken()) {
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
 					cutOffTokenFromNonWordChars();
-					setTermLength();											// same as above
 					
 					if (allCharsFromCurrentInitialAreConsumed()) {
 						potentialTokensContainMatches = true;					// because we reachedEndOfToken
 						addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
 						if (allInitialsAreConsumed()) {
 							ifNoInitialsCleanupPotentialTokensAndNonwords();
+							setTermLength();											// same as above
 							break;
 						}
 						resetInitialCharsIterator();
 						restorePreviousState();
 					} else {
 						ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+						setTermLength();											// same as above
 						break;
 					}
 				} else {													// we are within a potential token
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
 					nonWordChars.append((char) c);							// later remove chars belonging to a token
-
+					nonWordEnd = tokenEnd;								// needed for term indices
+					
 					if (reachedEndOfInputString()) {
 						ifNeededReinitializeTokenBuffer();
-						nonWordEnd = tokenEnd;								// needed for term indices
+
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
 							addNonwordToPotentialTokens();					// we do have a non-word token
 							if (allInitialsAreConsumed()) {
 								ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+								setTermLength();
 								break;
 							}
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();
-								nonWordEnd = tokenEnd;				// needed for term indices
 								setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 								ifNoInitialsCleanupPotentialTokensAndNonwords();
 								break;
 							} else {
 								setTermLength();								// same as above
-								ifNoInitialsCleanupPotentialTokensAndNonwords(); 
-							break;
+								ifNoInitialsCleanupPotentialTokensAndNonwords();
+								break;
 							}
 						}					
 					}
@@ -389,17 +393,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
 				resetNonWordChars(0);
 				break;
-//			} else if (isNonSLPprecededByNonMaxMatch()) {
-//				//IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
-//				cutOffTokenFromNonWordChars();
-//				setTermLength();
-//				break;
+				
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
-				setTermLength();								// same as above
+				nonWordEnd = tokenEnd;							// needed for term indices
 				if (allCharsFromCurrentInitialAreConsumed()) {
 					addNonwordToPotentialTokens();
 					if (allInitialsAreConsumed()) {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
+						setTermLength();											// same as above
 						break;
 					}
 					resetNonWordChars(0);
@@ -410,6 +411,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (isSLPModifier(c)) {
 						continue;								// move on and do as if the modifier didn't exist
 					} else {
+						setTermLength();											// same as above
 						break;
 					}
 				}
@@ -423,6 +425,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						if (thereIsNoTokenAndNoNonword()) {
 							continue;							// resume looping over ioBuffer
 						} else {
+							setTermLength();
 							break;								// and resume looping over ioBuffer
 						}
 					}
@@ -430,7 +433,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetInitialCharsIterator();
 					restorePreviousState();					
 				} else {
-					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+					ifNoInitialsCleanupPotentialTokensAndNonwords();
+					setTermLength();
 					break;
 				}
 			} 
