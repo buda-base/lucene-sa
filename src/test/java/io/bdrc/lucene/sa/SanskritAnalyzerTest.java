@@ -441,11 +441,6 @@ public class SanskritAnalyzerTest
 		assertTokenStream(syllables, expected);
 	}
     
-    @Test
-    public void testSylEndingCombinations() throws Exception {
-    	
-    }
-    
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");
