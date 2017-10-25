@@ -471,7 +471,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		
 		/* B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens) */
-//		ifConsumedAllInitialsResetInitialsAndIterator();	// so we don't create an empty iterator
 		ifThereAreInitialsFillIterator();
 		ifEndOfInputReachedEmptyInitials();
 
@@ -481,9 +480,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			fillTermAttributeWith(firstToken);
 			changeTypeOfNonwords(firstToken);
 			return true;						// we exit incrementToken()
-
-//		} else if (reachedEndOfInputString() && thereIsNoTokenAndNoNonword()) {
-//			return false;						// exit the tokenizer. input was only nonSLP
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
 			assert(tokenStart != -1);
@@ -553,13 +549,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			initialsIterator = initials.iterator();		// one sandhi can yield many unsandhied initials
 		}
 	}
-
-//	private void ifConsumedAllInitialsResetInitialsAndIterator() {
-//		if (initials != null && initials.isEmpty()) {
-//			initials = null;
-//			initialsIterator = null;
-//		}
-//	}
 
 	private void ifSandhiMergesStayOnSameCurrentChar() {
 		if (charCount != -1 && mergesInitials) {
@@ -752,10 +741,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-//	final private boolean isNonSLPprecededByNonMaxMatch() {
-//		return currentRow != null && foundMatch == true;
-//	}
-	
 	final private boolean isSLPTokenChar(int c) {
 		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) != SkrtSylTokenizer.MODIFIER;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
@@ -869,11 +854,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						t[0] = diff.split("\\+")[0];
 						t[1] = "";
 					}
-//					if (diff.startsWith("+")) {
-//						t = new String[2];
-//						t[0] = "";
-//						t[1] = diff.split("\\+")[0];
-//					}
 
 					int toDelete = Integer.parseInt(t[0]);
 					String toAdd;
