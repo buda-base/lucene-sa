@@ -34,11 +34,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.CharacterUtils.CharacterBuffer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
-import org.apache.lucene.analysis.util.RollingCharBuffer;
 
 import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Row;
@@ -168,11 +169,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private int finalsIndex = -1;
 
 	/* ioBuffer related (contains the input string) */
-	private int bufferIndex = 0, finalOffset = 0;
+	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
 	private int charCount;
-	int MAX_WORD_LEN = 255;
-	
-	private RollingCharBuffer ioBuffer;
+	int MAX_WORD_LEN = 255, IO_BUFFER_SIZE = 4096;
+	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
 	
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -197,7 +197,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 
-		ioBuffer.freeBefore(bufferIndex);
 		tokenStart = -1;
 		tokenEnd = -1;	
 		tokenLength = 0;
@@ -228,6 +227,25 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		/* A. FINDING TOKENS */
 		while (true) {
+
+			/*>>> Deals with the beginning and end of the input string >>>>>>>>>*/
+			if (bufferIndex >= dataLen) {
+				offset += dataLen;
+				CharacterUtils.fill(ioBuffer, input);			// read supplementary char aware with CharacterUtils
+				if (ioBuffer.getLength() == 0) {
+					dataLen = 0;								// so next offset += dataLen won't decrement offset
+					if (tokenLength > 0 || nonWordChars.length() > 0) {
+						break;
+					} else {
+						finalOffset = correctOffset(offset);
+						return false;
+					}
+				}
+				dataLen = ioBuffer.getLength();
+				bufferIndex = 0;
+			}
+			/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
 			/* A.1. FILLING c WITH CHARS FROM ioBuffer OR FROM UNSANDHIED INITIALS
 			 * 
 			 * In case there are initials to consume:
@@ -240,20 +258,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			 */
  
 			/* (use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone) */
-			int c = ioBuffer.get(bufferIndex);	// take next char in ioBuffer
+			int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());	// take next char in ioBuffer
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
-			
-			/* when ioBuffer is empty (end of input, ...) */
-			if (c == -1) {
-				bufferIndex -= charCount;
-				if (tokenLength == 0 || nonWordChars.length() > 0) {
-					finalOffset = correctOffset(bufferIndex);
-					return false;
-				}
-				break;
-			}
-			
+
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
 					continue;		// if there is a space in the sandhied substring, moves beyond the space				
@@ -271,7 +279,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 			}
 
-			if (debug) {System.out.println((char) c);}
+			if (debug) {
+				System.out.println((char) c);
+			}
 
 			/* A.2. PROCESSING c */
 			
@@ -369,10 +379,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 				
-				/* tokenBuffer corner case: buffer overflow! */
+				/*>>>>>> ioBuffer corner case: buffer overflow! >>>*/
 				if (tokenLength >= MAX_WORD_LEN) {		// make sure to check for >= surrogate pair could break == test
 					break;
 				}
+				/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 			
 			/* A.2.2) if it is not a token char */
 			} else if (foundNonMaxMatch) {
@@ -616,7 +627,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void incrementTokenIndices() {
-		tokenStart = bufferIndex - charCount;
+		tokenStart = offset + bufferIndex - charCount;
 		tokenEnd = tokenStart + charCount;		// tokenEnd is one char ahead of tokenStart (ending index is exclusive)
 	}
 
