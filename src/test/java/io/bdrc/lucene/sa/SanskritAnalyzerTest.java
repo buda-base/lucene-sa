@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,12 @@ public class SanskritAnalyzerTest
 		}
 	}
 
+	static private String repeatChar(char c, int times) {
+		char[] array = new char[times]; 
+		Arrays.fill(array, c);
+		return String.valueOf(array);
+	}
+	
 	@BeforeClass
 	public static void init() {
 		System.out.println("before the test sequence");
@@ -439,6 +446,29 @@ public class SanskritAnalyzerTest
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
+	}
+    
+	@Test
+	public void ioBufferLimitTest() throws IOException
+	{
+		System.out.println("Testing max size of ioBuffer");
+		List<String> expected = Arrays.asList("budDa", "Darma");
+		SkrtWordTokenizer tibWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/budDaDarma_test.txt");
+		
+		HashMap<Integer, Integer> ranges = new HashMap<Integer, Integer>();
+		ranges.put(2030, 2049);
+		ranges.put(4080, 4097);
+
+		for (HashMap.Entry<Integer, Integer> entry : ranges.entrySet()) {
+			for (int i=entry.getKey() ; i<entry.getValue(); i++) {
+				System.out.println(i);
+				String input = repeatChar('.', i)+"budDaDarma";
+				Reader reader = new StringReader(input);
+				System.out.print(input + " => \n");
+				TokenStream syllables = tokenize(reader, tibWordTokenizer);
+				assertTokenStream(syllables, expected);
+			}			
+		}
 	}
     
 	@AfterClass
