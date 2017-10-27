@@ -199,8 +199,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 
-		int indexToFree = (bufferIndex - 4 >= 0) ? bufferIndex - 4 : bufferIndex;
-		ioBuffer.freeBefore(indexToFree);
+		if (bufferIndex - 4 >= 0) ioBuffer.freeBefore(bufferIndex - 4);
 		tokenStart = -1;
 		tokenEnd = -1;	
 		tokenLength = 0;
@@ -546,7 +545,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void ifSandhiMergesStayOnSameCurrentChar() throws IOException {
 		if (charCount != -1 && mergesInitials) {
 //			if (bufferIndex < dataLen) {				// if end of input is reached
-			if (ioBuffer.get(bufferIndex-1) != -1) {
+			if (ioBuffer.get(bufferIndex) != -1) {
 				bufferIndex -= charCount;
 			}
 			mergesInitials = false;						// reinitialize variable
@@ -775,7 +774,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	final private boolean reachedEndOfInputString() throws IOException {
 //		return tokenEnd == dataLen;
-		return ioBuffer.get(bufferIndex-1) == -1;
+		return ioBuffer.get(bufferIndex) == -1;
 	}
 
 	final private boolean allCharsFromCurrentInitialAreConsumed() {
@@ -808,7 +807,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
 //		return initials != null && !initials.isEmpty() && bufferIndex != dataLen;
-		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex-1) != -1;
+		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex) != -1;
 	}
 
 	final private boolean foundAToken() {
@@ -841,7 +840,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					continue;							// there is no sandhi, so we skip this diff
 				}
 				String diff = t[0];
-				if (containsSandhiedCombination(bufferIndex - 1, sandhied, sandhiType)) {
+				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
 
 					t = diff.split("\\+");
 
@@ -878,7 +877,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return totalLemmas;
 	}
 
-	boolean containsSandhiedCombination(int bufferIndex, String sandhied, int sandhiType) throws IOException {
+	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
 		/**
  		 * Tells whether sandhied could be found between the two words.
  		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
@@ -939,11 +938,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		for (int i = 0; i <= combinations.length-1; i++) {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
+			
 			String current = String.valueOf(ioBuffer.get(bufferIndex+start, end-start));
-//			for (char c: Arrays.copyOfRange(inputBuffer, bufferIndex + start, bufferIndex + end)) {
-// 			for (int j=bufferIndex+start ; j<bufferIndex+end; j++) {
-// 				current += Character.toString((char) ioBuffer.get(j));
-// 			}
+			
 			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
 				return true;
 			}

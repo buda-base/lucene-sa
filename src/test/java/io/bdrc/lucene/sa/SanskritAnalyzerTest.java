@@ -34,6 +34,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -158,39 +159,45 @@ public class SanskritAnalyzerTest
     	assertTrue(res.toString().equals(expected));
     }
     
-//    @Test
-//    public void testContainsSandhiedCombinationNoSandhi() throws IOException
-//    {
-//    	System.out.println("test containsSandhiedCombination()");
-//    	char[] buffer = "budDaDarma".toCharArray();
-//    	int bufferIdx = 4;
-//    	String sandhied = "a";
-//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
-//    	assertFalse(res);
-//    }
-//
-//    @Test
-//    public void testContainsSandhiedCombinationVowelSandhi() throws IOException
-//    {
-//    	System.out.println("test containsSandhiedCombination()");
-//    	char[] buffer = "DarmATa".toCharArray();
-//    	int bufferIdx = 4;
-//    	String sandhied = "A";
-//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
-//    	assertTrue(res);
-//    }
-//
-//    @Test
-//    public void testContainsSandhiedCombinationAbsoluteFinals() throws IOException
-//    {
-//    	System.out.println("test containsSandhiedCombination()");
-//    	char[] buffer = "Darmaprsti".toCharArray();
-//    	int bufferIdx = 5;
-//    	String sandhied = "ap";
-//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
-//    	assertTrue(res);
-//    }
-//    
+    @Test
+    public void testContainsSandhiedCombinationNoSandhi() throws IOException
+    {
+    	System.out.println("test containsSandhiedCombination()");
+    	RollingCharBuffer buffer = new RollingCharBuffer();
+    	buffer.reset(new StringReader("budDaDarma"));
+    	buffer.get(0);
+    	int bufferIdx = 4;
+    	String sandhied = "a";
+    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
+    	assertFalse(res);
+    }
+
+    @Test
+    public void testContainsSandhiedCombinationVowelSandhi() throws IOException
+    {
+    	System.out.println("test containsSandhiedCombination()");
+    	RollingCharBuffer buffer = new RollingCharBuffer();
+    	buffer.reset(new StringReader("DarmATa"));
+    	buffer.get(0);
+    	int bufferIdx = 4;
+    	String sandhied = "A";
+    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
+    	assertTrue(res);
+    }
+
+    @Test
+    public void testContainsSandhiedCombinationAbsoluteFinals() throws IOException
+    {
+    	System.out.println("test containsSandhiedCombination()");
+    	RollingCharBuffer buffer = new RollingCharBuffer();
+    	buffer.reset(new StringReader("Darmaprsti"));
+    	buffer.get(0);
+    	int bufferIdx = 5;
+    	String sandhied = "ap";
+    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
+    	assertTrue(res);
+    }
+    
     @Test
 	public void SandhiedCompoundTest() throws IOException
 	{
@@ -251,7 +258,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "ba");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -342,7 +349,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/aTa_test.txt");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
