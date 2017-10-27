@@ -21,6 +21,9 @@ package io.bdrc.lucene.sa;
 
 import static org.junit.Assert.*;
 import java.io.IOException;
+import java.io.StringReader;
+
+import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,286 +47,339 @@ public class SandhiedCombinationTests
     @Test
     public void testVowelSandhiCombination1() throws IOException
     {
-    	char[] sandhiedString = "mAstu".toCharArray(); // mA astu => mAstu
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("mAstu")); // mA astu => mAstu
+    	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "A";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1);
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1);
     	assertTrue(res);
     }
 
     @Test
     public void testVowelSandhiCombination2() throws IOException
     {
-    	char[] sandhiedString = "naiti".toCharArray(); // na eti => naiti
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("naiti")); // na eti => naiti
+    	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "ai";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testVowelSandhiCombination3() throws IOException
     {
-    	char[] sandhiedString = "ta uvAca".toCharArray(); // te uvAca => ta uvAca
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("ta uvAca")); // te uvAca => ta uvAca
+    	sandhied.get(0);
+    	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "au";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testConsonantSandhi1Combination1() throws IOException
     {
-    	char[] sandhiedString = "vAk".toCharArray(); // vAc => vAk 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("vAk")); // vAc => vAk 
+    	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "k";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testConsonantSandhi1Combination2() throws IOException
     {
-    	char[] sandhiedString = "tallokaH".toCharArray(); // tat lokaH => tallokaH 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("tallokaH")); // tat lokaH => tallokaH 
+    	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "ll";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
 	public void testConsonantSandhi1VowelsCombination1() throws IOException
 	{
-    	char[] sandhiedString = "vAgBaqa".toCharArray(); // vAk Baqa => vAgBaqa 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("vAgBaqa")); // vAk Baqa => vAgBaqa 
+    	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "AgB";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
 	}
     
     @Test
 	public void testConsonantSandhi1VowelsCombination2() throws IOException
 	{
-    	char[] sandhiedString = "atmannatman".toCharArray(); // atman atman => atmannatman 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("atmannatman")); // atman atman => atmannatman 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "anna";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
 	}
 
     @Test
 	public void testConsonantSandhi1VowelsCombination3() throws IOException
 	{
-    	char[] sandhiedString = "atmann atman".toCharArray(); // atman atman => atmann atman 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("atmann atman")); // atman atman => atmann atman 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "anna";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
 	}
 
     @Test
     public void testConsonantSandhi2Combination1() throws IOException
     {
-    	char[] sandhiedString = "vANmayaH".toCharArray(); // vAk mayaH => vANmayaH
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("vANmayaH")); // vAk mayaH => vANmayaH
+    	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "Nm";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testConsonantSandhi2Combination2() throws IOException
     {
-    	char[] sandhiedString = "vAN mayaH".toCharArray(); // vAk mayaH => vANmayaH
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("vAN mayaH")); // vAk mayaH => vANmayaH
+    	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "Nm";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testConsonantSandhi2Combination3() throws IOException
     {
-    	char[] sandhiedString = "asmiMzwIkA".toCharArray(); // asmin wIkA => asmiMzwIkA
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("asmiMzwIkA")); // asmin wIkA => asmiMzwIkA
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Mzw";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testConsonantSandhi2Combination4() throws IOException
     {
-    	char[] sandhiedString = "asmiM zwIkA".toCharArray(); // asmin wIkA => asmiMzwIkA
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("asmiM zwIkA")); // asmin wIkA => asmiMzwIkA
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Mzw";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi1Combination1() throws IOException
     {
-    	char[] sandhiedString = "rAmastu".toCharArray(); // rAmaH tu => rAmastu 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmastu")); // rAmaH tu => rAmastu 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "as";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi1Combination2() throws IOException
     {
-    	char[] sandhiedString = "devAeva".toCharArray(); // devAH eva => devAeva 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("devAeva")); // devAH eva => devAeva 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Ae";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi1Combination3() throws IOException
     {
-    	char[] sandhiedString = "devA eva".toCharArray(); // devAH eva => devAeva 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("devA eva")); // devAH eva => devAeva 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Ae";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi1Combination4() throws IOException
     {
-    	char[] sandhiedString = "munir vadati".toCharArray(); // muniH vadati => munir vadati 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("munir vadati")); // muniH vadati => munir vadati 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "irv";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testVisargaSandhi2Combination1() throws IOException
     {
-    	char[] sandhiedString = "rAmogacCati".toCharArray(); // rAmaH gacCati => rAmogacCati 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmogacCati")); // rAmaH gacCati => rAmogacCati 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "og";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi2Combination2() throws IOException
     {
-    	char[] sandhiedString = "rAmo gacCati".toCharArray(); // rAmaH gacCati => rAmo gacCati 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmo gacCati")); // rAmaH gacCati => rAmo gacCati 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "og";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi2Combination3() throws IOException
     {
-    	char[] sandhiedString = "rAmorgacCati".toCharArray(); // rAmoH gacCati => rAmorgacCati 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmorgacCati")); // rAmoH gacCati => rAmorgacCati 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "org";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
 
     @Test
     public void testVisargaSandhi2Combination4() throws IOException
     {
-    	char[] sandhiedString = "rAmor gacCati".toCharArray(); // rAmoH gacCati => rAmor gacCati 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmor gacCati")); // rAmoH gacCati => rAmor gacCati 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "org";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testAbsoluteFinalSandhiCombination() throws IOException
     {
-    	char[] sandhiedString = "suhRt".toCharArray(); // suhRd => suhRt
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("suhRt")); // suhRd => suhRt
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "t";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testAbsoluteFinalConsonantClustersCombination() throws IOException
     {
-    	char[] sandhiedString = "bhagavan".toCharArray(); // bhagavant => bhagavan
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("bhagavan")); // bhagavant => bhagavan
+    	sandhied.get(0);
     	int sandhiStartIdx = 7;
     	String sandhiedSubString = "n";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testcCWordsCombination1() throws IOException
     {
-    	char[] sandhiedString = "rAmasyacCAtraH".toCharArray(); // rAmasya CAtraH => rAmasyacCAtraH
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmasyacCAtraH")); // rAmasya CAtraH => rAmasyacCAtraH
+    	sandhied.get(0);
     	int sandhiStartIdx = 6;
     	String sandhiedSubString = "acC";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testcCWordsCombination2() throws IOException
     {
-    	char[] sandhiedString = "rAmasya cCAtraH".toCharArray(); // rAmasya CAtraH => rAmasya cCAtraH
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("rAmasya cCAtraH")); // rAmasya CAtraH => rAmasya cCAtraH
+    	sandhied.get(0);
     	int sandhiStartIdx = 6;
     	String sandhiedSubString = "acC";
     	int[][] vowelSandhiCombinations1 = new int[][]{{0, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testPunarSandhiCombination1() throws IOException
     {
-    	char[] sandhiedString = "punaHpunaH".toCharArray(); // punar punar => punaHpunaH 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("punaHpunaH")); // punar punar => punaHpunaH 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "punaHp";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     
     @Test
     public void testPunarSandhiCombination2() throws IOException
     {
-    	char[] sandhiedString = "punaH punaH".toCharArray(); // punar punar => punaH punaH 
+    	RollingCharBuffer sandhied = new RollingCharBuffer();
+    	sandhied.reset(new StringReader("punaH punaH")); // punar punar => punaH punaH 
+    	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "punaHp";
     	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhiedString, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
     	assertTrue(res);
     }
     

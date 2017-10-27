@@ -158,39 +158,39 @@ public class SanskritAnalyzerTest
     	assertTrue(res.toString().equals(expected));
     }
     
-    @Test
-    public void testContainsSandhiedCombinationNoSandhi() throws IOException
-    {
-    	System.out.println("test containsSandhiedCombination()");
-    	char[] buffer = "budDaDarma".toCharArray();
-    	int bufferIdx = 4;
-    	String sandhied = "a";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
-    	assertFalse(res);
-    }
-
-    @Test
-    public void testContainsSandhiedCombinationVowelSandhi() throws IOException
-    {
-    	System.out.println("test containsSandhiedCombination()");
-    	char[] buffer = "DarmATa".toCharArray();
-    	int bufferIdx = 4;
-    	String sandhied = "A";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
-    	assertTrue(res);
-    }
-
-    @Test
-    public void testContainsSandhiedCombinationAbsoluteFinals() throws IOException
-    {
-    	System.out.println("test containsSandhiedCombination()");
-    	char[] buffer = "Darmaprsti".toCharArray();
-    	int bufferIdx = 5;
-    	String sandhied = "ap";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
-    	assertTrue(res);
-    }
-    
+//    @Test
+//    public void testContainsSandhiedCombinationNoSandhi() throws IOException
+//    {
+//    	System.out.println("test containsSandhiedCombination()");
+//    	char[] buffer = "budDaDarma".toCharArray();
+//    	int bufferIdx = 4;
+//    	String sandhied = "a";
+//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
+//    	assertFalse(res);
+//    }
+//
+//    @Test
+//    public void testContainsSandhiedCombinationVowelSandhi() throws IOException
+//    {
+//    	System.out.println("test containsSandhiedCombination()");
+//    	char[] buffer = "DarmATa".toCharArray();
+//    	int bufferIdx = 4;
+//    	String sandhied = "A";
+//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
+//    	assertTrue(res);
+//    }
+//
+//    @Test
+//    public void testContainsSandhiedCombinationAbsoluteFinals() throws IOException
+//    {
+//    	System.out.println("test containsSandhiedCombination()");
+//    	char[] buffer = "Darmaprsti".toCharArray();
+//    	int bufferIdx = 5;
+//    	String sandhied = "ap";
+//    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
+//    	assertTrue(res);
+//    }
+//    
     @Test
 	public void SandhiedCompoundTest() throws IOException
 	{
