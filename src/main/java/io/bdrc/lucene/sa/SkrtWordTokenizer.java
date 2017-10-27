@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
@@ -173,6 +174,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	int MAX_WORD_LEN = 255;
 	
 	private RollingCharBuffer ioBuffer;
+	char[] inputCharArray;
+	int dataLen = fillInputCharArray();
 	
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -181,6 +184,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	protected int normalize(int c) {
 		return c;
+	}
+
+	private int fillInputCharArray() {
+		// ???
+		return 0;
 	}
 
 	@Override
@@ -496,8 +504,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private void ifEndOfInputReachedEmptyInitials() {
+	private void ifEndOfInputReachedEmptyInitials() throws IOException {
 		if (bufferIndex + 1 == dataLen) {
+//		if (ioBuffer.get(bufferIndex + 1) == -1) {
 			initials = null;
 		}
 	}
@@ -539,9 +548,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private void ifSandhiMergesStayOnSameCurrentChar() {
+	private void ifSandhiMergesStayOnSameCurrentChar() throws IOException {
 		if (charCount != -1 && mergesInitials) {
 			if (bufferIndex < dataLen) {				// if end of input is reached
+//			if (ioBuffer.get(bufferIndex-1) != -1) {
 				bufferIndex -= charCount;
 			}
 			mergesInitials = false;						// reinitialize variable
@@ -768,8 +778,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return tokenLength > 0;
 	}
 
-	final private boolean reachedEndOfInputString() {
+	final private boolean reachedEndOfInputString() throws IOException {
 		return tokenEnd == dataLen;
+//		return ioBuffer.get(bufferIndex-1) == -1;
 	}
 
 	final private boolean allCharsFromCurrentInitialAreConsumed() {
@@ -800,8 +811,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		initialCharsIterator.setIndex(0);
 	}
 
-	final private boolean thereAreInitialsToConsume() {
+	final private boolean thereAreInitialsToConsume() throws IOException {
 		return initials != null && !initials.isEmpty() && bufferIndex != dataLen;
+//		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex-1) != -1;
 	}
 
 	final private boolean foundAToken() {
@@ -834,7 +846,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					continue;							// there is no sandhi, so we skip this diff
 				}
 				String diff = t[0];
-				if (containsSandhiedCombination(ioBuffer.getBuffer(), bufferIndex - 1, sandhied, sandhiType)) {
+				if (containsSandhiedCombination(inputCharArray, bufferIndex - 1, sandhied, sandhiType)) {
 
 					t = diff.split("\\+");
 
@@ -953,10 +965,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public void reset() throws IOException {
 		super.reset();
 		bufferIndex = 0;
-		offset = 0;
-		dataLen = 0;
 		finalOffset = 0;
-		ioBuffer.reset();		// make sure to reset the IO buffer!!
+		ioBuffer.reset(input);		// make sure to reset the IO buffer!!
 
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens
