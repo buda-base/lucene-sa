@@ -241,7 +241,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			 * 				- do as before
 			 */
  
-			/* (use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone) */
 			int c = ioBuffer.get(bufferIndex);	// take next char in ioBuffer
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
@@ -249,7 +248,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			/* when ioBuffer is empty (end of input, ...) */
 			if (c == -1) {
 				bufferIndex -= charCount;
-				if (tokenLength == 0 || nonWordChars.length() > 0) {
+				if (tokenLength == 0 && nonWordChars.length() == 0) {
 					finalOffset = correctOffset(bufferIndex);
 					return false;
 				}
@@ -291,12 +290,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				} else {
 				/* we enter here on all other occasions: we don't know if word chars will be a match or not */
 					
-					/*>>> corner case for ioBuffer >>>>>>>*/
-					if (tokenLength >= tokenBuffer.length-1) {			// check if a supplementary could run out of bounds
-						tokenBuffer = termAtt.resizeBuffer(2+tokenLength);	// make sure a supplementary fits in the buffer
-					}
-					/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-
+					ifNeededResize(tokenBuffer);
 					tokenEnd += charCount;							// incrementing to correspond to the index of c					
 					tryToFindMatchIn(currentRow, c);
 					tryToContinueDownTheTrie(currentRow, c);
@@ -479,6 +473,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
+	private void ifNeededResize(char[] tokenBuffer) {
+		if (tokenLength >= tokenBuffer.length-1) {			// check if a supplementary could run out of bounds
+			tokenBuffer = termAtt.resizeBuffer(2+tokenLength);	// make sure a supplementary fits in the buffer
+		}
+	}
+
 	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
 		if (storedInitials != null) {
 			
@@ -499,7 +499,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void ifEndOfInputReachedEmptyInitials() throws IOException {
-//		if (bufferIndex + 1 == dataLen) {
 		if (ioBuffer.get(bufferIndex) == -1) {
 			initials = null;
 		}
@@ -544,8 +543,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifSandhiMergesStayOnSameCurrentChar() throws IOException {
 		if (charCount != -1 && mergesInitials) {
-//			if (bufferIndex < dataLen) {				// if end of input is reached
-			if (ioBuffer.get(bufferIndex) != -1) {
+			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is reached
 				bufferIndex -= charCount;
 			}
 			mergesInitials = false;						// reinitialize variable
@@ -773,7 +771,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean reachedEndOfInputString() throws IOException {
-//		return tokenEnd == dataLen;
 		return ioBuffer.get(bufferIndex) == -1;
 	}
 
@@ -806,7 +803,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
-//		return initials != null && !initials.isEmpty() && bufferIndex != dataLen;
 		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex) != -1;
 	}
 

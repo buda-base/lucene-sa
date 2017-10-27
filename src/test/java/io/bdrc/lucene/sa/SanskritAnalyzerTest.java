@@ -245,7 +245,7 @@ public class SanskritAnalyzerTest
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "b");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
