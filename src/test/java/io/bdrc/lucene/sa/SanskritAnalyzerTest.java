@@ -58,7 +58,7 @@ public class SanskritAnalyzerTest
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
-		List<String> termList = new ArrayList<String>();
+			List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
@@ -295,9 +295,9 @@ public class SanskritAnalyzerTest
 		System.out.println("Testing input starting with non-word");
 		String input = "te 'pi te'pi"; // Darm is not in the Trie, aTa is
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("tad", "api", "tad", "api");
+		List<String> expected = Arrays.asList("tad", "yuzmad", "api", "tad", "yuzmad", "api");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/te'pi_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/te'pi_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
