@@ -1,3 +1,3 @@
-﻿Darma,$/=0|$-0+n/=0|C$-0+n/- cC+C=7|A:i:u:U:f:e:E:o:O$-0+n/- +=1
-DarmA,a$-1+an;-1+a/-+a=1|A$-1+an;-1+a/-+A=1|$-1+an;-1+a/=0
-aTa,$/=0|C$/- cC+C=7
+Darma,$/=0|c$-0+n/- cC+c=6|C$-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O$-0+n/- +=1
+DarmA,a$-1+an;-1+a/-+a=1|A$-1+an;-1+a/-+A=1|$-1+an;-1+a/=0|c$-1+an;-1+a/- c+c=6|C$-1+an;-1+a/- C+C=6
+aTa,$/=0|c$/- cC+c=6|C$/- cC+C=6

@@ -1,4 +1,4 @@
-﻿ab,y:r:l:v$-1+p/- +=2|h$-1+p/- B+h=2|g:G:j:J:q:Q:d:D:b:B$-1+p/- +=4|a:A:i:I:u:U:f:e:E:o:O$-1+p/- +=3
+ab,$/=0
 aba,$/=0
 abaac,$/=0
 ed,$/=0
