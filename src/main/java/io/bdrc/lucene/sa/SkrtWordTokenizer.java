@@ -23,6 +23,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.HashMap;
@@ -79,8 +82,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Constructs a SkrtWordTokenizer using a file
 	 * @param filepath: input file
 	 */
-	public SkrtWordTokenizer(String filepath) throws FileNotFoundException, IOException {
-		init(filepath);
+	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
+		init(new FileReader(filename));
 		this.debug = false;
 	}
 
@@ -89,10 +92,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * 		- a line of dashes at each iteration of incrementToken()
 	 * 		- the current character
 	 * @param debug
-	 * @param filepath
+	 * @param filename
 	 */
-	public SkrtWordTokenizer(boolean debug, String filepath) throws FileNotFoundException, IOException {
-		init(filepath);
+	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
+		init(new FileReader(filename));
 		this.debug = debug;
 	}
 	
@@ -100,7 +103,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Constructs a SkrtWordTokenizer using a default lexicon file
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
-		init("resources/sanskrit-stemming-data/output/total_output.txt");
+		InputStream stream = null;
+		stream = SkrtWordTokenizer.class.getResourceAsStream("total_output.txt");
+		
+		if (stream == null) {
+			// we're not using the jar, there is no resource, assuming we're running the code
+			init(new FileReader("resources/sanskrit-stemming-data/output/total_output.txt"));
+		} else {
+			init(new InputStreamReader(stream));
+		}
 		this.debug = false;
 	}
 
@@ -109,11 +120,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 *
 	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>$<diffs>/<initial_diff>"
 	 * @param filename the file containing the entries to be added
+	 * @throws FileNotFoundException the file containing the Trie can't be found
+	 * @throws IOException the file containing the Trie can't be read
 	 */
-	private void init(String filename) throws FileNotFoundException, IOException {
+	private void init(Reader reader) throws FileNotFoundException, IOException {
 		this.scanner = new Trie(true);
 
-		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+		try (BufferedReader br = new BufferedReader(reader)) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				int endOfFormIndex = line.indexOf(',');

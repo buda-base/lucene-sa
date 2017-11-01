@@ -67,6 +67,14 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<resources>
+      		<resource>
+        		<directory>resources/sanskrit-stemming-data/output/</directory>
+        		<includes>
+          			<include>total_output.txt</include>
+        		</includes>
+      		</resource>
+    	</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
