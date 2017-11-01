@@ -9,8 +9,8 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 /**
  * Devanagari -> SLP1 charfilter
  * 
- * Based on the devanagari tables found in http://unicode.org/charts/PDF/U0900.pdf
- * This filter normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
+ * Based on the devanagari tables found in {@link http://unicode.org/charts/PDF/U0900.pdf}
+ * This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
  * 
  * @author Hélios Hildt
  *
@@ -63,6 +63,7 @@ public class Deva2SlpFilter extends MappingCharFilter {
         consonants.put("\u0938", "s");
         consonants.put("\u0939", "h");
         consonants.put("\u0933\u094d\u0939", "|");
+        
         // lossy normalization of extra consonants and available NFC correspondances
         // the SLP corresponds to the character without nukta (dot), since we assume is
         // is a mistyped Sanskrit character.

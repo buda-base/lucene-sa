@@ -41,7 +41,7 @@ import io.bdrc.lucene.sa.SkrtWordTokenizer;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
- * Unit tests for the Sanskrit tokenizers and filters.
+ * Unit tests for as many sandhi cases as possible.
  */
 public class SandhiTests
 {

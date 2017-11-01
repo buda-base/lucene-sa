@@ -32,8 +32,13 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
 /** 
  * <p>
- * Derived from Lucene 6.4.1 analysis.core.WhitespaceTokenizer.java
- * </p>
+ * A Syllable Tokenizer for Sanskrit encoded in SLP1.
+ * <p>
+ * Does not implement complex syllabation rules, does the same syllabation as
+ * {@link http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html}
+ * 
+ * <p>
+ * Derived from Lucene 6.4.1 analysis.util.CharTokenizer
  * 
  * @author Hélios Hildt
  * 
@@ -171,9 +176,6 @@ public final class SkrtSylTokenizer extends Tokenizer {
 		return charType;
 	}
 
-	/** 
-	 * adapted from CharTokenizer
-	 */
 	@Override
 	public final boolean incrementToken() throws IOException {
 		clearAttributes();

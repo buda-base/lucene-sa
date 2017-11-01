@@ -51,13 +51,16 @@ import io.bdrc.lucene.stemmer.Trie;
  *	{@link SkrtSylTokenizer#isSLP(int)} is used to filter out nonSLP characters.
  *
  * <p>
- * The necessary information for unsandhying finals and initials are obtained from 
+ * The necessary information for unsandhying finals and initials is taken from
+ * {@link resources/sanskrit-stemming-data/output/total_output.txt} 
  * 
  * <br>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
- * For example, "nagaraM" could either be a word of its own or "na" + "garam"
+ * For example, "nagaraM" could either be a word of its own or "na" + "garam",
+ * but is always parsed as a single word
  *
- * Derived from Lucene 6.4.1 analysis.
+ * Derived from Lucene 6.4.1 CharTokenizer, but differs by using a RollingCharBuffer
+ * to still find tokens that are on the IO_BUFFER_SIZE (4096 chars)
  *
  * @author Élie Roux
  * @author Drupchen
@@ -75,8 +78,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Constructs a SkrtWordTokenizer using a file
 	 * @param filepath: input file
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	public SkrtWordTokenizer(String filepath) throws FileNotFoundException, IOException {
 		init(filepath);
@@ -89,8 +90,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * 		- the current character
 	 * @param debug
 	 * @param filepath
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	public SkrtWordTokenizer(boolean debug, String filepath) throws FileNotFoundException, IOException {
 		init(filepath);
@@ -99,8 +98,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/**
 	 * Constructs a SkrtWordTokenizer using a default lexicon file
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
 		init("resources/sanskrit-stemming-data/output/total_output.txt");
@@ -110,10 +107,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Initializes and populates {@see #scanner}
 	 *
-	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>~<diffs>/<initial_diff>"
+	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>$<diffs>/<initial_diff>"
 	 * @param filename the file containing the entries to be added
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	private void init(String filename) throws FileNotFoundException, IOException {
 		this.scanner = new Trie(true);
@@ -146,7 +141,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/* tokens related */
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>();	
-	// Integer[] contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), 
+	// contains : {startingIndex, endingIndex, tokenLength, (isItAMatchInTheTrie ? 1 : 0), 
 	//												(isItAMatchInTheTrie ? theIndexOfTheCmd : -1)}
 
 	/* nonWords related */
@@ -449,7 +444,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			boolean lemmasWereAdded = ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens();
 			if (lemmasWereAdded) {
 				ifSandhiMergesStayOnSameCurrentChar();	// so we can unsandhi the initial and find the start of next word
-				tokenEnd -= charCount;					// TODO check if this adjusts the token offsets
+				tokenEnd -= charCount;					
 				
 				finalsIndex = bufferIndex;				// save index of finals for currentCharIsSpaceWithinSandhi()
 			}
@@ -479,6 +474,141 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
+	/**
+	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
+	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
+	 * only reconstructs the lemmas if there is a match.
+	 *
+	 *
+	 * @return: the list of all the possible lemmas given the current context
+	 */
+	HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
+		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
+		String[] t = new String[0];
+
+		HashMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
+			String sandhied = current.getKey();
+			HashSet<String> diffs = current.getValue();
+
+			for (String lemmaDiff: diffs) {
+				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
+
+				t = lemmaDiff.split("=");
+				int sandhiType = Integer.parseInt(t[1]);
+				if (sandhiType == 0) {
+					continue;							// there is no sandhi, so we skip this diff
+				}
+				String diff = t[0];
+				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
+
+					t = diff.split("\\+");
+
+					if (diff.endsWith("+")) {			// ensures t has alway two elements
+						t = new String[2];
+						t[0] = diff.split("\\+")[0];
+						t[1] = "";
+					}
+
+					int toDelete = Integer.parseInt(t[0]);
+					String toAdd;
+					String newInitial = "";
+
+					if (t[1].contains("/")) {				// there is a change in initial
+						t = t[1].split("/");
+						toAdd = t[0];
+						newInitial = t[1];
+						// TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
+						if (initials == null) {
+							initials = new HashSet<String>();
+							storedInitials = new HashSet<String>();
+						}
+						initials.add(newInitial);
+						storedInitials.add(newInitial);
+					} else {								// there no change in initial
+						toAdd = t[1];
+					}
+
+					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
+					totalLemmas.add(lemma);
+				}
+			}
+		}
+		return totalLemmas;
+	}
+
+	/**
+	 * Tells whether sandhied could be found between the two words.
+	 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
+	 * <p>
+	 * See SandhiedCombinationTests for how these figures were obtained
+	 *
+	 * @param ioBuffer: is given as parameter for the tests
+	 * @return: true if sandhied is one of the combinations; false otherwise
+	 */
+	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
+		int[][] combinations;
+
+		switch(sandhiType) {
+
+		case 1:																			// vowel sandhi
+			if (sandhied.length() == 1) {
+				mergesInitials = true;
+			}
+			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 2:																			// consonant sandhi 1
+			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 3:																		// consonant sandhi 1 vowels
+			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			
+		case 4:																			// consonant sandhi 2
+			combinations = new int[][]{{0, 4}, {0, 3}, {0, 2}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 5:																			// visarga sandhi
+			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 6:																			// visarga sandhi 2
+			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			
+		case 7:																			// absolute finals sandhi
+			combinations = new int[][]{{0, 1}};		// (consonant clusters are always reduced to the first consonant)
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 8:																			// "cC"-words sandhi
+			combinations = new int[][]{{0, 4}, {0, 3}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+
+		case 9:																			// special sandhi: "punar"
+			combinations = new int[][]{{-4, 3}, {-4, 2}};
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			
+		default:
+			return false;
+		}
+	}
+
+	static boolean isSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int[][] combinations) throws IOException {
+		for (int i = 0; i <= combinations.length-1; i++) {
+			int start = combinations[i][0];
+			int end = combinations[i][1];
+			
+			String current = String.valueOf(ioBuffer.get(bufferIndex+start, end-start));
+			
+			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
 		if (storedInitials != null) {
 			
@@ -808,140 +938,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	final private boolean foundAToken() {
 		return currentRow == null && foundMatch == true;
-	}
-
-	HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
-		/**
-		 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
-		 * iterates through them, checking if the sandhied string is found in the sandhiable range,
-		 * only reconstructs the lemmas if there is a match.
-		 *
-		 *
-		 * @return: the list of all the possible lemmas given the current context
-		 */
-		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
-		String[] t = new String[0];
-
-		HashMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
-		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
-			String sandhied = current.getKey();
-			HashSet<String> diffs = current.getValue();
-
-			for (String lemmaDiff: diffs) {
-				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
-
-				t = lemmaDiff.split("=");
-				int sandhiType = Integer.parseInt(t[1]);
-				if (sandhiType == 0) {
-					continue;							// there is no sandhi, so we skip this diff
-				}
-				String diff = t[0];
-				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
-
-					t = diff.split("\\+");
-
-					if (diff.endsWith("+")) {			// ensures t has alway two elements
-						t = new String[2];
-						t[0] = diff.split("\\+")[0];
-						t[1] = "";
-					}
-
-					int toDelete = Integer.parseInt(t[0]);
-					String toAdd;
-					String newInitial = "";
-
-					if (t[1].contains("/")) {				// there is a change in initial
-						t = t[1].split("/");
-						toAdd = t[0];
-						newInitial = t[1];
-						// TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
-						if (initials == null) {
-							initials = new HashSet<String>();
-							storedInitials = new HashSet<String>();
-						}
-						initials.add(newInitial);
-						storedInitials.add(newInitial);
-					} else {								// there no change in initial
-						toAdd = t[1];
-					}
-
-					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
-					totalLemmas.add(lemma);
-				}
-			}
-		}
-		return totalLemmas;
-	}
-
-	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
-		/**
- 		 * Tells whether sandhied could be found between the two words.
- 		 * Does it by generating all the legal combinations, filtering spaces and checking for equality.
- 		 *
-		 * See SamdhiedCombinationTests for how these figures were obtained
-		 *
-		 * @return: true if sandhied is one of the combinations; else otherwise
-		 */
-		int[][] combinations;
-
-		switch(sandhiType) {
-
-		case 1:																			// vowel sandhi
-			if (sandhied.length() == 1) {
-				mergesInitials = true;
-			}
-			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 2:																			// consonant sandhi 1
-			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 3:																		// consonant sandhi 1 vowels
-			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-			
-		case 4:																			// consonant sandhi 2
-			combinations = new int[][]{{0, 4}, {0, 3}, {0, 2}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 5:																			// visarga sandhi
-			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 6:																			// visarga sandhi 2
-			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-			
-		case 7:																			// absolute finals sandhi
-			combinations = new int[][]{{0, 1}};		// (consonant clusters are always reduced to the first consonant)
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 8:																			// "cC"-words sandhi
-			combinations = new int[][]{{0, 4}, {0, 3}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-
-		case 9:																			// special sandhi: "punar"
-			combinations = new int[][]{{-4, 3}, {-4, 2}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
-			
-		default:
-			return false;
-		}
-	}
-
-	static boolean isSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int[][] combinations) throws IOException {
-		for (int i = 0; i <= combinations.length-1; i++) {
-			int start = combinations[i][0];
-			int end = combinations[i][1];
-			
-			String current = String.valueOf(ioBuffer.get(bufferIndex+start, end-start));
-			
-			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override

@@ -3,6 +3,12 @@ package io.bdrc.lucene.sa;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/** 
+ * Parses cmds from the total Trie {@code total_output.txt} and reconstructs
+ * the sandhied substring found between the two words undergoing sandhi.
+ * <p> 
+ * Is used by {@link SkrtWordTokenizer#reconstructLemmas()} 
+ */
 public class CmdParser {
 	private String[] t = new String[2];  // temporary variable constantly reused
 	
@@ -21,36 +27,39 @@ public class CmdParser {
 	// for unsandhied (HashMap value)
 	private String initialCharsOriginal = null;
 	private String toAdd = null;
+	
 	private HashMap<String, HashSet<String>> sandhis = null;
 
+	/**
+	 * note: currently, parsing cmd is not done using indexes. this method might be slow.
+	 * 
+	 * This is how cmd is structured, with the names used in this method: (correct formatting in the code file)
+	 * 
+	 *             
+	 *      <form>,<initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>$<...>/<...>|
+	 * [inflected],[cmd                                                                                  ]
+	 *             [entry                                                              ]|[entry          ]
+	 *             [initials               ]$[diffs                                    ]
+	 *             [initial]:[initial]:[...]$[diffFinals                 ]/[diffInitial]
+	 *                                       [diffFinal];[diffFinal];[...]
+	 * For example:
+	 *       DarmA,a                        $-A+an      ;-A+a             /-+a          |
+	 *             A                        $-A+an      ;-A+a             /-+A          |
+	 *                                      $-A+an      ;-A+a             /             |
+	 *             c                        $-A+an      ;-A+a             /- c+c        |
+	 *             C                        $-A+an      ;-A+a             /- C+C
+	 *             
+	 * 
+	 * [diffFinal                                                      ]
+	 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
+	 * 
+	 * [diffInitial                                   ]
+	 * [-<initialCharsSandhied>+<initialCharsOriginal>]
+	 * 
+	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
+	 * @return: parsed structure 
+	 */
 	public HashMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
-		/**
-		 * note: currently, parsing cmd is not done using indexes. this method might be slow.
-		 * 
-		 * This is how cmd is structured, with the names used in this method:
-		 * 
-		 *       DarmA,a                        $-A+an      ;-A+a             /-+a          |
-		 *             A                        $-A+an      ;-A+a             /-+A          |
-		 *                                      $-A+an      ;-A+a             /             |
-		 *             c                        $-A+an      ;-A+a             /- c+c        |
-		 *             C                        $-A+an      ;-A+a             /- C+C
-		 *             
-		 *      <form>,<initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>$<...>/<...>|
-		 * [inflected],[cmd                                                                                  ]
-		 *             [entry                                                              ]|[entry          ]
-		 *             [initials               ]$[diffs                                    ]
-		 *             [initial]:[initial]:[...]$[diffFinals                 ]/[diffInitial]
-		 *                                       [diffFinal];[diffFinal];[...]
-		 * 
-		 * [diffFinal                                                      ]
-		 * [-<numberOfcharsToDeleteFromInflected>+<charsToAddToGetTheLemma>]
-		 * 
-		 * [diffInitial                                   ]
-		 * [-<initialCharsSandhied>+<initialCharsOriginal>]
-		 * 
-		 * @param cmd to be parsed. contains the info for reconstructing lemmas 
-		 * @return: parsed structure 
-		 */
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
 		sandhis = new HashMap<String, HashSet<String>>();
 		

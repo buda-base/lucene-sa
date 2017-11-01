@@ -19,34 +19,33 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.bdrc.lucene.sa.SkrtWordTokenizer;
-
-import static org.hamcrest.CoreMatchers.*;
-
 /**
  * Unit tests for the Sanskrit tokenizers and filters.
  */
-public class SanskritAnalyzerTest
+public class WordTokenizerTests
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();
@@ -70,86 +69,22 @@ public class SanskritAnalyzerTest
 			assertTrue(false);
 		}
 	}
+	
+	static private String repeatChar(char c, int times) {
+		 char[] array = new char[times]; 
+		 Arrays.fill(array, c);
+		 return String.valueOf(array);
+	}
 
 	@BeforeClass
 	public static void init() {
 		System.out.println("before the test sequence");
 	}
 
-	@Test
-	public void testIsTrailingCluster() throws Exception {
-		// testing trailing clusters in two contexts: before a space and before the end of the input string
-		System.out.println("Testing isTrailingCluster()");
-		String input = "vanty Sas";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("vanty", "Sas");
-		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
-		assertTokenStream(res, expected);
-	}
-	
-	@Test
-	public void testSylTokenizer() throws IOException {
-		// the syllabation in "expected(char) c" is the output of Scharf's script
-		System.out.println("Testing SkrtSylTokenizer()");
-		String input = "pfTivyA lABe pAlane ca yAvanty arTa SAstrARi pUrva AcAryEH prasTApitAni prAyaSas tAni saMhftya^ekam idam arTa SAstraM kftam //";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("pf", "Ti", "vyA", "lA", "Be", "pA", "la", "ne", "ca", "yA", "vanty", "a", "rTa", "SA", "strA", "Ri", "pU", "rva", "A", "cA", "ryEH", "pra", "sTA", "pi", "tA", "ni", "prA", "ya", "Sas", "tA", "ni", "saM", "hf", "tya^e", "kam", "i", "dam", "a", "rTa", "SA", "straM", "kf", "tam", "//");
-
-		System.out.println("0 " + input);
-		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
-		assertTokenStream(res, expected);
-	}
-	
     @Test
-    public void testTransliterationFilter() throws Exception {
-        //CharFilter cs = new TransliterationFilter(new StringReader( "\u0915 \u0915\u094d\u0915 \u0915\u093F \u0915\u094d\u0915\u093F \u0933\u094d\u0939\u0941") );
-    	System.out.println("Testing transliterationFilter()");
-    	String input = "अथ राजकन्या चन्द्रवती नामाभिनवरुपयौवनसम्पन्ना सखीद्वितीयैकस्मिन्महोत्सवदिवसे नगरं निरिक्षमाणास्ति ।"; 
-    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
-    	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-        List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
-        assertTokenStream(ts, expected);
-    }
-    
-    @Test
-    public void testZwjZwnjTranscoding() throws Exception {
-    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
-    	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
-    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
-    	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	List<String> expected = Arrays.asList("kza", "kza", "kza");
-    	assertTokenStream(ts, expected);
-    }
-	
-    @Test
-    public void testRoman2SlpNfcNfd() throws Exception {
-    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
-    	String input = "\u1e5d \u1e5b\u0304 r\u0323\u0304"; // NFC, semi-NFD and NFD versions of ṝ 
-    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-    	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	List<String> expected = Arrays.asList("F", "F", "F");
-    	assertTokenStream(ts, expected);
-    }
-
-    @Test
-    public void testRoman2SlpIso15919() throws Exception {
-    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
-    	String input = "ẏ m̆b ē k͟h"; // normalizations and deletions 
-    	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-    	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	List<String> expected = Arrays.asList("y", "e");
-    	assertTokenStream(ts, expected);
-    }
-
-    @Test
-    public void testParseCmd() throws IOException
+    public void testCmdParser() throws IOException
     {
-    	System.out.println("test parseCmd()");
-    	// Darma,~/=0|c~-0+n/- cC+c=6|C~-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O~-0+n/- +=1
+    	System.out.println("CmdParser: parse cmd of Darma");
     	String input = "$/=0|c$-0+n/- cC+c=6|C$-0+n/- cC+C=6|A:i:u:U:f:e:E:o:O$-0+n/- +=1";
     	String expected = "{aA=[0+n/A=1], au=[0+n/u=1], aU=[0+n/U=1], ae=[0+n/e=1], aE=[0+n/E=1], af=[0+n/f=1], macC=[0+n/c=6, 0+n/C=6], ai=[0+n/i=1], ao=[0+n/o=1], aO=[0+n/O=1]}";
     	System.out.println("0 " + input);
@@ -160,9 +95,9 @@ public class SanskritAnalyzerTest
     }
     
     @Test
-    public void testContainsSandhiedCombinationNoSandhi() throws IOException
+    public void testContainsSandhiedCombination1NoSandhi() throws IOException
     {
-    	System.out.println("test containsSandhiedCombination()");
+    	System.out.println("containsSandhiedCombination() 1: no sandhi");
     	RollingCharBuffer buffer = new RollingCharBuffer();
     	buffer.reset(new StringReader("budDaDarma"));
     	buffer.get(0);
@@ -173,9 +108,9 @@ public class SanskritAnalyzerTest
     }
 
     @Test
-    public void testContainsSandhiedCombinationVowelSandhi() throws IOException
+    public void testContainsSandhiedCombination2VowelSandhi() throws IOException
     {
-    	System.out.println("test containsSandhiedCombination()");
+    	System.out.println("containsSandhiedCombination() 2: vowel sandhi");
     	RollingCharBuffer buffer = new RollingCharBuffer();
     	buffer.reset(new StringReader("DarmATa"));
     	buffer.get(0);
@@ -188,7 +123,7 @@ public class SanskritAnalyzerTest
     @Test
     public void testContainsSandhiedCombinationAbsoluteFinals() throws IOException
     {
-    	System.out.println("test containsSandhiedCombination()");
+    	System.out.println("containsSandhiedCombination() 3: absolute finals");
     	RollingCharBuffer buffer = new RollingCharBuffer();
     	buffer.reset(new StringReader("Darmaprsti"));
     	buffer.get(0);
@@ -201,7 +136,7 @@ public class SanskritAnalyzerTest
     @Test
 	public void SandhiedCompoundTest() throws IOException
 	{
-		System.out.println("sandhied compound test");
+		System.out.println("sandhied compounds");
 		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("Darman", "Darma", "aTa", "Darman", "Darma", "ADa", "Darman", "Darma", "aTa");
@@ -225,9 +160,9 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void testNonMaximalMatchEd() throws IOException
+	public void testNonMaximalMatch1() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
+		System.out.println("non-maximal match 1");
 		String input = "eded";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed", "ed");
@@ -238,48 +173,48 @@ public class SanskritAnalyzerTest
 	}
 
     @Test
-	public void testNonMaximalMatch() throws IOException
+	public void testNonMaximalMatch2() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
+		System.out.println("non-maximal match 2");
 		String input = "abab";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "b");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
     
     @Test
-	public void testNonMaximalMatchFollowedWithNonWord() throws IOException
+	public void testNonMaximalMatch3FollowedWithNonWord() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
+		System.out.println("non-maximal match 3: followed by a non-word");
 		String input = "ababa";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba", "ba");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
     
     @Test
-	public void testNonMaximalMatchFollowedWithNonWordEd() throws IOException
+	public void testNonMaximalMatch4FollowedWithNonWord() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
+		System.out.println("non-maximal match 4: followed by a non-word");
 		String input = "edede";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed", "ed", "e");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/abab_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
     
     @Test
-	public void testNonMaximalMatchPrecededWithNonWord() throws IOException
+	public void testNonMaximalMatch5PrecededWithNonWord() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
+		System.out.println("non-maximal match 5: preceded by a non-word");
 		String input = "auieabab";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("auie", "aba", "b");
@@ -290,23 +225,23 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void testSandhiWithSpace() throws IOException
+	public void testSpaceInSandhi() throws IOException
 	{
-		System.out.println("Testing input starting with non-word");
-		String input = "te 'pi te'pi"; // Darm is not in the Trie, aTa is
+		System.out.println("space in sandhi");
+		String input = "te 'pi te'pi";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("tad", "yuzmad", "api", "tad", "yuzmad", "api");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/te'pi_test.txt");
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/te'pi_test.txt");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
     
     @Test
-	public void nonSandhiedCompoundTest() throws IOException
+	public void testNonSandhiedCompound() throws IOException
 	{
-		System.out.println("non-sandhied compound test");
-		String input = "?budDaDarma.";
+		System.out.println("non-sandhied compound");
+		String input = "budDaDarma";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("budDa", "Darma");
 		System.out.println("0 " + input);
@@ -316,22 +251,9 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void bug1WordTokenizerTest() throws IOException
-	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		String input = "aTa rAjakanyA";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
-
-    @Test
 	public void testDeletingInitialsOnEndOfInput() throws IOException
 	{
-		System.out.println("Testing SkrtWordTokenizer()");
+		System.out.println("deleting initials on end of input");
 		String input = "kanyA";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya", "kana");
@@ -340,53 +262,13 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
-
-    @Test
-	public void testExtraTokenWithInitialsBug() throws IOException
-	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		String input = "kanyA candravatI";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
     
     @Test
-	public void testExtraTokenBug() throws IOException
+	public void testLongInput() throws IOException
 	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		String input = "divase na";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("divasa", "na");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
-    
-    @Test
-	public void testMissingTokenBug() throws IOException
-	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		String input = "saKIdvitIyEkasmin";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("saKi", "dvitIya", "ekasmin");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
-    
-    @Test
-	public void wordTokenizerTest() throws IOException
-	{
-		System.out.println("Testing SkrtWordTokenizer()");
-		// Sanskrit Heritage site outputs: 
-		//    "aTa rAja kanyA candravatI nAmABinavarupayOvanasampannA saKI dvitIyA ekasmin maha utsava divase na garaM nirikzamARAsti"
-		// We do lemmatization and "nAmA..." is split because "na" exists in the Trie 
+		System.out.println("long input\nSanskritHeritge outputs:\n\taTa rAja kanyA candravatI nAmABinavarupayOvanasampannA"
+													+" saKI dvitIyA ekasmin maha utsava divase na garaM nirikzamARAsti\n"
+													+"'nAmA is split here because we lemmatize and 'na' exists in the Trie"); 
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "ekasmin", "maho", "maha", "utsava", "divasa", "na", "garaM", "nirikzamARAsti");
@@ -395,24 +277,11 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
-
-    @Test
-	public void testBugNonSLP() throws IOException
-	{
-		System.out.println("Testing nonSLP input");
-		String input = "ka%nyA";
-		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ka", "nyA");
-		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/aTa_test.txt");
-		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, expected);
-	}
     
     @Test
-	public void testNonSLPString() throws IOException
+	public void testNonSLPOnly() throws IOException
 	{
-		System.out.println("Testing nonSLP input");
+		System.out.println("non-SLP only");
 		String input = "«»(**-éàÀ%$–@)";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList();
@@ -423,9 +292,9 @@ public class SanskritAnalyzerTest
 	}
     
     @Test
-	public void testSLPStringWithModifiers() throws IOException
+	public void testSLPModifiers() throws IOException
 	{
-		System.out.println("Testing nonSLP input");
+		System.out.println("SLP modifiers");
 		String input = "a+Ta/8 rA+ja^1ka\\nyA^97";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
@@ -438,7 +307,7 @@ public class SanskritAnalyzerTest
     @Test
 	public void testMixedSLPNonSLPString() throws IOException
 	{
-		System.out.println("Testing nonSLP input");
+		System.out.println("mixed SLP non-SLP");
 		String input = "«»(**-éàÀ%$–@)aTa rAjakanyA«»(**- éàÀ%$–@)aTa rAjakanyA «»(**- éàÀ%$–@)";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "aTa", "rAja", "kanya", "kana");
@@ -447,6 +316,94 @@ public class SanskritAnalyzerTest
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
+    
+    @Test
+	public void bug1InWordTokenizer() throws IOException
+	{
+		System.out.println("bug1");
+		String input = "aTa rAjakanyA";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+
+    @Test
+	public void bug2ExtraTokenWithInitials() throws IOException
+	{
+		System.out.println("bug2");
+		String input = "kanyA candravatI";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void bug3ExtraToken() throws IOException
+	{
+		System.out.println("bug3");
+		String input = "divase na";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("divasa", "na");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+	public void bug4MissingToken() throws IOException
+	{
+		System.out.println("bug4");
+		String input = "saKIdvitIyEkasmin";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("saKi", "dvitIya", "ekasmin");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+
+    @Test
+	public void bug5NonSLP() throws IOException
+	{
+		System.out.println("bug5");
+		String input = "ka%nyA";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("ka", "nyA");
+		System.out.println("0 " + input);
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/aTa_test.txt");
+		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(syllables, expected);
+	}
+    
+    @Test
+    public void bug6IoBufferSizeLimit() throws IOException
+    {
+    	System.out.println("bug6");
+    	List<String> expected = Arrays.asList("budDa", "Darma");
+    	SkrtWordTokenizer tibWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/budDaDarma_test.txt");
+    	
+    	HashMap<Integer, Integer> ranges = new HashMap<Integer, Integer>();
+    	ranges.put(2030, 2049);
+    	ranges.put(4080, 4097);
+    
+    	for (HashMap.Entry<Integer, Integer> entry : ranges.entrySet()) {
+    		for (int i=entry.getKey() ; i<entry.getValue(); i++) {
+    			String input = "budDaDarma";
+    			String filling = repeatChar('.', i);
+    			Reader reader = new StringReader(filling+input);
+    			System.out.println("0 " + String.valueOf(i) + " dots + " + input);
+    			TokenStream syllables = tokenize(reader, tibWordTokenizer);
+    			assertTokenStream(syllables, expected);
+    		}			
+    	}
+    }
     
 	@AfterClass
 	public static void finish() {

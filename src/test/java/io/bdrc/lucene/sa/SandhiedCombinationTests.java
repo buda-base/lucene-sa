@@ -33,8 +33,8 @@ import io.bdrc.lucene.sa.SkrtWordTokenizer;
 /**
  * Unit tests for the sandhied combinations
  * 
- * Each combination must be tested independently since isSandhiedCombination() returns
- * at the first corresponding combination.
+ * Each combination must be tested as the only possible one since isSandhiedCombination() 
+ * returns at the first corresponding combination.
  */
 public class SandhiedCombinationTests
 {
