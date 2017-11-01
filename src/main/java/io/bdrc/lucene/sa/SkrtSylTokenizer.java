@@ -17,7 +17,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-
 package io.bdrc.lucene.sa;
 
 import java.io.IOException;
@@ -41,6 +40,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  * Derived from Lucene 6.4.1 analysis.util.CharTokenizer
  * 
  * @author Hélios Hildt
+ * @author Élie Roux
  * 
  */
 public final class SkrtSylTokenizer extends Tokenizer {
