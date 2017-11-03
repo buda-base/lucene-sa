@@ -42,7 +42,7 @@ import org.junit.Test;
 /**
  * Unit tests for the Sanskrit filters and SylTokenizer.
  */
-public class SlpFiltersAndSylTokenizerTests
+public class SkrtAnalyzerTests
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();
@@ -78,7 +78,7 @@ public class SlpFiltersAndSylTokenizerTests
 		String input = "vanty Sas";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("vanty", "Sas");
-		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
+		TokenStream res = tokenize(reader, new SkrtSyllableTokenizer());
 		assertTokenStream(res, expected);
 	}
 	
@@ -94,7 +94,7 @@ public class SlpFiltersAndSylTokenizerTests
 				"kf", "tam", "//");
 
 		System.out.println("0 " + input);
-		TokenStream res = tokenize(reader, new SkrtSylTokenizer());
+		TokenStream res = tokenize(reader, new SkrtSyllableTokenizer());
 		assertTokenStream(res, expected);
 	}
 	
@@ -140,6 +140,19 @@ public class SlpFiltersAndSylTokenizerTests
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	List<String> expected = Arrays.asList("y", "e");
     	assertTokenStream(ts, expected);
+    }
+    
+    @Test
+    public void testParseStopwords() throws Exception {
+    	System.out.println("Parse stopwords file");
+    	ArrayList<String> result = SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#");
+    	boolean res = true;
+    	for (String stop: result) {
+    		if (stop.contains("#") || stop.equals("")) {
+    			res = false;
+    		}
+    	}
+    	assertTrue(res);
     }
 
 	@AfterClass

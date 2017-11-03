@@ -1,0 +1,759 @@
+#Pronouns_in_Sanskrit
+	#First Person
+		#Nominative Case
+			aham		# meaning 'I' (Singular)
+			AvAm		# meaning 'Two of us' // this is a special of duality which can be included but might cause redundancy (Dual)
+			vayam		# meaning 'We' (Plural)
+		#Accusative Case
+			mAm
+			mA
+			AvAm
+			asmAn
+			naH		# nas Pronounced as 'naḥ'
+		#Instrumental Case
+			mayA
+			AvAByAm
+			asmABis
+		#Dative Case
+			mahyam
+			me
+			AvAByAm
+			nO
+			asmaByam
+			naH
+		#Ablative Case
+			mat
+			AvAByAm
+			asmat
+		#Genitive Case
+			mama
+			me
+			AvayoH
+			asmAkam
+			naH
+		#Locative Case
+			mayi
+			AvayoH
+			asmAsu
+
+	#Second Person
+		#Nominative Case
+			tvam		# meaning 'You'
+			yuvAm		# meaning 'Both of you'
+			yUyam		# meaning 'All of you'
+		#Accusative Case
+			tvAm
+			tvA
+			yuvAm
+			vAm
+			yuzmAn
+			vaH		# nas Pronounced as 'naḥ'
+		#Instrumental Case
+			tvayA
+			yuvAByAm
+			yuzmABiH
+		#Dative Case
+			tuByam
+			te
+			yuvAByAm
+			vAm
+			yuzmaByam
+			vaH
+		#Ablative Case
+			tvat
+			yuvAByAm
+			yuzmat
+		#Genitive Case
+			tava
+			te
+			yuvayoH
+			vAm
+			yuzmAkam
+			vaH
+		#Locative Case
+			tvayi
+			yuvayoH
+			yuzmAsu
+
+	#Third Person
+		#Masculine
+			#Nominative Case
+				saH		# meaning 'He'
+				tO		# meaning 'They both'
+				te		# meaning 'They'
+			#Accusative Case
+				tam
+				tO
+				tAn
+			#Instrumental Case
+				tena
+				tAByAm
+				tEH
+			#Dative Case
+				tasmE
+				tAByAm
+				teByaH
+			#Ablative Case
+				tasmAt
+				tAByAm
+				teByaH
+			#Genitive Case
+				tasya
+				tayoH
+				tezAm
+			#Vocative Case
+				tasmin
+				tayoH
+				tezu
+
+		#Feminine
+			#Nominative Case
+				sA		# meaning 'She'
+				te		# meaning 'They both'
+				tAH		# meaning 'They'
+			#Accusative Case
+				tAm
+				te
+				tAH
+			#Instrumental Case
+				tayA
+				tAByAm
+				tABiH
+			#Dative Case
+				tasyE
+				tAByAm
+				tAByaH
+			#Ablative Case
+				tasyAH
+				tAByAm
+				tAByaH
+			#Genitive Case
+				tasya
+				tayoH
+				tAsAm
+			#Vocative Case
+				tasyAm
+				tayoH
+				tAsu
+
+		#Neuter
+			#Nominative Case
+				tat		# meaning 'It'
+				te		# meaning 'They both'
+				tAni		# meaning 'They'
+			#Accusative Case
+				tat
+				te
+				tAni
+			#Instrumental Case
+				tayA
+				tAByAm
+				tABiH
+			#Dative Case
+				tasyE
+				tAByAm
+				tAByaH
+			#Ablative Case
+				tasyAH
+				tAByAm
+				tAByaH
+			#Genitive Case
+				tasya
+				tayoH
+				tAsAm
+			#Vocative Case
+				tasyAm
+				tayoH
+				tAsu
+
+	#Demonstrative Pronouns
+		#Masculine
+			#Nominative Case
+				ayam		# meaning 'This'
+				imO		# meaning 'These two'
+				ime		# meaning 'These'
+			#Accusative Case
+				imam
+				imO
+				imAn
+			#Instrumental Case
+				anena
+				AByAm
+				eBiH
+			#Dative Case
+				asmE
+				AByAm
+				eByaH
+			#Ablative Case
+				asmAt
+				AByAm
+				eByaH
+			#Genitive Case
+				asya
+				anayoH
+				ezAm
+			#Locative Case
+				asmin
+				anayoH
+				ezu
+
+		#Feminine
+			#Nominative Case
+				iyam
+				ime
+				imAH
+			#Accusative Case
+				imAm
+				ime
+				imAH
+			#Instrumental Case
+				anayA
+				AByAm
+				ABiH
+			#Dative Case
+				asyEE
+				AByAm
+				AByaH
+			#Ablative Case
+				asyAH
+				AByAm
+				AByaH
+			#Genitive Case
+				asyAH
+				anayoH
+				AsAm
+			#Locative Case
+				asyAm
+				anayoH
+				Asuu
+
+		#Neuter
+			#Nominative Case
+				idam
+				ime
+				imAni
+			#Accusative Case
+				idam
+				ime
+				imAni
+			#Instrumental Case
+				anena
+				AByAm
+				eBiH
+			#Dative Case
+				asmE
+				AByAm
+				eByaH
+			#Ablative Case
+				asmAt
+				AByAm
+				eByaH
+			#Genitive Case
+				asya
+				anayoH
+				ezAm
+			#Locative Case
+				asmin
+				anayoH
+				ezu
+
+	#Pronoun 'etat' for 'This'
+		#Masculine
+			#Nominative
+				ezaH		# Singular
+				etO		# Dual
+				ete		# Plural
+			#Accusative
+				etam
+				enam
+				etO
+				enO
+				etAn
+				enAn
+			#Instrumental
+				etena
+				etAByAm
+				etEH
+			#Dative
+				etasmE
+				etAByAm
+				eteByaH
+			#Ablative
+				etasmAt
+				etAByAm
+				eteByaH
+			#Genitive
+				etasya
+				etasmin
+				etezAm
+			#Locative
+				etasmin
+				etasmin
+				etezu
+
+		#Feminine
+			#Nominative
+				ezA		# Singular
+				ete		# Dual
+				etAH		# Plural
+			#Accusative
+				etAm
+				enAm
+				ete
+				ene
+				etAH
+				enAH
+			#Instrumental
+				etayA
+				enayA
+				etAByAm
+				etABiH
+			#Dative
+				etasyE
+				etAByAm
+				etAByaH
+			#Ablative
+				etasyAH
+				etAByAm
+				etAByaH
+			#Genitive
+				etasyAH
+				etayoH
+				enayoH
+				etAsAm
+			#Locative
+				etasyAm
+				etayoH
+				enayoH
+				etAsu
+
+		#Neuter
+			#Nominative
+				etat
+				etad		# Singular
+				ete		# Dual
+				etAni		# Plural
+			#Accusative
+				etat
+				etad
+				enat
+				enad
+				ete
+				ene
+				etAni
+				enAni
+			#Instrumental
+				etena
+				enena
+				etAByAm
+				etEH
+			#Dative
+				etasmE
+				etAByAm
+				eteByaH
+			#Ablative
+				etasmAt
+				etAByAm
+				eteByaH
+			#Genitive
+				etasya
+				etayoH
+				enayoH
+				etezAm
+			#Locative
+				etasmin
+				etayoH
+				enayoH
+				etezu
+
+	#More on 'This' with 'adas'
+		#Masculine
+			#Nominative
+				asO		# Singular
+				amU		# Dual
+				amI		# Plural
+			#Accusative
+				amUm
+				amU
+				amUn
+			#Instrumental
+				amunA
+				amUByAm
+				amIBiH
+			#Dative
+				amuzmE
+				amUByAm
+				amIByaH
+			#Ablative
+				amuzmAt
+				amUByAm
+				amIByaH
+			#Genitive
+				amuzya
+				amuyoH
+				amIzAm
+			#Locative
+				amuzmin
+				amuyoH
+				amIzu
+
+		#Feminine
+			asO		# Singular
+			amU		# Dual
+			amUH		# Plural
+			#Accusative
+				amUm
+				amU
+				amUH
+			#Instrumental
+				amuyA
+				amUByAm
+				amUBiH
+			#Dative
+				amuzyE
+				amUByAm
+				amUByaH
+			#Ablative
+				amuzyAH
+				amUByAm
+				amUByaH
+			#Genitive
+				amuzyAH
+				amuyoH
+				amUzAm
+			#Locative
+				amuzyAm
+				amuyoH
+				amUzu
+
+		#Neuter
+			#Nominative
+				amu		# Singular
+				amunI		# Dual
+				amUni		# Plural
+			#Accusative
+				amu
+				amunI
+				amUni
+			#Instrumental
+				amunA
+				amUByAm
+				amIBiH
+			#Dative
+				amuzmE
+				amUByAm
+				amIByaH
+			#Ablative
+				amuzmAt
+				amUByAm
+				amIByaH
+			#Genitive
+				amuzya
+				amuyoH
+				amIzAm
+			#Locative
+				amuzmin
+				amuyoH
+				amIzu
+
+	#Interrogative Pronouns
+		#Masculine 'kim'
+			#Nominative
+				kaH		# Singular
+				kO		# Dual
+				ke		# Plural
+			#Accusative
+				kam
+				kO
+				kAn
+			#Instrumental
+				kena
+				kAByAm
+				kEH
+			#Dative
+				kasmE
+				kAByAm
+				keBya
+			#Ablative
+				kasmAt
+				kAByAm
+				keBya
+			#Genitive
+				kasya
+				kayoH
+				kezAm
+			#Locative
+				kasmin
+				kayoH
+				kezu
+
+		#Feminine 'kim'
+			#Nominative
+				kA		# Singular
+				ke		# Dual
+				kAH		# Plural
+			#Accusative
+				kAm
+				ke
+				kAH
+			#Instrumental
+				kayA
+				kAByAm
+				kABiH
+			#Dative
+				kasyE
+				kAByAm
+				kAByaH
+			#Ablative
+				kasyAH
+				kAByAm
+				kAByaH
+			#Genitive
+				kasyAH
+				kayoH
+				kAsAm
+			#Locative
+				kasyAm
+				kayoH
+				kAsu
+
+		#Neuter 'kim'
+			#Nominative
+				kim		# Singular
+				ke		# Dual
+				kAni		# Plural
+			#Accusative
+				kim
+				ke
+				kAni
+			#Instrumental
+				kena
+				kAByAm
+				kEH
+			#Dative
+				kasmE
+				kAByAm
+				keBya
+			#Ablative
+				kasmAt
+				kAByAm
+				keBya
+			#Genitive
+				kasya
+				kayoH
+				kezAm
+			#Locative
+				kasmin
+				kayoH
+				kezu
+
+	#Pronoun 'Bavat' which is used to address someone respectfully
+		#Masculine
+			#Nominative
+				BavAn		# Singular
+				BavantO		# Dual
+				BavantaH		# Plural
+			#Accusative
+				Bavantam
+				BavantO
+				BavataH
+			#Instrumental
+				BavatA
+				BavadByAm
+				BavadBiH
+			#Dative
+				Bavate
+				BavadByAm
+				BavadByaH
+			#Ablative
+				BavataH
+				BavadByAm
+				BavadByaH
+			#Genitive
+				BavataH
+				BavatoH
+				BavatAm
+			#Locative
+				Bavati
+				BavatoH
+				Bavatsu
+
+		#Feminine
+			#Nominative
+				BavatI		# Singular
+				BavatyO		# Dual
+				BavatyaH		# Plural
+			#Accusative
+				BavatIm
+				BavatyO
+				BavatIH
+			#Instrumental
+				BavatyA
+				BavatIByAm
+				BavatIBiH
+			#Dative
+				BavatyE
+				BavatIByAm
+				BavatIBiH
+			#Ablative
+				BavatyAH
+				BavatIByAm
+				BavatIBiH
+			#Genitive
+				BavatyAH
+				BavatyoH
+				BavatInAm
+			#Locative
+				BavatyAm
+				BavatyoH
+				BavatIzu
+
+		#Neuter
+			#Nominative
+				Bavat		# Singular
+				BavatI		# Dual
+				Bavanti		# Plural
+			#Accusative
+				Bavat
+				BavatI
+				Bavanti
+			#Instrumental
+				BavatA
+				BavadByAm
+				BavadBiH
+			#Dative
+				Bavate
+				BavadByAm
+				BavadByaH
+			#Ablative
+				BavataH
+				BavadByAm
+				BavadByaH
+			#Genitive
+				BavataH
+				BavatoH
+				BavatAm
+			#Locative
+				Bavati
+				BavatoH
+				Bavatsu
+
+
+
+# Interjections
+	aye		#surprise , recollection , fatigue , fear
+	are		#interjection of calling
+	arere		#	interjection of calling to inferiors or of calling angrily
+	aviDA
+	asADunA		#disapproval
+	astoBa		# 	without the interjection of the sound called stobha
+	ahaha
+	ahAvas		# 	an interjection said to sound like a flourish at the end of a sAman verse
+	Am		# interjection of assent or recollection
+	Aryahalam
+	Aha
+	Aho
+	is		# interjection of anger or pain or sorrow
+	um		#an interjection of anger
+	uve'
+	kAm		# 	an interjection used in calling out to another
+	kum
+	camat		# interjection of surprise
+	wasat		# 	an interjection imitating the sound of bursting
+	dfn
+	Dik		#reproach or displeasure
+	pAw		# interjection used in calling
+	Pat
+	PAw		# interjection of calling
+	Puqut
+	bata		#	an interjection expressing astonishment or regret
+	bAl		# 	onomatopoeical an interjection imitating the sound of a falling body
+	vaw		# 	an interjection or exclamation used in sacrificial ceremonie
+	vyavastoBati
+	vyavastuB		# 	interpose certain sounds or interjections in chanting the sAmavedas
+	zAw		# 	vocative particle or interjection of calling
+	stoBa		# hurrah
+	hummA		# interjection in a sAman
+	hUm		# exclamation or interjection
+
+
+# Upasarga
+	ati		#beyond, over, too much
+	aDi		#above, on top, over
+	anu		#after, following
+	apa		#off, away from
+	api		#unto, close upon
+	aBi		#toward, facing
+	ava		#down, downward
+	A		#unto, towards
+	ud		#up, out, towards
+	upa		#near, next to, beside
+	ni		#into, down
+	nir		#out of, away from
+	parA		#opposite, in reverse
+	pari		#around, about
+	pra		#forth, forward, onward
+	prati		#against, back to
+	vi		#apart, distinct, different
+	sam		#together, along with
+
+
+# Conjunctions
+	aTavA
+	uta		#meaning 'Or'
+	anyaTA		#meaning 'Otherwise'
+	iva		#meaning 'As' or 'As though'
+	ca		#meaning 'And'
+	cet
+	yadi		#meaning 'if'
+	tu
+	parantu		#meaning 'But'
+	yataH
+	karaRena
+	hi
+	yatas
+	yadarTam
+	yadarTe
+	yarhi
+	yaTA
+	yatkAraRam
+	yena
+	hI
+	hina		#meaning 'because'
+	yaTA
+	yatas		#meaning 'As soon as'
+	yadyapi		#meaning 'Although' or 'Even if'
+	yAt
+	avaDes
+	yAvati		#meaning 'As long as'
+	yena prakAreRa		#meaning 'As if'
+	sTAne		#meaning 'Instead of'
+
+
+# Nipata
+	aha		#meaning 'at least' or 'surely'
+	eva		#meaning 'really'
+	evam		#meaning 'thus'
+	kaccit
+	ku
+	kuvit
+	kUpat
+	ca		#meaning 'And'
+	caR		#meaning 'go'
+	cet		#meaning 'if'
+	tatra		#meaning 'wherein' or 'then'
+	nakim		#meaning 'never' or 'not at all'
+	naha
+	nunam		#meaning 'indeed'
+	net
+	BUyas		#meaning 'mostly' or 'generally'
+	makim		#meaning 'may'
+	makir
+	yatra		#meaning 'if' or 'when'
+	yugapat		#meaning 'Together'
+	vA		#meaning 'Or'
+	SaSvat
+	sUpat
+	ha
+	hanta		#expressing wonder or sorrow
+	hi

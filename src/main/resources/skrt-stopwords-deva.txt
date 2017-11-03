@@ -1,0 +1,759 @@
+#Pronouns_in_Sanskrit
+	#First Person
+		#Nominative Case
+			अहम्		# meaning 'I' (Singular)
+			आवाम्		# meaning 'Two of us' // this is a special of duality which can be included but might cause redundancy (Dual)
+			वयम्		# meaning 'We' (Plural)
+		#Accusative Case
+			माम्
+			मा
+			आवाम्
+			अस्मान्
+			नः		# नस् Pronounced as 'naḥ'
+		#Instrumental Case
+			मया
+			आवाभ्याम्
+			अस्माभिस्
+		#Dative Case
+			मह्यम्
+			मे
+			आवाभ्याम्
+			नौ
+			अस्मभ्यम्
+			नः
+		#Ablative Case
+			मत्
+			आवाभ्याम्
+			अस्मत्
+		#Genitive Case
+			मम
+			मे
+			आवयोः
+			अस्माकम्
+			नः
+		#Locative Case
+			मयि
+			आवयोः
+			अस्मासु
+
+	#Second Person
+		#Nominative Case
+			त्वम्		# meaning 'You'
+			युवाम्		# meaning 'Both of you'
+			यूयम्		# meaning 'All of you'
+		#Accusative Case
+			त्वाम्
+			त्वा
+			युवाम्
+			वाम्
+			युष्मान्
+			वः		# नस् Pronounced as 'naḥ'
+		#Instrumental Case
+			त्वया
+			युवाभ्याम्
+			युष्माभिः
+		#Dative Case
+			तुभ्यम्
+			ते
+			युवाभ्याम्
+			वाम्
+			युष्मभ्यम्
+			वः
+		#Ablative Case
+			त्वत्
+			युवाभ्याम्
+			युष्मत्
+		#Genitive Case
+			तव
+			ते
+			युवयोः
+			वाम्
+			युष्माकम्
+			वः
+		#Locative Case
+			त्वयि
+			युवयोः
+			युष्मासु
+
+	#Third Person
+		#Masculine
+			#Nominative Case
+				सः		# meaning 'He'
+				तौ		# meaning 'They both'
+				ते		# meaning 'They'
+			#Accusative Case
+				तम्
+				तौ
+				तान्
+			#Instrumental Case
+				तेन
+				ताभ्याम्
+				तैः
+			#Dative Case
+				तस्मै
+				ताभ्याम्
+				तेभ्यः
+			#Ablative Case
+				तस्मात्
+				ताभ्याम्
+				तेभ्यः
+			#Genitive Case
+				तस्य
+				तयोः
+				तेषाम्
+			#Vocative Case
+				तस्मिन्
+				तयोः
+				तेषु
+
+		#Feminine
+			#Nominative Case
+				सा		# meaning 'She'
+				ते		# meaning 'They both'
+				ताः		# meaning 'They'
+			#Accusative Case
+				ताम्
+				ते
+				ताः
+			#Instrumental Case
+				तया
+				ताभ्याम्
+				ताभिः
+			#Dative Case
+				तस्यै
+				ताभ्याम्
+				ताभ्यः
+			#Ablative Case
+				तस्याः
+				ताभ्याम्
+				ताभ्यः
+			#Genitive Case
+				तस्य
+				तयोः
+				तासाम्
+			#Vocative Case
+				तस्याम्
+				तयोः
+				तासु
+
+		#Neuter
+			#Nominative Case
+				तत्		# meaning 'It'
+				ते		# meaning 'They both'
+				तानि		# meaning 'They'
+			#Accusative Case
+				तत्
+				ते
+				तानि
+			#Instrumental Case
+				तया
+				ताभ्याम्
+				ताभिः
+			#Dative Case
+				तस्यै
+				ताभ्याम्
+				ताभ्यः
+			#Ablative Case
+				तस्याः
+				ताभ्याम्
+				ताभ्यः
+			#Genitive Case
+				तस्य
+				तयोः
+				तासाम्
+			#Vocative Case
+				तस्याम्
+				तयोः
+				तासु
+
+	#Demonstrative Pronouns
+		#Masculine
+			#Nominative Case
+				अयम्		# meaning 'This'
+				इमौ		# meaning 'These two'
+				इमे		# meaning 'These'
+			#Accusative Case
+				इमम्
+				इमौ
+				इमान्
+			#Instrumental Case
+				अनेन
+				आभ्याम्
+				एभिः
+			#Dative Case
+				अस्मै
+				आभ्याम्
+				एभ्यः
+			#Ablative Case
+				अस्मात्
+				आभ्याम्
+				एभ्यः
+			#Genitive Case
+				अस्य
+				अनयोः
+				एषाम्
+			#Locative Case
+				अस्मिन्
+				अनयोः
+				एषु
+
+		#Feminine
+			#Nominative Case
+				इयम्
+				इमे
+				इमाः
+			#Accusative Case
+				इमाम्
+				इमे
+				इमाः
+			#Instrumental Case
+				अनया
+				आभ्याम्
+				आभिः
+			#Dative Case
+				अस्यैै
+				आभ्याम्
+				आभ्यः
+			#Ablative Case
+				अस्याः
+				आभ्याम्
+				आभ्यः
+			#Genitive Case
+				अस्याः
+				अनयोः
+				आसाम्
+			#Locative Case
+				अस्याम्
+				अनयोः
+				आसुु
+
+		#Neuter
+			#Nominative Case
+				इदम्
+				इमे
+				इमानि
+			#Accusative Case
+				इदम्
+				इमे
+				इमानि
+			#Instrumental Case
+				अनेन
+				आभ्याम्
+				एभिः
+			#Dative Case
+				अस्मै
+				आभ्याम्
+				एभ्यः
+			#Ablative Case
+				अस्मात्
+				आभ्याम्
+				एभ्यः
+			#Genitive Case
+				अस्य
+				अनयोः
+				एषाम्
+			#Locative Case
+				अस्मिन्
+				अनयोः
+				एषु
+
+	#Pronoun 'एतत्' for 'This'
+		#Masculine
+			#Nominative
+				एषः		# Singular
+				एतौ		# Dual
+				एते		# Plural
+			#Accusative
+				एतम्
+				एनम्
+				एतौ
+				एनौ
+				एतान्
+				एनान्
+			#Instrumental
+				एतेन
+				एताभ्याम्
+				एतैः
+			#Dative
+				एतस्मै
+				एताभ्याम्
+				एतेभ्यः
+			#Ablative
+				एतस्मात्
+				एताभ्याम्
+				एतेभ्यः
+			#Genitive
+				एतस्य
+				एतस्मिन्
+				एतेषाम्
+			#Locative
+				एतस्मिन्
+				एतस्मिन्
+				एतेषु
+
+		#Feminine
+			#Nominative
+				एषा		# Singular
+				एते		# Dual
+				एताः		# Plural
+			#Accusative
+				एताम्
+				एनाम्
+				एते
+				एने
+				एताः
+				एनाः
+			#Instrumental
+				एतया
+				एनया
+				एताभ्याम्
+				एताभिः
+			#Dative
+				एतस्यै
+				एताभ्याम्
+				एताभ्यः
+			#Ablative
+				एतस्याः
+				एताभ्याम्
+				एताभ्यः
+			#Genitive
+				एतस्याः
+				एतयोः
+				एनयोः
+				एतासाम्
+			#Locative
+				एतस्याम्
+				एतयोः
+				एनयोः
+				एतासु
+
+		#Neuter
+			#Nominative
+				एतत्
+				एतद्		# Singular
+				एते		# Dual
+				एतानि		# Plural
+			#Accusative
+				एतत्
+				एतद्
+				एनत्
+				एनद्
+				एते
+				एने
+				एतानि
+				एनानि
+			#Instrumental
+				एतेन
+				एनेन
+				एताभ्याम्
+				एतैः
+			#Dative
+				एतस्मै
+				एताभ्याम्
+				एतेभ्यः
+			#Ablative
+				एतस्मात्
+				एताभ्याम्
+				एतेभ्यः
+			#Genitive
+				एतस्य
+				एतयोः
+				एनयोः
+				एतेषाम्
+			#Locative
+				एतस्मिन्
+				एतयोः
+				एनयोः
+				एतेषु
+
+	#More on 'This' with 'अदस्'
+		#Masculine
+			#Nominative
+				असौ		# Singular
+				अमू		# Dual
+				अमी		# Plural
+			#Accusative
+				अमूम्
+				अमू
+				अमून्
+			#Instrumental
+				अमुना
+				अमूभ्याम्
+				अमीभिः
+			#Dative
+				अमुष्मै
+				अमूभ्याम्
+				अमीभ्यः
+			#Ablative
+				अमुष्मात्
+				अमूभ्याम्
+				अमीभ्यः
+			#Genitive
+				अमुष्य
+				अमुयोः
+				अमीषाम्
+			#Locative
+				अमुष्मिन्
+				अमुयोः
+				अमीषु
+
+		#Feminine
+			असौ		# Singular
+			अमू		# Dual
+			अमूः		# Plural
+			#Accusative
+				अमूम्
+				अमू
+				अमूः
+			#Instrumental
+				अमुया
+				अमूभ्याम्
+				अमूभिः
+			#Dative
+				अमुष्यै
+				अमूभ्याम्
+				अमूभ्यः
+			#Ablative
+				अमुष्याः
+				अमूभ्याम्
+				अमूभ्यः
+			#Genitive
+				अमुष्याः
+				अमुयोः
+				अमूषाम्
+			#Locative
+				अमुष्याम्
+				अमुयोः
+				अमूषु
+
+		#Neuter
+			#Nominative
+				अमु		# Singular
+				अमुनी		# Dual
+				अमूनि		# Plural
+			#Accusative
+				अमु
+				अमुनी
+				अमूनि
+			#Instrumental
+				अमुना
+				अमूभ्याम्
+				अमीभिः
+			#Dative
+				अमुष्मै
+				अमूभ्याम्
+				अमीभ्यः
+			#Ablative
+				अमुष्मात्
+				अमूभ्याम्
+				अमीभ्यः
+			#Genitive
+				अमुष्य
+				अमुयोः
+				अमीषाम्
+			#Locative
+				अमुष्मिन्
+				अमुयोः
+				अमीषु
+
+	#Interrogative Pronouns
+		#Masculine 'किम्'
+			#Nominative
+				कः		# Singular
+				कौ		# Dual
+				के		# Plural
+			#Accusative
+				कम्
+				कौ
+				कान्
+			#Instrumental
+				केन
+				काभ्याम्
+				कैः
+			#Dative
+				कस्मै
+				काभ्याम्
+				केभ्य
+			#Ablative
+				कस्मात्
+				काभ्याम्
+				केभ्य
+			#Genitive
+				कस्य
+				कयोः
+				केषाम्
+			#Locative
+				कस्मिन्
+				कयोः
+				केषु
+
+		#Feminine 'किम्'
+			#Nominative
+				का		# Singular
+				के		# Dual
+				काः		# Plural
+			#Accusative
+				काम्
+				के
+				काः
+			#Instrumental
+				कया
+				काभ्याम्
+				काभिः
+			#Dative
+				कस्यै
+				काभ्याम्
+				काभ्यः
+			#Ablative
+				कस्याः
+				काभ्याम्
+				काभ्यः
+			#Genitive
+				कस्याः
+				कयोः
+				कासाम्
+			#Locative
+				कस्याम्
+				कयोः
+				कासु
+
+		#Neuter 'किम्'
+			#Nominative
+				किम्		# Singular
+				के		# Dual
+				कानि		# Plural
+			#Accusative
+				किम्
+				के
+				कानि
+			#Instrumental
+				केन
+				काभ्याम्
+				कैः
+			#Dative
+				कस्मै
+				काभ्याम्
+				केभ्य
+			#Ablative
+				कस्मात्
+				काभ्याम्
+				केभ्य
+			#Genitive
+				कस्य
+				कयोः
+				केषाम्
+			#Locative
+				कस्मिन्
+				कयोः
+				केषु
+
+	#Pronoun 'भवत्' which is used to address someone respectfully
+		#Masculine
+			#Nominative
+				भवान्		# Singular
+				भवन्तौ		# Dual
+				भवन्तः		# Plural
+			#Accusative
+				भवन्तम्
+				भवन्तौ
+				भवतः
+			#Instrumental
+				भवता
+				भवद्भ्याम्
+				भवद्भिः
+			#Dative
+				भवते
+				भवद्भ्याम्
+				भवद्भ्यः
+			#Ablative
+				भवतः
+				भवद्भ्याम्
+				भवद्भ्यः
+			#Genitive
+				भवतः
+				भवतोः
+				भवताम्
+			#Locative
+				भवति
+				भवतोः
+				भवत्सु
+
+		#Feminine
+			#Nominative
+				भवती		# Singular
+				भवत्यौ		# Dual
+				भवत्यः		# Plural
+			#Accusative
+				भवतीम्
+				भवत्यौ
+				भवतीः
+			#Instrumental
+				भवत्या
+				भवतीभ्याम्
+				भवतीभिः
+			#Dative
+				भवत्यै
+				भवतीभ्याम्
+				भवतीभिः
+			#Ablative
+				भवत्याः
+				भवतीभ्याम्
+				भवतीभिः
+			#Genitive
+				भवत्याः
+				भवत्योः
+				भवतीनाम्
+			#Locative
+				भवत्याम्
+				भवत्योः
+				भवतीषु
+
+		#Neuter
+			#Nominative
+				भवत्		# Singular
+				भवती		# Dual
+				भवन्ति		# Plural
+			#Accusative
+				भवत्
+				भवती
+				भवन्ति
+			#Instrumental
+				भवता
+				भवद्भ्याम्
+				भवद्भिः
+			#Dative
+				भवते
+				भवद्भ्याम्
+				भवद्भ्यः
+			#Ablative
+				भवतः
+				भवद्भ्याम्
+				भवद्भ्यः
+			#Genitive
+				भवतः
+				भवतोः
+				भवताम्
+			#Locative
+				भवति
+				भवतोः
+				भवत्सु
+
+
+
+# Interjections
+	अये		#surprise , recollection , fatigue , fear
+	अरे		#interjection of calling
+	अरेरे		#	interjection of calling to inferiors or of calling angrily
+	अविधा
+	असाधुना		#disapproval
+	अस्तोभ		# 	without the interjection of the sound called stobha	
+	अहह
+	अहावस्		# 	an interjection said to sound like a flourish at the end of a sAman verse
+	आम्		# interjection of assent or recollection
+	आर्यहलम्
+	आह
+	आहो
+	इस्		# interjection of anger or pain or sorrow
+	उम्		#an interjection of anger
+	उवे'
+	काम्		# 	an interjection used in calling out to another	
+	कुम्
+	चमत्		# interjection of surprise
+	टसत्		# 	an interjection imitating the sound of bursting	
+	दृन्
+	धिक्		#reproach or displeasure
+	पाट्		# interjection used in calling
+	फत्
+	फाट्		# interjection of calling
+	फुडुत्
+	बत		#	an interjection expressing astonishment or regret	
+	बाल्		# 	onomatopoeical an interjection imitating the sound of a falling body
+	वट्		# 	an interjection or exclamation used in sacrificial ceremonie
+	व्यवस्तोभति
+	व्यवस्तुभ्		# 	interpose certain sounds or interjections in chanting the sAmavedas
+	षाट्		# 	vocative particle or interjection of calling
+	स्तोभ		# hurrah
+	हुम्मा		# interjection in a sAman
+	हूम्		# exclamation or interjection
+
+
+# Upasarga
+	अति		#beyond, over, too much
+	अधि		#above, on top, over	
+	अनु		#after, following	
+	अप		#off, away from	
+	अपि		#unto, close upon	
+	अभि		#toward, facing	
+	अव		#down, downward	
+	आ		#unto, towards	
+	उद्		#up, out, towards	
+	उप		#near, next to, beside	
+	नि		#into, down	
+	निर्		#out of, away from	
+	परा		#opposite, in reverse	
+	परि		#around, about	
+	प्र		#forth, forward, onward	
+	प्रति		#against, back to	
+	वि		#apart, distinct, different	
+	सम्		#together, along with
+
+
+# Conjunctions
+	अथवा
+	उत		#meaning 'Or'
+	अन्यथा		#meaning 'Otherwise'
+	इव		#meaning 'As' or 'As though'
+	च		#meaning 'And'
+	चेत्
+	यदि		#meaning 'if'
+	तु
+	परन्तु		#meaning 'But'
+	यतः
+	करणेन
+	हि
+	यतस्
+	यदर्थम्
+	यदर्थे
+	यर्हि
+	यथा
+	यत्कारणम्
+	येन
+	ही
+	हिन		#meaning 'because'
+	यथा
+	यतस्		#meaning 'As soon as'
+	यद्यपि		#meaning 'Although' or 'Even if'
+	यात्
+	अवधेस्
+	यावति		#meaning 'As long as'
+	येन प्रकारेण		#meaning 'As if'
+	स्थाने		#meaning 'Instead of'
+
+
+# Nipata
+	अह		#meaning 'at least' or 'surely'
+	एव		#meaning 'really'
+	एवम्		#meaning 'thus'
+	कच्चित्
+	कु
+	कुवित्
+	कूपत्
+	च		#meaning 'And'
+	चण्		#meaning 'go'
+	चेत्		#meaning 'if'
+	तत्र		#meaning 'wherein' or 'then'
+	नकिम्		#meaning 'never' or 'not at all'
+	नह
+	नुनम्		#meaning 'indeed'
+	नेत्
+	भूयस्		#meaning 'mostly' or 'generally'
+	मकिम्		#meaning 'may'
+	मकिर्
+	यत्र		#meaning 'if' or 'when'
+	युगपत्		#meaning 'Together'
+	वा		#meaning 'Or'
+	शश्वत्
+	सूपत्
+	ह
+	हन्त		#expressing wonder or sorrow
+	हि
