@@ -82,10 +82,9 @@ public final class SanskritAnalyzer extends Analyzer {
 	}
 	
 	/**
-	 *
-	 * @param reader Reader containing the wordlist
+	 * @param reader Reader containing the list of stopwords
 	 * @param comment The string representing a comment.
-	 * @param result the {@link ArrayList} to fill with the readers words
+	 * @return result the {@link ArrayList} to fill with the reader's words
 	 */
 	public static ArrayList<String> getWordList(String filename, String comment) throws IOException {
 		ArrayList<String> result = new ArrayList<String>();
