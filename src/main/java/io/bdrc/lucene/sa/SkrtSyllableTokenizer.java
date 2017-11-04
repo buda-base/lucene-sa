@@ -43,12 +43,12 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  * @author Élie Roux
  * 
  */
-public final class SkrtSylTokenizer extends Tokenizer {
+public final class SkrtSyllableTokenizer extends Tokenizer {
 
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
-	public SkrtSylTokenizer() {
+	public SkrtSyllableTokenizer() {
 	}
 	
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;

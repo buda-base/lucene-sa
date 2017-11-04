@@ -51,7 +51,7 @@ import io.bdrc.lucene.stemmer.Trie;
  *
  * <p>
  * 	The expected input is an SLP string<br>
- *	{@link SkrtSylTokenizer#isSLP(int)} is used to filter out nonSLP characters.
+ *	{@link SkrtSyllableTokenizer#isSLP(int)} is used to filter out nonSLP characters.
  *
  * <p>
  * The necessary information for unsandhying finals and initials is taken from
@@ -80,7 +80,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	/**
 	 * Constructs a SkrtWordTokenizer using a file
-	 * @param filepath: input file
+	 * @param filename input file
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
 		init(new FileReader(filename));
@@ -876,13 +876,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
-		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) != SkrtSylTokenizer.MODIFIER;
+		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) != SkrtSyllableTokenizer.MODIFIER;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
 		// If a modifier occurs between two sandhied words, second word won't be considered sandhied
 	}
 	
 	final private boolean isSLPModifier(int c) {
-		return SkrtSylTokenizer.charType.get(c) != null && SkrtSylTokenizer.charType.get(c) == SkrtSylTokenizer.MODIFIER;
+		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) == SkrtSyllableTokenizer.MODIFIER;
 	}
 	
 	final private boolean thereIsNoTokenAndNoNonword() {
