@@ -61,8 +61,9 @@ public class FullTextParsingTest
 			assertTrue(false);
 		}
 	}
-	
-    @Test
+
+
+	@Test
     public void fullTest() throws Exception {
     	System.out.println("Testing transliterating from devanagari");
     	Reader input = new FileReader("src/test/resources/tattvasangrahapanjika_raw_deva.txt");  

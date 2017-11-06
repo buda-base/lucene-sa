@@ -19,15 +19,14 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,7 +41,6 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 
-import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -70,8 +68,10 @@ import io.bdrc.lucene.stemmer.Trie;
  *
  */
 public final class SkrtWordTokenizer extends Tokenizer {
+	
 	private Trie scanner;
 	private boolean debug = false;
+	private String compiledTrieName = "src/main/resources/skrt-compiled.trie"; 
 
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -83,7 +83,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param filename input file
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
-		init(new FileReader(filename));
+		if (filename != null) {
+			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+		} else {
+			init(new FileInputStream(compiledTrieName));
+		}
 		this.debug = false;
 	}
 
@@ -95,23 +99,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param filename
 	 */
 	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
-		init(new FileReader(filename));
+		if (filename != null) {
+			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+		} else {
+			init(new FileInputStream(filename));
+		}
 		this.debug = debug;
 	}
 	
 	/**
-	 * Constructs a SkrtWordTokenizer using a default lexicon file
+	 * Constructs a SkrtWordTokenizer using the compiled Trie
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
-		InputStream stream = null;
-		stream = SkrtWordTokenizer.class.getResourceAsStream("total_output.txt");
-		
-		if (stream == null) {
-			// we're not using the jar, there is no resource, assuming we're running the code
-			init(new FileReader("resources/sanskrit-stemming-data/output/total_output.txt"));
-		} else {
-			init(new InputStreamReader(stream));
-		}
+		init(new FileInputStream(compiledTrieName));
 		this.debug = false;
 	}
 
@@ -123,22 +123,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @throws FileNotFoundException the file containing the Trie can't be found
 	 * @throws IOException the file containing the Trie can't be read
 	 */
-	private void init(Reader reader) throws FileNotFoundException, IOException {
-		this.scanner = new Trie(true);
+	private void init(InputStream stream) throws FileNotFoundException, IOException {
+		DataInputStream inStream = new DataInputStream(stream);
+		this.scanner = new Trie(inStream);
 
-		try (BufferedReader br = new BufferedReader(reader)) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				int endOfFormIndex = line.indexOf(',');
-				if (endOfFormIndex != -1) {
-					this.scanner.add(line.substring(0, endOfFormIndex), line.substring(endOfFormIndex+1));
-				} else {
-					throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
-				}
-			}
-			Optimizer opt = new Optimizer();
-			this.scanner.reduce(opt);
-		}
 		ioBuffer = new RollingCharBuffer();
 		ioBuffer.reset(input);
 	}
