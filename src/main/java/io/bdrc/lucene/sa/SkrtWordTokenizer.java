@@ -71,7 +71,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private Trie scanner;
 	private boolean debug = false;
-	private String compiledTrieName = "src/main/resources/skrt-compiled.trie"; 
+	private String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump"; 
 
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
