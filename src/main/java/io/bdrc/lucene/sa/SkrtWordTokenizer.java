@@ -84,7 +84,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
 		if (filename != null) {
-			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
 			ioBuffer = new RollingCharBuffer();
 			ioBuffer.reset(input);
 		} else {
@@ -102,7 +102,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
 		if (filename != null) {
-			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
 			ioBuffer = new RollingCharBuffer();
 			ioBuffer.reset(input);
 		} else {

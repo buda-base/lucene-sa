@@ -15,15 +15,24 @@ import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Trie;
 
 public class BuildCompiledTrie {
+	/**
+	 * Builds a Trie from all the entries in a list of files
+	 * Optimizes it
+	 * Dumps it in a binary file
+	 * 
+	 * !!! Ensure to have enough Stack memory 
+	 * ( -Xss40m seems to be enough for all the inflected forms of Sanskrit Heritage)
+	 * 
+	 */
 	
 	public static void main(String [] args){
 		List<String> inputFiles = Arrays.asList(
 				"resources/sanskrit-stemming-data/output/total_output.txt"	// Sanskrit Heritage entries
 				);
-		String outFile = "src/main/resources/skrt-compiled.trie";
+		String outFile = "src/main/resources/skrt-compiled-trie.dump";
 		
 		try {
-			Trie trie = buildTrie(inputFiles, false); 	// optimize is set to false to avoid StackOverFlow error
+			Trie trie = buildTrie(inputFiles);
 			storeTrie(trie, outFile);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -34,13 +43,12 @@ public class BuildCompiledTrie {
 	
 	/**
 	 * 
-	 * @param inputFiles
-	 * @param optimize
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * 
+	 * 
+	 * @param inputFiles  the list of files to feed the Trie with
+	 * @return the optimized Trie
 	 */
-	public static Trie buildTrie(List<String> inputFiles, boolean optimize) throws FileNotFoundException, IOException {
+	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);
 		for (String filename: inputFiles) {
@@ -57,20 +65,20 @@ public class BuildCompiledTrie {
 			}
 		}
 		
-		/* Optimize the Trie*/
-		if (optimize) {
-			Optimizer opt = new Optimizer();
-			trie.reduce(opt);
-		}
+		/* Optimize the Trie
+		 * 
+		 * Optimizer  - optimisation time: 10mn ; compiled Trie size: 10mo
+		 * Optimizer2 - optimisation time: 12mn ; compiled Trie size: 12mo
+		 * */
+		Optimizer opt = new Optimizer();
+		trie = opt.optimize(trie);
 		return trie;
 	}
 	
 	/**
 	 * 
-	 * @param trie
-	 * @param outFilename
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @param trie  the trie to store in binary format
+	 * @param outFilename  the path+filename of the output file
 	 */
 	public static void storeTrie(Trie trie, String outFilename) throws FileNotFoundException, IOException {
 		OutputStream output = new DataOutputStream(new FileOutputStream(outFilename));
