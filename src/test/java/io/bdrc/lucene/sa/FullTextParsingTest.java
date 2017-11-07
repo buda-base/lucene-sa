@@ -33,6 +33,7 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -53,8 +54,10 @@ public class FullTextParsingTest
 		try {
 			List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
+				System.out.println(charTermAttribute.toString() + ": " + typeAttribute.type());
 			}
 			System.out.println(String.join(" ", termList) + "\n");
 		} catch (IOException e) {
@@ -69,7 +72,7 @@ public class FullTextParsingTest
     	Reader input = new FileReader("src/test/resources/tattvasangrahapanjika_raw_deva.txt");  
     	CharFilter cs = new Deva2SlpFilter(input);
     	System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, null);
 		TokenStream words = tokenize(cs, skrtWordTokenizer);
 		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
 		TokenStream result = new StopFilter(words, stopSet);

@@ -37,6 +37,7 @@ import java.util.Map;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,8 +60,10 @@ public class WordTokenizerTests
 		try {
 			List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
+				System.out.println(charTermAttribute.toString() + ": " + typeAttribute.type());
 			}
 			System.out.println("1 " + String.join(" ", expected));
 			System.out.println("2 " + String.join(" ", termList) + "\n");
@@ -403,6 +406,19 @@ public class WordTokenizerTests
     			assertTokenStream(syllables, expected);
     		}			
     	}
+    }
+    
+    @Test
+    public void bug7LoneInitialsAfterPunctuation() throws IOException
+    {
+    	System.out.println("bug7");
+    	String input = "mAdivyApArarahitaM";
+    	Reader reader = new StringReader(input);
+    	List<String> expected = Arrays.asList("mAdi", "vyApAra", "ahi", "taM");
+    	System.out.println("0 " + input);
+    	SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/vyApArarahi_test.txt");
+    	TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+    	assertTokenStream(syllables, expected);
     }
     
 	@AfterClass

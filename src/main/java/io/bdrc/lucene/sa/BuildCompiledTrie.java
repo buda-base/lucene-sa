@@ -73,7 +73,6 @@ public class BuildCompiledTrie {
 	 * @throws IOException
 	 */
 	public static void storeTrie(Trie trie, String outFilename) throws FileNotFoundException, IOException {
-		/* Store the Trie*/
 		OutputStream output = new DataOutputStream(new FileOutputStream(outFilename));
 		trie.store((DataOutput) output);
 	}	

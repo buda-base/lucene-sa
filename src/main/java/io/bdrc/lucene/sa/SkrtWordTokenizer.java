@@ -85,6 +85,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
 		if (filename != null) {
 			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+			ioBuffer = new RollingCharBuffer();
+			ioBuffer.reset(input);
 		} else {
 			init(new FileInputStream(compiledTrieName));
 		}
@@ -101,8 +103,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
 		if (filename != null) {
 			this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename), true);
+			ioBuffer = new RollingCharBuffer();
+			ioBuffer.reset(input);
 		} else {
-			init(new FileInputStream(filename));
+			init(new FileInputStream(compiledTrieName));
 		}
 		this.debug = debug;
 	}
@@ -304,7 +308,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
-					break;
+					if (thereIsNoTokenAndNoNonword()) {
+						foundNonMaxMatch = false;
+						continue;							// resume looping over ioBuffer
+					} else {
+						setTermLength();
+						break;								// and resume looping over ioBuffer
+					}
 					
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
@@ -321,7 +331,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						if (allInitialsAreConsumed()) {
 							ifNoInitialsCleanupPotentialTokensAndNonwords();
 							setTermLength();											// same as above
-							break;
+							if (thereIsNoTokenAndNoNonword()) {
+								continue;							// resume looping over ioBuffer
+							} else {
+								setTermLength();
+								break;								// and resume looping over ioBuffer
+							}
 						}
 						resetInitialCharsIterator();
 						restorePreviousState();
@@ -637,6 +652,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void setTermLength() {					// goes together with finalizeSettingTermAttribute().
 		termAtt.setLength(tokenEnd - tokenStart);
+		tokenLength = (tokenEnd - tokenStart - 1 >= 0) ? tokenEnd - tokenStart - 1: 0;
 		if (storedInitials != null && storedInitials.contains(termAtt.toString())) {
 			termAtt.setEmpty();
 		}
