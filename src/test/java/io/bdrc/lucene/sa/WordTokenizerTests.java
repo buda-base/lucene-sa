@@ -68,7 +68,7 @@ public class WordTokenizerTests
 		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
 		BuildCompiledTrie.storeTrie(trie, outFile);
 		
-		return new SkrtWordTokenizer(outFile, true);
+		return new SkrtWordTokenizer(true, outFile, true);
 	}
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
@@ -438,15 +438,15 @@ public class WordTokenizerTests
     }
     
     @Test
-    public void bug8CompiledTrie() throws IOException
+    public void bug8MatchingInitials() throws IOException
     {
-		System.out.println("non-maximal match 5: preceded by a non-word");
-		String input = "kanyA candravatI";
+		System.out.println("bug8");
+		String input = "praTamo BAgaH";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("kanya", "kana", "candravatI");
+		List<String> expected = Arrays.asList("praTama", "BAgaH");
 		System.out.println("0 " + input);
 		
-		SkrtWordTokenizer skrtWordTokenizer = buildOptimizedTokenizer("src/test/resources/tries/aTa_test"); 
+		SkrtWordTokenizer skrtWordTokenizer = buildOptimizedTokenizer("src/test/resources/tries/pratamo_test"); 
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
     }
