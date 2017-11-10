@@ -37,6 +37,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
+import io.bdrc.lucene.stemmer.Optimizer;
+import io.bdrc.lucene.stemmer.Trie;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -71,11 +73,22 @@ public class SandhiTests
 	static private void assertSandhi(String input, List<String> expected, int trieNumber) throws FileNotFoundException, IOException {
 		Reader reader = new StringReader(input);
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)+".txt");
+		SkrtWordTokenizer skrtWordTokenizer = buildOptimizedTokenizer("resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)); 
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
-
+	
+	static private SkrtWordTokenizer buildOptimizedTokenizer(String trieName) throws FileNotFoundException, IOException {		
+		String outFile = trieName + ".dump";
+		List<String> inputFiles = Arrays.asList(trieName + ".txt");
+		
+		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
+		BuildCompiledTrie.storeTrie(trie, outFile);
+		
+		return new SkrtWordTokenizer(outFile, true);
+	}
+	
 	@BeforeClass
 	public static void init() {
 		System.out.println("before the test sequence");
