@@ -43,6 +43,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.bdrc.lucene.stemmer.Optimizer;
+import io.bdrc.lucene.stemmer.Optimizer2;
+import io.bdrc.lucene.stemmer.Trie;
+
 /**
  * Unit tests for the Sanskrit tokenizers and filters.
  */
@@ -223,6 +227,7 @@ public class WordTokenizerTests
 		List<String> expected = Arrays.asList("auie", "aba", "b");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer("src/test/resources/tries/abab_test.txt");
+		
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -419,6 +424,27 @@ public class WordTokenizerTests
     	SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, "src/test/resources/tries/vyApArarahi_test.txt");
     	TokenStream syllables = tokenize(reader, skrtWordTokenizer);
     	assertTokenStream(syllables, expected);
+    }
+    
+    @Test
+    public void bug8CompiledTrie() throws IOException
+    {
+		System.out.println("non-maximal match 5: preceded by a non-word");
+		String input = "auieabab";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("auie", "aba", "b");
+		System.out.println("0 " + input);
+		
+		String outFile = "src/test/resources/tries/abab_test.dump";
+		List<String> inputFiles = Arrays.asList("src/test/resources/tries/abab_test.txt");
+		
+		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+		BuildCompiledTrie.optimizeTrie(trie, new Optimizer2());
+		BuildCompiledTrie.storeTrie(trie, outFile);
+		
+		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(outFile, true);
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		assertTokenStream(words, expected);
     }
     
 	@AfterClass

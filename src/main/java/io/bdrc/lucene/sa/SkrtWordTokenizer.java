@@ -71,7 +71,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private Trie scanner;
 	private boolean debug = false;
-	private String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump"; 
+	String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump"; 
 
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -119,6 +119,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		this.debug = false;
 	}
 
+	/**
+	 * Constructs a SkrtWordTokenizer using the compiled Trie
+	 */
+	public SkrtWordTokenizer(String compiledTrie, boolean compiled) throws FileNotFoundException, IOException {
+		this.compiledTrieName = compiledTrie;
+		init(new FileInputStream(compiledTrieName));
+		this.debug = false;
+	}
+	
 	/**
 	 * Initializes and populates {@see #scanner}
 	 *

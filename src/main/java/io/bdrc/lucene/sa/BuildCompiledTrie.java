@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.bdrc.lucene.stemmer.Gener;
-import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Reduce;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -27,12 +26,12 @@ public class BuildCompiledTrie {
 	 * 
 	 */
 	
-	public static void main(String [] args){
-		List<String> inputFiles = Arrays.asList(
-				"resources/sanskrit-stemming-data/output/total_output.txt"	// Sanskrit Heritage entries
-				);
-		String outFile = "src/main/resources/skrt-compiled-trie.dump";
-		
+	public String outFile = "src/main/resources/skrt-compiled-trie.dump";
+	public List<String> inputFiles = Arrays.asList(
+			"resources/sanskrit-stemming-data/output/total_output.txt"	// Sanskrit Heritage entries
+			);
+	
+	public void main(String [] args){
 		try {
 			Trie trie = compileTrie(inputFiles);
 			storeTrie(trie, outFile);
