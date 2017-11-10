@@ -86,3 +86,6 @@ local.properties
 catalog-v001.xml
 /scrapbook.jpage
 /.pydevproject
+
+# compiled Trie files
+*.dump

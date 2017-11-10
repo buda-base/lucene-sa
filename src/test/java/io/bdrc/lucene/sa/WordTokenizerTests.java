@@ -43,8 +43,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.bdrc.lucene.stemmer.Gener;
+import io.bdrc.lucene.stemmer.Lift;
 import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Optimizer2;
+import io.bdrc.lucene.stemmer.Reduce;
 import io.bdrc.lucene.stemmer.Trie;
 
 /**
@@ -430,16 +433,18 @@ public class WordTokenizerTests
     public void bug8CompiledTrie() throws IOException
     {
 		System.out.println("non-maximal match 5: preceded by a non-word");
-		String input = "auieabab";
+		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("auie", "aba", "b");
+		List<String> expected = Arrays.asList("Darman", "Darma", "aTa", "Darman", "Darma", "ADa", "Darman", "Darma", "aTa");
 		System.out.println("0 " + input);
 		
-		String outFile = "src/test/resources/tries/abab_test.dump";
-		List<String> inputFiles = Arrays.asList("src/test/resources/tries/abab_test.txt");
+		String trieName = "src/test/resources/tries/DarmATa_test";
+		String outFile = trieName + ".dump";
+		List<String> inputFiles = Arrays.asList(trieName + ".txt");
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
-		BuildCompiledTrie.optimizeTrie(trie, new Optimizer2());
+		Reduce opt = new Optimizer();
+		BuildCompiledTrie.optimizeTrie(trie, opt);
 		BuildCompiledTrie.storeTrie(trie, outFile);
 		
 		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(outFile, true);
