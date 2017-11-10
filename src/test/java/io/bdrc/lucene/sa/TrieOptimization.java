@@ -11,6 +11,7 @@ import io.bdrc.lucene.stemmer.Lift;
 import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Optimizer2;
 import io.bdrc.lucene.stemmer.Reduce;
+import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
 
 public class TrieOptimization {
@@ -28,10 +29,10 @@ public class TrieOptimization {
 			
 			for (Reduce opt: optimizers) {
 				Trie optimized = BuildCompiledTrie.optimizeTrie(trie, opt);
-				getIdxAndPrintRow(optimized, optimized.getRoot());
+//				getIdxAndPrintRow(optimized, optimized.getRoot());
+				Row root = optimized.getRow(optimized.getRoot());
+				System.out.println(root);
 			}	
-			
-			System.out.println("test");
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
