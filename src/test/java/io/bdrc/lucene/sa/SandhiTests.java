@@ -86,7 +86,7 @@ public class SandhiTests
 		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
 		BuildCompiledTrie.storeTrie(trie, outFile);
 		
-		return new SkrtWordTokenizer(outFile, true);
+		return new SkrtWordTokenizer(false, outFile, true);
 	}
 	
 	@BeforeClass

@@ -57,7 +57,7 @@ public class FullTextParsingTest
 			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
-				System.out.println(charTermAttribute.toString() + ": " + typeAttribute.type());
+				System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
 			}
 			System.out.println(String.join(" ", termList) + "\n");
 		} catch (IOException e) {

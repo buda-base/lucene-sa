@@ -122,10 +122,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Constructs a SkrtWordTokenizer using the compiled Trie
 	 */
-	public SkrtWordTokenizer(String compiledTrie, boolean compiled) throws FileNotFoundException, IOException {
+	public SkrtWordTokenizer(boolean debug, String compiledTrie, boolean compiled) throws FileNotFoundException, IOException {
 		this.compiledTrieName = compiledTrie;
 		init(new FileInputStream(compiledTrieName));
-		this.debug = false;
+		this.debug = debug;
 	}
 	
 	/**
@@ -176,6 +176,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private HashSet<String> storedInitials = null;
 	private static boolean mergesInitials = false;
 	private int finalsIndex = -1;
+	private int firstInitialIndex;
 
 	/* ioBuffer related (contains the input string) */
 	private RollingCharBuffer ioBuffer;
@@ -225,6 +226,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenLength = -1;
 		nonMaxBufferIndex = -1;
 		nonMaxNonWordLength = 0;
+		firstInitialIndex = -1;
 
 		nonWordStart = -1;
 		nonWordEnd = -1;
@@ -267,11 +269,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
 					continue;		// if there is a space in the sandhied substring, moves beyond the space				
-
+ 				} else if (initialIsNotFollowedBySandhied(c)) {	// there were just
+ 					initials = null;
+ 					initialCharsIterator = null;
+ 					ifNoInitialsCleanupPotentialTokensAndNonwords();
+ 					setTermLength();
+ 					continue; 
  				} else if (startConsumingInitials()) {	
  				/* we enter here on finalOffset ==  first initials. (when all initials are consumed, initials == []) */
 					storeCurrentState();
 					initializeInitialCharsIteratorIfNeeded();
+					firstInitialIndex = bufferIndex;
 					c = applyInitialChar();
 
 				} else if (stillConsumingInitials()) {
@@ -498,7 +506,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			tokenBuffer = termAtt.resizeBuffer(2+tokenLength);	// make sure a supplementary fits in the buffer
 		}
 	}
-
+	
 	/**
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -709,6 +717,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens() throws NumberFormatException, IOException {
 		String cmd = scanner.getCommandVal(foundMatchCmdIndex);
 		if (cmd != null) {
+			if (debug) System.out.println(termAtt.toString() + ": inflected");
 			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString());
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
@@ -742,6 +751,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		for (Entry<String, Integer[]> entry: potentialTokens.entrySet()) {
 			final String key = entry.getKey();
 			final Integer[] value = entry.getValue();
+			if (debug) System.out.println(key + ": inflected");
 			if (value[3] == 1) {
 				String cmd = scanner.getCommandVal(value[4]);
 				final Set<String> lemmas = reconstructLemmas(cmd, key);
@@ -892,6 +902,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) != SkrtSyllableTokenizer.MODIFIER;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
 		// If a modifier occurs between two sandhied words, second word won't be considered sandhied
+	}
+	
+	final private boolean initialIsNotFollowedBySandhied(int c) {
+		return firstInitialIndex + 1 == bufferIndex && c == ' ';
 	}
 	
 	final private boolean isSLPModifier(int c) {
