@@ -79,14 +79,12 @@ public class SandhiTests
 	}
 	
 	static private SkrtWordTokenizer buildOptimizedTokenizer(String trieName) throws FileNotFoundException, IOException {		
-		String outFile = trieName + ".dump";
 		List<String> inputFiles = Arrays.asList(trieName + ".txt");
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
-		BuildCompiledTrie.storeTrie(trie, outFile);
 		
-		return new SkrtWordTokenizer(false, outFile, true);
+		return new SkrtWordTokenizer(false, trie);
 	}
 	
 	@BeforeClass

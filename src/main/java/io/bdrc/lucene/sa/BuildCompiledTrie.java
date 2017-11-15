@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import io.bdrc.lucene.stemmer.Gener;
+import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Reduce;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -26,15 +26,23 @@ public class BuildCompiledTrie {
 	 * 
 	 */
 	
-	public String outFile = "src/main/resources/skrt-compiled-trie.dump";
-	public List<String> inputFiles = Arrays.asList(
-			"resources/sanskrit-stemming-data/output/total_output.txt"	// Sanskrit Heritage entries
+	static boolean optimize = false;	// change to true to optimize the Trie
+	public static List<String> inputFiles = Arrays.asList(
+			"resources/sanskrit-stemming-data/output/total_output.txt"	// all Sanskrit Heritage entries
 			);
 	
-	public void main(String [] args){
+	public static void main(String [] args){
+		
 		try {
-			Trie trie = compileTrie(inputFiles);
-			storeTrie(trie, outFile);
+			Trie trie = buildTrie(inputFiles);
+			
+			if (optimize) {
+				trie = optimizeTrie(trie, new Optimizer());	// uncomment to optimize the Trie
+				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
+			} else {
+				storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
+			}
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -42,15 +50,17 @@ public class BuildCompiledTrie {
 		}
 	}
 	
-	public static Trie compileTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
+	/**
+	 * used in {@link SkrtWordTokenizer} constructors
+	 * @param inputFiles
+	 * @return the optimized Trie
+	 */
+	public static void compileTrie() throws FileNotFoundException, IOException {
 		Trie trie = buildTrie(inputFiles);
-		trie = optimizeTrie(trie, new Gener());
-		return trie;
+		storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
 	}
 	
-	/**
-	 * 
-	 * 
+	/** 
 	 * 
 	 * @param inputFiles  the list of files to feed the Trie with
 	 * @return the optimized Trie

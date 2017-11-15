@@ -61,14 +61,12 @@ public class WordTokenizerTests
 	}
 	
 	static private SkrtWordTokenizer buildOptimizedTokenizer(String trieName) throws FileNotFoundException, IOException {		
-		String outFile = trieName + ".dump";
 		List<String> inputFiles = Arrays.asList(trieName + ".txt");
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
-		BuildCompiledTrie.storeTrie(trie, outFile);
-		
-		return new SkrtWordTokenizer(true, outFile, true);
+
+		return new SkrtWordTokenizer(true, trie);
 	}
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
@@ -438,7 +436,7 @@ public class WordTokenizerTests
     }
     
     @Test
-    public void bug8MatchingInitials() throws IOException
+    public void bug8MatchingLoneInitials() throws IOException
     {
 		System.out.println("bug8");
 		String input = "praTamo BAgaH";

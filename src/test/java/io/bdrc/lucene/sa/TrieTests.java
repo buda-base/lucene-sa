@@ -22,6 +22,7 @@ package io.bdrc.lucene.sa;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -36,7 +37,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
- * Unit tests for the Sanskrit tokenizers and filters.
+ * Test showing the Trie optimization modifies the entries in the Trie
  */
 public class TrieTests
 {
@@ -65,18 +66,18 @@ public class TrieTests
     @Test
     public void optimizationTest() throws IOException
     {
-		String optimizedTrie = "src/main/resources/skrt-compiled-trie.dump";
-		String nonOptimizedTrie = "src/main/resources/skrt-compiled-trie_non-optimized.dump";
+		FileInputStream optimizedTrie = new FileInputStream("src/main/resources/skrt-compiled-trie_optimized.dump");
+		FileInputStream nonOptimizedTrie = new FileInputStream("src/main/resources/skrt-compiled-trie.dump");
 		String input = "tattva";
-		 
+		
 		long one = System.currentTimeMillis();
 		
-		TokenStream fromOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(false, optimizedTrie, true));
+		TokenStream fromOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(optimizedTrie));
 		long two = System.currentTimeMillis();
 		System.out.println("Loading time of the optimized Trie: " + (two - one) / 1000 + "s.");
 		// output: 3s.
 		
-		TokenStream fromNonOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(false, nonOptimizedTrie, true));		
+		TokenStream fromNonOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(nonOptimizedTrie));		
 		long three = System.currentTimeMillis();
 		System.out.println("Loading time of the non-optimized Trie: " + (three - two) / 1000 + "s.");
 		//output: 34s.

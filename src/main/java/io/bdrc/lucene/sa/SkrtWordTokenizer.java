@@ -20,6 +20,7 @@
 package io.bdrc.lucene.sa;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,70 +80,105 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 
 	/**
-	 * Constructs a SkrtWordTokenizer using a file
-	 * @param filename input file
-	 */
-	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
-		if (filename != null) {
-			this.scanner = BuildCompiledTrie.compileTrie(Arrays.asList(filename));
-			ioBuffer = new RollingCharBuffer();
-			ioBuffer.reset(input);
-		} else {	// revert to loading the compiled Trie
-			init(new FileInputStream(compiledTrieName));
-		}
-		this.debug = false;
-	}
-
-	/**
-	 * Same as above, but prints debug info:
-	 * 		- a line of dashes at each iteration of incrementToken()
-	 * 		- the current character
-	 * @param debug
-	 * @param filename
-	 */
-	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
-		if (filename != null) {
-			this.scanner = BuildCompiledTrie.compileTrie(Arrays.asList(filename));
-			ioBuffer = new RollingCharBuffer();
-			ioBuffer.reset(input);
-		} else {	// revert to loading the compiled Trie
-			init(new FileInputStream(compiledTrieName));
-		}
-		this.debug = debug;
-	}
-	
-	/**
-	 * Constructs a SkrtWordTokenizer using the compiled Trie
-	 */
-	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
-		init(new FileInputStream(compiledTrieName));
-		this.debug = false;
-	}
-
-	/**
-	 * Constructs a SkrtWordTokenizer using the compiled Trie
-	 */
-	public SkrtWordTokenizer(boolean debug, String compiledTrie, boolean compiled) throws FileNotFoundException, IOException {
-		this.compiledTrieName = compiledTrie;
-		init(new FileInputStream(compiledTrieName));
-		this.debug = debug;
-	}
-	
-	/**
-	 * Initializes and populates {@see #scanner}
-	 *
-	 * The format of each line in filename must be as follows: "<sandhied_inflected_form>,<initial>$<diffs>/<initial_diff>"
-	 * @param filename the file containing the entries to be added
+	 * Default constructor: uses the default compiled Trie, builds it if it is missing.
+	 * 
 	 * @throws FileNotFoundException the file containing the Trie can't be found
 	 * @throws IOException the file containing the Trie can't be read
+	 * 
 	 */
-	private void init(InputStream stream) throws FileNotFoundException, IOException {
-		DataInputStream inStream = new DataInputStream(stream);
+	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
+		if (!new File(compiledTrieName).exists()) {
+			System.out.println("The default compiled Trie is not found ; building it will take some time!");
+			BuildCompiledTrie.compileTrie();
+			System.out.println("Trie built.");
+		}
+		init(new FileInputStream(compiledTrieName));
+	}
+	
+	/**
+	 * Builds the Trie using the the given file
+	 * @param filename the file containing the entries of the Trie
+	 */
+	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
+		init(filename);
+	}
+
+	/**
+	 * Opens an already compiled Trie
+	 * @param trieStream an InputStream (FileInputStream, for ex.) containing the compiled Trie
+	 */
+	public SkrtWordTokenizer(InputStream trieStream) throws FileNotFoundException, IOException {
+		init(trieStream);
+	}
+	
+	/**
+	 * Uses the given Trie
+	 * @param trie a Trie built using {@link BuildCompiledTrie}
+	 */
+	public SkrtWordTokenizer(Trie trie) {
+		this.scanner = trie;
+	}
+	
+	public SkrtWordTokenizer(boolean debug) throws FileNotFoundException, IOException {
+		init(new FileInputStream(compiledTrieName));
+		this.debug = debug;
+	}
+	
+	/**
+	 * Builds the Trie using the the given file. Prints debug info
+	 * @param debug
+	 * @param filename the file containing the entries of the Trie
+	 */
+	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
+		init(filename);
+		this.debug = debug;
+	}
+
+	/**
+	 * Opens an already compiled Trie. Prints debug info
+	 * @param debug
+	 * @param trieStream  an InputStream (FileInputStream, for ex.) containing the compiled Trie
+	 */
+	public SkrtWordTokenizer(boolean debug, InputStream trieStream) throws FileNotFoundException, IOException {
+		init(trieStream);
+		this.debug = debug;
+	}
+	
+	/**
+	 * Uses the given Trie. Prints debug info
+	 * @param debug
+	 * @param trie a Trie built using {@link BuildCompiledTrie}
+	 */
+	public SkrtWordTokenizer(boolean debug, Trie trie) {
+		this.scanner = trie;
+		this.debug = debug;
+	}
+	
+	/**
+	 * Opens an existing compiled Trie
+	 * 
+	 * @param inputStream the compiled Trie opened as a Stream 
+	 */
+	private void init(InputStream inputStream) throws FileNotFoundException, IOException {
+		DataInputStream inStream = new DataInputStream(inputStream);
 		this.scanner = new Trie(inStream);
 
 		ioBuffer = new RollingCharBuffer();
 		ioBuffer.reset(input);
 	}
+	
+	/**
+	 * Builds a Trie from the given file
+	 * 
+	 * @param filename the Trie as a {@code .txt} file
+	 */
+	private void init(String filename) throws FileNotFoundException, IOException {
+		this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
+		
+		ioBuffer = new RollingCharBuffer();
+		ioBuffer.reset(input);
+	}
+	
 	/* current token related */
 	private int tokenStart, tokenEnd, tokenLength;
 	private Row rootRow, currentRow;
