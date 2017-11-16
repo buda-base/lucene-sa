@@ -28,7 +28,8 @@ public class BuildCompiledTrie {
 	
 	static boolean optimize = false;	// change to true to optimize the Trie
 	public static List<String> inputFiles = Arrays.asList(
-			"resources/sanskrit-stemming-data/output/total_output.txt"	// all Sanskrit Heritage entries
+			"resources/sanskrit-stemming-data/output/total_output.txt",	// all Sanskrit Heritage entries
+			"resources/trie-exceptions.txt"	// things like -tva
 			);
 	
 	public static void main(String [] args){

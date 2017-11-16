@@ -89,8 +89,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
 		if (!new File(compiledTrieName).exists()) {
 			System.out.println("The default compiled Trie is not found ; building it will take some time!");
+			long start = System.currentTimeMillis();
 			BuildCompiledTrie.compileTrie();
-			System.out.println("Trie built.");
+			long end = System.currentTimeMillis();
+			System.out.println("Trie built in " + (end - start) / 1000 + "s.");
 		}
 		init(new FileInputStream(compiledTrieName));
 	}
@@ -116,10 +118,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
 	public SkrtWordTokenizer(Trie trie) {
-		this.scanner = trie;
+		init(trie);
 	}
 	
 	public SkrtWordTokenizer(boolean debug) throws FileNotFoundException, IOException {
+		if (!new File(compiledTrieName).exists()) {
+			System.out.println("The default compiled Trie is not found ; building it will take some time!");
+			long start = System.currentTimeMillis();
+			BuildCompiledTrie.compileTrie();
+			long end = System.currentTimeMillis();
+			System.out.println("Trie built in " + (end - start) / 1000 + "s.");
+		}
 		init(new FileInputStream(compiledTrieName));
 		this.debug = debug;
 	}
@@ -150,7 +159,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
 	public SkrtWordTokenizer(boolean debug, Trie trie) {
-		this.scanner = trie;
+		init(trie);
 		this.debug = debug;
 	}
 	
@@ -174,6 +183,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	private void init(String filename) throws FileNotFoundException, IOException {
 		this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
+		
+		ioBuffer = new RollingCharBuffer();
+		ioBuffer.reset(input);
+	}
+	
+	/**
+	 * Uses the given Trie
+	 * @param trie  a Trie built using {@link BuildCompiledTrie}
+	 */
+	private void init(Trie trie) {
+		this.scanner = trie;
 		
 		ioBuffer = new RollingCharBuffer();
 		ioBuffer.reset(input);
@@ -357,9 +377,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				
 				/* Decide what to do with the SLP chars currently processed */
 				if (wentBeyondLongestMatch()) {
-					restoreNonMaxMatchState();
+					if (foundNonMaxMatch) {
+						restoreNonMaxMatchState();
+						resetNonWordChars(0);
+					}
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
+					
 					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 					if (thereIsNoTokenAndNoNonword()) {
 						foundNonMaxMatch = false;
@@ -753,7 +777,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens() throws NumberFormatException, IOException {
 		String cmd = scanner.getCommandVal(foundMatchCmdIndex);
 		if (cmd != null) {
-			if (debug) System.out.println(termAtt.toString() + ": inflected");
+			if (debug) System.out.println("form found: " + termAtt.toString() + "\n");
 			final Set<String> lemmas = reconstructLemmas(cmd, termAtt.toString());
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
@@ -787,7 +811,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		for (Entry<String, Integer[]> entry: potentialTokens.entrySet()) {
 			final String key = entry.getKey();
 			final Integer[] value = entry.getValue();
-			if (debug) System.out.println(key + ": inflected");
+			if (debug) System.out.println("form found: " + termAtt.toString() + "\n");
 			if (value[3] == 1) {
 				String cmd = scanner.getCommandVal(value[4]);
 				final Set<String> lemmas = reconstructLemmas(cmd, key);

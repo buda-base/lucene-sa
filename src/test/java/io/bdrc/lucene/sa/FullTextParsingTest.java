@@ -19,12 +19,17 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.analysis.CharArraySet;
@@ -42,6 +47,20 @@ import org.junit.Test;
  */
 public class FullTextParsingTest
 {
+	
+	static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
+	
+	static private SkrtWordTokenizer fillWordTokenizer() {
+		try {
+			skrtWordTokenizer = new SkrtWordTokenizer(true);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return skrtWordTokenizer;
+	}
+	
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();
 		tokenizer.end();
@@ -64,20 +83,68 @@ public class FullTextParsingTest
 			assertTrue(false);
 		}
 	}
-
-
+	
+	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
+		try {
+			List<String> termList = new ArrayList<String>();
+			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
+			while (tokenStream.incrementToken()) {
+				termList.add(charTermAttribute.toString());
+				System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
+			}
+			System.out.println("1 " + String.join(" ", expected));
+			System.out.println("2 " + String.join(" ", termList) + "\n");
+			assertThat(termList, is(expected));
+		} catch (IOException e) {
+			assertTrue(false);
+		}
+	}
+	
 	@Test
     public void fullTest() throws Exception {
-    	System.out.println("Testing transliterating from devanagari");
+    	System.out.println("parsing a SARIT text in devanagari and lemmatizing it");
     	Reader input = new FileReader("src/test/resources/tattvasangrahapanjika_raw_deva.txt");  
     	CharFilter cs = new Deva2SlpFilter(input);
     	System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
 		TokenStream words = tokenize(cs, skrtWordTokenizer);
 		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
 		TokenStream result = new StopFilter(words, stopSet);
 		printTokenStream(result);
     }
+	
+	@Test
+	public void bug1ExtraNonwordToken() throws Exception {
+		System.out.println("extra non-word token");
+		String input = "ametaH";
+		Reader reader = new StringReader(input);
+    	System.out.println("0 " + input);
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		List<String> expected = Arrays.asList("ameta", "H");
+		assertTokenStream(words, expected);
+	}
+	
+	@Test
+	public void bug2missingNonWord() throws Exception {
+		System.out.println("missing non-word token");
+		String input = ". tattvasaNgrahaH";
+		Reader reader = new StringReader(input);
+    	System.out.println("0 " + input);
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		List<String> expected = Arrays.asList("tad", "tva");
+		assertTokenStream(words, expected);
+	}
+	
+	@Test
+	public void bug3arrayOutOfBounds() throws Exception {
+		System.out.println("missing non-word token");
+		String input = "sAtmIBUtam";
+		Reader reader = new StringReader(input);
+    	System.out.println("0 " + input);
+		TokenStream words = tokenize(reader, skrtWordTokenizer);
+		List<String> expected = Arrays.asList("sAtma", "BUtam");
+		assertTokenStream(words, expected);
+	}
 	
 	@AfterClass
 	public static void finish() {
