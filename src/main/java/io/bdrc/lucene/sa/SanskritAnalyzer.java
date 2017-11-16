@@ -52,11 +52,16 @@ public final class SanskritAnalyzer extends Analyzer {
 	/**
 	 * Creates a new {@link SanskritAnalyzer}
 	 * 
-	 * @param  segmentInWords  if the segmentation is on words instead of syllables
-	 * @param  fromDeva  if the text should be converted from devanagari to SLP
-	 * @param  fromRoman  if the text should be converted from romanized sanskrit to SLP
-	 * @throws IOException the file containing the stoplist can not be read
-	 * @throws FileNotFoundException  the file containing the stoplist can not be found 
+	 * @param segmentInWords if the segmentation is on words instead of syllables
+	 * @param inputEncoding `0` for SLP, `1` for devanagari, `2` for romanized sanskrit
+	 * @param stopFilename formatting: 
+	 * 								- in SLP encoding
+	 * 								- 1 word per line 
+	 * 								- empty lines (with and without comments), spaces and tabs are allowed 
+	 * 								- comments start with `#`
+	 * 								- lines can end with a comment
+	 * @throws FileNotFoundException  the file containing the stoplist can not be read
+	 * @throws IOException  the file containing the stoplist can not be found
 	 */
 	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename) throws FileNotFoundException, IOException {
 		this.segmentInWords = segmentInWords;
