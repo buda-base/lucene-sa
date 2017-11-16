@@ -35,6 +35,7 @@ Does not implement complex syllabation rules, but does the same thing as Peter S
 
 The [list of stopwords](src/main/resources/skrt-stopwords.txt) is [this list](https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236) encoded in SLP
 The list must be formatted in the following way:
+
 				- in SLP encoding
 				- 1 word per line
 				- empty lines (with and without comments), spaces and tabs are allowed
