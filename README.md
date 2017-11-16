@@ -48,7 +48,8 @@ Transcodes the romanized sanskrit input in SLP.
 
 Following the naming convention used by Peter Scharf, we use "Roman" instead of "IAST" to show that, on top of supporting the full IAST character set, we support the extra distinctions within devanagari found in ISO 15919
 In this filter, a list of non-Sanskrit and non-Devanagari characters are deleted.
-See [here](src/main/java/Roman2SlpFilter.java) for the details.
+
+See [here](src/main/java/io/bdrc/lucene/sa/Roman2SlpFilter.java) for the details.
 
 ### Deva2SlpFilter
 
