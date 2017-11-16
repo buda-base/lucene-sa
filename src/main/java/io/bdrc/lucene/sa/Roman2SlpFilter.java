@@ -160,6 +160,8 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("h\u0323", "H"); // NFD ḥ 
         builder.add("\u1e24", "H"); // Ḥ
         builder.add("H\u0323", "H"); // NFD Ḥ
+        builder.add("f", "H");	// added to cover special visargas found in old stone inscriptions
+        builder.add("x", "H");	// idem
         builder.add("Z", "z");
         builder.add("V", "v");
         builder.add("K", "k");
