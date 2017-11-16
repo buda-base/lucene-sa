@@ -11,9 +11,9 @@ There are two constructors. The nullary constructor and
 ```
     SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename)
 		
-    `segmentInWords` - if the segmentation is on words instead of syllables
-    `inputEncoding` - `0` for SLP, `1` for devanagari, `2` for romanized sanskrit
-    `stopFilename` - see below
+    segmentInWords - if the segmentation is on words instead of syllables
+    inputEncoding - 0 for SLP, 1 for devanagari, 2 for romanized sanskrit
+    stopFilename - see below
 ```
 
 The nullary constructor is equivalent to `SanskritAnalyzer(true, 0, "src/main/resources/skrt-stopwords.txt")`
@@ -36,11 +36,11 @@ Does not implement complex syllabation rules, but does the same thing as Peter S
 The [list of stopwords](src/main/resources/skrt-stopwords.txt) is [this list](https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236) encoded in SLP
 The list must be formatted in the following way:
 
-				- in SLP encoding
-				- 1 word per line
-				- empty lines (with and without comments), spaces and tabs are allowed
-				- comments start with `#`
-				- lines can end with a comment
+ - in SLP encoding
+ - 1 word per line
+ - empty lines (with and without comments), spaces and tabs are allowed
+ - comments start with `#`
+ - lines can end with a comment
 
 ### Roman2SlpFilter
 
@@ -64,10 +64,10 @@ SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigi
 
 ## Aknowledgements
 
-	- https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236
-	- http://sanskritlibrary.org/software/transcodeFile.zip (more specifically roman_slp1.xml)
-	- https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST
-	- http://unicode.org/charts/PDF/U0900.pdf
+ - https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236
+ - http://sanskritlibrary.org/software/transcodeFile.zip (more specifically roman_slp1.xml)
+ - https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST
+ - http://unicode.org/charts/PDF/U0900.pdf
 
 
 ## License
