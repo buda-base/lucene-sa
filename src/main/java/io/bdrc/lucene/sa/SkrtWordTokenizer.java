@@ -58,7 +58,7 @@ import io.bdrc.lucene.stemmer.Trie;
  * 
  * <br>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
- * For example, "nagaraM" could either be a word of its own or "na" + "garam",
+ * For example, "nagaraM" could either be a word of its own or "na" + "garaM",
  * but is always parsed as a single word
  *
  * Derived from Lucene 6.4.1 CharTokenizer, but differs by using a RollingCharBuffer

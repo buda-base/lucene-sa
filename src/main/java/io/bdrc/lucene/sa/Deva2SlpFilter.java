@@ -35,7 +35,6 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  * @author Élie Roux
  *
  */
-
 public class Deva2SlpFilter extends MappingCharFilter {
 
     public Deva2SlpFilter(Reader in) {
