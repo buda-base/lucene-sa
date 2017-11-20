@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.CharFilter;
+import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
@@ -166,6 +168,21 @@ public class SkrtAnalyzerTests
     	assertTrue(res);
     }
 
+	@Test
+	public void stopwordFilterTest() throws IOException
+	{
+		System.out.println("Testing SanskritAnalyzer.skrtStopWords");
+		String input = "one aham AvAByAm etAByAm two";
+		Reader reader = new StringReader(input);
+		List<String> expected = Arrays.asList("one", "two");
+
+		System.out.print(input + " => ");
+		TokenStream syllables = tokenize(reader, new WhitespaceTokenizer());
+		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
+		StopFilter res = new StopFilter(syllables, stopSet);
+		assertTokenStream(res, expected);
+	} 
+	
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");

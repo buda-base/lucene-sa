@@ -45,7 +45,7 @@ import org.apache.lucene.util.IOUtils;
 public final class SanskritAnalyzer extends Analyzer {	
 	boolean segmentInWords = false; 
 	int inputEncoding = 0;
-	CharArraySet skrtStopSet;
+	CharArraySet skrtStopWords;
 	@SuppressWarnings("unused")
 	private CharArraySet srktStopSet;
 	
@@ -69,7 +69,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		if (stopFilename != null) {
 			this.srktStopSet = StopFilter.makeStopSet(getWordList(stopFilename, "#"));
 		} else {
-			this.skrtStopSet = null;
+			this.skrtStopWords = null;
 		}
 	}
 	
@@ -151,8 +151,8 @@ public final class SanskritAnalyzer extends Analyzer {
 			source = new SkrtSyllableTokenizer();
 		}		
 		
-		if (skrtStopSet != null) {  // a stop list was parsed
-			filter = new StopFilter(source, skrtStopSet);
+		if (skrtStopWords != null) {  // a stop list was parsed
+			filter = new StopFilter(source, skrtStopWords);
 		} else {
 			filter = (TokenStream) source;
 		}
