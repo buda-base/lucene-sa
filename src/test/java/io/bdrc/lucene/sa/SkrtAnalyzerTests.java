@@ -110,6 +110,17 @@ public class SkrtAnalyzerTests
     }
     
     @Test
+    public void testDeva2SlpFilterVedicExtensions() throws Exception {
+    	System.out.println("Testing transliterating from devanagari");
+    	String input = "अ\u1CE5थ रा\u1CD0जकन्\u1CDBया चन्द्रवती\u1CE0 "; 
+    	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	System.out.println("0 " + input);
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI");
+        assertTokenStream(ts, expected);
+    }
+    
+    @Test
     public void testZwjZwnjTranscoding() throws Exception {
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
