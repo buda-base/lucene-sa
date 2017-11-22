@@ -35,10 +35,16 @@ public class BuildCompiledTrie {
 	public static void main(String [] args){
 		
 		try {
+			long one = System.currentTimeMillis();
 			Trie trie = buildTrie(inputFiles);
+			long two = System.currentTimeMillis();
+			System.out.println("Building the Trie from the raw text file took: " + (two - one) / 1000 + "s.");
 			
 			if (optimize) {
+				long three = System.currentTimeMillis();
 				trie = optimizeTrie(trie, new Optimizer());	// uncomment to optimize the Trie
+				long four = System.currentTimeMillis();
+				System.out.println("Optimizing the Trie took: " + (four - three) / 1000 + "s.");		
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
 			} else {
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
@@ -54,7 +60,7 @@ public class BuildCompiledTrie {
 	/**
 	 * used in {@link SkrtWordTokenizer} constructors
 	 * @param inputFiles
-	 * @return the optimized Trie
+	 * @return builds the Trie, then stores it to a file (no optimization)
 	 */
 	public static void compileTrie() throws FileNotFoundException, IOException {
 		Trie trie = buildTrie(inputFiles);
@@ -64,7 +70,7 @@ public class BuildCompiledTrie {
 	/** 
 	 * 
 	 * @param inputFiles  the list of files to feed the Trie with
-	 * @return the optimized Trie
+	 * @return the non-optimized Trie
 	 */
 	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
 		/* Fill the Trie with the content of all inputFiles*/

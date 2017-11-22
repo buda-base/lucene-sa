@@ -22,11 +22,11 @@ package io.bdrc.lucene.sa;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.analysis.TokenStream;
@@ -35,6 +35,9 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.junit.AfterClass;
 import org.junit.Test;
+
+import io.bdrc.lucene.stemmer.Optimizer;
+import io.bdrc.lucene.stemmer.Trie;
 
 /**
  * Test showing the Trie optimization modifies the entries in the Trie
@@ -66,8 +69,8 @@ public class TrieTests
     @Test
     public void optimizationTest() throws IOException
     {
-		FileInputStream optimizedTrie = new FileInputStream("src/main/resources/skrt-compiled-trie_optimized.dump");
-		FileInputStream nonOptimizedTrie = new FileInputStream("src/main/resources/skrt-compiled-trie.dump");
+		Trie nonOptimizedTrie = BuildCompiledTrie.buildTrie(Arrays.asList("src/test/resources/tries/optimization_test_tattva.txt"));
+		Trie optimizedTrie = BuildCompiledTrie.optimizeTrie(nonOptimizedTrie, new Optimizer());
 		String input = "tattva";
 		
 		long one = System.currentTimeMillis();
