@@ -4,3 +4,6 @@
 [submodule "resources/sanskrit-stemming-data"]
 	path = resources/sanskrit-stemming-data
 	url = https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data.git
+[submodule "https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data.git"]
+	path = https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data.git
+	url = https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data.git
