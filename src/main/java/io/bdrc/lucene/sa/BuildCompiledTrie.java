@@ -35,16 +35,10 @@ public class BuildCompiledTrie {
 	public static void main(String [] args){
 		
 		try {
-			long one = System.currentTimeMillis();
 			Trie trie = buildTrie(inputFiles);
-			long two = System.currentTimeMillis();
-			System.out.println("Building the Trie from the raw text file took: " + (two - one) / 1000 + "s.");
 			
 			if (optimize) {
-				long three = System.currentTimeMillis();
-				trie = optimizeTrie(trie, new Optimizer());	// uncomment to optimize the Trie
-				long four = System.currentTimeMillis();
-				System.out.println("Optimizing the Trie took: " + (four - three) / 1000 + "s.");		
+				trie = optimizeTrie(trie, new Optimizer());	// uncomment to optimize the Trie		
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
 			} else {
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
@@ -73,6 +67,7 @@ public class BuildCompiledTrie {
 	 * @return the non-optimized Trie
 	 */
 	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
+		long one = System.currentTimeMillis();
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);
 		for (String filename: inputFiles) {
@@ -89,6 +84,8 @@ public class BuildCompiledTrie {
 				}
 			}
 		}
+		long two = System.currentTimeMillis();
+		System.out.println("Building the Trie from the raw text file took: " + (two - one) / 1000 + "s.");
 		return trie;
 	}
 	
@@ -102,7 +99,10 @@ public class BuildCompiledTrie {
 	 * @return
 	 */
 	public static Trie optimizeTrie(Trie trie, Reduce optimizer) {
+		long three = System.currentTimeMillis();
 		trie = optimizer.optimize(trie);
+		long four = System.currentTimeMillis();
+		System.out.println("Optimizing the Trie took: " + (four - three) / 1000 + "s.");
 		return trie;
 	}
 	
