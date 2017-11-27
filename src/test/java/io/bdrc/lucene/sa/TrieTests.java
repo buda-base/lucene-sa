@@ -74,21 +74,17 @@ public class TrieTests
 		String input = "tattva";
 		
 		long one = System.currentTimeMillis();
-		
 		TokenStream fromOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(optimizedTrie));
 		long two = System.currentTimeMillis();
 		System.out.println("Loading time of the optimized Trie: " + (two - one) / 1000 + "s.");
-		// output: 3s.
 		
 		TokenStream fromNonOptimized = tokenize(new StringReader(input), new SkrtWordTokenizer(nonOptimizedTrie));		
 		long three = System.currentTimeMillis();
 		System.out.println("Loading time of the non-optimized Trie: " + (three - two) / 1000 + "s.");
-		//output: 34s.
 		
 		List<String> termsFromOptimized = generateTermList(fromOptimized);
 		List<String> termsFromNonOptimized = generateTermList(fromNonOptimized);
 		System.out.println(termsFromOptimized + "\n" + termsFromNonOptimized);
-		// output: [tattva_word] and [tad_word, tva_non-word], respectively
 		
 		assertThat(termsFromOptimized, is(not(termsFromNonOptimized)));
     }
