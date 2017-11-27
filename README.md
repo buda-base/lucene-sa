@@ -6,7 +6,7 @@
 The main analyzer.
 It tokenizes the input text using *SkrtWordTokenizer*, then applies *StopFilter* (see below)
 
-There are two constructors. The nullary constructor and 
+There are two constructors. The nullary constructor and
 
 ```
     SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename)
