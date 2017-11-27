@@ -20,7 +20,7 @@ The nullary constructor is equivalent to `SanskritAnalyzer(true, 0, "src/main/re
 
 ### SkrtWordTokenizer
 
-This tokenizer produces words through a Maximal Matching algorithm. It builds on top of [this Trie implementation](https://github.com/BuddhistDigitalResourceCenter/stemmer).  
+This tokenizer produces words through a Maximal Matching algorithm. It builds on top of [this Trie implementation](https://github.com/BuddhistDigitalResourceCenter/stemmer).
 
 It undoes the sandhi to find the correct word boundaries and lemmatizes all the produced tokens.
 
