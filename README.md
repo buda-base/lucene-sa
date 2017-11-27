@@ -29,7 +29,7 @@ For example, "nagaraM" could either be a word of its own or "na" + "garaM", but 
 
 ### SkrtSyllableTokenizer
 
-Does not implement complex syllabation rules, but does the same thing as Peter Scharf's [script](http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html).
+Does not implement complex syllabation rules, but does the same thing as Peter Scharf's [script](http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html). 
 
 ### Stopword Filter
 
