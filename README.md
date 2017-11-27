@@ -25,7 +25,7 @@ This tokenizer produces words through a Maximal Matching algorithm. It builds on
 It undoes the sandhi to find the correct word boundaries and lemmatizes all the produced tokens.
 
 Due to its design, this tokenizer doesn't deal with contextual ambiguities.
-For example, "nagaraM" could either be a word of its own or "na" + "garaM", but will be parsed as a single word as long as "nagaraM" is present in the lexical resources.
+For example, "nagaraM" could either be a word of its own or "na" + "garaM", but will be parsed as a single word as long as "nagaraM" is present in the lexical resources. 
 
 ### SkrtSyllableTokenizer
 
