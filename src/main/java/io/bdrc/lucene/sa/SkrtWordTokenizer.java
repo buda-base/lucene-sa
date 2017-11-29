@@ -693,7 +693,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			int start = combinations[i][0];
 			int end = combinations[i][1];
 			
-			String current = String.valueOf(ioBuffer.get(bufferIndex+start, end-start));
+            StringBuilder sb = new StringBuilder();
+            for (int j = bufferIndex+start ; j <= bufferIndex+end ; j++) {
+                sb.append(ioBuffer.get(j));
+            }
+            String current = sb.toString();
 			
 			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
 				return true;
