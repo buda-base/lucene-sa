@@ -115,7 +115,7 @@ public class FullTextParsingTest
 	
 	@Test
 	public void bug1ExtraNonwordToken() throws Exception {
-		System.out.println("extra non-word token");
+		System.out.println("bug1");
 		String input = "ametaH";
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
@@ -126,25 +126,36 @@ public class FullTextParsingTest
 	
 	@Test
 	public void bug2missingNonWord() throws Exception {
-		System.out.println("missing non-word token");
+		System.out.println("bug2");
 		String input = ". tattvasaNgrahaH";
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-		List<String> expected = Arrays.asList("tad", "tva");
+		List<String> expected = Arrays.asList("tad", "tva", "saNgraha");
 		assertTokenStream(words, expected);
 	}
 	
 	@Test
-	public void bug3arrayOutOfBounds() throws Exception {
-		System.out.println("missing non-word token");
+	public void bug3WrongTokenSize() throws Exception {
+		System.out.println("bug3");
 		String input = "sAtmIBUtam";
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-		List<String> expected = Arrays.asList("sAtma", "BUtam");
+		List<String> expected = Arrays.asList("sAtma", "BU", "BUta");
 		assertTokenStream(words, expected);
 	}
+	
+    @Test
+    public void bug4missingM() throws Exception {
+        System.out.println("bug4");
+        String input = "SrIH. tattvasaNgrahaH. paYjikAsametaH. tattvasaMgrahasya";
+        Reader reader = new StringReader(input);
+        System.out.println("0 " + input);
+        TokenStream words = tokenize(reader, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("SrI", "tad", "tva", "saNgraha", "paYjikAs", "ameta", "H", "tad", "tva", "sa", "M", "grahasya");
+        assertTokenStream(words, expected);
+    }
 	
 	@AfterClass
 	public static void finish() {

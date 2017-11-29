@@ -285,7 +285,7 @@ public class WordTokenizerTests
 													+"'nAmA is split here because we lemmatize and 'na' exists in the Trie"); 
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "ekasmin", "maho", "maha", "utsava", "divasa", "na", "garaM", "nirikzamARAsti");
+		List<String> expected = Arrays.asList("aTa", "rAja", "kanya", "kana", "candravatI", "nAmABi", "na", "varupayOva", "na", "sampannA", "saKi", "dvitIya", "eka", "mah", "mahat", "utsava", "divasa", "na", "garaM", "nirikzamARAsti");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -376,7 +376,7 @@ public class WordTokenizerTests
 		System.out.println("bug4");
 		String input = "saKIdvitIyEkasmin";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("saKi", "dvitIya", "ekasmin");
+		List<String> expected = Arrays.asList("saKi", "dvitIya", "eka");
 		System.out.println("0 " + input);
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -439,7 +439,7 @@ public class WordTokenizerTests
 		System.out.println("bug8");
 		String input = "praTamo BAgaH";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("praTama", "BAgaH");
+		List<String> expected = Arrays.asList("praTama", "BAga");
 		System.out.println("0 " + input);
 		
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/pratamo_test"); 

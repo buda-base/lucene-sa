@@ -379,7 +379,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (wentBeyondLongestMatch()) {
 					if (foundNonMaxMatch) {
 						restoreNonMaxMatchState();
-						resetNonWordChars(0);
 					}
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
@@ -464,7 +463,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				nonWordEnd = tokenEnd;				// needed for term indices
 				setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
-				resetNonWordChars(0);
 				break;
 				
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
@@ -824,7 +822,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				final Set<String> lemmas = reconstructLemmas(cmd, key);
 				if (lemmas.size() != 0) {
 					for (String l: lemmas) {	// multiple lemmas are possible: finals remain unanalyzed
-						totalTokens.put(l, new Integer[] {value[0], value[1], value[2], value[3]});	
+						totalTokens.put(l, new Integer[] {value[0], value[1], l.length(), value[3]});	
 						// use same indices for all (all are from the same inflected form)
 					}
 				} else {	// finals of current form are not sandhied. there is only one token to add
@@ -874,10 +872,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenStart = tokenStart;
 		nonMaxTokenEnd = tokenEnd;
 		nonMaxTokenLength = tokenLength;
-		if (nonWordChars.length() - 2 <= 0) {
-			nonMaxNonWordLength = 0;
-		} else {
-			nonMaxNonWordLength = nonWordChars.length()-2;
+		nonMaxNonWordLength = nonWordChars.length() - tokenLength;
+		if (nonMaxNonWordLength < 0) {
+		    nonMaxNonWordLength = 0;
 		}
 		return true;
 	}

@@ -116,6 +116,7 @@ public class SkrtAnalyzerTests
     	System.out.println("Testing transliterating from devanagari");
     	String input = "अ\u1CE5थ रा\u1CD0जकन्\u1CDBया चन्द्रवती\u1CE0 "; 
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
+    	cs = new VedicFilter(cs);
     	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI");
