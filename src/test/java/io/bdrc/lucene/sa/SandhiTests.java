@@ -73,16 +73,15 @@ public class SandhiTests
 	static private void assertSandhi(String input, List<String> expected, int trieNumber) throws FileNotFoundException, IOException {
 		Reader reader = new StringReader(input);
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildOptimizedTokenizer("resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)); 
+		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("resources/sanskrit-stemming-data/output/tries/"+Integer.toString(trieNumber)); 
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
 	
-	static private SkrtWordTokenizer buildOptimizedTokenizer(String trieName) throws FileNotFoundException, IOException {		
+	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {		
 		List<String> inputFiles = Arrays.asList(trieName + ".txt");
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
-		BuildCompiledTrie.optimizeTrie(trie, new Optimizer());
 		
 		return new SkrtWordTokenizer(false, trie);
 	}
