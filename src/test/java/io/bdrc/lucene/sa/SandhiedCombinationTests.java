@@ -52,8 +52,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "A";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1);
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0);
     	assertTrue(res);
     }
 
@@ -65,8 +64,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "ai";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -79,8 +77,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 1;
     	String sandhiedSubString = "au";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
 
@@ -92,8 +89,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "k";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -105,8 +101,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "ll";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -118,8 +113,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "AgB";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
 	}
     
@@ -131,8 +125,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "anna";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
 	}
 
@@ -144,8 +137,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "anna";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
 	}
 
@@ -157,8 +149,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "Nm";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
 
@@ -170,8 +161,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 2;
     	String sandhiedSubString = "Nm";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -183,8 +173,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Mzw";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
 
@@ -196,8 +185,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Mzw";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
 
@@ -209,8 +197,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "as";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
 
@@ -222,8 +209,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Ae";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
 
@@ -235,8 +221,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "Ae";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
 
@@ -248,8 +233,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "irv";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
     
@@ -261,8 +245,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "og";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
 
@@ -274,8 +257,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "og";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
 
@@ -287,8 +269,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "org";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1);
     	assertTrue(res);
     }
 
@@ -300,8 +281,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "org";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-1, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -1); 
     	assertTrue(res);
     }
     
@@ -313,8 +293,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "t";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -326,8 +305,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 7;
     	String sandhiedSubString = "n";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 1}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -339,8 +317,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 6;
     	String sandhiedSubString = "acC";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -352,8 +329,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 6;
     	String sandhiedSubString = "acC";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{0, 4}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, 0); 
     	assertTrue(res);
     }
     
@@ -365,8 +341,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "punaHp";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 2}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -4); 
     	assertTrue(res);
     }
     
@@ -378,8 +353,7 @@ public class SandhiedCombinationTests
     	sandhied.get(0);
     	int sandhiStartIdx = 4;
     	String sandhiedSubString = "punaHp";
-    	int[][] vowelSandhiCombinations1 = new int[][]{{-4, 3}};
-    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, vowelSandhiCombinations1); 
+    	boolean res = SkrtWordTokenizer.isSandhiedCombination(sandhied, sandhiStartIdx, sandhiedSubString, -4); 
     	assertTrue(res);
     }
     

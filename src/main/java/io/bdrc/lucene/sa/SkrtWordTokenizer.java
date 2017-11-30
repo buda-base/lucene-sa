@@ -639,73 +639,63 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @return: true if sandhied is one of the combinations; false otherwise
 	 */
 	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
-		int[][] combinations;
-
+	    System.out.println("sandhiType="+sandhiType);
 		switch(sandhiType) {
 
 		case 1:																			// vowel sandhi
 			if (sandhied.length() == 1) {
 				mergesInitials = true;
 			}
-			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 2:																			// consonant sandhi 1
-			combinations = new int[][]{{0, 3}, {0, 2}, {0, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 3:																		// consonant sandhi 1 vowels
-			combinations = new int[][]{{-1, 2}, {-1, 3}, {-1, 4}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
 			
 		case 4:																			// consonant sandhi 2
-			combinations = new int[][]{{0, 4}, {0, 3}, {0, 2}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 5:																			// visarga sandhi
-			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
 
 		case 6:																			// visarga sandhi 2
-			combinations = new int[][]{{-1, 3}, {-1, 2}, {-1, 1}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
 			
 		case 7:																			// absolute finals sandhi
-			combinations = new int[][]{{0, 1}};		// (consonant clusters are always reduced to the first consonant)
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			// (consonant clusters are always reduced to the first consonant)
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 8:																			// "cC"-words sandhi
-			combinations = new int[][]{{0, 4}, {0, 3}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 9:																			// special sandhi: "punar"
-			combinations = new int[][]{{-4, 3}, {-4, 2}};
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, combinations);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
 			
 		default:
 			return false;
 		}
 	}
 
-	static boolean isSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int[][] combinations) throws IOException {
-		for (int i = 0; i <= combinations.length-1; i++) {
-			int start = combinations[i][0];
-			int end = combinations[i][1];
-			
-            StringBuilder sb = new StringBuilder();
-            for (int j = bufferIndex+start ; j < bufferIndex+end ; j++) {
-                final int res = ioBuffer.get(j);
-                if (res < 0)
-                    break;
-                sb.append(Character.toChars(res));
+	static boolean isSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int start) throws IOException {
+        int j = 0;
+        int nbIgnoredSpaces = 0;
+        System.out.println("sandhied="+sandhied+", start="+start);
+        while (j < sandhied.length()) {
+            final int res = ioBuffer.get(bufferIndex+start+j+nbIgnoredSpaces);
+            System.out.println("res="+Arrays.toString(Character.toChars(res)));
+            if (res == ' ') {
+                nbIgnoredSpaces++;
+                continue;
             }
-            String current = sb.toString();
-			
-			if (sandhied.equals(current) || sandhied.equals(current.replaceAll(" ", ""))) {
-				return true;
-			}
-		}
-		return false;
+            if (res == -1)
+                return false;
+            if (res != sandhied.codePointAt(j))
+                return false;
+            j++;
+        }
+		return true;
 	}
 	
 	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
