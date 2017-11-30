@@ -671,7 +671,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
 
 		case 9:																			// special sandhi: "punar"
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -4);
 			
 		default:
 			return false;
@@ -681,10 +681,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	static boolean isSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int start) throws IOException {
         int j = 0;
         int nbIgnoredSpaces = 0;
-        System.out.println("sandhied="+sandhied+", start="+start);
         while (j < sandhied.length()) {
             final int res = ioBuffer.get(bufferIndex+start+j+nbIgnoredSpaces);
-            System.out.println("res="+Arrays.toString(Character.toChars(res)));
             if (res == ' ') {
                 nbIgnoredSpaces++;
                 continue;
