@@ -387,6 +387,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (thereIsNoTokenAndNoNonword()) {
 						foundNonMaxMatch = false;
 						continue;							// resume looping over ioBuffer
+					} else if (isLoneInitial()) {
+					    foundNonMaxMatch = false;
+					    foundMatch = false;
+					    setTermLength();
+					    continue;
 					} else {
 						break;								// and resume looping over ioBuffer
 					}
@@ -635,39 +640,38 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @return: true if sandhied is one of the combinations; false otherwise
 	 */
 	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
-	    System.out.println("sandhiType="+sandhiType);
 		switch(sandhiType) {
 
-		case 1:																			// vowel sandhi
+		case 1:																			
 			if (sandhied.length() == 1) {
 				mergesInitials = true;
 			}
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // vowel sandhi
 
-		case 2:																			// consonant sandhi 1
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
+		case 2:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // consonant sandhi 1
 
-		case 3:																		// consonant sandhi 1 vowels
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
+		case 3:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);   // consonant sandhi 1 vowels
 			
-		case 4:																			// consonant sandhi 2
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
+		case 4:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // consonant sandhi 2
 
-		case 5:																			// visarga sandhi
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
+		case 5:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);   // visarga sandhi
 
-		case 6:																			// visarga sandhi 2
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);
+		case 6:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -1);   // visarga sandhi 2
 			
-		case 7:																			// absolute finals sandhi
+		case 7:
 			// (consonant clusters are always reduced to the first consonant)
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // absolute finals sandhi
 
-		case 8:																			// "cC"-words sandhi
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);
+		case 8:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // "cC"-words sandhi
 
-		case 9:																			// special sandhi: "punar"
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -4);
+		case 9:
+			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -4);   // special sandhi: "punar"
 			
 		default:
 			return false;
@@ -723,9 +727,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (storedInitials != null && storedInitials.contains(termAtt.toString())) {
 			termAtt.setEmpty();
 		}
-//		if (nonMaxIndicesRequireUpdating()) { // useful ???
-//		    nonMaxTokenLength = tokenLength;
-//		}
 	}
 
 	private void finalizeSettingTermAttribute() {
@@ -964,6 +965,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
+	final private boolean isLoneInitial() {
+	    boolean isInitial = false;
+	    if (storedInitials != null) {
+	        String tokenStr = termAtt.toString();
+	        for (String initial: storedInitials) {
+	            if (tokenStr.equals(initial)) {
+	                isInitial = true;
+	            }
+	        }
+	    }
+	    return isInitial;
+	}
+	
 	final private boolean nonMaxIndicesRequireUpdating() {
 	    return bufferIndex == nonMaxBufferIndex;
 	}
@@ -974,9 +988,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		// If a modifier occurs between two sandhied words, second word won't be considered sandhied
 	}
 	
-	final private boolean initialIsNotFollowedBySandhied(int c) {
-		return firstInitialIndex + 1 == bufferIndex && c == ' ';
+	final private boolean currentCharIsSpaceWithinSandhi(int c) {
+		return finalsIndex + 1 == bufferIndex && (nextCharIsSpace(c) || nextCharIsHyphen(c));
 	}
+	
+	final private boolean nextCharIsSpace(int c) {
+	    return c == ' ';
+	}
+	
+	final private boolean nextCharIsHyphen(int c) {
+        return c == '-';
+    }
 	
 	final private boolean isSLPModifier(int c) {
 		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) == SkrtSyllableTokenizer.MODIFIER;
@@ -1030,8 +1052,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return (initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) ? true : false;
 	}
 
-	final private boolean currentCharIsSpaceWithinSandhi(int c) {
-		return c == ' ' && bufferIndex == finalsIndex + 1;
+	final private boolean initialIsNotFollowedBySandhied(int c) {
+		return c == ' ' && bufferIndex == firstInitialIndex + 1 ;
 	}
 
 	final private boolean allInitialsAreConsumed() {

@@ -105,17 +105,17 @@ public class FullTextParsingTest
 		}
 	}
 	
-//	@Test
-//    public void fullTest() throws Exception {
-//    	System.out.println("parsing a SARIT text in devanagari and lemmatizing it");
-//    	Reader input = new FileReader("src/test/resources/tattvasangrahapanjika_raw_deva.txt");  
-//    	CharFilter cs = new Deva2SlpFilter(input);
-//    	System.out.println("0 " + input);
-//		TokenStream words = tokenize(cs, skrtWordTokenizer);
-//		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
-//		TokenStream result = new StopFilter(words, stopSet);
-//		printTokenStream(result);
-//    }
+	@Test
+    public void fullTest() throws Exception {
+    	System.out.println("parsing a SARIT text in devanagari and lemmatizing it");
+    	Reader input = new FileReader("src/test/resources/tattvasangrahapanjika_raw_deva.txt");  
+    	CharFilter cs = new Deva2SlpFilter(input);
+    	System.out.println("0 " + input);
+		TokenStream words = tokenize(cs, skrtWordTokenizer);
+		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
+		TokenStream result = new StopFilter(words, stopSet);
+		printTokenStream(result);
+    }
 	
 	@Test
 	public void bug1ExtraNonwordToken() throws Exception {

@@ -64,7 +64,7 @@ public class WordTokenizerTests
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 
-		return new SkrtWordTokenizer(true, trie);
+		return new SkrtWordTokenizer(false, trie);
 	}
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
