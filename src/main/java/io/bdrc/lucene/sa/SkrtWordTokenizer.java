@@ -379,11 +379,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (wentBeyondLongestMatch()) {
 					if (foundNonMaxMatch) {
 						restoreNonMaxMatchState();
+//						setTermLength();                  // so string in tokenBuffer is correct. (non-allocation policy)
 					}
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					
-					setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+					
 					if (thereIsNoTokenAndNoNonword()) {
 						foundNonMaxMatch = false;
 						continue;							// resume looping over ioBuffer
@@ -440,7 +441,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();
-								setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+//								setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 								ifNoInitialsCleanupPotentialTokensAndNonwords();
 								break;
 							} else {
@@ -461,7 +462,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			} else if (foundNonMaxMatch) {
 				restoreNonMaxMatchState();
 				nonWordEnd = tokenEnd;				// needed for term indices
-				setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
+//				setTermLength();					// so string in tokenBuffer is correct. (non-allocation policy)
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
 				break;
 				
@@ -738,6 +739,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (storedInitials != null && storedInitials.contains(termAtt.toString())) {
 			termAtt.setEmpty();
 		}
+		if (nonMaxIndicesRequireUpdating()) { // useful ???
+		    nonMaxTokenLength = tokenLength;
+		}
 	}
 
 	private void finalizeSettingTermAttribute() {
@@ -840,6 +844,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void IncrementTokenLengthAndAddCurrentCharTo(char[] tokenBuffer, int c) {
 		tokenLength += Character.toChars(normalize(c), tokenBuffer, tokenLength);	// add normalized c to tokenBuffer
+		if (nonMaxIndicesRequireUpdating()) {
+		    nonMaxTokenLength = tokenLength;
+		}
+		termAtt.setLength(tokenLength);   // TEST
 	}
 
 	private void ifIsNeededAttributeStartingIndexOfNonword() {
@@ -851,6 +859,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void incrementTokenIndices() {
 		tokenStart = bufferIndex - charCount;
 		tokenEnd = tokenStart + charCount;		// tokenEnd is one char ahead of tokenStart (ending index is exclusive)
+		if (nonMaxIndicesRequireUpdating()) {
+		    if (tokenStart != nonMaxTokenStart) {
+		        nonMaxTokenStart = tokenStart;
+		    }
+		    if (tokenEnd != nonMaxTokenEnd) {
+		        nonMaxTokenEnd = tokenEnd;
+		    }
+		}
 	}
 
 	private void tryToContinueDownTheTrie(Row row, int c) {
@@ -878,7 +894,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		return true;
 	}
-
+	
 	private void restoreNonMaxMatchState() {
 		bufferIndex = nonMaxBufferIndex;
 		tokenStart = nonMaxTokenStart;
@@ -886,11 +902,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		tokenLength = nonMaxTokenLength;
 		currentRow = rootRow;
 		resetNonWordChars(nonMaxNonWordLength);
+		termAtt.setLength(tokenLength);
 	}
 
 	private void ifNeededReinitializeTokenBuffer() {	
 		if (tokenLength > 0) {
 			tokenLength = 0;				// reinitialize tokenBuffer through indices of tokenLength and tokenEnd
+			termAtt.setLength(tokenLength);
 			tokenEnd = tokenStart + charCount;
 		}
 	}
@@ -960,6 +978,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		} else {
 			hasTokenToEmit = false;
 		}
+	}
+	
+	final private boolean nonMaxIndicesRequireUpdating() {
+	    return bufferIndex == nonMaxBufferIndex;
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
