@@ -89,3 +89,5 @@ catalog-v001.xml
 
 # compiled Trie files
 *.dump
+
+*_lemmatized.txt

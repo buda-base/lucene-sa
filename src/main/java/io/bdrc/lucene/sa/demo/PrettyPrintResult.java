@@ -1,17 +1,16 @@
 package io.bdrc.lucene.sa.demo;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -25,20 +24,34 @@ import io.bdrc.lucene.sa.SkrtWordTokenizer;
 
 public class PrettyPrintResult {
     
-    static PrintWriter writer;
+    static OutputStreamWriter writer;
     
-    public static void main(String [] args) throws FileNotFoundException, IOException{
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
-        String inputStr = new String(Files.readAllBytes(Paths.get("src/test/resources/tattvasangrahapanjika_raw_deva.txt")));
-        writer = new PrintWriter(new FileOutputStream("./demo.txt", true));
-        
-        Reader input = new StringReader(inputStr);
-        CharFilter cs = new Deva2SlpFilter(input);
-        TokenStream words = tokenize(cs, skrtWordTokenizer);
+    public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
-        produceTokens(words, inputStr, tokensOnLine);
-        writer.flush();
-        writer.close();
+        List<String> inputFiles = Arrays.asList(
+                "src/test/resources/tattvasangrahapanjika_raw_deva.txt"
+                );
+        
+        System.out.println("Loading the Trie...");
+        long loading = System.currentTimeMillis();
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
+        long loaded = System.currentTimeMillis();
+        System.out.println("Time: " + (loaded - loading) / 1000 + "s.\n");
+        
+        for (String fileName: inputFiles) {
+            String inputStr = new String(Files.readAllBytes(Paths.get(fileName))); 
+            String outFileName = "./" + fileName.substring(fileName.lastIndexOf('/'), fileName.lastIndexOf('.')) + "_lemmatized.txt";
+            writer = new OutputStreamWriter(new FileOutputStream(outFileName), StandardCharsets.UTF_8);
+            System.out.println("Processing " + fileName + "...");
+            Reader input = new StringReader(inputStr);
+            CharFilter cs = new Deva2SlpFilter(input);
+            TokenStream words = tokenize(cs, skrtWordTokenizer);
+            long tokenizing = System.currentTimeMillis();
+            produceTokens(words, inputStr, tokensOnLine);
+            long tokenized = System.currentTimeMillis();
+            System.out.println("Time: " + (tokenized - tokenizing) / 1000 + "s.");
+            writer.close();
+        }
     }
     
     static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
@@ -81,7 +94,7 @@ public class PrettyPrintResult {
     }
     
     private static void generateLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr) throws IOException { 
-//        writer.println(inputStr.substring(batchStartOffset, batchEndOffset)); 
-        writer.println(tokensLine+"\n"); 
+        writer.append(inputStr.substring(batchStartOffset, batchEndOffset)+"\n"); 
+        writer.append(tokensLine+"\n\n"); 
     }
 }
