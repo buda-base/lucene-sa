@@ -683,7 +683,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         int nbIgnoredSpaces = 0;
         while (j < sandhied.length()) {
             final int res = ioBuffer.get(bufferIndex+start+j+nbIgnoredSpaces);
-            if (res == ' ') {
+            if (isValidCharWithinSandhi(res)) { // 
                 nbIgnoredSpaces++;
                 continue;
             }
@@ -822,7 +822,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void cutOffTokenFromNonWordChars() {
-		nonWordChars.setLength(nonWordChars.length() - (tokenLength - charCount));
+		int newSize = nonWordChars.length() - (tokenLength - charCount);
+		newSize = newSize < 0 ? 0: newSize;   // ensure the new size is never negative
+	    nonWordChars.setLength(newSize);
 		nonWordEnd = tokenEnd - tokenLength;
 		// end of non-word can be: a matching word starts (potentialEnd == true) OR a nonSLP char follows a nonWord.
 	}
@@ -989,16 +991,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean currentCharIsSpaceWithinSandhi(int c) {
-		return finalsIndex + 1 == bufferIndex && (nextCharIsSpace(c) || nextCharIsHyphen(c));
+		return finalsIndex + 1 == bufferIndex && isValidCharWithinSandhi(c);
 	}
 	
-	final private boolean nextCharIsSpace(int c) {
-	    return c == ' ';
+	final private static boolean isValidCharWithinSandhi(int c) {
+	    return c == ' ' || c == '-';
 	}
-	
-	final private boolean nextCharIsHyphen(int c) {
-        return c == '-';
-    }
 	
 	final private boolean isSLPModifier(int c) {
 		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) == SkrtSyllableTokenizer.MODIFIER;
