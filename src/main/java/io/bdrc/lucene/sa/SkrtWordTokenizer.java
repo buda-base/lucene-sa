@@ -362,7 +362,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					tryToFindMatchIn(rootRow, c);					// if foundMatch == true, there is a match  
 					tryToContinueDownTheTrie(rootRow, c);			// if currentRow != null, can continue
 					incrementTokenIndices();
-					ifIsNeededAttributeStartingIndexOfNonword();
+					ifIsNeededInitializeStartingIndexOfNonword();
 
 				} else {
 				/* we enter here on all other occasions: we don't know if word chars will be a match or not */
@@ -466,7 +466,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			/* A.2.2) if it is not a token char */
 			} else if (foundNonMaxMatch) {
-				restoreNonMaxMatchState();
+			    restoreNonMaxMatchState();
+                if (matchIsLoneInitial()) {
+                    ifNeededReinitializeTokenBuffer();
+                    setTermLength();
+                    foundNonMaxMatch = false;
+                    continue;
+                }
 				nonWordEnd = tokenEnd;				// needed for term indices
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
 				break;
@@ -474,7 +480,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
 				nonWordEnd = tokenEnd;							// needed for term indices
 				if (allCharsFromCurrentInitialAreConsumed()) {
-				    if (storedInitials.contains(nonWordChars.toString())) {
+				    if (nonwordIsLoneInitial()) {
                         ifNeededReinitializeTokenBuffer();
                         setTermLength();
                         continue;
@@ -850,7 +856,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		termAtt.setLength(tokenLength);   // TEST
 	}
 
-	private void ifIsNeededAttributeStartingIndexOfNonword() {
+	private void ifIsNeededInitializeStartingIndexOfNonword() {
 		if (nonWordStart == -1) {							// the starting index of a non-word token does not increment
 			nonWordStart = tokenStart;
 		}
@@ -991,6 +997,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	        }
 	    }
 	    return isInitial;
+	}
+	
+	final private boolean nonwordIsLoneInitial() {
+	    return storedInitials != null && storedInitials.contains(nonWordChars.toString());
+	}
+	
+	final private boolean matchIsLoneInitial() {
+	    return storedInitials != null && storedInitials.contains(termAtt.toString());
 	}
 	
 	final private boolean nonMaxIndicesRequireUpdating() {
