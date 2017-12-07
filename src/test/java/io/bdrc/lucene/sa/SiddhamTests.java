@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -41,11 +42,26 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.bdrc.lucene.stemmer.Trie;
+
 /**
  * Unit tests for the Sanskrit filters and SylTokenizer.
  */
 public class SiddhamTests
 {
+    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
+    
+    static private SkrtWordTokenizer fillWordTokenizer() {
+        try {
+            skrtWordTokenizer = new SkrtWordTokenizer(true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return skrtWordTokenizer;
+    }
+    
     static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
         tokenizer.close();
         tokenizer.end();
@@ -54,19 +70,27 @@ public class SiddhamTests
         return tokenizer;
     }
     
-    static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
+    static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {        
+        List<String> inputFiles = Arrays.asList(trieName + ".txt");
+        
+        Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+
+        return new SkrtWordTokenizer(true, trie);
+    }
+    
+    static private List<String> generateTokenStream(TokenStream tokenStream) {
         try {
             List<String> termList = new ArrayList<String>();
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             while (tokenStream.incrementToken()) {
                 termList.add(charTermAttribute.toString());
             }
-            System.out.println("1 " + String.join(" ", expected));
             System.out.println("2 " + String.join(" ", termList) + "\n");
-            assertThat(termList, is(expected));
+            return termList;
         } catch (IOException e) {
             assertTrue(false);
         }
+        return null;
     }
 
     @BeforeClass
@@ -75,14 +99,29 @@ public class SiddhamTests
     }
  
     @Test
-    public void testRoman2SlpIso15919() throws Exception {
-        System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
+    public void testAvagrahaNormalization() throws Exception {
+        System.out.println("Avagraha normalization test");
         String input = "loke ’vināśi"; // normalizations and deletions 
         CharFilter cs = new Roman2SlpFilter(new StringReader(input));
         System.out.println("0 " + input);
         TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        List<String> produced = generateTokenStream(ts);
         List<String> expected = Arrays.asList("loke", "'vinASi");
-        assertTokenStream(ts, expected);
+        assertThat(produced, is(expected));
+    }
+    
+    @Test
+    public void testExtraTokenMystery() throws IOException
+    {
+        System.out.println("non-maximal match 2");
+        String input = "śāstra śāstra";
+        System.out.println("0 " + input);
+        SkrtWordTokenizer minimalSkrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        TokenStream minimalWords = tokenize(new Roman2SlpFilter(new StringReader(input)), minimalSkrtWordTokenizer);
+        TokenStream fullWords = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
+        List<String> fromMinimalTrie = generateTokenStream(minimalWords);
+        List<String> fromFullTrie = generateTokenStream(fullWords);
+        assertThat(fromFullTrie, is(fromMinimalTrie));
     }
     
     @AfterClass
