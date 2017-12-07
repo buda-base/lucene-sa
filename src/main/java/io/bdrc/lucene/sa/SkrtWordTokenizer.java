@@ -293,7 +293,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		char[] tokenBuffer = termAtt.buffer();
 		boolean potentialTokensContainMatches = false;
 		
-		if (debug) {System.out.println("----------------------");}
+		if (debug) System.out.println("----------------------");
 
 		/* A. FINDING TOKENS */
 		while (true) {
@@ -312,6 +312,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
+			if (debug) System.out.print((char) c);
+			
 			/* when ioBuffer is empty (end of input, ...) */
 			if (c == -1) {
 				bufferIndex -= charCount;
@@ -325,7 +327,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
 					continue;		// if there is a space in the sandhied substring, moves beyond the space				
- 				} else if (initialIsNotFollowedBySandhied(c)) {	// there were just
+ 				} else if (initialIsNotFollowedBySandhied(c)) {
  					initials = null;
  					initialCharsIterator = null;
  					ifNoInitialsCleanupPotentialTokensAndNonwords();
@@ -337,15 +339,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					initializeInitialCharsIteratorIfNeeded();
 					firstInitialIndex = bufferIndex;
 					c = applyInitialChar();
+					if (debug) System.out.print("=>" + (char) c);
 
 				} else if (stillConsumingInitials()) {
 				/* we enter here if all initial chars are not yet consumed */
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();
+					if (debug) System.out.print("=>" + (char) c);
 				}
 			}
 
-			if (debug) {System.out.println((char) c);}
+			if (debug) System.out.println("");
 
 			/* A.2. PROCESSING c */
 			
@@ -452,7 +456,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 								break;
 							}
 						}					
-					}
+                    }
 				}
 				
 				/* tokenBuffer corner case: buffer overflow! */
@@ -470,6 +474,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			} else if (isNonSLPprecededByNonword()) {			// we have a nonword token
 				nonWordEnd = tokenEnd;							// needed for term indices
 				if (allCharsFromCurrentInitialAreConsumed()) {
+				    if (storedInitials.contains(nonWordChars.toString())) {
+                        ifNeededReinitializeTokenBuffer();
+                        setTermLength();
+                        continue;
+				    }
 					addNonwordToPotentialTokens();
 					if (allInitialsAreConsumed()) {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
@@ -643,10 +652,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		switch(sandhiType) {
 
 		case 1:																			
-			if (sandhied.length() == 1) {
-				mergesInitials = true;
+			if (isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0)) {     // vowel sandhi
+	            if (sandhied.length() == 1) {
+	                mergesInitials = true;
+	            }
+	            return true;
+			} else {
+			    return false;
 			}
-			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // vowel sandhi
 
 		case 2:
 			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // consonant sandhi 1
@@ -761,7 +774,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifSandhiMergesStayOnSameCurrentChar() throws IOException {
 		if (charCount != -1 && mergesInitials) {
-			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is reached
+			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is not reached
 				bufferIndex -= charCount;
 			}
 			mergesInitials = false;						// reinitialize variable
@@ -1051,7 +1064,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean initialIsNotFollowedBySandhied(int c) {
-		return c == ' ' && bufferIndex == firstInitialIndex + 1 ;
+		return isValidCharWithinSandhi(c) && bufferIndex == firstInitialIndex + 1 ;
 	}
 
 	final private boolean allInitialsAreConsumed() {

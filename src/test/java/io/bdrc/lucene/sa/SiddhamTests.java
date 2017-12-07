@@ -49,18 +49,18 @@ import io.bdrc.lucene.stemmer.Trie;
  */
 public class SiddhamTests
 {
-//    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
-//    
-//    static private SkrtWordTokenizer fillWordTokenizer() {
-//        try {
-//            skrtWordTokenizer = new SkrtWordTokenizer(true);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return skrtWordTokenizer;
-//    }
+    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
+    
+    static private SkrtWordTokenizer fillWordTokenizer() {
+        try {
+            skrtWordTokenizer = new SkrtWordTokenizer(true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return skrtWordTokenizer;
+    }
     
     static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
         tokenizer.close();
@@ -114,9 +114,9 @@ public class SiddhamTests
     public void testExtraTokenMystery() throws IOException
     {
         System.out.println("non-maximal match 2");
-        String input = "śāstra śāstra";
+        String input = "śrī- loke ’vināśi śāstra anekāny sadṛśāny vṛtte praṇāme ";
         System.out.println("0 " + input);
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
         List<String> expected = Arrays.asList("SAstf", "SAstf");
@@ -124,7 +124,7 @@ public class SiddhamTests
     }
     
     @AfterClass
-    public static void finish() {
+    public static void finish() {    // vowel sandhi
         System.out.println("after the test sequence");
         System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
     }
