@@ -49,18 +49,18 @@ import io.bdrc.lucene.stemmer.Trie;
  */
 public class SiddhamTests
 {
-    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
-    
-    static private SkrtWordTokenizer fillWordTokenizer() {
-        try {
-            skrtWordTokenizer = new SkrtWordTokenizer(true);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return skrtWordTokenizer;
-    }
+//    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
+//    
+//    static private SkrtWordTokenizer fillWordTokenizer() {
+//        try {
+//            skrtWordTokenizer = new SkrtWordTokenizer(true);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return skrtWordTokenizer;
+//    }
     
     static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
         tokenizer.close();
@@ -116,12 +116,11 @@ public class SiddhamTests
         System.out.println("non-maximal match 2");
         String input = "śāstra śāstra";
         System.out.println("0 " + input);
-        SkrtWordTokenizer minimalSkrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
-        TokenStream minimalWords = tokenize(new Roman2SlpFilter(new StringReader(input)), minimalSkrtWordTokenizer);
-        TokenStream fullWords = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
-        List<String> fromMinimalTrie = generateTokenStream(minimalWords);
-        List<String> fromFullTrie = generateTokenStream(fullWords);
-        assertThat(fromFullTrie, is(fromMinimalTrie));
+        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("SAstf", "SAstf");
+        assertThat(tokens, is(expected));
     }
     
     @AfterClass
