@@ -66,6 +66,16 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("ṉ", "n"); // ऩ same as above
         builder.add("ẏ", "y"); // य़ same as above
         
+        // avagraha normalisation (covers a maximum of possibilities. maybe too much?)
+        builder.add("’", "'"); // U+2019 RIGHT SINGLE QUOTATION MARK
+        builder.add("＇", "'"); // U+FF07 FULLWIDTH APOSTROPHE
+        builder.add("ʼ", "'"); // U+02BC MODIFIER LETTER APOSTROPHE
+        builder.add("´", "'"); // U+00B4 ACUTE ACCENT 
+        builder.add("ˊ", "'"); // U+02CA MODIFIER LETTER ACUTE ACCENT
+        builder.add("′", "'"); // U+2032 PRIME
+        builder.add("ʹ", "'"); // U+02B9 MODIFIER LETTER PRIME
+        builder.add("ʹ", "'"); // U+0374  GREEK NUMERAL SIGN
+        
         // Ignored ISO 15919 characters with devanagari:
         // ô (ऑ, transcribes English borrowings), ẖ and ḫ (ᳵ and ᳶ, specific to Vedic), k͟h and ġ (ख़ and ग़, specific to Persian),
         // Ignored ISO 15919 characters with no devanagari equivalent:
