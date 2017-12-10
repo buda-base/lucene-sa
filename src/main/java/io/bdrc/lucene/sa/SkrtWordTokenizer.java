@@ -87,14 +87,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * 
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
-		if (!new File(compiledTrieName).exists()) {
-			System.out.println("The default compiled Trie is not found ; building it will take some time!");
-			long start = System.currentTimeMillis();
-			BuildCompiledTrie.compileTrie();
-			long end = System.currentTimeMillis();
-			System.out.println("Trie built in " + (end - start) / 1000 + "s.");
-		}
-		init(new FileInputStream(compiledTrieName));
+	    InputStream stream = null;
+	    stream = SkrtWordTokenizer.class.getResourceAsStream("/skrt-compiled-trie.dump");
+	    if (stream == null) {  // we're not using the jar, there is no resource, assuming we're running the code
+	        if (!new File(compiledTrieName).exists()) {
+	            System.out.println("The default compiled Trie is not found ; building it will take some time!");
+	            long start = System.currentTimeMillis();
+	            BuildCompiledTrie.compileTrie();
+	            long end = System.currentTimeMillis();
+	            System.out.println("Trie built in " + (end - start) / 1000 + "s.");
+	        }
+	        init(new FileInputStream(compiledTrieName));    
+	    } else {
+	        init(stream);
+	    }
 	}
 	
 	/**

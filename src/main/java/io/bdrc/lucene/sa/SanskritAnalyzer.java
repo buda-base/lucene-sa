@@ -21,9 +21,11 @@
 package io.bdrc.lucene.sa;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
@@ -67,7 +69,13 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.segmentInWords = segmentInWords;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-			this.srktStopSet = StopFilter.makeStopSet(getWordList(stopFilename, "#"));
+		      InputStream stream = null;
+		        stream = SanskritAnalyzer.class.getResourceAsStream("/skrt-stopwords.txt");
+		        if (stream == null ) {    // we're not using the jar, these is no resource, assuming we're running the code
+		            this.srktStopSet = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
+		        } else {
+		            this.srktStopSet = StopFilter.makeStopSet(getWordList(stream, "#"));
+		        }
 		} else {
 			this.skrtStopWords = null;
 		}
@@ -91,11 +99,11 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * @param comment The string representing a comment.
 	 * @return result the {@link ArrayList} to fill with the reader's words
 	 */
-	public static ArrayList<String> getWordList(String filename, String comment) throws IOException {
+	public static ArrayList<String> getWordList(InputStream inputStream, String comment) throws IOException {
 		ArrayList<String> result = new ArrayList<String>();
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(filename));
+			br = new BufferedReader(new InputStreamReader(inputStream));
 			String word = null;
 			while ((word = br.readLine()) != null) {
 				word = word.replace("\t", "");

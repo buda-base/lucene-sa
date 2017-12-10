@@ -69,10 +69,12 @@
 	<build>
 		<resources>
       		<resource>
-        		<directory>resources/sanskrit-stemming-data/output/</directory>
+        		<directory>src/main/resources/</directory>
         		<includes>
-          			<include>total_output.txt</include>
+          			<include>skrt-compiled-trie.dump</include>
+                    <include>skrt-stopwords.txt</include>
         		</includes>
+                <!--  <targetPath>resources</targetPath> -->
       		</resource>
     	</resources>
 		<plugins>
@@ -113,6 +115,38 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lucene-sa-libs</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lucene-sa-libs/</classpathPrefix>
+                            <mainClass>theMainClass</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>
