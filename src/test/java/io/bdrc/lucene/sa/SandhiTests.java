@@ -83,7 +83,7 @@ public class SandhiTests
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 		
-		return new SkrtWordTokenizer(false, trie);
+		return new SkrtWordTokenizer(true, trie);
 	}
 	
 	@BeforeClass

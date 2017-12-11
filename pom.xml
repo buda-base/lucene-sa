@@ -142,7 +142,6 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lucene-sa-libs/</classpathPrefix>
-                            <mainClass>theMainClass</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

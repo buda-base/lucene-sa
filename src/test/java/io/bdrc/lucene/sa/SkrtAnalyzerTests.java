@@ -23,7 +23,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -159,7 +161,7 @@ public class SkrtAnalyzerTests
     @Test
     public void testParseStopwords() throws Exception {
     	System.out.println("Parse stopwords file");
-    	ArrayList<String> result = SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#");
+    	ArrayList<String> result = SanskritAnalyzer.getWordList(new FileInputStream("src/main/resources/skrt-stopwords.txt"), "#");
     	boolean res = true;
     	for (String stop: result) {
     		if (stop.contains("#") || stop.equals("")) {
@@ -179,7 +181,7 @@ public class SkrtAnalyzerTests
 
 		System.out.print(input + " => ");
 		TokenStream syllables = tokenize(reader, new WhitespaceTokenizer());
-		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList("src/main/resources/skrt-stopwords.txt", "#"));
+		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList(new FileInputStream("src/main/resources/skrt-stopwords.txt"), "#"));
 		StopFilter res = new StopFilter(syllables, stopSet);
 		assertTokenStream(res, expected);
 	} 

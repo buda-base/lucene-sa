@@ -18,7 +18,6 @@ import io.bdrc.lucene.stemmer.Trie;
 public class BuildCompiledTrie {
 	/**
 	 * Builds a Trie from all the entries in a list of files
-	 * Optimizes it
 	 * Dumps it in a binary file
 	 * 
 	 * !!! Ensure to have enough Stack memory 
@@ -27,6 +26,7 @@ public class BuildCompiledTrie {
 	 */
 	
 	static boolean optimize = false;	// change to true to optimize the Trie
+	static String outFile = "src/main/resources/skrt-compiled-trie.dump";
 	public static List<String> inputFiles = Arrays.asList(
 			"resources/sanskrit-stemming-data/output/total_output.txt",	// all Sanskrit Heritage entries
 			"resources/trie-exceptions.txt"	// things like -tva
@@ -38,10 +38,10 @@ public class BuildCompiledTrie {
 			Trie trie = buildTrie(inputFiles);
 			
 			if (optimize) {
-				trie = optimizeTrie(trie, new Optimizer());	// uncomment to optimize the Trie		
+				trie = optimizeTrie(trie, new Optimizer());		
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
 			} else {
-				storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
+				storeTrie(trie, outFile);
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -58,7 +58,7 @@ public class BuildCompiledTrie {
 	 */
 	public static void compileTrie() throws FileNotFoundException, IOException {
 		Trie trie = buildTrie(inputFiles);
-		storeTrie(trie, "src/main/resources/skrt-compiled-trie.dump");
+		storeTrie(trie, outFile);
 	}
 	
 	/** 

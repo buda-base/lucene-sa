@@ -70,12 +70,12 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
 		      InputStream stream = null;
-		        stream = SanskritAnalyzer.class.getResourceAsStream("/skrt-stopwords.txt");
-		        if (stream == null ) {    // we're not using the jar, these is no resource, assuming we're running the code
-		            this.srktStopSet = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
-		        } else {
-		            this.srktStopSet = StopFilter.makeStopSet(getWordList(stream, "#"));
-		        }
+		      stream = SanskritAnalyzer.class.getResourceAsStream("/skrt-stopwords.txt");
+		      if (stream == null ) {    // we're not using the jar, these is no resource, assuming we're running the code
+		          this.srktStopSet = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
+		      } else {
+		          this.srktStopSet = StopFilter.makeStopSet(getWordList(stream, "#"));
+		      }
 		} else {
 			this.skrtStopWords = null;
 		}

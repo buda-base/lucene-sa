@@ -19,7 +19,8 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
-import io.bdrc.lucene.sa.Deva2SlpFilter;
+//import io.bdrc.lucene.sa.Deva2SlpFilter;
+import io.bdrc.lucene.sa.Roman2SlpFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
 
 public class PrettyPrintResult {
@@ -29,7 +30,8 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
         List<String> inputFiles = Arrays.asList(
-                "src/test/resources/tattvasangrahapanjika_raw_deva.txt"
+//                "src/test/resources/tattvasangrahapanjika_raw_deva.txt"
+                "src/test/resources/Siddham-Edition Export tester.txt"
                 );
         
         System.out.println("Loading the Trie...");
@@ -44,12 +46,13 @@ public class PrettyPrintResult {
             writer = new OutputStreamWriter(new FileOutputStream(outFileName), StandardCharsets.UTF_8);
             System.out.println("Processing " + fileName + "...");
             Reader input = new StringReader(inputStr);
-            CharFilter cs = new Deva2SlpFilter(input);
+            CharFilter cs = new Roman2SlpFilter(input);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
             long tokenizing = System.currentTimeMillis();
             produceTokens(words, inputStr, tokensOnLine);
             long tokenized = System.currentTimeMillis();
             System.out.println("Time: " + (tokenized - tokenizing) / 1000 + "s.");
+            writer.flush();
             writer.close();
         }
     }
@@ -63,6 +66,7 @@ public class PrettyPrintResult {
     }
 
     private static void produceTokens(TokenStream tokenStream, String inputStr, int tokensOnLine) { 
+        int batchNum = 1;
         try {
             CharTermAttribute TermAttr = tokenStream.addAttribute(CharTermAttribute.class); 
             TypeAttribute typeAttr = tokenStream.addAttribute(TypeAttribute.class); 
@@ -79,22 +83,25 @@ public class PrettyPrintResult {
                 if (tokNo != 1) tokensLine.append(' '); 
                 tokensLine.append(token); 
                 if (tokNo >= tokensOnLine) { 
-                    generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr); 
+                    generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum); 
                     tokNo = 0; 
                     tokensLine = new StringBuilder(); 
                     batchStartOffset = batchEndOffset; 
+                    batchNum ++;
                 } 
             }
             if (tokNo != 0) { 
-                generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr); 
+                generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum);
+                batchNum ++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } 
     }
     
-    private static void generateLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr) throws IOException { 
+    private static void generateLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum) throws IOException { 
+        writer.append(batchNum + "\n");
         writer.append(inputStr.substring(batchStartOffset, batchEndOffset)+"\n"); 
-        writer.append(tokensLine+"\n\n"); 
+        writer.append(tokensLine+"\n"); 
     }
 }
