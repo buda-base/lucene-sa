@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -600,11 +601,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
 		String[] t = new String[0];
 
-		HashMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		TreeMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 			HashSet<String> diffs = current.getValue();
-
+			boolean foundAsandhi = false; 
 			for (String lemmaDiff: diffs) {
 				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
 
@@ -615,7 +616,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				String diff = t[0];
 				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
-
+				    foundAsandhi = true;
 					t = diff.split("\\+");
 
 					if (diff.endsWith("+")) {			// ensures t has alway two elements
@@ -647,6 +648,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					totalLemmas.add(lemma);
 				}
 			}
+			if (foundAsandhi) break;
 		}
 		return totalLemmas;
 	}

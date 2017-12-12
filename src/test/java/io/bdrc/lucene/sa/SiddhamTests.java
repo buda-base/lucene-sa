@@ -31,9 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.CharFilter;
-import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
@@ -49,18 +47,18 @@ import io.bdrc.lucene.stemmer.Trie;
  */
 public class SiddhamTests
 {
-//    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
-//    
-//    static private SkrtWordTokenizer fillWordTokenizer() {
-//        try {
-//            skrtWordTokenizer = new SkrtWordTokenizer(true);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return skrtWordTokenizer;
-//    }
+    static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
+    
+    static private SkrtWordTokenizer fillWordTokenizer() {
+        try {
+            skrtWordTokenizer = new SkrtWordTokenizer(true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return skrtWordTokenizer;
+    }
     
     static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
         tokenizer.close();
@@ -75,7 +73,7 @@ public class SiddhamTests
         
         Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 
-        return new SkrtWordTokenizer(true, trie);
+        return new SkrtWordTokenizer(trie);
     }
     
     static private List<String> generateTokenStream(TokenStream tokenStream) {
@@ -85,7 +83,7 @@ public class SiddhamTests
             while (tokenStream.incrementToken()) {
                 termList.add(charTermAttribute.toString());
             }
-            System.out.println("2 " + String.join(" ", termList) + "\n");
+            System.out.println("1 " + String.join(" ", termList) + "\n");
             return termList;
         } catch (IOException e) {
             assertTrue(false);
@@ -101,12 +99,14 @@ public class SiddhamTests
     @Test
     public void testAvagrahaNormalization() throws Exception {
         System.out.println("Avagraha normalization test");
-        String input = "loke ’vināśi"; // normalizations and deletions 
-        CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+        String input = "loke ’vināśi vyāluḷitena arttha"; // normalizations and deletions 
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
         System.out.println("0 " + input);
-        TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        TokenStream ts = tokenize(geminates, new WhitespaceTokenizer());
         List<String> produced = generateTokenStream(ts);
-        List<String> expected = Arrays.asList("loke", "'vinASi");
+        List<String> expected = Arrays.asList("loke", "'vinASi", "vyAlulitena", "arTa");
         assertThat(produced, is(expected));
     }
 
@@ -114,27 +114,27 @@ public class SiddhamTests
     public void testAvagrahaSandhi() throws IOException
     {
         System.out.println("non-maximal match 2");
-        String input = "loke ’vināśi";
+        String input = "loke ’vināśi praṇāme ’py";
         System.out.println("0 " + input);
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/avagraha_test");
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/avagraha_test");
         TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("lok", "loka", "avi", "nASi");
+        List<String> expected = Arrays.asList("lok", "loka", "avi", "aSi", "praRama", "apy");
         assertThat(tokens, is(expected));
     }
     
-//    @Test
-//    public void testExtraToken() throws IOException
-//    {
-//        System.out.println("non-maximal match 2");
-//        String input = "śrī- loke śāstra anekāny sadṛśāny vṛtte praṇāme ";
-//        System.out.println("0 " + input);
+    @Test
+    public void testExtraToken() throws IOException
+    {
+        System.out.println("non-maximal match 2");
+        String input = "śrī- loke śāstra anekāny sadṛśāny vṛtte praṇāme ";
+        System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
-//        TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
-//        List<String> tokens = generateTokenStream(words);
-//        List<String> expected = Arrays.asList("SrI", "loka", "SAstf", "aneka", "sadfSa", "vftta", "praRAma");
-//        assertThat(tokens, is(expected));
-//    }
+        TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("SrI", "loka", "SAstf", "aneka", "sadfSa", "vftta", "praRAma");
+        assertThat(tokens, is(expected));
+    }
     
     @AfterClass
     public static void finish() {    // vowel sandhi

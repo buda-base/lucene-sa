@@ -19,8 +19,10 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
+import io.bdrc.lucene.sa.GeminateNormalizingFilter;
 //import io.bdrc.lucene.sa.Deva2SlpFilter;
 import io.bdrc.lucene.sa.Roman2SlpFilter;
+import io.bdrc.lucene.sa.SiddhamFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
 
 public class PrettyPrintResult {
@@ -47,6 +49,8 @@ public class PrettyPrintResult {
             System.out.println("Processing " + fileName + "...");
             Reader input = new StringReader(inputStr);
             CharFilter cs = new Roman2SlpFilter(input);
+            cs = new SiddhamFilter(cs);
+            cs = new GeminateNormalizingFilter(cs);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
             long tokenizing = System.currentTimeMillis();
             produceTokens(words, inputStr, tokensOnLine);

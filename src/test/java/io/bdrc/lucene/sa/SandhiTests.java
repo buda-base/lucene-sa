@@ -37,7 +37,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
-import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Trie;
 
 import static org.hamcrest.CoreMatchers.*;

@@ -19,8 +19,12 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /** 
  * Parses cmds from the total Trie {@code total_output.txt} and reconstructs
@@ -50,7 +54,7 @@ public class CmdParser {
 	private String initialCharsOriginal = null;
 	private String toAdd = null;
 	
-	private HashMap<String, HashSet<String>> sandhis = null;
+	private TreeMap<String, HashSet<String>> sandhis = null;
 
 	/**
 	 * note: currently, parsing cmd is not done using indexes. this method might be slow.
@@ -81,9 +85,9 @@ public class CmdParser {
 	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 	 * @return: parsed structure 
 	 */
-	public HashMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
+	public TreeMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		sandhis = new HashMap<String, HashSet<String>>();
+		sandhis = new TreeMap<String, HashSet<String>>(new LengthComp());
 		
 		String[] fullEntries = cmd.split("\\|");								// <fullEntry>|<fullEntry>|<...>
 		for (String fullEntry: fullEntries) {
@@ -238,3 +242,15 @@ public class CmdParser {
 		return initials.length > 0;
 	}
 }
+
+class LengthComp implements Comparator<String> {
+    @Override
+    public int compare(String s1, String s2) {
+        final int lenComp = s2.length() - s1.length();
+        if (lenComp != 0) {
+            return lenComp;
+        }
+        return s1.compareTo(s2);
+    }
+}
+
