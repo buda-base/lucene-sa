@@ -26,11 +26,20 @@ import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
 /**
- *  Filter to normalize the spelling of geminates with the following rules
+ *  Filter to normalize the spelling of geminates with the following rules (C = consonant):
  *  
- *  CCr   =>  Cr
+ *  CCr   =>  Cr 
  *  rCC   =>  rC
  *  CCy   =>  Cy
+ * 
+ * See the mappings below.
+ * Ex: "artTa" is normalized to "arTa",  "Darmma" to "Darma".
+ * 
+ * Geminates of consonants besides a "r" or "y" was a common practice in old publications.
+ * These non-standard spellings need to be normalized before being handed to SkrtWordTokenizer
+ * 
+ * Limitations: Being applied before tokenizing, this filter will remove all the matching geminates
+ * from  the input, including words whose standard spelling contains geminates.
  * 
  * input: SLP
  * output: normalized SLP
