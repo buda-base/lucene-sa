@@ -87,7 +87,7 @@ public class PrettyPrintResult {
                 if (tokNo != 1) tokensLine.append(' '); 
                 tokensLine.append(token); 
                 if (tokNo >= tokensOnLine) { 
-                    generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum); 
+                    writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum); 
                     tokNo = 0; 
                     tokensLine = new StringBuilder(); 
                     batchStartOffset = batchEndOffset; 
@@ -95,7 +95,7 @@ public class PrettyPrintResult {
                 } 
             }
             if (tokNo != 0) { 
-                generateLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum);
+                writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum);
                 batchNum ++;
             }
         } catch (IOException e) {
@@ -103,7 +103,7 @@ public class PrettyPrintResult {
         } 
     }
     
-    private static void generateLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum) throws IOException { 
+    private static void writeLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum) throws IOException { 
         writer.append(batchNum + "\n");
         writer.append(inputStr.substring(batchStartOffset, batchEndOffset)+"\n"); 
         writer.append(tokensLine+"\n"); 
