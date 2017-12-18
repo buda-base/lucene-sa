@@ -135,29 +135,14 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("SrI", "loka", "SAstf", "aneka", "sadfSa", "vftta", "praRAma");
+        List<String> expected = Arrays.asList("SrI", "loka", "SAstf", "aneka", "sadfSa", "vftti", "vftta", "praRAma");
         assertThat(tokens, is(expected));
     }
 
-//    @Test
-//    public void bug1() throws IOException
-//    {
-//        String input = "sphuṭoddhvaṃsita";
-//        System.out.println("0 " + input);
-////        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
-//        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
-//        CharFilter siddham = new SiddhamFilter(roman);
-//        CharFilter geminates = new GeminateNormalizingFilter(siddham);
-//        TokenStream words = tokenize(geminates, skrtWordTokenizer);
-//        List<String> tokens = generateTokenStream(words);
-//        List<String> expected = Arrays.asList("sPuwa", "sPuw", "udDvaMsita");
-//        assertThat(tokens, is(expected));
-//    }
-
     @Test
-    public void bug2() throws IOException
+    public void bug1() throws IOException
     {
-        String input = "prajñānuṣaṅgocita";
+        String input = "sphuṭoddhvaṃsita";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
@@ -165,8 +150,8 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("prajYa", "prajYA", "anusaj");
-        assertTrue(!tokens.equals(expected));
+        List<String> expected = Arrays.asList("sPuwa", "sPuw", "udDvaMsita");
+        assertThat(tokens, is(expected));
     }
 
     @Test

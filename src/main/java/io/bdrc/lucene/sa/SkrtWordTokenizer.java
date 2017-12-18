@@ -611,8 +611,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 				t = lemmaDiff.split("=");
 				int sandhiType = Integer.parseInt(t[1]);
-				if (sandhiType == 0) {
-					continue;							// there is no sandhi, so we skip this diff
+				if (noSandhiButLemmatizationRequired(sandhiType, t[0])) {
+					continue;							// there is no sandhi nor, so we skip this diff
 				}
 				String diff = t[0];
 				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
@@ -664,7 +664,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
 		switch(sandhiType) {
-
+		
+		case 0:
+		    return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // no sandhi, but lemmatization required
+		
 		case 1:																			
 			if (isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0)) {     // vowel sandhi
 	            if (sandhied.length() == 1) {
@@ -1005,6 +1008,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	        }
 	    }
 	    return isInitial;
+	}
+	
+	final private boolean noSandhiButLemmatizationRequired(int sandhiType, String diff) {
+	    return sandhiType == 0 && diff.equals("/");
 	}
 	
 	final private boolean nonwordIsLoneInitial() {
