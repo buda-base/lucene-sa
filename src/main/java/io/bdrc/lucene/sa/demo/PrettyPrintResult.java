@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -78,14 +80,30 @@ public class PrettyPrintResult {
             int tokNo = 0; 
             int batchStartOffset = 0; 
             int batchEndOffset = 0; 
+            
+            int tmp = -1;
+            HashMap<Integer, Boolean> wordsAndNonwords = new HashMap<Integer, Boolean>();
+            int totalWords = 0;
+            int totalNonwords = 0;
+            int totalTokens = 0;
+            
             StringBuilder tokensLine = new StringBuilder();
             while (tokenStream.incrementToken()) { 
                 tokNo ++; 
                 String token = TermAttr.toString(); 
                 token += typeAttr.type().equals("word") ? '✓': '❌'; 
                 batchEndOffset = offsetAttr.endOffset(); 
+                wordsAndNonwords.putIfAbsent(batchEndOffset, true);
+                if (token.contains("❌")) {
+                    wordsAndNonwords.replace(batchEndOffset, false);
+                }
                 if (tokNo != 1) tokensLine.append(' '); 
-                tokensLine.append(token); 
+                if (tmp == -1 || tmp != batchEndOffset) {
+                    tmp = batchEndOffset;
+                    tokensLine.append("| ");
+                }
+                tokensLine.append(token);
+                totalTokens ++;
                 if (tokNo >= tokensOnLine) { 
                     writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum); 
                     tokNo = 0; 
@@ -98,6 +116,19 @@ public class PrettyPrintResult {
                 writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum);
                 batchNum ++;
             }
+            
+            for (Entry<Integer, Boolean> entry: wordsAndNonwords.entrySet()) {
+                boolean value = entry.getValue();
+                if (value) {
+                    totalWords ++;
+                } else {
+                    totalNonwords ++;
+                }
+            }
+            System.out.println("Counting the inflected forms in the input that were processed,");
+            System.out.println("Total inflected forms: " + wordsAndNonwords.size() + " (yielding " + totalTokens + " tokens)");
+            System.out.println("Forms yielding only words: " + totalWords + " (" + totalWords * 100 / wordsAndNonwords.size() + "%)");
+            System.out.println("Forms yielding at least one nonword: " + totalNonwords + " (" + totalNonwords * 100 / wordsAndNonwords.size() + "%)");
         } catch (IOException e) {
             e.printStackTrace();
         } 
