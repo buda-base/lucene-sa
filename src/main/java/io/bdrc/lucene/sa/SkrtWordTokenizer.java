@@ -240,12 +240,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private static boolean mergesInitials = false;
 	private int finalsIndex = -1;
 	private int firstInitialIndex;
-
+	private boolean applyOtherInitial;
+	
 	/* ioBuffer related (contains the input string) */
 	private RollingCharBuffer ioBuffer;
 	private int bufferIndex = 0, finalOffset = 0;
 	private int charCount;
 	int MAX_WORD_LEN = 255;
+    
 	
 
 	
@@ -290,6 +292,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxBufferIndex = -1;
 		nonMaxNonWordLength = 0;
 		firstInitialIndex = -1;
+		applyOtherInitial = false;
 
 		nonWordStart = -1;
 		nonWordEnd = -1;
@@ -348,14 +351,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
 
-				} else if (stillConsumingInitials()) {
+				} else if (stillConsumingInitials() || applyOtherInitial) {
 				/* we enter here if all initial chars are not yet consumed */
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
+					applyOtherInitial = false;
 				}
 			}
-
+			
 			if (debug) System.out.println("");
 
 			/* A.2. PROCESSING c */
@@ -406,7 +410,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					} else {
 						break;								// and resume looping over ioBuffer
 					}
-					
+				
+				} else if (initials != null && !initials.isEmpty() && wentToMaxDownTheTrie && foundMatch == false && initials.size() <= storedInitials.size() - 1) {
+				    System.out.println("test");
+				    restorePreviousState();
+				    resetNonWordChars(0);
+				    wentToMaxDownTheTrie = false;
+                    applyOtherInitial = true;
+                    continue;
+				    
 				} else if (reachedNonwordCharacter()) {
 					nonWordChars.append((char) c);
 					nonWordEnd = tokenEnd;					// needed for term indices
@@ -963,17 +975,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (initialCharsIterator == null) {
 			initialCharsIterator = new StringCharacterIterator(initialsIterator.next());	
 			// initialize the iterator with the first initials
-		} else if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
+			initialsIterator.remove();    // remove the initials just fed to the initialsCharsIterator
+//		} else if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
+		} else if (initialsIterator.hasNext()) {
 		/* either first time or initialCharsIterator has been reset AND there are more initials to process */
 			initialCharsIterator.setText(initialsIterator.next());
 			// fill with new initials. happens if we reach the end of a token (either a Trie match or a non-word)
-		}
-		initialsIterator.remove();	// remove the initials just fed to the initialsCharsIterator
+			initialsIterator.remove();    // remove the initials just fed to the initialsCharsIterator
+		}	
 	}
 
 	private int applyInitialChar() {
 		int initial = initialCharsIterator.current();
-		initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1);	// increment iterator index
+		if (initialCharsIterator.getIndex() == initialCharsIterator.getEndIndex()) {
+		    initialCharsIterator.setIndex(0);
+		} else {
+		    initialCharsIterator.setIndex(initialCharsIterator.getIndex()+1); // increment iterator index
+		}
 		return initial;														
 		// charCount is not updated with new value of c since we only process SLP, so there are never surrogate pairs
 	}

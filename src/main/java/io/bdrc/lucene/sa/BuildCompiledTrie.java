@@ -71,7 +71,6 @@ public class BuildCompiledTrie {
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);
 		for (String filename: inputFiles) {
-			// currently only adds the entries without any diff
 			try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 				String line;
 				while ((line = br.readLine()) != null) {

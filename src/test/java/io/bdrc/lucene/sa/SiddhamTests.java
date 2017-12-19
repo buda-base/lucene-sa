@@ -180,7 +180,7 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("saBya", "ucCvasitezu");
+        List<String> expected = Arrays.asList("saBya", "utSvas");
         assertThat(tokens, is(expected));
     }
 
