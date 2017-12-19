@@ -552,17 +552,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		} else {									// general case: no potential tokens
 			boolean aNonwordWasAdded = ifThereIsNonwordAddItToTotalTokens();
-			if (aNonwordWasAdded) {
-				ifThereIsMatchAddItToTotalTokens(tokenBuffer);
-			}
-
 			boolean lemmasWereAdded = ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens();
+			
 			if (lemmasWereAdded) {
 				ifSandhiMergesStayOnSameCurrentChar();	// so we can unsandhi the initial and find the start of next word
 				tokenEnd -= charCount;					
 				
 				finalsIndex = bufferIndex;				// save index of finals for currentCharIsSpaceWithinSandhi()
-			}
+			} else if (aNonwordWasAdded) {              // if a non-word was added, there was a match but no sandhi
+                ifThereIsMatchAddItToTotalTokens(tokenBuffer);
+            }
+			
 		}
 		
 		/* B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens) */
@@ -1050,6 +1050,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	final private boolean wentBeyondLongestMatch() {
 		return foundNonMaxMatch && wentToMaxDownTheTrie && foundMatch == false;
+//		return wentToMaxDownTheTrie && foundMatch == false;
 	}
 
 	final private boolean thereAreTokensToReturn() {
