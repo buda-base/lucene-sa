@@ -271,7 +271,7 @@ public class SiddhamTests
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
         List<String> expected = Arrays.asList("kim", "cit", "kim", "cit");
-//        assertThat(tokens, is(expected));
+        assertThat(tokens, is(expected));
     }
     
     @Test
@@ -286,7 +286,7 @@ public class SiddhamTests
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
         List<String> expected = Arrays.asList("kim", "cit", "SaraRa");
-//        assertThat(tokens, is(expected));
+        assertThat(tokens, is(expected));
     }
 
     @Test

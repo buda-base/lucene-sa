@@ -804,7 +804,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is not reached
 				bufferIndex -= charCount;
 			}
-			mergesInitials = false;						// reinitialize variable
+			mergesInitials = false;					// reinitialize variable
 		}
 	}
 
@@ -874,7 +874,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (nonMaxIndicesRequireUpdating()) {
 		    nonMaxTokenLength = tokenLength;
 		}
-		termAtt.setLength(tokenLength);   // TEST
+		termAtt.setLength(tokenLength);
 	}
 
 	private void ifIsNeededInitializeStartingIndexOfNonword() {
@@ -974,7 +974,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			initialCharsIterator = new StringCharacterIterator(initialsIterator.next());	
 			// initialize the iterator with the first initials
 			initialsIterator.remove();    // remove the initials just fed to the initialsCharsIterator
-//		} else if (initialCharsIterator.getIndex() == 0 && initialsIterator.hasNext()) {
 		} else if (initialsIterator.hasNext()) {
 		/* either first time or initialCharsIterator has been reset AND there are more initials to process */
 			initialCharsIterator.setText(initialsIterator.next());
@@ -1070,7 +1069,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	final private boolean wentBeyondLongestMatch() {
 		return foundNonMaxMatch && wentToMaxDownTheTrie && foundMatch == false;
-//		return wentToMaxDownTheTrie && foundMatch == false;
 	}
 
 	final private boolean thereAreTokensToReturn() {
