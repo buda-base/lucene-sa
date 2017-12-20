@@ -20,10 +20,7 @@
 package io.bdrc.lucene.sa;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /** 

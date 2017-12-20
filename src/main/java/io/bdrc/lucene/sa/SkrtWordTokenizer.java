@@ -28,7 +28,6 @@ import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -333,11 +332,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				break;
 			}
-
-//             /* most probably introduces a big bug*/
-//			if (isValidCharWithinSandhi(c)) {
-//                continue;       // if there is a space in the sandhied substring, moves beyond the space                
-//            }
 			
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
@@ -463,11 +457,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
 	                        addNonwordToPotentialTokens();                  // we do have a non-word token
-                            if (allInitialsAreConsumed()) {
-                                  ifNoInitialsCleanupPotentialTokensAndNonwords(); 
-                                  setTermLength();
-                                  break;
-                            }
+	                        if (allInitialsAreConsumed()) {
+	                            ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+	                            setTermLength();
+	                            break;
+	                        }
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();

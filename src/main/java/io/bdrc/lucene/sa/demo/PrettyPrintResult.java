@@ -9,10 +9,10 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -23,7 +23,6 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 import io.bdrc.lucene.sa.Deva2SlpFilter;
 import io.bdrc.lucene.sa.GeminateNormalizingFilter;
-//import io.bdrc.lucene.sa.Deva2SlpFilter;
 import io.bdrc.lucene.sa.Roman2SlpFilter;
 import io.bdrc.lucene.sa.SiddhamFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
@@ -34,10 +33,9 @@ public class PrettyPrintResult {
     
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
-        List<String> inputFiles = Arrays.asList(
-                "src/test/resources/tattvasangrahapanjika_raw_deva.txt"
-//                "src/test/resources/Siddham-Edition Export tester.txt"
-                );
+        LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
+        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
+        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         
         System.out.println("Loading the Trie...");
         long loading = System.currentTimeMillis();
@@ -45,14 +43,19 @@ public class PrettyPrintResult {
         long loaded = System.currentTimeMillis();
         System.out.println("Time: " + (loaded - loading) / 1000 + "s.\n");
         
-        for (String fileName: inputFiles) {
+        Set<String> keys = inputFiles.keySet();
+        for (String fileName: keys) {
             String inputStr = new String(Files.readAllBytes(Paths.get(fileName))); 
             String outFileName = "./" + fileName.substring(fileName.lastIndexOf('/'), fileName.lastIndexOf('.')) + "_lemmatized.txt";
             writer = new OutputStreamWriter(new FileOutputStream(outFileName), StandardCharsets.UTF_8);
             System.out.println("Processing " + fileName + "...");
             Reader input = new StringReader(inputStr);
-//            CharFilter cs = new Roman2SlpFilter(input);
-            CharFilter cs = new Deva2SlpFilter(input);
+            CharFilter cs;
+            if (inputFiles.get(fileName) == 0) {
+                cs = new Roman2SlpFilter(input);
+            } else {
+                cs = new Deva2SlpFilter(input);
+            }
             cs = new SiddhamFilter(cs);
             cs = new GeminateNormalizingFilter(cs);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
