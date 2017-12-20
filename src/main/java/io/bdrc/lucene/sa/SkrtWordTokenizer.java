@@ -333,6 +333,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				break;
 			}
+
+//             /* most probably introduces a big bug*/
+//			if (isValidCharWithinSandhi(c)) {
+//                continue;       // if there is a space in the sandhied substring, moves beyond the space                
+//            }
 			
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
@@ -411,8 +416,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						break;								// and resume looping over ioBuffer
 					}
 				
-				} else if (initials != null && !initials.isEmpty() && wentToMaxDownTheTrie && foundMatch == false && initials.size() <= storedInitials.size() - 1) {
-				    System.out.println("test");
+				} else if (thereAreRemainingInitialsToTest()) {
 				    restorePreviousState();
 				    resetNonWordChars(0);
 				    wentToMaxDownTheTrie = false;
@@ -458,12 +462,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
-							addNonwordToPotentialTokens();					// we do have a non-word token
-							if (allInitialsAreConsumed()) {
-								ifNoInitialsCleanupPotentialTokensAndNonwords(); 
-								setTermLength();
-								break;
-							}
+	                        addNonwordToPotentialTokens();                  // we do have a non-word token
+                            if (allInitialsAreConsumed()) {
+                                  ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+                                  setTermLength();
+                                  break;
+                            }
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();
@@ -1028,6 +1032,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    return isInitial;
 	}
 	
+	final private boolean thereAreRemainingInitialsToTest() {
+	    return initials != null && !initials.isEmpty() && wentToMaxDownTheTrie && foundMatch == false && initials.size() <= storedInitials.size() - 1;
+	}
+	
 	final private boolean noSandhiButLemmatizationRequired(int sandhiType, String diff) {
 	    return sandhiType == 0 && diff.equals("/");
 	}
@@ -1127,8 +1135,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex) != -1;
 	}
 
-	final private boolean foundAToken() {
-		return currentRow == null && foundMatch == true;
+	final private boolean foundAToken() throws IOException {
+		return currentRow == null && foundMatch == true  || (foundMatch == true && reachedEndOfInputString());
 	}
 
 	@Override
