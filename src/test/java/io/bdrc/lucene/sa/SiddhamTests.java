@@ -306,6 +306,21 @@ public class SiddhamTests
         List<String> expected = Arrays.asList("praRAma", "api", "arti");
         assertThat(tokens, is(expected));
     }
+
+    @Test
+    public void bug15InfiniteLoop() throws IOException
+    {
+        String input = "paricārakīkṛta";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("praRAma", "api", "arti");
+        assertThat(tokens, is(expected));
+    }
     
     @AfterClass
     public static void finish() {    // vowel sandhi

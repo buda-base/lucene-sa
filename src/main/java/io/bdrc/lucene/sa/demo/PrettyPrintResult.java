@@ -34,14 +34,10 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
-        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
+//        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         
-        System.out.println("Loading the Trie...");
-        long loading = System.currentTimeMillis();
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
-        long loaded = System.currentTimeMillis();
-        System.out.println("Time: " + (loaded - loading) / 1000 + "s.\n");
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
         
         Set<String> keys = inputFiles.keySet();
         for (String fileName: keys) {
