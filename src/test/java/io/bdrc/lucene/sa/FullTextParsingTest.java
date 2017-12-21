@@ -131,13 +131,13 @@ public class FullTextParsingTest
 	}
 	
     @Test
-    public void bug4missingM() throws Exception {
+    public void bug4AlternativeSpelling() throws Exception {
         System.out.println("bug4");
         String input = "SrIH. tattvasaNgrahaH. paYjikAsametaH. tattvasaMgrahasya";
         Reader reader = new StringReader(input);
         System.out.println("0 " + input);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("SrI", "tattva", "saNgraha", "paYjikA", "am", "H", "tattva", "tad", "M", "graha");
+        List<String> expected = Arrays.asList("SrI", "tattva", "saNgraha", "paYjikA", "am", "H", "tattva", "saNgraha");
         assertTokenStream(words, expected);
     }
 	

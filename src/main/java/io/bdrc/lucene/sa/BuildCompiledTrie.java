@@ -28,8 +28,7 @@ public class BuildCompiledTrie {
 	static boolean optimize = false;	// change to true to optimize the Trie
 	static String outFile = "src/main/resources/skrt-compiled-trie.dump";
 	public static List<String> inputFiles = Arrays.asList(
-			"resources/sanskrit-stemming-data/output/total_output.txt",	// all Sanskrit Heritage entries
-			"resources/trie-exceptions.txt"	// things like -tva
+			"resources/sanskrit-stemming-data/output/trie_content.txt"	// all Sanskrit Heritage entries + custom entries
 			);
 	
 	public static void main(String [] args){
@@ -67,7 +66,8 @@ public class BuildCompiledTrie {
 	 * @return the non-optimized Trie
 	 */
 	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
-		long one = System.currentTimeMillis();
+		System.out.println("\tBuilding the Trie from the raw text file…");
+	    long one = System.currentTimeMillis();
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);
 		for (String filename: inputFiles) {
@@ -84,14 +84,14 @@ public class BuildCompiledTrie {
 			}
 		}
 		long two = System.currentTimeMillis();
-		System.out.println("Building the Trie from the raw text file took: " + (two - one) / 1000 + "s.");
+		System.out.println("\tTime: " + (two - one) / 1000 + "s.");
 		return trie;
 	}
 	
 	/**
 	 *  
-	 * Optimizer  - optimisation time: 10mn ; compiled Trie size: 10mo
-	 * Optimizer2 - optimisation time: 12mn ; compiled Trie size: 12mo
+	 * Optimizer  - optimization time: 10mn ; compiled Trie size: 10mo
+	 * Optimizer2 - optimization time: 12mn ; compiled Trie size: 12mo
 	 * 
 	 * @param trie
 	 * @param optimizer

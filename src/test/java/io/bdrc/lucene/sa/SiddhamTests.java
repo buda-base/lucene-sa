@@ -114,12 +114,15 @@ public class SiddhamTests
     public void testAvagrahaSandhi() throws IOException
     {
         System.out.println("non-maximal match 2");
-        String input = "loke ’vināśi praṇāme ’py";
+        String input = "loke ’vināśi praṇāme ’py artti";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/avagraha_test");
-        TokenStream words = tokenize(new Roman2SlpFilter(new StringReader(input)), skrtWordTokenizer);
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("lok", "loka", "avinASin", "praRAma", "api");
+        List<String> expected = Arrays.asList("lok", "loka", "avinASin", "praRAma", "api", "arti");
         assertThat(tokens, is(expected));
     }
     
@@ -262,7 +265,7 @@ public class SiddhamTests
     @Test
     public void bug12() throws IOException
     {
-        String input = "keciT kecic";
+        String input = "keciT";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
@@ -270,7 +273,7 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("kim", "cit", "kim", "cit");
+        List<String> expected = Arrays.asList("kim", "cid");
         assertThat(tokens, is(expected));
     }
     
@@ -285,14 +288,14 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("kim", "cit", "SaraRa");
+        List<String> expected = Arrays.asList("kim", "cit", "cid", "SaraRa");
         assertThat(tokens, is(expected));
     }
 
     @Test
     public void bug14() throws IOException
     {
-        String input = "praṇāme ’py";
+        String input = "praṇāme ’py artti";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
@@ -300,7 +303,7 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("praRAma", "api");
+        List<String> expected = Arrays.asList("praRAma", "api", "arti");
         assertThat(tokens, is(expected));
     }
     
