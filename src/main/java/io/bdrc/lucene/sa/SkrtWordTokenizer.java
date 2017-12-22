@@ -252,8 +252,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	int MAX_WORD_LEN = 255;
     
 	/* previous state related*/
-	boolean storedNoMatchState;
-    private int noMatchTokenStart, noMatchBufferIndex, noMatchTokenEnd, noMatchTokenLength, noMatchNonWordLength;
+    private int storedNoMatchState, noMatchTokenStart, noMatchBufferIndex, noMatchTokenEnd, noMatchTokenLength, noMatchNonWordLength;
 	
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -303,6 +302,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    noMatchTokenLength = -1;
 	    noMatchBufferIndex = -1;
 	    noMatchNonWordLength = 0;
+	    storedNoMatchState = -1;
 
 		nonWordStart = -1;
 		nonWordEnd = -1;
@@ -312,8 +312,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		char[] tokenBuffer = termAtt.buffer();
 		boolean potentialTokensContainMatches = false;
-		
-		storedNoMatchState = false;
+		boolean match = false;
+		boolean continuing = false;
 		
 		if (debug) System.out.println("----------------------");
 
@@ -382,28 +382,29 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/* Go one step down the Trie */
 				if (isStartOfTokenOrIsNonwordChar(c)) {
 				/* we enter on two occasions: at the actual start of a token and at each new non-word character. */
-					tryToFindMatchIn(rootRow, c);					// if foundMatch == true, there is a match  
-					tryToContinueDownTheTrie(rootRow, c);			// if currentRow != null, can continue
+					match = tryToFindMatchIn(rootRow, c);					// if foundMatch == true, there is a match  
+					continuing = tryToContinueDownTheTrie(rootRow, c);			// if currentRow != null, can continue
 					incrementTokenIndices();
 					ifIsNeededInitializeStartingIndexOfNonword();
-//					storeToPreviousState();
 
 				} else {
 				/* we enter here on all other occasions: we don't know if word chars will be a match or not */
 					
 					ifNeededResize(tokenBuffer);
 					tokenEnd += charCount;							// incrementing to correspond to the index of c					
-					tryToFindMatchIn(currentRow, c);
-					tryToContinueDownTheTrie(currentRow, c);
+					match = tryToFindMatchIn(currentRow, c);
+					continuing = tryToContinueDownTheTrie(currentRow, c);
 					if (reachedNonwordCharacter()) {
-					    // TODO restore previous state
-					    if (storedNoMatchState) {
-					        restoreNoMatchMatchState();
-					        storedNoMatchState = false;
+					    if (!foundNonMaxMatch && storedNoMatchState == 1) {
+					        restoreNoMatchState();
+					        storedNoMatchState = 0;
+					        continue;
+					    } else if (!foundNonMaxMatch) {
+					        match = tryToFindMatchIn(rootRow, c);
+					        continuing = tryToContinueDownTheTrie(rootRow, c);
 					    }
 						wentToMaxDownTheTrie = true;
-						tryToFindMatchIn(rootRow, c);
-						tryToContinueDownTheTrie(rootRow, c);
+						storedNoMatchState = -1;
 						ifNeededReinitializeTokenBuffer();			// because no word ever started in the first place
 					}
 				}
@@ -415,7 +416,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
-					
 					
 					if (thereIsNoTokenAndNoNonword()) {
 						foundNonMaxMatch = false;
@@ -443,6 +443,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 				} else if (foundAToken()) {
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
+					// test with this condition
 					cutOffTokenFromNonWordChars();
 					
 					if (allCharsFromCurrentInitialAreConsumed()) {
@@ -507,6 +508,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     ifNeededReinitializeTokenBuffer();
                     setTermLength();
                     foundNonMaxMatch = false;
+                    storedNoMatchState = -1;
                     continue;
                 }
 				nonWordEnd = tokenEnd;				// needed for term indices
@@ -571,7 +573,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		/* B.1. FILLING totalTokens */
 		if (unsandhyingInitialsYieldedPotentialTokens()) {				
 			if (potentialTokensContainMatches) {
-				unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens();
+				if (tokenStart > nonWordStart && nonWordEnd <= tokenStart) {
+				    ifThereIsNonwordAddItToTotalTokens();
+				}
+			    unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens();
 
 			} else {
 				ifThereIsNonwordAddItToTotalTokens();
@@ -915,23 +920,25 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 
-	private void tryToContinueDownTheTrie(Row row, int c) {
+	private boolean tryToContinueDownTheTrie(Row row, int c) {
 		int ref = row.getRef((char) c);
 		currentRow = (ref >= 0) ? scanner.getRow(ref) : null;
+		return (currentRow == null) ? false: true;
 	}
 
-	private void tryToFindMatchIn(Row row, int c) {
-		cmdIndex = row.getCmd((char) c);
+	private boolean tryToFindMatchIn(Row row, int c) {
+	    cmdIndex = row.getCmd((char) c);
 		foundMatch = (cmdIndex >= 0);
 		if (foundMatch) {
 			foundMatchCmdIndex = cmdIndex;
 			foundNonMaxMatch = storeNonMaxMatchState();
-			if (!storedNoMatchState) {
+			if (storedNoMatchState == -1) {
 			    storeNoMatchState();
-			    storedNoMatchState = true;
+			    storedNoMatchState = 1;
 			}
-			
+			return true;
 		}
+		return false;
 	}
 
     private boolean storeNoMatchState() {
@@ -944,7 +951,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         return true;
     }
 
-    private void restoreNoMatchMatchState() {
+    private void restoreNoMatchState() {
         bufferIndex = noMatchBufferIndex;
         tokenStart = noMatchTokenStart;
         tokenEnd = noMatchTokenEnd;
@@ -987,6 +994,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         tokenEnd = initialsOrigTokenEnd;
         tokenLength = 0;
         currentRow = rootRow;
+        storedNoMatchState = -1;
     }
     
 	private void ifNeededReinitializeTokenBuffer() {	
@@ -1186,6 +1194,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		bufferIndex = 0;
 		finalOffset = 0;
 		ioBuffer.reset(input);		// make sure to reset the IO buffer!!
+		totalTokens = new LinkedHashMap<String, Integer[]>();
 
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens

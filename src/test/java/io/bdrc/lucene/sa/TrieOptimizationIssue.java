@@ -42,7 +42,7 @@ import io.bdrc.lucene.stemmer.Trie;
 /**
  * Test showing the Trie optimization modifies the entries in the Trie
  */
-public class TrieTests
+public class TrieOptimizationIssue
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();
