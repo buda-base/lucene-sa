@@ -27,6 +27,42 @@ It undoes the sandhi to find the correct word boundaries and lemmatizes all the 
 Due to its design, this tokenizer doesn't deal with contextual ambiguities.
 For example, "nagaraM" could either be a word of its own or "na" + "garaM", but will be parsed as a single word as long as "nagaraM" is present in the lexical resources.
 
+#### Parsing sample from Siddham Project data
+
+Courtesy of Dániel Balogh, sample data from Siddham with the tokens produced.
+`✓` is appended to found lemmas, `❌` where no match was found.
+
+Limitations: 
+ - project specific entries need to be fed in the lexical resources
+ - the maximal-matching algorithm that is implemented makes it impossible to avoid wrong parsings such as `prajñānuṣaṅgocita` => `prajña✓ prajñā✓ | uṣa✓ | ṅ❌ ga✓`
+ The reason being that `prajñān` is matched instead of `prajñā`, making it impossible to reconstruct `anuṣaṅga`.
+
+```
+yaḥ kulyaiḥ svai … #ātasa … yasya … … puṃva … tra … … sphuradvaṃ … kṣaḥ sphuṭoddhvaṃsita … pravitata
+| yad✓ | kulyā✓ kulya✓ | sva✓ | at✓ | a❌ | ya✓ yas✓ yad✓ | puṁs✓ | va✓ | tra✓ | sphurat✓ | va✓ | ṁ❌ | kṣa✓ | sphuṭa✓ sphuṭ✓ | uddhvaṁs✓ | pravitan✓
+
+ … yasya prajñānuṣaṅgocita-sukha-manasaḥ śāstra-tattvārttha-bharttuḥ … stabdho … hani … nocchṛ …
+| ya✓ yas✓ yad✓ | prajña✓ prajñā✓ | uṣa✓ | ṅ❌ ga✓ | ucita✓ | sukha✓ | manas✓ manasā✓ | śāstṛ✓ | tattva✓ | artha✓ | bhartṛ✓ | stabdha✓ | han✓ | na✓ | uc✓ | chṛ✓ | 
+
+sat-kāvya-śrī-virodhān budha-guṇita-guṇājñāhatān eva kṛtvā vidval-loke ’vināśi sphuṭa-bahu
+sad✓ | kāvya✓ | śrī✓ | virodha✓ | budha✓ | guṇita✓ | guṇāj✓ | ñ❌ ah✓ | tad✓ | eva✓ | kṛtvan✓ kṛtvā✓ | vidvas✓ | lok✓ loka✓ | avināśin✓ | sphuṭ✓ | bahu✓
+
+-kavitā-kīrtti rājyaṃ bhunakti āryyaihīty upaguhya bhāva-piśunair utkarṇṇitai romabhiḥ sabhyeṣūcchvasiteṣu
+| kavitā✓ kū✓ | kīrti✓ | rājya✓ | bhunakti✓ | āra✓ ārya✓ | eha✓ | iti✓ | upagu✓ | hi✓ | bhū✓ bhu✓ bha✓ bhā✓ | piśuna✓ | utkarṇitai✓ | roman✓ | sabhya✓ | ut_śvas✓
+
+tulya-kula-ja-mlānānanodvīkṣitaḥ sneha-vyāluḷitena bāṣpa-guruṇā tattvekṣiṇā cakṣuṣā yaḥ pitrābhihito nirīkṣya
+| tulya✓ | kula✓ | ja✓ | mlāna✓ | an✓ | od❌ vī✓ | kṣita✓ kṣi✓ | snih✓ | vyālulita✓ | bāṣpa✓ | guru✓ | tattva✓ | ikṣin✓ | cakṣus✓ | yad✓ | pitṛ✓ | abhi_dhā✓ | niḥ_īkṣ✓
+
+nikhilāṃ pāhy evam urvvīm iti dṛṣṭvā karmmāṇy anekāny amanuja-sadṛśāny adbhutodbhinna-harṣā bhāvair
+| nikhila✓ | pā✓ pāhi✓ | evam✓ | urvī✓ uru✓ | iti✓ | dṛṣ✓ | karmāṇ✓ karman✓ | aneka✓ | amat✓ | uja❌ | sadṛśa✓ | adbhuta✓ | ut_bhid✓ | harṣa✓ hṛṣ✓ | bhu✓ bhū✓ bhāva✓ bhā✓ bha✓ | er❌ | 
+
+āsvādayantaḥ … keciT vīryyottaptāś ca kecic charaṇam upagatā yasya
+āsvādayat✓ ā_svād✓ | kim✓ | cid✓ | vīra✓ vīrya✓ | ut_tap✓ uttaptāḥ✓ | ca✓ | kim✓ | cit✓ cid✓ | śaraṇa✓ | upaga✓ | tā✓ | ya✓ yas✓ yad✓ | 
+
+vṛtte praṇāme ’py artti##
+vṛtti✓ vṛtta✓ | praṇāma✓ | api✓ | arti✓
+```
+
 ### SkrtSyllableTokenizer
 
 Does not implement complex syllabation rules, but does the same thing as Peter Scharf's [script](http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html). 
@@ -69,7 +105,6 @@ SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigi
  - http://sanskritlibrary.org/software/transcodeFile.zip (more specifically roman_slp1.xml)
  - https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST
  - http://unicode.org/charts/PDF/U0900.pdf
-
 
 ## License
 
