@@ -66,6 +66,10 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("ṉ", "n"); // ऩ same as above
         builder.add("ẏ", "y"); // य़ same as above
         
+        // danda 
+        builder.add("|", ".");
+        builder.add("‖", "..");
+        
         // avagraha normalisation (covers a maximum of possibilities. maybe too much?)
         builder.add("’", "'"); // U+2019 RIGHT SINGLE QUOTATION MARK
         builder.add("＇", "'"); // U+FF07 FULLWIDTH APOSTROPHE

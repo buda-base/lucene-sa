@@ -26,15 +26,19 @@ import io.bdrc.lucene.sa.GeminateNormalizingFilter;
 import io.bdrc.lucene.sa.Roman2SlpFilter;
 import io.bdrc.lucene.sa.SiddhamFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
+import com.sktutilities.transliteration.SLPToIAST;
+import com.sktutilities.transliteration.DvnToSLP;
 
 public class PrettyPrintResult {
     
     static OutputStreamWriter writer;
+    static SLPToIAST slp2iast = new SLPToIAST();
+    static DvnToSLP deva2slp = new DvnToSLP();
     
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
-        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
+//        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
@@ -56,7 +60,7 @@ public class PrettyPrintResult {
             cs = new GeminateNormalizingFilter(cs);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
             long tokenizing = System.currentTimeMillis();
-            produceTokens(words, inputStr, tokensOnLine);
+            produceTokens(words, inputStr, tokensOnLine, inputFiles.get(fileName));
             long tokenized = System.currentTimeMillis();
             System.out.println("Time: " + (tokenized - tokenizing) / 1000 + "s.");
             writer.flush();
@@ -72,7 +76,7 @@ public class PrettyPrintResult {
         return tokenizer;
     }
 
-    private static void produceTokens(TokenStream tokenStream, String inputStr, int tokensOnLine) { 
+    private static void produceTokens(TokenStream tokenStream, String inputStr, int tokensOnLine, Integer encoding) { 
         int batchNum = 1;
         try {
             CharTermAttribute TermAttr = tokenStream.addAttribute(CharTermAttribute.class); 
@@ -101,12 +105,12 @@ public class PrettyPrintResult {
                 if (tokNo != 1) tokensLine.append(' '); 
                 if (tmp == -1 || tmp != batchEndOffset) {
                     tmp = batchEndOffset;
-                    tokensLine.append("| ");
+                    tokensLine.append("¦ ");
                 }
                 tokensLine.append(token);
                 totalTokens ++;
                 if (tokNo >= tokensOnLine) { 
-                    writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum); 
+                    writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum, encoding); 
                     tokNo = 0; 
                     tokensLine = new StringBuilder(); 
                     batchStartOffset = batchEndOffset; 
@@ -114,7 +118,7 @@ public class PrettyPrintResult {
                 } 
             }
             if (tokNo != 0) { 
-                writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum);
+                writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum, encoding);
                 batchNum ++;
             }
             
@@ -135,9 +139,19 @@ public class PrettyPrintResult {
         } 
     }
     
-    private static void writeLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum) throws IOException { 
+    private static void writeLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum, Integer encoding) throws IOException { 
         writer.append(batchNum + "\n");
-        writer.append(inputStr.substring(batchStartOffset, batchEndOffset)+"\n"); 
-        writer.append(tokensLine+"\n"); 
+        String substring = inputStr.substring(batchStartOffset, batchEndOffset);
+//        if (encoding == 1) {    // if input in devanagari
+//            substring = slp2iast.transform(deva2slp.transform(substring));
+//        }
+        String tokens = slp2iast.transform(tokensLine); 
+        
+        writer.append(substring+"\n"); 
+        writer.append(tokens+"\n");
+        
+        System.out.println(substring);
+        System.out.println(tokens);
+         
     }
 }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -96,6 +97,24 @@ public class FullTextParsingTest
 			assertTrue(false);
 		}
 	}
+	
+//    @Test
+//    public void withHyphens() throws Exception {
+//        System.out.println("bug1");
+//        String input = "yaḥ kulyaiḥ svai … #ātasa … yasya … … puṃva … tra … … sphuradvaṃ … kṣaḥ sphuṭoddhvaṃsita … pravitata … "
+//                + "yasya prajñānuṣaṅgocita-sukha-manasaḥ śāstra-tattvārttha-bharttuḥ … stabdho … hani … nocchṛ … sat-kāvya-śrī-virodhān "
+//                + "budha-guṇita-guṇājñāhatān eva kṛtvā vidval-loke ’vināśi sphuṭa-bahu-kavitā-kīrtti rājyaṃ bhunakti āryyaihīty upaguhya "
+//                + "bhāva-piśunair utkarṇṇitai romabhiḥ sabhyeṣūcchvasiteṣu tulya-kula-ja-mlānānanodvīkṣitaḥ sneha-vyāluḷitena bāṣpa-guruṇā "
+//                + "tattvekṣiṇā cakṣuṣā yaḥ pitrābhihito nirīkṣya nikhilāṃ pāhy evam urvvīm iti dṛṣṭvā karmmāṇy anekāny amanuja-sadṛśāny "
+//                + "adbhutodbhinna-harṣā bhāvair āsvādayantaḥ … keciT vīryyottaptāś ca kecic charaṇam upagatā yasya vṛtte praṇāme ’py artti##";
+//        input = input.replace("-", "");
+//        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+//        CharFilter siddham = new SiddhamFilter(roman);
+//        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+//        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+//        List<String> expected = Arrays.asList("am", "H");
+//        assertTokenStream(words, expected);
+//    }
 	
 	@Test
 	public void bug1ExtraNonwordToken() throws Exception {

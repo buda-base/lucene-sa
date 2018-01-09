@@ -337,6 +337,68 @@ public class SiddhamTests
         assertThat(tokens, is(expected));
     }
     
+    @Test
+    public void bug17MissingToken() throws IOException
+    {
+        String input = "kavitākīrtti kavitākīrtti atikramati adhikaroti";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("kavitA", "kU", "akIrt", "i", "kavitA", "kU", "akIrt", "i");
+        assertThat(tokens, is(expected));
+    }
+    
+    // saṃtataṃ ciraṃ sudarśanaṃ
+    @Test
+    public void bug18MissingToken() throws IOException
+    {
+        String input = "saṃtataṃ ciraṃ sudarśanaṃ";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("kavitA", "kU", "akIrt", "i", "kavitA", "kU", "akIrt", "i");
+        assertThat(tokens, is(expected));
+    }
+    
+    // bhagavān pūrvāhṇa-kāla-samaye nivāsya pātra-cīvaram
+    @Test
+    public void bug19MissingToken() throws IOException
+    {
+        String input = "samaye nivāsya pātra-cīvaram";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("kavitA", "kU", "akIrt", "i", "kavitA", "kU", "akIrt", "i");
+        assertThat(tokens, is(expected));
+    }
+    
+    @Test
+    public void bug20BAvanInfiniteLoop() throws IOException
+    {
+        String input = "phalāprāptisambhāvanālakṣaṇānarthāvāptiśaṅketi";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("kavitA", "kU", "akIrt", "i", "kavitA", "kU", "akIrt", "i");
+        assertThat(tokens, is(expected));
+    }
+    
     @AfterClass
     public static void finish() {    // vowel sandhi
         System.out.println("after the test sequence");
