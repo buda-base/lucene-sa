@@ -456,7 +456,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 				} else if (foundAToken()) {
 					IncrementTokenLengthAndAddCurrentCharTo(tokenBuffer, c);
-					// test with this condition
 					if (!afterNonwordMatch) {
 					    cutOffTokenFromNonWordChars();
 					}
@@ -552,7 +551,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
-//					foundNonMaxMatch = false;
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 					if (isSLPModifier(c)) {
@@ -579,7 +577,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordChars(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
-//					foundNonMaxMatch = false;
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					setTermLength();
@@ -689,7 +686,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						t = t[1].split("/");
 						toAdd = t[0];
 						newInitial = t[1];
-						// TODO: needs to be a possible first element of termAtt#buffer on next iteration of incrementToken()
 						if (initials == null) {
 							initials = new HashSet<String>();
 							storedInitials = new HashSet<String>();
@@ -1206,7 +1202,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean initialIsNotFollowedBySandhied(int c) {
-//		return isValidCharWithinSandhi(c) && bufferIndex == firstInitialIndex + 1 ;
 	    return isValidCharWithinSandhi(c) && (firstInitialIndex == -1 || bufferIndex == firstInitialIndex + 1) ;
 	}
 
