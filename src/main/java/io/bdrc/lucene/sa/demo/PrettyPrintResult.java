@@ -38,7 +38,8 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
-//        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
+        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
+        inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
         inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
@@ -142,16 +143,9 @@ public class PrettyPrintResult {
     private static void writeLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum, Integer encoding) throws IOException { 
         writer.append(batchNum + "\n");
         String substring = inputStr.substring(batchStartOffset, batchEndOffset);
-//        if (encoding == 1) {    // if input in devanagari
-//            substring = slp2iast.transform(deva2slp.transform(substring));
-//        }
         String tokens = slp2iast.transform(tokensLine); 
         
         writer.append(substring+"\n"); 
-        writer.append(tokens+"\n");
-        
-        System.out.println(substring);
-        System.out.println(tokens);
-         
+        writer.append(tokens+"\n");         
     }
 }
