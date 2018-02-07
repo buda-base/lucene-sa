@@ -1,2 +1,2 @@
-te,$-2+yuzmad;-1+ad/=0|a$-2+yuzmad;-1+ad/- '+a=1|a:A:i:u:U:f:e:E:o:O$-2+yuzmad;-1+ad/- +=1|C$-2+yuzmad;-1+ad/- cC+C=7
-api,$/=0|a:A:i:u:U:f:e:E:o:O$/- +=1|C$/- cC+C=7
+te,$-1+ad/=0#2|'$-1+ad/- '+a=1#2|a:A:i:I:u:U:f:e:E:o:O$-1+ad/- +=1#2|cC$-1+ad/- cC+C=8#2|$-2+yuzmad/=0#2|'$-2+yuzmad/- '+a=1#2|a:A:i:I:u:U:f:e:E:o:O$-2+yuzmad/- +=1#2|cC$-2+yuzmad/- cC+C=8#2
+api,$/=0#0|a:A:i:I:u:U:f:e:E:o:O$/- +=1#0|cC$/- cC+C=8#0

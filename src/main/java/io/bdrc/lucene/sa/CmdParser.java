@@ -36,6 +36,7 @@ public class CmdParser {
 	private String[] t = new String[2];  // temporary variable constantly reused
 	
 	private int sandhiType = -1;
+	private String pos = null;
 	private String entry = null;
 	
 	private String[] initials = null;
@@ -105,7 +106,7 @@ public class CmdParser {
 					splitDiffInitial();											// -<sandhiedInitial>+<unsandhiedInitial>
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					String unsandhied = String.format("0+/%s=%s", initialCharsOriginal, sandhiType);
+					String unsandhied = String.format("0+/%s=%s#%s", initialCharsOriginal, sandhiType, pos);
 					addEntry(sandhied, unsandhied);
 					
 				} else if (onlyFinalsChange()) {
@@ -116,12 +117,12 @@ public class CmdParser {
 						if (thereAreInitials()) {
 							for (String initial: initials) {
 								String sandhied = sandhiedFinal+initial;
-								String unsandhied = String.format("%s+%s/%s=%s", toDelete, toAdd, initial, sandhiType);
+								String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initial, sandhiType, pos);
 								addEntry(sandhied, unsandhied);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
-							String unsandhied = String.format("%s+%s=%s", toDelete, toAdd, sandhiType);
+							String unsandhied = String.format("%s+%s=%s#%s", toDelete, toAdd, sandhiType, pos);
 							addEntry(sandhied, unsandhied);
 						}
 					}
@@ -132,7 +133,7 @@ public class CmdParser {
 						splitDiffInitial();										// -<sandhiedInitial>+<unsandhiedInitial>
 
 						String sandhied = sandhiedFinal+initialCharsSandhied;
-						String unsandhied = String.format("%s+%s/%s=%s", toDelete, toAdd, initialCharsOriginal, sandhiType);
+						String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
 						addEntry(sandhied, unsandhied);
 					}
 				}
@@ -146,7 +147,7 @@ public class CmdParser {
 	}
 
 	private String findSandhiedFinals(String inflected, int sandhiType) {
-		if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
+	    if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
 		// if consonants1_vowels, visarga1 or visarga2
 			return inflected.substring(inflected.length()-2);
 		} else if (sandhiType == 9) {
@@ -159,7 +160,9 @@ public class CmdParser {
 	private void splitFullEntry(String fullEntry, String[] t) {
 		t = fullEntry.split("=");
 		entry = t[0];
-		sandhiType = Integer.parseInt(t[1]);
+		t = t[1].split("#");
+		sandhiType = Integer.parseInt(t[0]);
+		pos = t[1];
 	}
 	
 	private void splitEntryAndInitials() {

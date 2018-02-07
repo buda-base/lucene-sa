@@ -74,11 +74,11 @@ public class BuildCompiledTrie {
 			try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 				String line;
 				while ((line = br.readLine()) != null) {
-					final int spaceIndex = line.indexOf(',');
-					if (spaceIndex == -1) {
+					final int sepIndex = line.indexOf(',');
+					if (sepIndex == -1) {
 						throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
 					} else {
-						trie.add(line.substring(0, spaceIndex), line.substring(spaceIndex+1));
+						trie.add(line.substring(0, sepIndex), line.substring(sepIndex+1));
 					}
 				}
 			}

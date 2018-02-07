@@ -3,7 +3,7 @@ import os
 
 
 def parse_total_lexicon():
-    with open('../../../../resources/sanskrit-stemming-data/output/total_output.txt') as f:
+    with open('../../../../resources/sanskrit-stemming-data/output/trie_content.txt') as f:
         content = f.read().split('\n')
     
     total_output = {}

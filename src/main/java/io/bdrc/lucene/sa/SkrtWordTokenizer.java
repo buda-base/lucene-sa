@@ -432,9 +432,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					} else if (isLoneInitial()) {
 					    foundNonMaxMatch = false;
 					    foundMatch = false;
+					    foundMatchCmdIndex = -1;
 					    setTermLength();
 					    continue;
-					} else {
+					} else if (thereAreRemainingInitialsToTest()) {  // added this condition
+					    potentialTokensContainMatches = true;                   // because we reachedEndOfToken
+					    addFoundTokenToPotentialTokensIfThereIsOne(tokenBuffer);
+					    restoreInitialsOrigState();  //
+	                    resetNonWordChars(0);
+	                    wentToMaxDownTheTrie = false;
+	                    applyOtherInitial = true;
+	                    continue;
+	                    
+	                } else {
 					    // ???
 					    if (!foundNonMaxMatch) {
 					        cutOffTokenFromNonWordChars();
@@ -527,6 +537,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     reinitializeTokenBuffer();
                     setTermLength();
                     foundNonMaxMatch = false;
+                    foundMatchCmdIndex = -1;
                     storedNoMatchState = -1;
                     continue;
                 }
@@ -539,6 +550,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (allCharsFromCurrentInitialAreConsumed()) {
 				    if (nonwordIsLoneInitial()) {
                         reinitializeTokenBuffer();
+                        foundMatchCmdIndex = -1;
                         setTermLength();
                         continue;
 				    }
@@ -642,18 +654,25 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
+	HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
+	    return reconstructLemmas(cmd, inflected, -1);
+	}
+	
 	/**
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
 	 * only reconstructs the lemmas if there is a match.
+	 * @param i 
 	 *
 	 *
 	 * @return: the list of all the possible lemmas given the current context
 	 */
-	HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
+	HashSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
 		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
 		String[] t = new String[0];
-
+		
+		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
+		
 		TreeMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
 		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
@@ -663,12 +682,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
 
 				t = lemmaDiff.split("=");
-				int sandhiType = Integer.parseInt(t[1]);
-				if (noSandhiButLemmatizationRequired(sandhiType, t[0])) {
+				String diff = t[0];
+				t = t[1].split("#");
+				int sandhiType = Integer.parseInt(t[0]);
+//				String pos = t[1];  // TODO: uncomment when implementing the token filter
+				if (noSandhiAndLemmatizationNotRequired(sandhiType, diff)) {
 					continue;							// there is no sandhi nor, so we skip this diff
 				}
-				String diff = t[0];
-				if (containsSandhiedCombination(ioBuffer, bufferIndex - 1, sandhied, sandhiType)) {
+				
+				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, sandhiType)) {
 				    foundAsandhi = true;
 					t = diff.split("\\+");
 
@@ -696,7 +718,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						toAdd = t[1];
 					}
 
-					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;
+					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;  // TODO: append pos once the token filter is in place
 					totalLemmas.add(lemma);
 				}
 			}
@@ -890,7 +912,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (debug) System.out.println("form found: " + termAtt.toString() + "\n");
 			if (value[3] == 1) {
 				String cmd = scanner.getCommandVal(value[4]);
-				final Set<String> lemmas = reconstructLemmas(cmd, key);
+				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
 				if (lemmas.size() != 0) {
 					for (String l: lemmas) {	// multiple lemmas are possible: finals remain unanalyzed
 						totalTokens.put(l, new Integer[] {value[0], value[1], l.length(), value[3]});	
@@ -1119,7 +1141,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    return initials != null && !initials.isEmpty() && initials.size() <= storedInitials.size() - 1;
 	}
 	
-	final private boolean noSandhiButLemmatizationRequired(int sandhiType, String diff) {
+	final private boolean noSandhiAndLemmatizationNotRequired(int sandhiType, String diff) {
 	    return sandhiType == 0 && diff.equals("/");
 	}
 	
@@ -1128,7 +1150,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean matchIsLoneInitial() {
-	    return storedInitials != null && storedInitials.contains(termAtt.toString());
+	    return tokenLength == 1 && storedInitials != null && storedInitials.contains(termAtt.toString());
 	}
 	
 	final private boolean nonMaxIndicesRequireUpdating() {
