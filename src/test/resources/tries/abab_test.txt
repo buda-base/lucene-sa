@@ -1,5 +1,5 @@
 ab,y:r:l:v$-1+p/- +=2#1|B$-1+p/- B+h=2#1|g:G:j:J:q:Q:d:D:b:B$-1+p/- +=4#1|a:A:i:I:u:U:f:e:E:o:O$-1+p/- +=3#1
-aba,$/=0
-abaac,$/=0
-ed,$/=0
-edeef,$/=0
+aba,$/=0#1
+abaac,$/=0#1
+ed,$/=0#1
+edeef,$/=0#1
