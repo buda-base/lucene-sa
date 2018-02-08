@@ -241,7 +241,7 @@ public class WordTokenizerTests
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-//		assertTokenStream(words, expected);
+		assertTokenStream(words, expected);
 	}
     
     @Test
@@ -396,7 +396,7 @@ public class WordTokenizerTests
 		System.out.println("bug5");
 		String input = "ka%nyA";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ka√", "nyA❌");
+		List<String> expected = Arrays.asList("ka%❌", "nyA❌");
 		System.out.println("0 " + input);
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
