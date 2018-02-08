@@ -38,15 +38,19 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws FileNotFoundException, IOException{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
-        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
+//        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
-        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
+//        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
         
         Set<String> keys = inputFiles.keySet();
         for (String fileName: keys) {
             String inputStr = new String(Files.readAllBytes(Paths.get(fileName))); 
+            // ignore any BOM marker on first line
+            if (inputStr.startsWith("\uFEFF")) {
+                inputStr = inputStr.substring(1);
+            }
             String outFileName = "./" + fileName.substring(fileName.lastIndexOf('/'), fileName.lastIndexOf('.')) + "_lemmatized.txt";
             writer = new OutputStreamWriter(new FileOutputStream(outFileName), StandardCharsets.UTF_8);
             System.out.println("Processing " + fileName + "...");
