@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -232,8 +233,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private StringBuilder nonWordBuffer = new StringBuilder();
 	
 	/* totalTokens related */
-	private LinkedHashMap<String, Integer[]> totalTokens = new LinkedHashMap<String, Integer[]>();
-	private Iterator<Entry<String, Integer[]>> totalTokensIterator;
+	private LinkedList<Object[]> totalTokens = new LinkedList<Object[]>();
 	private boolean hasTokenToEmit;
 	
 	/* initials related */
@@ -615,9 +615,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		if (thereAreTokensToReturn()) {
 			hasTokenToEmit = true;
-			final Map.Entry<String, Integer[]> firstToken = takeFirstToken();
-			fillTermAttributeWith(firstToken);
-			changeTypeOfNonwords(firstToken);
+			final Object[] firstToken = totalTokens.removeFirst();
+	        final String string = (String) firstToken[0];
+	        final Integer[] indices = (Integer[]) firstToken[1];
+			fillTermAttributeWith(string, indices);
+			changeTypeOfToken(indices[3]);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -809,26 +811,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		termAtt.setEmpty().append(tokenBuffer.toString());
 	}
 
-	private void changeTypeOfNonwords(Entry<String, Integer[]> token) {
-		if (token.getValue()[3] == 0) {  
+	private void changeTypeOfToken(int t) {
+		if (t == 0) {  
 			typeAtt.setType("non-word");
-		} else if (token.getValue()[3] == 1) {
+		} else if (t == 1) {
 		    typeAtt.setType("word");
-		} else if (token.getValue()[3] == 2) {
+		} else if (t == 2) {
             typeAtt.setType("lemma");
         }
 	}
 
-	private void fillTermAttributeWith(Entry<String, Integer[]> token) {
-		termAtt.setEmpty().append(token.getKey());								// add the token string
-		termAtt.setLength(token.getValue()[2]);									// declare its size
-		finalOffset = correctOffset(token.getValue()[1]);						// get final offset 
-		offsetAtt.setOffset(correctOffset(token.getValue()[0]), finalOffset);	// set its offsets (initial & final)
-	}
-
-	private Entry<String, Integer[]> takeFirstToken() {
-		totalTokensIterator = totalTokens.entrySet().iterator();			// fill iterator
-		return (Map.Entry<String, Integer[]>) totalTokensIterator.next();
+	private void fillTermAttributeWith(String string, Integer[] indices) {
+		termAtt.setEmpty().append(string);								// add the token string
+		termAtt.setLength(indices[2]);									// declare its size
+		finalOffset = correctOffset(indices[1]);						// get final offset 
+		offsetAtt.setOffset(correctOffset(indices[0]), finalOffset);	// set its offsets (initial & final)
 	}
 
 	private void ifThereAreInitialsFillIterator() {
@@ -854,7 +851,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final Set<String> lemmas = reconstructLemmas(cmd, token);
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
-					totalTokens.put(l, new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), l.length(), 2});
+				    final Object[] newToken = new Object[] {l, 
+				            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), l.length(), 2}};
+					totalTokens.add(newToken);
 					// use same start-end indices since all are from the same inflected form)
 				}
 				return true;
@@ -865,14 +864,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifThereIsMatchAddItToTotalTokens() {
 		if (tokenBuffer.length() > 0) {
-			totalTokens.put(tokenBuffer.toString(), new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), tokenBuffer.length(), 1});
+		    final Object[] newToken = new Object[] {tokenBuffer.toString(), 
+		            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), tokenBuffer.length(), 1}};
+			totalTokens.add(newToken);
 		}
 	}
 
 	private boolean ifThereIsNonwordAddItToTotalTokens() {
 		final String nonWord = nonWordBuffer.toString();
 		if (nonWord.length() > 0) {
-			totalTokens.put(nonWord, new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, 0});
+		    final Object[] newToken = new Object[] {nonWord,
+		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, 0}};
+			totalTokens.add(newToken);
 			// ignore all potential tokens. add the non-word with sandhied initials
 			return true;
 		}
@@ -889,11 +892,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
 				if (lemmas.size() != 0) {
 					for (String l: lemmas) {	// multiple lemmas are possible: finals remain unanalyzed
-						totalTokens.put(l, new Integer[] {value[0], value[1], l.length(), 2});	
+					    final Object[] newToken = new Object[] {l, new Integer[] {value[0], value[1], l.length(), 2}};
+						totalTokens.add(newToken);	
 						// use same indices for all (all are from the same inflected form)
 					}
 				} else {	// finals of current form are not sandhied. there is only one token to add
-					totalTokens.put(key, new Integer[] {value[0], value[1], value[2], 1});
+					final Object[] newToken = new Object[] {key, new Integer[] {value[0], value[1], value[2], 1}};
+				    totalTokens.add(newToken);
 				}
 			}
 		}
@@ -1038,13 +1043,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void addExtraToken() {
-		if (totalTokensIterator.hasNext()) {
-			final Map.Entry<String, Integer[]> extra = (Map.Entry<String, Integer[]>) totalTokensIterator.next();
-			termAtt.setEmpty().append(extra.getKey());
-			changeTypeOfNonwords(extra);
-			termAtt.setLength(extra.getValue()[2]);
-			finalOffset = correctOffset(extra.getValue()[1]);
-			offsetAtt.setOffset(correctOffset(extra.getValue()[0]), finalOffset);
+		if (totalTokens.peekFirst() != null) {
+			final Object[] nextToken = totalTokens.removeFirst();
+			final String string = (String) nextToken[0];
+			final Integer[] indices = (Integer[]) nextToken[1];
+			termAtt.setEmpty().append(string);
+			changeTypeOfToken(indices[3]);
+			termAtt.setLength(indices[2]);
+			finalOffset = correctOffset(indices[1]);
+			offsetAtt.setOffset(correctOffset(indices[0]), finalOffset);
 		} else {
 			hasTokenToEmit = false;
 		}
@@ -1190,7 +1197,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		bufferIndex = 0;
 		finalOffset = 0;
 		ioBuffer.reset(input);		// make sure to reset the IO buffer!!
-		totalTokens = new LinkedHashMap<String, Integer[]>();
+		totalTokens = new LinkedList<Object[]>();
 
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens
