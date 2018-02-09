@@ -855,7 +855,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
 					totalTokens.put(l, new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), l.length(), 2});
-					// use same indices for all (all are from the same inflected form)
+					// use same start-end indices since all are from the same inflected form)
 				}
 				return true;
 			}
@@ -900,7 +900,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void cutOffTokenFromNonWordBuffer() {
-		int newSize = nonWordBuffer.length() - (tokenBuffer.length() - charCount);
+		int newSize = nonWordBuffer.length() - tokenBuffer.length();
 		newSize = newSize < 0 ? 0: newSize;   // ensure the new size is never negative
 	    nonWordBuffer.setLength(newSize);
 		// end of non-word can be: a matching word starts (potentialEnd == true) OR a nonSLP char follows a nonWord.
