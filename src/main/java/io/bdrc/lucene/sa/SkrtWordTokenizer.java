@@ -546,8 +546,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restoreInitialsOrigState();	
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+					decrement(tokenBuffer);
+					decrement(nonWordBuffer);
 					if (isSLPModifier(c)) {
-					    decrement(tokenBuffer);
 						continue;								// move on and do as if the modifier didn't exist
 					} else {
 						break;
@@ -781,7 +782,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
-		if (storedInitials != null) {
+		if ((initials != null && initials.isEmpty()) && storedInitials != null) {
 			
 			/* cleanup potentialTokens */
 			for (String key: storedInitials) {
