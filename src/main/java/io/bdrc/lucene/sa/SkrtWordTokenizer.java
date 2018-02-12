@@ -221,7 +221,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/* nonMaxMatch related */
 	private boolean foundNonMaxMatch, wentToMaxDownTheTrie;
 	private StringBuilder nonMaxBuffer = new StringBuilder();
-	private int nonMaxTokenStart, nonMaxBufferIndex, nonMaxFoundMatchCmdIndex;
+	private int nonMaxTokenStart, nonMaxBufferIndex, nonMaxFoundMatchCmdIndex, nonMaxNonWordLength;
 	
 	/* tokens related */
 	private LinkedHashMap<String, Integer[]> potentialTokens = new LinkedHashMap<String, Integer[]>();	
@@ -299,6 +299,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		nonMaxTokenStart = -1;		
 		nonMaxBufferIndex = -1;
 		nonMaxFoundMatchCmdIndex = -1;
+		nonMaxNonWordLength = -1;
 		foundNonMaxMatch = false;
 		wentToMaxDownTheTrie = false;
 		firstInitialIndex = -1;
@@ -405,13 +406,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    } else if (!foundNonMaxMatch) {
 					        match = tryToFindMatchIn(rootRow, c);
 					        continuing = tryToContinueDownTheTrie(rootRow, c);
+					        tokenBuffer.setLength(0);     // test
+//					        tokenBuffer.append((char) c); // test
 					        if (foundMatch) {
 					            afterNonwordMatch = true;
 					        }
 					    }
 						wentToMaxDownTheTrie = true;
 						storedNoMatchState = -1;
-						tokenBuffer.setLength(0);			// because no word ever started in the first place
+						if (tokenBuffer.length() == 0) {
+						    tokenBuffer.append((char) c); // test
+						} else {
+						    tokenBuffer.setLength(0);         // because no word ever started in the first place
+						}
+						
 					}
 				}
 				
@@ -419,6 +427,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				if (wentBeyondLongestMatch()) {
 					if (foundNonMaxMatch) {
 					    restoreNonMaxMatchState();
+//					    nonWordBuffer.setLength(0);    // delete non-word
 					}
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
@@ -442,9 +451,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    
 	                } else {
 					    // ???
-					    if (!foundNonMaxMatch) {
-					        cutOffTokenFromNonWordBuffer();
-					    }
+	                    cutOffTokenFromNonWordBuffer();
+//	                    if (!foundNonMaxMatch) {
+//					        cutOffTokenFromNonWordBuffer();
+//					    }
 						break;								// and resume looping over ioBuffer
 					}
 				
@@ -501,6 +511,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();
+								cutOffTokenFromNonWordBuffer(); // TEST
 								ifNoInitialsCleanupPotentialTokensAndNonwords();
 								break;
 							} else {
@@ -546,7 +557,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restoreInitialsOrigState();	
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
-					decrement(tokenBuffer);
+					tokenBuffer.setLength(0);  // there was no match in the first place (we are after "if (foundNonMaxMatch)") 
 					decrement(nonWordBuffer);
 					if (isSLPModifier(c)) {
 						continue;								// move on and do as if the modifier didn't exist
@@ -970,6 +981,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         nonMaxBuffer.setLength(0);
         nonMaxBuffer.append(tokenBuffer);
 	    nonMaxFoundMatchCmdIndex = foundMatchCmdIndex;
+	    nonMaxNonWordLength = nonWordBuffer.length();
 		return true;
 	}
 	
@@ -980,6 +992,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         tokenBuffer.setLength(0);
         tokenBuffer.append(nonMaxBuffer);
         foundMatchCmdIndex = nonMaxFoundMatchCmdIndex;
+        nonWordBuffer.setLength(nonMaxNonWordLength);
     }
 	
     private void storeCurrentState() {

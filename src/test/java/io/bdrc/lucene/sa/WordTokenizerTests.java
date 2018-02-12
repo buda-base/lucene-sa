@@ -237,7 +237,7 @@ public class WordTokenizerTests
 		System.out.println("non-maximal match 5: preceded by a non-word");
 		String input = "auieabab";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("auie", "aba", "b");
+		List<String> expected = Arrays.asList("auie❌", "aba✓", "b❌");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -396,7 +396,7 @@ public class WordTokenizerTests
 		System.out.println("bug5");
 		String input = "ka%nyA";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("ka%❌", "nyA❌");
+		List<String> expected = Arrays.asList("ka❌", "nyA❌");
 		System.out.println("0 " + input);
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
