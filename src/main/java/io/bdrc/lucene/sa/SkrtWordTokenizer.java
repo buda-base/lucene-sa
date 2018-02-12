@@ -630,8 +630,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (thereAreTokensToReturn()) {
 			hasTokenToEmit = true;
 			final PreToken firstToken = totalTokens.removeFirst();
-			fillTermAttributeWith(firstToken.tokenString, firstToken.tokenIndices);
-			changeTypeOfToken(firstToken.tokenIndices[3]);
+			final Integer[] metaData = firstToken.getMetadata();
+			fillTermAttributeWith(firstToken.getString(), metaData);
+			changeTypeOfToken(metaData[3]);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -834,11 +835,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
 	}
 
-	private void fillTermAttributeWith(String string, Integer[] indices) {
+	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
-		termAtt.setLength(indices[2]);									// declare its size
-		finalOffset = correctOffset(indices[1]);						// get final offset 
-		offsetAtt.setOffset(correctOffset(indices[0]), finalOffset);	// set its offsets (initial & final)
+		termAtt.setLength(metaData[2]);									// declare its size
+		finalOffset = correctOffset(metaData[1]);						// get final offset 
+		offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);	// set its offsets (initial & final)
 	}
 
 	private void ifThereAreInitialsFillIterator() {
@@ -1060,12 +1061,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void addExtraToken() {
 		if (totalTokens.peekFirst() != null) {
 			final PreToken nextToken = totalTokens.removeFirst();
-			final Integer[] indices = nextToken.getTokenMetadata();
-			termAtt.setEmpty().append(nextToken.getTokenString());
-			changeTypeOfToken(indices[3]);
-			termAtt.setLength(indices[2]);
-			finalOffset = correctOffset(indices[1]);
-			offsetAtt.setOffset(correctOffset(indices[0]), finalOffset);
+			final Integer[] metaData = nextToken.getMetadata();
+			termAtt.setEmpty().append(nextToken.getString());
+			changeTypeOfToken(metaData[3]);
+			termAtt.setLength(metaData[2]);
+			finalOffset = correctOffset(metaData[1]);
+			offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);
 		} else {
 			hasTokenToEmit = false;
 		}
@@ -1220,19 +1221,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	public static class PreToken {
 	    String tokenString;
-	    Integer[] tokenIndices;
+	    Integer[] tokenMetaData;
 	    
-	    public PreToken(String string, Integer[] indices) {
+	    public PreToken(String string, Integer[] metaData) {
 	        this.tokenString = string;
-	        this.tokenIndices = indices;
+	        this.tokenMetaData = metaData;
 	    }
 	    
-	    public String getTokenString() {
+	    public String getString() {
 	        return tokenString;
 	    }
 	    
-	    public Integer[] getTokenMetadata() {
-	        return tokenIndices;
+	    public Integer[] getMetadata() {
+	        return tokenMetaData;
 	    }
 	}
 }
