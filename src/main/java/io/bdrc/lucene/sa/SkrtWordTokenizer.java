@@ -582,6 +582,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					restoreInitialsOrigState();	
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
+					tokenBuffer.setLength(0);  // testtest
+					decrement(nonWordBuffer);
 					break;
 				}
 			} else {
@@ -637,7 +639,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
 			assert(tokenStart != -1);
 			finalizeSettingTermAttribute();
-			typeAtt.setType("word");
+//			typeAtt.setType("word");
 			return true;						// we exit incrementToken()
 		}
 	}
@@ -793,7 +795,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	private void ifNoInitialsCleanupPotentialTokensAndNonwords() {
-		if ((initials != null && initials.isEmpty()) && storedInitials != null) {
+//		if ((initials != null && initials.isEmpty()) && storedInitials != null) {
+	    if (storedInitials != null) {
 			
 			/* cleanup potentialTokens */
 			for (String key: storedInitials) {
