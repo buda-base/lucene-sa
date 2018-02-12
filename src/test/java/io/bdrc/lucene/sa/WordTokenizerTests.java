@@ -474,3 +474,4 @@ public class WordTokenizerTests
 		System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
 	}
 }
+

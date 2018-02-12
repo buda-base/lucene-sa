@@ -372,7 +372,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
-					applyOtherInitial = false;
+					applyOtherInitial = false;                 
 				}
 			}
 			
@@ -901,7 +901,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final String key = entry.getKey();
 			final Integer[] value = entry.getValue();
 			if (debug) System.out.println("form found: " + key + "\n");
-			if (value[3] == -1) {
+			if (value[3] == 1) {
 				String cmd = scanner.getCommandVal(value[4]);
 				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
 				if (lemmas.size() != 0) {
@@ -1023,14 +1023,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void addNonwordToPotentialTokens() {
 		final String potentialToken = nonWordBuffer.toString();
-		potentialTokens.put(potentialToken,  new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), potentialToken.length(), 0, -1});
+		potentialTokens.put(potentialToken,  
+		        new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), potentialToken.length(), 0, -1});
 	}
 
 	private void addFoundTokenToPotentialTokensIfThereIsOne() {
 		if (tokenBuffer.length() > 0) {																// avoid empty tokens
 			final String potentialToken = tokenBuffer.toString();
-			potentialTokens.put(potentialToken,  new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), potentialToken.length(), -1,
-			        foundMatchCmdIndex});
+			potentialTokens.put(potentialToken,  
+			        new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), potentialToken.length(), 1, foundMatchCmdIndex});
 		}
 	}
 
