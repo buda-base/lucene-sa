@@ -1167,7 +1167,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	final private boolean isNonSLPprecededByNotEmptyNonWord() {
 //		return nonWordBuffer.toString().length() != 0;
-	    return currentRow != null && nonWordBuffer.length() - charCount > 0;
+	    return currentRow == null && nonWordBuffer.length() - charCount > 0;
 	}
 
 	final private boolean isNonSLPprecededBySLP() {
