@@ -733,7 +733,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
     private void addNonwordToPotentialTokensIfThereIsOne() {
         if (nonWordBuffer.length() != 0) {
-            PreToken newToken = new PreToken(tokenBuffer.toString(),
+            PreToken newToken = new PreToken(nonWordBuffer.toString(),
                     new Integer[] { nonWordStart, nonWordStart + nonWordBuffer.length(), nonWordBuffer.length(), 0, -1 });
             potentialTokens.putIfAbsent("nonWord", newToken);
         }
@@ -747,16 +747,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
     }
 
-    private boolean ifThereIsNonwordAddItToTotalTokens() {
+    private void ifThereIsNonwordAddItToTotalTokens() {
+        // TODO: see what differs between the newly created PreTokens and those from 
+        // potentialTokens
+//        if (potentialTokens.containsKey("nonWord")) {
+//            totalTokens.add(potentialTokens.get("nonWord"));
+//        }
         final String nonWord = nonWordBuffer.toString();
         if (nonWord.length() > 0) {
             final PreToken newToken = new PreToken(nonWord,
-                    new Integer[] { nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, 0});
+                    new Integer[] { nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, -1});
             totalTokens.add(newToken);
             // ignore all potential tokens. add the non-word with sandhied initials
-            return true;
         }
-        return false;
     }
 
     private void unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens() throws NumberFormatException, IOException {
@@ -771,7 +774,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 if (lemmas.size() != 0) {
                     for (String l : lemmas) { // multiple lemmas are possible: finals remain unanalyzed
                         final PreToken newToken = new PreToken(l,
-                                new Integer[] { tokenData[0], tokenData[1], l.length(), 2 });
+                                new Integer[] { tokenData[0], tokenData[1], tokenData[1], 2 });
                         totalTokens.add(newToken);
                         // use same indices for all (all are from the same inflected form)
                     }
