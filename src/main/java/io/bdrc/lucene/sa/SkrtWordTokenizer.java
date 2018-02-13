@@ -384,6 +384,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			/* A.2.1) if it's a token char */
 			if (isSLPTokenChar(c)) {
+			    if (isSLPModifier(c)) {
+			        decrement(tokenBuffer);
+			        decrement(nonWordBuffer);
+			        continue;
+			    }
 				
 				/* Go one step down the Trie */
 				if (isStartOfTokenOrIsNonwordChar()) {
@@ -542,6 +547,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				
 			} else if (isNonSLPprecededBySLP()) {			// we have a nonword token
 				if (allCharsFromCurrentInitialAreConsumed()) {
+				    decrement(nonWordBuffer);
 				    if (nonwordIsLoneInitial()) {
                         tokenBuffer.setLength(0);
                         foundMatchCmdIndex = -1;
@@ -566,10 +572,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
-
+//			    decrement(nonWordBuffer);
 				if (allCharsFromCurrentInitialAreConsumed()) {
 					addFoundTokenToPotentialTokensIfThereIsOne();
 					if (allInitialsAreConsumed()) {
+					    
 						ifNoInitialsCleanupPotentialTokensAndNonwords();  
 						if (thereIsNoTokenAndNoNonword()) {
 							continue;							// resume looping over ioBuffer
@@ -588,6 +595,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 			} else {
 			    decrement(tokenBuffer);
+			    decrement(nonWordBuffer);
+//			    if (c == ' ') {
+//			        break;
+//			    }
 			}
 		}
 
@@ -1116,7 +1127,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
-		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) != SkrtSyllableTokenizer.MODIFIER;
+//		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) != SkrtSyllableTokenizer.MODIFIER;
+	    return SkrtSyllableTokenizer.charType.get(c) != null;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
 		// If a modifier occurs between two sandhied words, second word won't be considered sandhied
 	}
@@ -1154,7 +1166,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean isNonSLPprecededByNotEmptyNonWord() {
-		return nonWordBuffer.toString().length() != 0;
+//		return nonWordBuffer.toString().length() != 0;
+	    return currentRow != null && nonWordBuffer.length() - charCount > 0;
 	}
 
 	final private boolean isNonSLPprecededBySLP() {
