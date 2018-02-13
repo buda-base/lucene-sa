@@ -339,6 +339,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
+			boolean nonWordIncrement = true;
+			
 			if (debug) System.out.print((char) c);
 			
 			/* when ioBuffer is empty (end of input, ...) */
@@ -371,12 +373,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/* we enter here if all initial chars are not yet consumed */
 					initializeInitialCharsIteratorIfNeeded();
 					c = applyInitialChar();
+					if (nonWordBuffer.length() > 0) decrement(nonWordBuffer);
+//					nonWordIncrement = false;
 					if (debug) System.out.print("=>" + (char) c);
 					applyOtherInitial = false;                 
 				}
 			}
 			
 			tokenBuffer.append((char) normalize(c));
+//			if (nonWordIncrement) nonWordBuffer.append((char) c);          // later remove chars belonging to a token
 			nonWordBuffer.append((char) c);          // later remove chars belonging to a token
 			if (debug) System.out.println("");
 
@@ -484,6 +489,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (allCharsFromCurrentInitialAreConsumed()) {
 						potentialTokensContainMatches = true;					// because we reachedEndOfToken
 						addFoundTokenToPotentialTokensIfThereIsOne();
+						addNonwordToPotentialTokens();                  // we do have a non-word token
 						if (allInitialsAreConsumed()) {
 							ifNoInitialsCleanupPotentialTokensAndNonwords();								// same as above
 							if (thereIsNoTokenAndNoNonword()) {
@@ -944,11 +950,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void incrementTokenIndices() {
 		tokenStart = bufferIndex - charCount;
-		if (nonMaxIndicesRequireUpdating()) {
-		    if (tokenStart != nonMaxTokenStart) {
-		        nonMaxTokenStart = tokenStart;
-		    }
-		}
+//		if (nonMaxIndicesRequireUpdating()) {
+//		    if (tokenStart != nonMaxTokenStart) {
+//		        nonMaxTokenStart = tokenStart;
+//		    }
+//		}
 	}
 
 	private boolean tryToContinueDownTheTrie(Row row, int c) {
@@ -1098,7 +1104,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean nonWordPrecedes() {
-	    return tokenStart >= nonWordStart && nonWordStart + nonWordBuffer.length() <= tokenStart;
+	    int nonWordStartIdx = -1;
+	    int wordStartIdx = -1;
+	    for (Integer[] value: potentialTokens.values()) {
+	        if (value[3] == 0) {
+	            nonWordStartIdx = value[0];
+	        } else if (value[3] == 1) {
+	            wordStartIdx = value[0];
+	        }
+	    }
+	    return nonWordStartIdx != -1 && wordStartIdx > nonWordStartIdx;
 	}
 	
 	final private boolean thereAreRemainingInitialsToTest() {
@@ -1166,7 +1181,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean isNonSLPprecededByNotEmptyNonWord() {
-//		return nonWordBuffer.toString().length() != 0;
 	    return currentRow == null && nonWordBuffer.length() - charCount > 0;
 	}
 
