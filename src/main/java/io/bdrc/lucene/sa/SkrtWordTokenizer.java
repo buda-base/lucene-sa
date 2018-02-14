@@ -607,7 +607,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         assert(!potentialTokens.isEmpty()); // Check that everything goes through potentialTokens
         for (HashMap<String, PreToken> potentialToken: potentialTokens.values()) {
             if (potentialToken.containsKey("word")) {
-                unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens(potentialToken.get("word"));
+                fillTotalTokensWithLemmas(potentialToken.get("word"));
             } else {
                 totalTokens.add(potentialToken.get("nonWord"));
             }
@@ -625,9 +625,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
         hasTokenToEmit = true;
         final PreToken firstToken = totalTokens.removeFirst();
-        final Integer[] metaData = firstToken.getMetadata();
-        fillTermAttributeWith(firstToken.getString(), metaData);
-        changeTypeOfToken(metaData[3]);
+        fillTermAttributeWith(firstToken);
+        changeTypeOfToken(firstToken.getTokenType());
         return true;
     }
 
@@ -721,7 +720,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
     
     /**
      * fill potentialTokens in the order of precedence in the input string
-     * @param clear if true, empty potentialTokens
+     * @param clear: if true, empty potentialTokens
      */
     private void fillPotentialTokens(boolean clear) {
         HashMap<String, PreToken> t;
@@ -731,7 +730,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     new Integer[] {wordStart, wordStart + wordBuffer.length(), wordBuffer.length(), 1, foundMatchCmdIndex});
         if (nonWordBuffer.length() > 0)
             nonWordPreToken = new PreToken(nonWordBuffer.toString(),
-                    new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWordBuffer.length(), 0, -1 });
+                    new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWordBuffer.length(), 0});
         
         if (wordPreToken != null) {
             if (!potentialTokens.isEmpty() && potentialTokens.containsKey(wordStart)) {
@@ -761,39 +760,34 @@ public final class SkrtWordTokenizer extends Tokenizer {
             potentialTokens.clear();
     }
 
-    private void unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens(PreToken potentialToken) throws NumberFormatException, IOException {        
-        final String tokenString = potentialToken.getString();
-        final Integer[] tokenData = potentialToken.getMetadata();
-        if (debug)
-            System.out.println("form found: " + tokenString + "\n");
-        if (tokenData[3] == 1) {
-            String cmd = scanner.getCommandVal(tokenData[4]);
-            final Set<String> lemmas = reconstructLemmas(cmd, tokenString, tokenData[1]);
-            if (lemmas.size() != 0) {
-                for (String l : lemmas) { // multiple lemmas are possible: finals remain unanalyzed
-                    final PreToken newToken = new PreToken(l,
-                            new Integer[] { tokenData[0], tokenData[1], l.length(), 2 });
-                    totalTokens.add(newToken);
-                    // use same indices for all (all are from the same inflected form)
-                }
-            } else { // there is no applicable sandhi. the form is returned as-is.
-                final PreToken newToken = new PreToken(tokenString,
-                        new Integer[] { tokenData[0], tokenData[1], tokenData[2], 1 });
+    private void fillTotalTokensWithLemmas(PreToken p) throws NumberFormatException, IOException {                
+        if (debug) System.out.println("form found: " + p.getString() + "\n");
+        
+        final Set<String> lemmas = reconstructLemmas(scanner.getCommandVal(p.getCmdIdx()), p.getString(), p.getEndIdx());
+        if (lemmas.size() != 0) {
+            for (String l : lemmas) { // multiple lemmas are possible: finals remain unanalyzed
+                final PreToken newToken = new PreToken(l,
+                        new Integer[] {p.getStartIdx(), p.getEndIdx(), l.length(), 2});
                 totalTokens.add(newToken);
-                mergesInitials = false;
+                // use same indices for all (all are from the same inflected form)
             }
+        } else { // there is no applicable sandhi. the form is returned as-is.
+//                final PreToken newToken = new PreToken(tokenString,
+//                        new Integer[] {tokenData[0], tokenData[1], tokenData[2], 1 });
+//                totalTokens.add(newToken);
+            totalTokens.add(p);
+            mergesInitials = false;
         }
     }
 
     private void addExtraToken() {
         if (totalTokens.peekFirst() != null) {
-            final PreToken nextToken = totalTokens.removeFirst();
-            termAtt.setEmpty().append(nextToken.getString());
-            final Integer[] metaData = nextToken.getMetadata();
-            changeTypeOfToken(metaData[3]);
-            termAtt.setLength(metaData[2]);
-            finalOffset = correctOffset(metaData[1]);
-            offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);
+            final PreToken p = totalTokens.removeFirst();
+            termAtt.setEmpty().append(p.getString());
+            changeTypeOfToken(p.getTokenType());
+            termAtt.setLength(p.getLength());
+            finalOffset = correctOffset(p.getEndIdx());
+            offsetAtt.setOffset(correctOffset(p.getStartIdx()), finalOffset);
         } else {
             hasTokenToEmit = false;
         }
@@ -825,11 +819,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
     }
 
-    private void fillTermAttributeWith(String string, Integer[] metaData) {
-        termAtt.setEmpty().append(string); // add the token string
-        termAtt.setLength(metaData[2]); // declare its size
-        finalOffset = correctOffset(metaData[1]); // get final offset
-        offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset); // set its offsets (initial & final)
+    private void fillTermAttributeWith(PreToken p) {
+        termAtt.setEmpty().append(p.getString()); // add the token string
+        termAtt.setLength(p.getLength()); // declare its size
+        finalOffset = correctOffset(p.getEndIdx()); // get final offset
+        offsetAtt.setOffset(correctOffset(p.getStartIdx()), finalOffset); // set its offsets (initial & final)
     }
 
     private void ifSandhiMergesStayOnSameCurrentChar() throws IOException {
@@ -845,8 +839,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
         int newSize = nonWordBuffer.length() - wordBuffer.length();
         newSize = newSize < 0 ? 0 : newSize; // ensure the new size is never negative
         nonWordBuffer.setLength(newSize);
-        // end of non-word can be: a matching word starts (potentialEnd == true) OR a
-        // nonSLP char follows a nonWord.
+        // end of non-word can be: a matching word starts (potentialEnd == true) 
+        //                         OR 
+        //                         a nonSLP char follows a nonWord.
     }
 
     private void initializeInitialCharsIteratorIfNeeded() {
@@ -856,12 +851,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
             initialsIterator.remove(); // remove the initials just fed to the initialsCharsIterator
         } else if (initialsIterator.hasNext()) {
             /*
-             * either first time or initialCharsIterator has been reset AND there are more
-             * initials to process
+             * either first time or initialCharsIterator has been reset 
+             * AND 
+             * there are more initials to process
              */
             initialCharsIterator.setText(initialsIterator.next());
-            // fill with new initials. happens if we reach the end of a token (either a Trie
-            // match or a non-word)
+            // fill with new initials. happens if we reach the end of a token 
+            // (either a Trie match or a non-word)
             initialsIterator.remove(); // remove the initials just fed to the initialsCharsIterator
         }
     }
@@ -892,8 +888,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
     final private boolean thereAreRemainingInitialsToTest() {
         /*
-         * To remember: returns false if (foundMatch == true), even if there are
-         * remaining initials
+         * To remember: returns false if (foundMatch == true), 
+         * even if there are remaining initials
          */
         return wentToMaxDownTheTrie && foundMatch == false && initialsNotEmpty();
     }
@@ -917,8 +913,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
     final private boolean isSLPTokenChar(int c) {
         return SkrtSyllableTokenizer.charType.get(c) != null;
-        // SLP modifiers are excluded because they are not considered to be part of a
-        // word/token.
+        // SLP modifiers are excluded because they are not considered 
+        // to be part of a word/token.
         // TODO: If a modifier occurs between two sandhied words, second word won't be
         // considered sandhied
     }
@@ -1187,6 +1183,26 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
         public Integer[] getMetadata() {
             return tokenMetaData;
+        }
+
+        public int getStartIdx() {
+            return tokenMetaData[0];
+        }
+        
+        public int getEndIdx() {
+            return tokenMetaData[1];
+        }
+
+        public int getLength() {
+            return tokenMetaData[2];
+        }
+        
+        public int getTokenType() {
+            return tokenMetaData[3];
+        }
+        
+        public int getCmdIdx() {
+            return tokenMetaData[4];    // -1 if no cmd
         }
     }
 }
