@@ -331,7 +331,7 @@ public class WordTokenizerTests
 		System.out.println("mixed SLP non-SLP");
 		String input = "«»(**-éàÀ%$–@)aTa rAjakanyA«»(**- éàÀ%$–@)aTa rAjakanyA «»(**- éàÀ%$–@)";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa✓", "rAj√", "rAjan√", "kanyA√", "aTa✓", "rAj✓", "rAjan✓", "kanyA✓");
+		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanyA√", "aTa✓", "rAj✓", "rAjan✓", "kanyA✓");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
