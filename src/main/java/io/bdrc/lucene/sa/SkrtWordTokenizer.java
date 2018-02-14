@@ -479,6 +479,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     }
 
                 } else if (thereAreRemainingInitialsToTest()) {
+                    fillPotentialTokens(true);
                     restoreInitialsOrigState();
                     resetNonWordBuffer(0);
                     wentToMaxDownTheTrie = false;
