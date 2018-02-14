@@ -408,10 +408,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 }
                 
                 /* WALK THE TRIE */
-
-                /* if (is beginning of a word. also happens after each non-word char)
-                 * note: increment just happened, hence "== 1" */ 
-                if (wordBuffer.length() == 1) {
+                if (isStartOfTokenOrIsNonwordChar()) {
                     /*
                      * we enter on two occasions: at the actual start of a token, 
                      *                            at each new non-word character.
@@ -430,9 +427,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
                     match = tryToFindMatchIn(currentRow, c);
                     continuing = tryToContinueDownTheTrie(currentRow, c);
-                    /* if (we reached a non-word char) 
-                     * equals "match == false && continuing == false" */
-                    if (currentRow == null && foundMatch == false) {
+                    if (reachedNonwordCharacter()) {
                         if (!foundNonMaxMatch && storedNoMatchState == 1) {
                             restoreNoMatchState();
                             storedNoMatchState = 0;
@@ -453,18 +448,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 }
                 
                 /* DECISION PROCESS */
-                /* if (went farther than the longest match) */
-                if (wentToMaxDownTheTrie && foundNonMaxMatch && foundMatch == false) {  // TOTEST: foundMatch == false superfluous???
+                if (hasMatchToRestore()) {
                     restoreNonMaxMatchState();
 
-                    /* if (wordBuffer's content is one of the storedInitials and nonWordBuffer is empty) */
                     if (isLoneInitial()) {
                         foundNonMaxMatch = false;
-                        foundMatch = false;  // TOTEST: superfluous?
+                        foundMatch = false;
                         foundMatchCmdIndex = -1;
 
-                    /* if (there are more initials to consume) */ 
-                    } else if (wentToMaxDownTheTrie && foundMatch == false && initialsNotEmpty()) { // TOTEST: 1st 2 conditions superfluous???
+                    } else if (thereAreRemainingInitialsToTest()) {
                         /* Add all found words and non-words, then go on with the next initial*/
                         fillPotentialTokens(true);
                         restoreInitialsOrigState();
@@ -477,26 +469,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         break; // and resume looping over ioBuffer
                     }
 
-//              } else if (thereAreRemainingInitialsToTest()) {
-                } else if (wentToMaxDownTheTrie && foundMatch == false && initialsNotEmpty()) {
+                } else if (thereAreRemainingInitialsToTest()) {
                     fillPotentialTokens(true);
                     restoreInitialsOrigState();
                     nonWordBuffer.setLength(0);
                     wentToMaxDownTheTrie = false;
                     applyOtherInitial = true;
 
-//              } else if (reachedNonwordCharacter()) {
-                } else if (currentRow == null && foundMatch == false) {
+                } else if (reachedNonwordCharacter()) {
                     wordBuffer.setLength(0); // because no word ever started in the first place
 
-//              } else if (foundAToken()) {
-                } else if (currentRow == null && foundMatch == true || (foundMatch == true && reachedEndOfInputString())) {
+                } else if (foundAToken()) {
                     if (!afterNonwordMatch)
                         cutOffTokenFromNonWordBuffer();
-//                  if (allCharsFromCurrentInitialAreConsumed()) {
-                    if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
-//                      if (allInitialsAreConsumed() && !thereIsNoTokenAndNoNonword())
-                        if (!initialsIterator.hasNext() && !(wordBuffer.length() == 0 && nonWordBuffer.length() == 0)) // second part superfluous ???
+                    if (allCharsFromCurrentInitialAreConsumed()) {
+                        if (allInitialsAreConsumed() && !thereIsNoTokenAndNoNonword()) // second part superfluous ???
                             break;
                         resetInitialCharsIterator();
                         fillPotentialTokens(true);
@@ -509,13 +496,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         break;
                     }
                     
-//              } else if (reachedEndOfInputString()) { // we are within a potential token
-                } else if (ioBuffer.get(ioBufferIndex) == -1) { // we are within a potential token
+                } else if (reachedEndOfInputString()) { // we are within a potential token
                     wordBuffer.setLength(0);
 
                     if (allCharsFromCurrentInitialAreConsumed()) {
-//                      if (allInitialsAreConsumed())
-                        if (!initialsIterator.hasNext())
+                        if (allInitialsAreConsumed())
                             break;
                         // else, continue to next initial
                     } else {
@@ -534,8 +519,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
             /* A.2.2) if it is not a token char */
             } else if (foundNonMaxMatch) {
                 restoreNonMaxMatchState();
-//              if (matchIsLoneInitial()) {
-                if (wordBuffer.length() == 1 && storedInitials != null && storedInitials.contains(wordBuffer.toString())) {
+                if (matchIsLoneInitial()) {
                     wordBuffer.setLength(0);
                     nonWordBuffer.setLength(0);
                     foundNonMaxMatch = false;
@@ -544,22 +528,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 }
                 break;
 
-//          } else if (isNonSLPprecededBySLP()) { // we have a nonword token
-            } else if ((wordBuffer.length() > 1) || (currentRow == null && nonWordBuffer.length() - 1 > 0)) { // we have a nonword token
+            } else if (isNonSLPprecededBySLP()) { // we have a nonword token
                 wordBuffer.setLength(0);   // there was no match in the first place
                                             // (we are after "if (foundNonMaxMatch)")
                 decrement(nonWordBuffer);
-//              if (allCharsFromCurrentInitialAreConsumed()) {
-                if (initials != null && initialCharsIterator.current() == CharacterIterator.DONE) {
+                if (allCharsFromCurrentInitialAreConsumed()) {
                     
-//                  if (nonwordIsLoneInitial()) {
-                    if (storedInitials != null && storedInitials.contains(nonWordBuffer.toString())) {
+                    if (nonwordIsLoneInitial()) {
                         wordBuffer.setLength(0);
                         foundMatchCmdIndex = -1;
                     }
                     
-//                  if (allInitialsAreConsumed())
-                    if (!initialsIterator.hasNext())
+                    if (allInitialsAreConsumed())
                         break;
                     
                     nonWordBuffer.setLength(0);

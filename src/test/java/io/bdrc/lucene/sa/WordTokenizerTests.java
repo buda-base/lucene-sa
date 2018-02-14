@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -59,12 +58,12 @@ public class WordTokenizerTests
 		return tokenizer;
 	}
 	
-	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {		
+	static private Refactor buildTokenizer(String trieName) throws FileNotFoundException, IOException {		
 		List<String> inputFiles = Arrays.asList(trieName + ".txt");
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 
-		return new SkrtWordTokenizer(true, trie);
+		return new Refactor(true, trie);
 	}
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
@@ -123,7 +122,7 @@ public class WordTokenizerTests
     	buffer.get(0);
     	int bufferIdx = 4;
     	String sandhied = "a";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
+    	boolean res = Refactor.containsSandhiedCombination(buffer, bufferIdx, sandhied, 0); 
     	assertTrue(res);
     }
 
@@ -136,7 +135,7 @@ public class WordTokenizerTests
     	buffer.get(0);
     	int bufferIdx = 4;
     	String sandhied = "A";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
+    	boolean res = Refactor.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
     	assertTrue(res);
     }
 
@@ -149,7 +148,7 @@ public class WordTokenizerTests
     	buffer.get(0);
     	int bufferIdx = 5;
     	String sandhied = "ap";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
+    	boolean res = Refactor.containsSandhiedCombination(buffer, bufferIdx, sandhied, 5); 
     	assertTrue(res);
     }
     
@@ -161,7 +160,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("Darman√", "Darma√", "aTa✓", "Darman√", "Darma√", "ADa❌", "Darman√", "Darma√", "aTa✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -174,7 +173,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa✓", "AB❌", "CDE❌", "aTa✓", "FGH❌", "IJ❌", "aTa✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -187,7 +186,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed✓", "ed✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -200,7 +199,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba✓", "b❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -213,7 +212,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aba✓", "ba❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -226,7 +225,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ed✓", "ed✓", "e❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -239,7 +238,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("auie❌", "aba✓", "b❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/abab_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -252,7 +251,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("tad√", "yuzmad√", "api✓", "tad√", "yuzmad√", "api✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/te'pi_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/te'pi_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -265,7 +264,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("budDa✓", "Darman√");
 		System.out.println("0 " + input);
-    	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
+    	Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
 	}
@@ -278,7 +277,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya√", "kanyA√", "kana√");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -294,7 +293,7 @@ public class WordTokenizerTests
 		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanya√", "kana√", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
 		        "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava√", "divasa√", "na✓", "garaM❌", "nirikzamARAsti❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -307,7 +306,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList();
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -320,7 +319,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa✓", "rAja✓", "kanyA✓");  // TODO: find a way to have sandhi across modifiers
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -333,7 +332,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanyA√", "aTa✓", "rAj✓", "rAjan✓", "kanyA✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -346,7 +345,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanyA✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -359,7 +358,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("kanya√", "kanyA√", "kana√", "candravatI❌");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -372,7 +371,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("divasa√", "na✓");
 		System.out.println("0 " + input);
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -385,7 +384,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("saKi√", "dvitIya√", "eka√");
 		System.out.println("0 " + input);
-    	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+    	Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -398,7 +397,7 @@ public class WordTokenizerTests
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("ka❌", "nyA❌");
 		System.out.println("0 " + input);
-    	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+    	Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(syllables, expected);
 	}
@@ -408,7 +407,7 @@ public class WordTokenizerTests
     {
     	System.out.println("bug6");
     	List<String> expected = Arrays.asList("budDa✓", "Darman√");
-    	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
+    	Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
     	
     	HashMap<Integer, Integer> ranges = new HashMap<Integer, Integer>();
     	ranges.put(2030, 2049);
@@ -435,7 +434,7 @@ public class WordTokenizerTests
     	List<String> expected = Arrays.asList("mAdin√", "vyApAra√", "ahi✓", "taM❌");
     	System.out.println("0 " + input);
     	
-    	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/vyApArarahi_test");
+    	Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/vyApArarahi_test");
     	TokenStream syllables = tokenize(reader, skrtWordTokenizer);
     	assertTokenStream(syllables, expected);
     }
@@ -449,7 +448,7 @@ public class WordTokenizerTests
 		List<String> expected = Arrays.asList("praTama√", "BAga√");
 		System.out.println("0 " + input);
 		
-		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/pratamo_test"); 
+		Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/pratamo_test"); 
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
 		assertTokenStream(words, expected);
     }
@@ -463,7 +462,7 @@ public class WordTokenizerTests
         List<String> expected = Arrays.asList("kim√", "cid√");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/kecit_test"); 
+        Refactor skrtWordTokenizer = buildTokenizer("src/test/resources/tries/kecit_test"); 
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(words, expected);
     }
