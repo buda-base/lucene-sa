@@ -48,8 +48,6 @@ public final class SanskritAnalyzer extends Analyzer {
 	boolean segmentInWords = false; 
 	int inputEncoding = 0;
 	CharArraySet skrtStopWords;
-	@SuppressWarnings("unused")
-	private CharArraySet srktStopSet;
 	
 	/**
 	 * Creates a new {@link SanskritAnalyzer}
@@ -72,9 +70,9 @@ public final class SanskritAnalyzer extends Analyzer {
 		      InputStream stream = null;
 		      stream = SanskritAnalyzer.class.getResourceAsStream("/skrt-stopwords.txt");
 		      if (stream == null ) {    // we're not using the jar, these is no resource, assuming we're running the code
-		          this.srktStopSet = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
+		          this.skrtStopWords = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
 		      } else {
-		          this.srktStopSet = StopFilter.makeStopSet(getWordList(stream, "#"));
+		          this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		      }
 		} else {
 			this.skrtStopWords = null;
