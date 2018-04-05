@@ -83,11 +83,13 @@ public class SiddhamTests
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
             while (tokenStream.incrementToken()) {
-                if (typeAttribute.type().equals("word")) {
-                    termList.add(charTermAttribute.toString()+"✓");
-                } else {
+                if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
-                }
+                } else if (typeAttribute.type().equals("word")) {
+                    termList.add(charTermAttribute.toString()+"✓");
+                } else if (typeAttribute.type().equals("lemma")) {
+                    termList.add(charTermAttribute.toString()+"√");
+                } 
             }
             System.out.println("1 " + String.join(" ", termList) + "\n");
             return termList;
