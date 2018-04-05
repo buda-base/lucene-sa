@@ -611,9 +611,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 			potentialTokens.clear();				// all potential tokens have been consumed, empty the variable
 			ifSandhiMergesStayOnSameCurrentChar();	// so we can unsandhi the initial and find the start of next word
+			finalsIndex = bufferIndex;               // save index of finals for currentCharIsSpaceWithinSandhi()
 
 		} else {									// general case: no potential tokens
-			boolean aNonwordWasAdded = ifThereIsNonwordAddItToTotalTokens();
+		    boolean aNonwordWasAdded = false;
+		    if (nonWordStart < tokenStart) {
+		        aNonwordWasAdded = ifThereIsNonwordAddItToTotalTokens();
+		    }
 			boolean lemmasWereAdded = ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens();
 			
 			if (lemmasWereAdded) {
