@@ -473,7 +473,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (!afterNonwordMatch) {
 					    cutOffTokenFromNonWordBuffer();
 					}
-					
+					if (isLoneInitial()) {
+					    tokenBuffer.setLength(0);
+					}
 					
 					if (allCharsFromCurrentInitialAreConsumed()) {
 					    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
@@ -494,7 +496,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						}
 					} else {
 						ifNoInitialsCleanupPotentialTokensAndNonwords(); 
-						potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                        potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
                         addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
 						break;
 					}
@@ -615,7 +617,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		} else {									// general case: no potential tokens
 		    boolean aNonwordWasAdded = false;
-		    if (nonWordStart < tokenStart) {
+		    if ((nonWordBuffer.length() > 0 && tokenBuffer.length() <= 0) || 
+		            (nonWordBuffer.length() > 0 && tokenBuffer.length() > 0 && nonWordStart < tokenStart)) {
 		        aNonwordWasAdded = ifThereIsNonwordAddItToTotalTokens();
 		    }
 			boolean lemmasWereAdded = ifUnsandhyingFinalsYieldsLemmasAddThemToTotalTokens();
@@ -1071,7 +1074,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	final private boolean isLoneInitial() {
 	    boolean isInitial = false;
 	    if (storedInitials != null) {
-	        String tokenStr = termAtt.toString();
+	        String tokenStr = tokenBuffer.toString();
 	        for (String initial: storedInitials) {
 	            if (tokenStr.equals(initial) && nonWordBuffer.length() == 0) {
 	                isInitial = true;
