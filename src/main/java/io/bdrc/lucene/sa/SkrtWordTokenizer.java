@@ -339,6 +339,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
+			// TODO: partly solves SiddhamTests's bug17, but introduces lots of bugs in WordTokenizerTests
+			if (tokenStart <= 0 && bufferIndex >= 0) {
+			    tokenStart = bufferIndex - 1;
+			}
+			
 			if (debug) System.out.print((char) c);
 			
 			/* when ioBuffer is empty (end of input, ...) */
@@ -433,6 +438,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (foundNonMaxMatch) {
 					    restoreNonMaxMatchState();
 					}
+					
+					if (storedInitials != null && storedInitials.contains(nonWordBuffer.toString())) {
+                        foundNonMaxMatch = false;
+                        foundMatch = false;
+                        foundMatchCmdIndex = -1;
+                        tokenBuffer.setLength(0);
+                        wentToMaxDownTheTrie = false;
+//                        ifNoInitialsCleanupPotentialTokensAndNonwords();
+                        continue;
+                    }
 					
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					
