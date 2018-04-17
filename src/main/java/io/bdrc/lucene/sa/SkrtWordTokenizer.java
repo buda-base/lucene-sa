@@ -339,8 +339,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
-			// TODO: partly solves SiddhamTests's bug17, but introduces lots of bugs in WordTokenizerTests
-			if (tokenStart <= 0 && bufferIndex >= 0) {
+			if (tokenStart == -1) {
 			    tokenStart = bufferIndex - 1;
 			}
 			
