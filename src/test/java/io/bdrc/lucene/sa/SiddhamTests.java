@@ -281,8 +281,7 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("kim√", "cit✓");
-        // TODO: check which sandhi is applied (7???) and why cit and not cid.
+        List<String> expected = Arrays.asList("kim√", "cid√");
         assertThat(tokens, is(expected));
     }
     

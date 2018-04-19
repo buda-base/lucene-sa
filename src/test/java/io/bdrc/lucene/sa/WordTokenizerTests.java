@@ -304,6 +304,18 @@ public class WordTokenizerTests
 	}
     
     @Test
+    public void testIndexBug() throws IOException
+    { 
+        String input = "varupayOvanasampannA ";
+        Reader reader = new StringReader(input);
+        List<String> refactorExpected = Arrays.asList("varupayOva❌", "na✓", "sampannA❌");
+        System.out.println("0 " + input);
+        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
+        TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+        assertTokenStream(syllables, refactorExpected);
+    }
+    
+    @Test
 	public void testNonSLPOnly() throws IOException
 	{
 		System.out.println("non-SLP only");

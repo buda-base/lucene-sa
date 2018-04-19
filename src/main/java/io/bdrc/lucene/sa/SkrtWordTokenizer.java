@@ -32,7 +32,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -339,9 +338,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
-			if (tokenStart == -1) {
-			    tokenStart = bufferIndex - 1;
-			}
+			ifIsNeededInitializeStartingIndexOfNonword();
 			
 			if (debug) System.out.print((char) c);
 			
@@ -357,12 +354,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
-					continue;		// if there is a space in the sandhied substring, moves beyond the space				
+ 				    nonWordStart = -1;
+ 				    continue;		// if there is a space in the sandhied substring, moves beyond the space
+
  				} else if (initialIsNotFollowedBySandhied(c)) {
  					initials = null;
  					initialCharsIterator = null;
  					ifNoInitialsCleanupPotentialTokensAndNonwords();
- 					continue; 
+ 					continue;
+ 					
  				} else if (startConsumingInitials()) {	
  				/* we enter here on finalOffset ==  first initials. (when all initials are consumed, initials == []) */
 					storeCurrentState();
@@ -398,7 +398,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/* Go one step down the Trie */
 				if (isStartOfTokenOrIsNonwordChar()) {
 				/* we enter on two occasions: at the actual start of a token and at each new non-word character. */
-					match = tryToFindMatchIn(rootRow, c);					// if foundMatch == true, there is a match  
+				    tokenStart = bufferIndex - charCount;                   // update for potential word starting here
+				    
+				    match = tryToFindMatchIn(rootRow, c);					// if foundMatch == true, there is a match  
 					continuing = tryToContinueDownTheTrie(rootRow, c);	    // if currentRow != null, can continue
 					incrementTokenIndices();
 					ifIsNeededInitializeStartingIndexOfNonword();
@@ -444,6 +446,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         foundMatchCmdIndex = -1;
                         tokenBuffer.setLength(0);
                         wentToMaxDownTheTrie = false;
+                        resetNonWordBuffer(0);
+                        nonWordStart = -1;
 //                        ifNoInitialsCleanupPotentialTokensAndNonwords();
                         continue;
                     }
@@ -941,12 +945,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifIsNeededInitializeStartingIndexOfNonword() {
 		if (nonWordStart == -1) {							// the starting index of a non-word token does not increment
-			nonWordStart = tokenStart;
+			nonWordStart = bufferIndex - charCount;
 		}
 	}
 
 	private void incrementTokenIndices() {
-		tokenStart = bufferIndex - charCount;
+	    if (tokenStart == -1) {
+	        tokenStart = bufferIndex - charCount;
+	    }
 	}
 
 	private boolean tryToContinueDownTheTrie(Row row, int c) {
@@ -1075,7 +1081,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (totalTokens.peekFirst() != null) {
 			final PreToken nextToken = totalTokens.removeFirst();
 			final Integer[] metaData = nextToken.getMetadata();
-			termAtt.setEmpty().append(nextToken.getString());
+                termAtt.setEmpty().append(nextToken.getString());
 			changeTypeOfToken(metaData[3]);
 			termAtt.setLength(metaData[2]);
 			finalOffset = correctOffset(metaData[1]);
@@ -1129,7 +1135,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean matchIsLoneInitial() {
-	    return tokenBuffer.length() == 1 && storedInitials != null && storedInitials.contains(termAtt.toString());
+	    return tokenBuffer.length() == 1 && storedInitials != null && storedInitials.contains(tokenBuffer.toString());
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
