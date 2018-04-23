@@ -588,7 +588,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
-				if (allCharsFromCurrentInitialAreConsumed()) {
+				if (allCharsFromCurrentInitialAreConsumed() && c != ' ') {
 				    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
 					if (allInitialsAreConsumed()) {
 					    

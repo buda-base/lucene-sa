@@ -333,16 +333,6 @@ public class SiddhamTests
     @Test
     public void bug16MissingNonWord() throws IOException
     {
-        // TODO: since preverbs have been added, "i" is a match.
-        // 
-        // * arjane unsandies into arjana + i
-        // * upon reaching the space, i is recognized as sandhied initial with no following sandhied word
-        // * current word and non-word are emptied, BUT matched i is kept as non-max match
-        // * r is parsed, r replaces i in tokenBuffer
-        // * T is parsed, no match, can't continue down the trie
-        // * there is a non-max match: revert to it (index only operation) => r in tokenBuffer instead of i expected
-        // * returned token contains r alone YET next token starts again from r, finding rTasya
-        // RESULT: "r", "rTasya"
         String input = "nyāyārjane rthasya";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
@@ -371,7 +361,6 @@ public class SiddhamTests
         assertThat(tokens, is(expected));
     }
     
-    // saṃtataṃ ciraṃ sudarśanaṃ
     @Test
     public void bug18MissingToken() throws IOException
     {
@@ -387,7 +376,6 @@ public class SiddhamTests
         assertThat(tokens, is(expected));
     }
     
-    // bhagavān pūrvāhṇa-kāla-samaye nivāsya pātra-cīvaram
     @Test
     public void bug19MissingToken() throws IOException
     {
@@ -430,7 +418,7 @@ public class SiddhamTests
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("uz√", "vas√", "M❌", "tattva✓");
+        List<String> expected = Arrays.asList("uz√", "vas√", "aM❌", "tattva✓");
         assertThat(tokens, is(expected));
     }
     
