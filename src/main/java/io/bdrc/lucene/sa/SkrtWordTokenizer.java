@@ -500,6 +500,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
 						if (allInitialsAreConsumed()) {
 							ifNoInitialsCleanupPotentialTokensAndNonwords();								// same as above
+							storedInitials = null;
 							if (thereIsNoTokenAndNoNonword()) {
 								continue;							// resume looping over ioBuffer
 							} else {
@@ -526,7 +527,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						if (allCharsFromCurrentInitialAreConsumed()) {
 	                        addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
 	                        if (allInitialsAreConsumed()) {
-	                            ifNoInitialsCleanupPotentialTokensAndNonwords(); 
+	                            ifNoInitialsCleanupPotentialTokensAndNonwords();
+	                            storedInitials = null;
 	                            break;
 	                        }
 						} else {
@@ -559,6 +561,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     continue;
                 }
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
+				if (nonWordBuffer.toString().equals(tokenBuffer.toString()) && nonWordStart != tokenStart) {
+				    nonWordStart = tokenStart;
+				}
 				break;
 				
 			} else if (isNonSLPprecededBySLP()) {			// we have a nonword token
@@ -572,6 +577,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					addNonwordToPotentialTokensIfThereIsOne();
 					if (allInitialsAreConsumed()) {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
+						storedInitials = null;
 						break;
 					}
 					resetNonWordBuffer(0);
@@ -593,6 +599,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (allInitialsAreConsumed()) {
 					    
 						ifNoInitialsCleanupPotentialTokensAndNonwords();  
+						storedInitials = null;
 						if (thereIsNoTokenAndNoNonword()) {
 							continue;							// resume looping over ioBuffer
 						} else {
@@ -833,7 +840,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final String nonword = nonWordBuffer.toString();
 			if (storedInitials.contains(nonword)) {
 				resetNonWordBuffer(0);
-				storedInitials = null;			// !!! only reset after executing setTermLength()
+//				storedInitials = null;			// !!! only reset after executing setTermLength()
 			}
 		}
 	}
