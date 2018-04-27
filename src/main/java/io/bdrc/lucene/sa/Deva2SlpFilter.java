@@ -26,10 +26,10 @@ import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
 /**
- * Devanagari -> SLP1 charfilter
+ * Devanagari → SLP1 charfilter
  * 
- * Based on the devanagari tables found in {@link http://unicode.org/charts/PDF/U0900.pdf}
- * This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
+ * Based on the devanagari tables found in @see <a href="http://unicode.org/charts/PDF/U0900.pdf">U0900.pdf</a>
+ * This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ →  क
  * 
  * @author Hélios Hildt
  * @author Élie Roux

@@ -52,8 +52,11 @@ public class BuildCompiledTrie {
 	
 	/**
 	 * used in {@link SkrtWordTokenizer} constructors
-	 * @param inputFiles
-	 * @return builds the Trie, then stores it to a file (no optimization)
+	 * 
+	 * builds the Trie, then stores it to a file (no optimization)
+	 * 
+	 * @throws FileNotFoundException  input or output file not found
+	 * @throws IOException  input can't be read or output can't be written
 	 */
 	public static void compileTrie() throws FileNotFoundException, IOException {
 		Trie trie = buildTrie(inputFiles);
@@ -64,6 +67,8 @@ public class BuildCompiledTrie {
 	 * 
 	 * @param inputFiles  the list of files to feed the Trie with
 	 * @return the non-optimized Trie
+	 * @throws FileNotFoundException  input file not found
+	 * @throws IOException  output file can't be written
 	 */
 	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
 		System.out.println("\tBuilding the Trie from the raw text file…");
@@ -93,9 +98,9 @@ public class BuildCompiledTrie {
 	 * Optimizer  - optimization time: 10mn ; compiled Trie size: 10mo
 	 * Optimizer2 - optimization time: 12mn ; compiled Trie size: 12mo
 	 * 
-	 * @param trie
-	 * @param optimizer
-	 * @return
+	 * @param trie trie to be optimized
+	 * @param optimizer  optimizer to be used
+	 * @return  the optimized trie
 	 */
 	public static Trie optimizeTrie(Trie trie, Reduce optimizer) {
 		long three = System.currentTimeMillis();
@@ -109,6 +114,8 @@ public class BuildCompiledTrie {
 	 * 
 	 * @param trie  the trie to store in binary format
 	 * @param outFilename  the path+filename of the output file
+     * @throws FileNotFoundException  output file not found
+     * @throws IOException  output file can't be written
 	 */
 	public static void storeTrie(Trie trie, String outFilename) throws FileNotFoundException, IOException {
 		OutputStream output = new DataOutputStream(new FileOutputStream(outFilename));

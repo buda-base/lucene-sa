@@ -27,7 +27,7 @@ import java.util.TreeMap;
  * Parses cmds from the total Trie {@code total_output.txt} and reconstructs
  * the sandhied substring found between the two words undergoing sandhi.
  * <p> 
- * Is used by {@link SkrtWordTokenizer#reconstructLemmas()} 
+ * Is used by {@link SkrtWordTokenizer#reconstructLemmas} 
  * 
  * @author Hélios Hildt
  * 
@@ -58,7 +58,8 @@ public class CmdParser {
 	 * 
 	 * This is how cmd is structured, with the names used in this method: (correct formatting in the code file)
 	 * 
-	 *             
+	 * <pre>
+	 * {@code
 	 *      <form>,<initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|<...>$<...>/<...>|
 	 * [inflected],[cmd                                                                                  ]
 	 *             [entry                                                              ]|[entry          ]
@@ -78,7 +79,10 @@ public class CmdParser {
 	 * 
 	 * [diffInitial                                   ]
 	 * [-<initialCharsSandhied>+<initialCharsOriginal>]
+	 * }
+	 * </pre>
 	 * 
+	 * @param inflected  the inflected form (a substring of the input string)
 	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 	 * @return: parsed structure 
 	 */

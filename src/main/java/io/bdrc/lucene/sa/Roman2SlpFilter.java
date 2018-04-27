@@ -24,15 +24,15 @@ import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
 /**
- * Roman -> SLP1 charfilter 
+ * Roman → SLP1 charfilter 
  * 
  * Following the naming convention used by Peter Scharf, we use "Roman" instead of "IAST" to show that, 
  * on top of supporting the full IAST character set,
  * we support the extra distinctions within devanagari found in ISO 15919
  * A list of non-Sanskrit and non-Devanagari characters (see below) are deleted. 
  * 
- * see {@link https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST} 
- * and the Overview section of the same page
+ * see @see <a href="https://en.wikipedia.org/wiki/ISO_15919#Comparison_with_UNRSGN_and_IAST">Comparison_with_UNRSGN_and_IAST</a> 
+ * and the Overview section of the same page.
  * 
  * @author Hélios Hildt
  * @author Élie Roux

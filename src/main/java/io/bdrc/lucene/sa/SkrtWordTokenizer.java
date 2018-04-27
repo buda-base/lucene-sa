@@ -54,7 +54,7 @@ import io.bdrc.lucene.stemmer.Trie;
  *
  * <p>
  * The necessary information for unsandhying finals and initials is taken from
- * {@link resources/sanskrit-stemming-data/output/total_output.txt} 
+ * {@code resources/sanskrit-stemming-data/output/total_output.txt} 
  * 
  * <br>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
@@ -106,6 +106,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Builds the Trie using the the given file
 	 * @param filename the file containing the entries of the Trie
+     * @throws FileNotFoundException the file containing the Trie can't be found
+     * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
 		init(filename);
@@ -114,6 +116,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/**
 	 * Opens an already compiled Trie
 	 * @param trieStream an InputStream (FileInputStream, for ex.) containing the compiled Trie
+     * @throws FileNotFoundException the file containing the Trie can't be found
+     * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(InputStream trieStream) throws FileNotFoundException, IOException {
 		init(trieStream);
@@ -141,8 +145,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/**
 	 * Builds the Trie using the the given file. Prints debug info
-	 * @param debug
+	 * @param debug print debug information
 	 * @param filename the file containing the entries of the Trie
+     * @throws FileNotFoundException the file containing the Trie can't be found
+     * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
 		init(filename);
@@ -151,8 +157,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	/**
 	 * Opens an already compiled Trie. Prints debug info
-	 * @param debug
+	 * @param debug print debuging information if true
 	 * @param trieStream  an InputStream (FileInputStream, for ex.) containing the compiled Trie
+     * @throws FileNotFoundException the file containing the Trie can't be found
+     * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(boolean debug, InputStream trieStream) throws FileNotFoundException, IOException {
 		init(trieStream);
@@ -161,7 +169,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/**
 	 * Uses the given Trie. Prints debug info
-	 * @param debug
+	 * @param debug print debuging information if true
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
 	public SkrtWordTokenizer(boolean debug, Trie trie) {
@@ -173,6 +181,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Opens an existing compiled Trie
 	 * 
 	 * @param inputStream the compiled Trie opened as a Stream 
+	 * @throws FileNotFoundException compiled trie not found
+	 * @throws IOException compiled trie could not open
 	 */
 	private void init(InputStream inputStream) throws FileNotFoundException, IOException {
 	    System.out.println("Loading the compiled Trie…");
@@ -190,6 +200,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Builds a Trie from the given file
 	 * 
 	 * @param filename the Trie as a {@code .txt} file
+     * @throws FileNotFoundException trie not found
+     * @throws IOException trie could not open
 	 */
 	private void init(String filename) throws FileNotFoundException, IOException {
 		this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
@@ -259,6 +271,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Called on each token character to normalize it before it is added to the
 	 * token. The default implementation does nothing. Subclasses may use this to,
 	 * e.g., lowercase tokens.
+	 * @param c current character
+	 * @return normalized c
 	 */
 	protected int normalize(int c) {
 		return c;
