@@ -33,9 +33,8 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  * <p>
  * A Syllable Tokenizer for Sanskrit encoded in SLP1.
  * <p>
- * Does not implement complex syllabation rules, does the same syllabation as
- * {@link http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html}
- * 
+ * Does not implement complex syllabation rules, does the same syllabation
+ * as @see <a href="http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html">Sanskrit Library</a>
  * <p>
  * Derived from Lucene 6.4.1 analysis.util.CharTokenizer
  * 
@@ -276,18 +275,20 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	public int syllEndingCombinations(int char1, int char2) {
 		/**
 		 * Finds all combinations that correspond to a syllable ending
+		 * 
+		 * |   char1\char2  | nonSLP | MODIFIER | CONSONANT | SPECIALPHONEME | VOWEL |
+		 * |----------------|--------|----------|-----------|----------------|-------|
+		 * |      nonSLP    |        |          |           |                |       |
+		 * |     MODIFIER   |   X    |          |     X     |                |       |
+		 * |    CONSONANT   |   X    |          |           |                |       |
+		 * | SPECIALPHONEME |   X    |          |     X     |                |       |
+		 * |       VOWEL    |   X    |          |     X     |                |       |
+		 * |--------------------------------------------------------------------------
+		 * 
 		 * @param corresponds to previousChar
 		 * @param corresponds to c
 		 * @return true if a syllable ends between char1 and char2, else false
 		 */
-		//   char1\char2  | nonSLP | MODIFIER | CONSONANT | SPECIALPHONEME | VOWEL |
-		//----------------|--------|----------|-----------|----------------|-------|
-		//      nonSLP    |        |          |           |                |       |
-		//     MODIFIER   |   X    |          |     X     |                |       |
-		//    CONSONANT   |   X    |          |           |                |       |
-		// SPECIALPHONEME |   X    |          |     X     |                |       |
-		//       VOWEL    |   X    |          |     X     |                |       |
-		//--------------------------------------------------------------------------
 		if (charType.containsKey(char1) && !charType.containsKey(char2)) {
 			return SLP_N_NONSLP;
 		} else if (charType.containsKey(char2) && charType.get(char2) == CONSONANT) {

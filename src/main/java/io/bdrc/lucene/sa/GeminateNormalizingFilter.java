@@ -28,9 +28,9 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 /**
  *  Filter to normalize the spelling of geminates with the following rules (C = consonant):
  *  
- *  CCr   =>  Cr 
- *  rCC   =>  rC
- *  CCy   =>  Cy
+ *  CCr   →  Cr 
+ *  rCC   →  rC
+ *  CCy   →  Cy
  * 
  * See the mappings below.
  * Ex: "artTa" is normalized to "arTa",  "Darmma" to "Darma".

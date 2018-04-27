@@ -37,7 +37,7 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.util.IOUtils;
 
 /**
- * An Analyzer that uses {@link TibSyllableTokenizer} and filters with StopFilter
+ * An Analyzer that uses {@link SkrtSyllableTokenizer} and {@link SkrtWordTokenizer} and filters with StopFilter
  * 
  * Derived from Lucene 6.4.1 analysis.core.WhitespaceAnalyzer.java
  * 
@@ -85,7 +85,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * Creates a new {@link SanskritAnalyzer} with the default values
 	 * 
 	 * Uses the list of stopwords defined here:
-	 *  {@link https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236}
+	 * @see <a href="https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236">gist.github.com/Akhilesh28</a>
 	 * 
 	 * @throws IOException the file containing the stoplist can not be read
 	 * @throws FileNotFoundException  the file containing the stoplist can not be found 
@@ -95,9 +95,10 @@ public final class SanskritAnalyzer extends Analyzer {
 	}
 	
 	/**
-	 * @param reader Reader containing the list of stopwords
+	 * @param inputStream Stream containing the list of stopwords
 	 * @param comment The string representing a comment.
-	 * @return result the {@link ArrayList} to fill with the reader's words
+	 * @return the {@link ArrayList} of stopwords
+	 * @throws IOException  the input file couldn't be read
 	 */
 	public static ArrayList<String> getWordList(InputStream inputStream, String comment) throws IOException {
 		ArrayList<String> result = new ArrayList<String>();
