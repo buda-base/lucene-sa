@@ -73,11 +73,13 @@ public class FullTextParsingTest
 			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
 			while (tokenStream.incrementToken()) {
 			    System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
-			    if (typeAttribute.type().equals("word")) {
-				    termList.add(charTermAttribute.toString()+"✓");
-				} else {
-				    termList.add(charTermAttribute.toString()+"❌");
-				}
+                if (typeAttribute.type().equals("non-word")) {
+                    termList.add(charTermAttribute.toString()+"❌");
+                } else if (typeAttribute.type().equals("word")) {
+                    termList.add(charTermAttribute.toString()+"✓");
+                } else if (typeAttribute.type().equals("lemma")) {
+                    termList.add(charTermAttribute.toString()+"√");
+                }
 			}
 			System.out.println("1 " + String.join(" ", expected));
 			System.out.println("2 " + String.join(" ", termList) + "\n");
@@ -112,7 +114,7 @@ public class FullTextParsingTest
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-		List<String> expected = Arrays.asList("am✓", "H❌");
+		List<String> expected = Arrays.asList("am√", "H❌");
 		assertTokenStream(words, expected);
 	}
 	
@@ -123,7 +125,7 @@ public class FullTextParsingTest
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-		List<String> expected = Arrays.asList("tattva✓", "saNgraha✓");
+		List<String> expected = Arrays.asList("tattva✓", "saNgraha√");
 		assertTokenStream(words, expected);
 	}
 	
@@ -134,7 +136,7 @@ public class FullTextParsingTest
 		Reader reader = new StringReader(input);
     	System.out.println("0 " + input);
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
-		List<String> expected = Arrays.asList("sAtma✓", "BUtam✓");
+		List<String> expected = Arrays.asList("sAtma√", "BU√", "BUta√");
 		assertTokenStream(words, expected);
 	}
 	
@@ -145,7 +147,7 @@ public class FullTextParsingTest
         Reader reader = new StringReader(input);
         System.out.println("0 " + input);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("SrI✓", "tattva✓", "saNgraha✓", "paYjikA✓", "am✓", "H❌", "tattva✓", "saNgraha✓");
+        List<String> expected = Arrays.asList("SrI√", "tattva✓", "saNgraha√", "paYjikA√", "am√", "H❌", "tattva✓", "saNgraha√");
         assertTokenStream(words, expected);
     }
 	
