@@ -375,6 +375,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  					initials = null;
  					initialCharsIterator = null;
  					ifNoInitialsCleanupPotentialTokensAndNonwords();
+ 					nonWordStart = -1;
  					continue;
  					
  				} else if (startConsumingInitials()) {	
@@ -403,7 +404,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			/* A.2.1) if it's a token char */
 			if (isSLPTokenChar(c)) {
-			    if (isSLPModifier(c)) {
+                                           			    if (isSLPModifier(c)) {
 			        decrement(tokenBuffer);
 			        decrement(nonWordBuffer);
 			        continue;
@@ -572,6 +573,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     foundNonMaxMatch = false;
                     foundMatchCmdIndex = -1;
                     storedNoMatchState = -1;
+                    decrement(nonWordBuffer);
+                    nonWordStart = -1;
                     continue;
                 }
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
@@ -632,6 +635,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			} else {
 			    decrement(tokenBuffer);
 			    decrement(nonWordBuffer);
+			    nonWordStart = -1;
 			}
 		}
 
