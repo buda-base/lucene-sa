@@ -252,7 +252,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private Iterator<String> initialsIterator = null;
 	private StringCharacterIterator initialCharsIterator = null;
 	
-	private int initialsOrigBufferIndex, initialsOrigTokenStart = -1;
+	private int initialsOrigBufferIndex = -1, initialsOrigTokenStart = -1;
 	private StringBuilder initialsOrigBuffer = new StringBuilder();
 	private HashSet<String> storedInitials = null;
 	
@@ -324,6 +324,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    storedNoMatchState = -1;
 	    noMatchFoundMatchCmdIndex = -1;
 		
+	    initialsOrigBuffer.setLength(0);
+	    initialsOrigTokenStart = -1;
+	    initialsOrigBufferIndex = -1;
+	    
 		charCount = -1;
 		
 		tokenBuffer.setLength(0);
@@ -404,7 +408,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			
 			/* A.2.1) if it's a token char */
 			if (isSLPTokenChar(c)) {
-                                           			    if (isSLPModifier(c)) {
+			    if (isSLPModifier(c)) {
 			        decrement(tokenBuffer);
 			        decrement(nonWordBuffer);
 			        continue;
@@ -575,6 +579,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     storedNoMatchState = -1;
                     decrement(nonWordBuffer);
                     nonWordStart = -1;
+                    if (allCharsFromCurrentInitialAreConsumed()) {
+                        addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
+                        if (allInitialsAreConsumed()) {
+                            ifNoInitialsCleanupPotentialTokensAndNonwords();
+                            storedInitials = null;
+                            break;
+                        } else if (initialsNotEmpty()) {
+                            restoreInitialsOrigState();
+                            resetNonWordBuffer(0);
+                            wentToMaxDownTheTrie = false;
+                            applyOtherInitial = true;
+                        }
+                    } 
                     continue;
                 }
 				ifNoInitialsCleanupPotentialTokensAndNonwords();

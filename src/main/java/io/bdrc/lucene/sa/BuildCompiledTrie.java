@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import io.bdrc.lucene.stemmer.Optimizer;
 import io.bdrc.lucene.stemmer.Reduce;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -37,7 +36,7 @@ public class BuildCompiledTrie {
 			Trie trie = buildTrie(inputFiles);
 			
 			if (optimize) {
-				trie = optimizeTrie(trie, new Optimizer());		
+				trie = optimizeTrie(trie, new Reduce());		
 				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
 			} else {
 				storeTrie(trie, outFile);
