@@ -584,7 +584,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         if (allInitialsAreConsumed()) {
                             ifNoInitialsCleanupPotentialTokensAndNonwords();
                             storedInitials = null;
-                            break;
                         } else if (initialsNotEmpty()) {
                             restoreInitialsOrigState();
                             resetNonWordBuffer(0);
