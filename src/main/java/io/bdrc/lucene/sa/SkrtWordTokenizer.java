@@ -1242,11 +1242,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean stillConsumingInitials() {
-		return (initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex()) ? true : false;
+		return initialCharsIterator.getIndex() < initialCharsIterator.getEndIndex();
 	}
 
 	final private boolean initialIsNotFollowedBySandhied(int c) {
-	    return isValidCharWithinSandhi(c) && (firstInitialIndex == -1 || bufferIndex == firstInitialIndex + 1) ;
+	    return isValidCharWithinSandhi(c) && (firstInitialIndex == -1 || bufferIndex == firstInitialIndex + 1);
 	}
 
 	final private boolean allInitialsAreConsumed() {
