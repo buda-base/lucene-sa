@@ -388,10 +388,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
  					
  				} else if (startConsumingInitials()) {	
  				/* we enter here on finalOffset ==  first initials. (when all initials are consumed, initials == []) */
- 		           if (sandhiIndex != -1) {
+ 		           if (sandhiIndex != -1) { 		               
  		               c = ioBuffer.get(sandhiIndex);
- 		              bufferIndex = sandhiIndex + charCount;
- 		              if (debug) System.out.print("=>" + (char) c);
+ 		               bufferIndex = sandhiIndex + charCount;
+ 		               sandhiIndex = -1;
+ 		               if (debug) System.out.print("=>" + (char) c);
  		            }
  				    storeCurrentState();
 					initializeInitialCharsIteratorIfNeeded();
@@ -486,6 +487,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (thereIsNoTokenAndNoNonword()) {
 						foundNonMaxMatch = false;
 						continue;							// resume looping over ioBuffer
+					/* the first initial led to a dead end */
+					} else if (initials == null && initialsIterator != null && initialsIterator.hasNext()) {
+					    foundNonMaxMatch = false;
+					    resetNonWordBuffer(0);
+                        continue;                           // resume looping over ioBuffer
 					} else if (isLoneInitial()) {
 					    foundNonMaxMatch = false;
 					    foundMatch = false;
@@ -912,6 +918,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				 if (potentialTokens.containsKey(key)) {
 					 potentialTokens.remove(key);
 				 }
+				 if (tokenBuffer.toString().equals(key)) {
+				     tokenBuffer.setLength(0);
+//				     tokenStart = bufferIndex;
+				 }
 			}
 			
 			/* cleanup nonwords */
@@ -962,7 +972,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (charCount != -1 && mergesInitials) {
 			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is not reached
 				bufferIndex -= charCount;
-				sandhiIndex -= charCount;
+				if (sandhiIndex > -1) sandhiIndex -= charCount;
 			}
 			mergesInitials = false;					// reinitialize variable
 		}
