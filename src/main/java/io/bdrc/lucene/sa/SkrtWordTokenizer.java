@@ -251,6 +251,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private HashSet<String> initials = null;			// it is HashSet to filter duplicate initials
 	private Iterator<String> initialsIterator = null;
 	private StringCharacterIterator initialCharsIterator = null;
+	private static int sandhiIndex;
 	
 	private int initialsOrigBufferIndex = -1, initialsOrigTokenStart = -1;
 	private StringBuilder initialsOrigBuffer = new StringBuilder();
@@ -336,6 +337,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
         boolean match = false;
 		@SuppressWarnings("unused")   // they only provide humans an easy way to understand what is happening
         boolean continuing = false;
+		@SuppressWarnings("unused")
+		char currentChar;
 		
 		if (debug) System.out.println("----------------------");
 
@@ -353,6 +356,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			 */
 		    
 			int c = ioBuffer.get(bufferIndex);	// take next char in ioBuffer
+			currentChar = (char) c;
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
@@ -384,7 +388,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
  					
  				} else if (startConsumingInitials()) {	
  				/* we enter here on finalOffset ==  first initials. (when all initials are consumed, initials == []) */
-					storeCurrentState();
+ 		           if (sandhiIndex != -1) {
+ 		               c = ioBuffer.get(sandhiIndex);
+ 		              bufferIndex = sandhiIndex + charCount;
+ 		              if (debug) System.out.print("=>" + (char) c);
+ 		            }
+ 				    storeCurrentState();
 					initializeInitialCharsIteratorIfNeeded();
 					firstInitialIndex = bufferIndex;
 					c = applyInitialChar();
@@ -438,6 +447,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					        match = tryToFindMatchIn(rootRow, c);
 					        continuing = tryToContinueDownTheTrie(rootRow, c);
 					        tokenBuffer.setLength(0);
+					        tokenStart = bufferIndex;
 					        if (foundMatch) {
 					            afterNonwordMatch = true;
 					        }
@@ -493,7 +503,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    cutOffTokenFromNonWordBuffer();
 	                    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
 	                    addNonwordToPotentialTokensIfThereIsOne();
-						break;								        // and resume looping over ioBuffer
+
+	                    break;
 					}
 				
 				} else if (thereAreRemainingInitialsToTest()) {
@@ -579,25 +590,58 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     storedNoMatchState = -1;
                     decrement(nonWordBuffer);
                     nonWordStart = -1;
+                 
                     if (allCharsFromCurrentInitialAreConsumed()) {
                         addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
                         if (allInitialsAreConsumed()) {
                             ifNoInitialsCleanupPotentialTokensAndNonwords();
                             storedInitials = null;
-                        } else if (initialsNotEmpty()) {
-                            restoreInitialsOrigState();
+                            if (thereIsNoTokenAndNoNonword()) {
+                                continue;                           // resume looping over ioBuffer
+                            } else {
+                                break;                              // and resume looping over ioBuffer
+                            }
+                        } else {
                             resetNonWordBuffer(0);
+                            resetInitialCharsIterator();
+                            restoreInitialsOrigState();
                             wentToMaxDownTheTrie = false;
                             applyOtherInitial = true;
+                            continue;
                         }
-                    } 
-                    continue;
+                    } else {
+                        continue;
+                    }
                 }
 				ifNoInitialsCleanupPotentialTokensAndNonwords();
 				if (nonWordBuffer.toString().equals(tokenBuffer.toString()) && nonWordStart != tokenStart) {
 				    nonWordStart = tokenStart;
 				}
-				break;
+                if (allCharsFromCurrentInitialAreConsumed()) {
+                    addNonwordToPotentialTokensIfThereIsOne();
+                    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                    if (allInitialsAreConsumed()) {
+                        ifNoInitialsCleanupPotentialTokensAndNonwords();
+                        storedInitials = null;
+                        if (thereIsNoTokenAndNoNonword()) {
+                            continue;                           // resume looping over ioBuffer
+                        } else {
+                            break;                              // and resume looping over ioBuffer
+                        }
+                    } else {
+                        if (potentialTokensContainMatches && initials != null) {
+                            sandhiIndex = bufferIndex;
+                        }
+                        resetNonWordBuffer(0);
+                        resetInitialCharsIterator();
+                        restoreInitialsOrigState();
+                        wentToMaxDownTheTrie = false;
+                        applyOtherInitial = true;
+                        continue;
+                    }
+                } else {
+                    break;
+                }
 				
 			} else if (isNonSLPprecededBySLP()) {			// we have a nonword token
 				if (allCharsFromCurrentInitialAreConsumed()) {
@@ -918,6 +962,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (charCount != -1 && mergesInitials) {
 			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is not reached
 				bufferIndex -= charCount;
+				sandhiIndex -= charCount;
 			}
 			mergesInitials = false;					// reinitialize variable
 		}
