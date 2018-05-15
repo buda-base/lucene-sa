@@ -388,6 +388,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (thereAreInitialsToConsume()) {
  				if (currentCharIsSpaceWithinSandhi(c)) {
  				    nonWordStart = -1;
+ 				    if (sandhiIndex != -1) sandhiIndex += charCount;
  				    continue;		// if there is a space in the sandhied substring, moves beyond the space
 
  				} else if (initialIsNotFollowedBySandhied(c)) {
@@ -562,6 +563,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						    foundNonMaxMatch = false;
 						    resetNonWordBuffer(0);
 						}
+						wentToMaxDownTheTrie = false;
+						applyOtherInitial = true;
 					} else {
 						ifNoInitialsCleanupPotentialTokensAndNonwords(); 
                         potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
@@ -683,6 +686,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordBuffer(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
+					wentToMaxDownTheTrie = false;
+					applyOtherInitial = true;
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 					tokenBuffer.setLength(0);  // there was no match in the first place (we are after "if (foundNonMaxMatch)") 
@@ -710,6 +715,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordBuffer(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
+					wentToMaxDownTheTrie = false;
+					applyOtherInitial = true;
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					tokenBuffer.setLength(0);
@@ -1033,7 +1040,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		for (Entry<String, Integer[]> entry: potentialTokens.entrySet()) {
 			final String key = entry.getKey();
 			final Integer[] value = entry.getValue();
-			if (debug) System.out.println("form found: " + key + "\n");
+			if (debug) System.out.println("form found: " + key);
 			if (value[3] == 1) {
 				String cmd = scanner.getCommandVal(value[4]);
 				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
@@ -1048,6 +1055,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    totalTokens.add(newToken);
 				    mergesInitials = false;
 				}
+			} else {
+			    System.out.println("can't be lemmatized\n");
 			}
 		}
 	}
