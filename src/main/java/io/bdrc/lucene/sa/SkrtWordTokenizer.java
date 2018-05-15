@@ -251,7 +251,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private HashSet<String> initials = null;			// it is HashSet to filter duplicate initials
 	private Iterator<String> initialsIterator = null;
 	private StringCharacterIterator initialCharsIterator = null;
-	private static int sandhiIndex;
+	private static int sandhiIndex = -1;
 	
 	private int initialsOrigBufferIndex = -1, initialsOrigTokenStart = -1;
 	private StringBuilder initialsOrigBuffer = new StringBuilder();
@@ -297,7 +297,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 		}
 
-		if (bufferIndex - 4 >= 0) ioBuffer.freeBefore(bufferIndex - 4);
+		if (bufferIndex - 4 >= 0) {
+		    if (sandhiIndex != -1) {
+		        if (sandhiIndex < bufferIndex) {
+		            ioBuffer.freeBefore(sandhiIndex);
+		        } else {
+		            ioBuffer.freeBefore(bufferIndex - 4);
+		        }
+		    } else {
+		        ioBuffer.freeBefore(bufferIndex - 4);
+		    }
+		}
+		    
 		tokenStart = -1;
 		rootRow = scanner.getRow(scanner.getRoot());
 		currentRow = null;
@@ -381,6 +392,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
  				} else if (initialIsNotFollowedBySandhied(c)) {
  					initials = null;
+ 					initialsIterator = null;
  					initialCharsIterator = null;
  					ifNoInitialsCleanupPotentialTokensAndNonwords();
  					nonWordStart = -1;
@@ -537,6 +549,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						if (allInitialsAreConsumed()) {
 							ifNoInitialsCleanupPotentialTokensAndNonwords();								// same as above
 							storedInitials = null;
+							sandhiIndex = -1;
 							if (thereIsNoTokenAndNoNonword()) {
 								continue;							// resume looping over ioBuffer
 							} else {
@@ -565,6 +578,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                        if (allInitialsAreConsumed()) {
 	                            ifNoInitialsCleanupPotentialTokensAndNonwords();
 	                            storedInitials = null;
+	                            sandhiIndex = -1;
 	                            break;
 	                        }
 						} else {
@@ -602,6 +616,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         if (allInitialsAreConsumed()) {
                             ifNoInitialsCleanupPotentialTokensAndNonwords();
                             storedInitials = null;
+                            sandhiIndex = -1;
                             if (thereIsNoTokenAndNoNonword()) {
                                 continue;                           // resume looping over ioBuffer
                             } else {
@@ -629,6 +644,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     if (allInitialsAreConsumed()) {
                         ifNoInitialsCleanupPotentialTokensAndNonwords();
                         storedInitials = null;
+                        sandhiIndex = -1;
                         if (thereIsNoTokenAndNoNonword()) {
                             continue;                           // resume looping over ioBuffer
                         } else {
@@ -661,6 +677,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (allInitialsAreConsumed()) {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
 						storedInitials = null;
+						sandhiIndex = -1;
 						break;
 					}
 					resetNonWordBuffer(0);
@@ -683,6 +700,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    
 						ifNoInitialsCleanupPotentialTokensAndNonwords();  
 						storedInitials = null;
+						sandhiIndex = -1;
 						if (thereIsNoTokenAndNoNonword()) {
 							continue;							// resume looping over ioBuffer
 						} else {
@@ -707,6 +725,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		/* B. HANDING THEM TO LUCENE */
 		initials = null;				// all initials are consumed. reinitialize for next call of reconstructLemmas()
+		initialsIterator = null;
 		initialCharsIterator = null;
 		
 		/* B.1. FILLING totalTokens */
@@ -936,6 +955,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void ifEndOfInputReachedEmptyInitials() throws IOException {
 		if (ioBuffer.get(bufferIndex) == -1) {
 			initials = null;
+			initialsIterator = null;
 		}
 	}
 
@@ -972,7 +992,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (charCount != -1 && mergesInitials) {
 			if (ioBuffer.get(bufferIndex) != -1) {	// if end of input is not reached
 				bufferIndex -= charCount;
-				if (sandhiIndex > -1) sandhiIndex -= charCount;
+				if (sandhiIndex > -1 && bufferIndex +charCount == sandhiIndex) sandhiIndex -= charCount;
 			}
 			mergesInitials = false;					// reinitialize variable
 		}
