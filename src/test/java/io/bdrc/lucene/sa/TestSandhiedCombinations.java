@@ -36,7 +36,7 @@ import io.bdrc.lucene.sa.SkrtWordTokenizer;
  * Each combination must be tested as the only possible one since isSandhiedCombination() 
  * returns at the first corresponding combination.
  */
-public class SandhiedCombinationTests
+public class TestSandhiedCombinations
 {
 	
 	@BeforeClass

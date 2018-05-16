@@ -42,7 +42,7 @@ import org.junit.Test;
 /**
  * Unit tests for the Sanskrit tokenizers and filters.
  */
-public class FullTextParsingTest
+public class TestFullTextParsing
 {
 	
 	static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();

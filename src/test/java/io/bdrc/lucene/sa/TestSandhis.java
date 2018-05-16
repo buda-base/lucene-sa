@@ -44,7 +44,7 @@ import static org.hamcrest.CoreMatchers.*;
 /**
  * Unit tests for as many sandhi cases as possible.
  */
-public class SandhiTests
+public class TestSandhis
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();

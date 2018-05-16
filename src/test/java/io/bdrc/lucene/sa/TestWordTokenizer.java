@@ -48,7 +48,7 @@ import io.bdrc.lucene.stemmer.Trie;
 /**
  * Unit tests for the Sanskrit tokenizers and filters.
  */
-public class WordTokenizerTests
+public class TestWordTokenizer
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();

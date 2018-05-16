@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Unit tests for the Sanskrit filters and SylTokenizer.
  */
-public class SkrtAnalyzerTests
+public class TestSkrtAnalyzer
 {
 	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();

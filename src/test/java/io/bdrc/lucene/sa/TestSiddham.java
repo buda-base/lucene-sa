@@ -45,7 +45,7 @@ import io.bdrc.lucene.stemmer.Trie;
 /**
  * Unit tests for the Sanskrit filters and SylTokenizer.
  */
-public class SiddhamTests
+public class TestSiddham
 {
     static SkrtWordTokenizer skrtWordTokenizer = fillWordTokenizer();
     
