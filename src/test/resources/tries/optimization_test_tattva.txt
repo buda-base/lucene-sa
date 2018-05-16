@@ -1,4 +1,4 @@
-tat,$-1+d/=0|z:s$-1+d/- +=2|k:K:t:T:p:P$-1+d/- +=4|$-1+d/=7
-tattvopaplavasiMha,$/=0|cC$/- cC+C=8|A:i:u:U:f:e:E:o:O$/- +=1
-tattvopaplavasiMhatas,$-3+/=0
-tattvopaplavasiMhataH,$-3+/=7
+tat,$-1+d/=0#1|z:s$-1+d/- +=2#1|k:K:t:T:p:P$-1+d/- +=4#1|$-1+d/=7#1|$-1+d/=0#2|z:s$-1+d/- +=2#2|k:K:t:T:p:P$-1+d/- +=4#2|$-1+d/=7#2
+tattvopaplavasiMha,$/=0#0|$/=0#1|r$/- r+f=1#1|cC$/- cC+C=8#1|A:i:I:u:U:f:e:E:o:O$/- +=1#1
+tattvopaplavasiMhatas,$-3+/=0#0
+tattvopaplavasiMhataH,$-3+/=7#0
