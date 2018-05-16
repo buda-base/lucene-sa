@@ -673,6 +673,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    decrement(nonWordBuffer);
 				    if (nonwordIsLoneInitial()) {
                         tokenBuffer.setLength(0);
+                        resetNonWordBuffer(0);
                         foundMatchCmdIndex = -1;
                         continue;
 				    }
