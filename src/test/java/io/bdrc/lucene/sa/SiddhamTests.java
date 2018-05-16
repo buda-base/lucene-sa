@@ -166,6 +166,22 @@ public class SiddhamTests
     }
 
     @Test
+    public void bug2ExtraNonword() throws IOException
+    {
+        System.out.println("non-maximal match 2");
+        String input = "praṇāme ";
+        System.out.println("0 " + input);
+//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("praRAma√");
+        assertThat(tokens, is(expected));
+    }
+    
+    @Test
     public void bug3() throws IOException
     {
         String input = "bhāva";
@@ -404,7 +420,7 @@ public class SiddhamTests
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
 //        List<String> expected = Arrays.asList("Pala✓", "A✓", "prApti✓", "samBAvana✓", "A✓", "lakzaRa✓", "an✓", "arTa✓", "Apti✓", "SaNkA✓", "iti✓");
-        List<String> refactorExpected = Arrays.asList("Pala√", "Pal√", "a4_1—prApti√", "Ap✓", "rA√", "ap✓", "Apti√", "am✓", "BAvanAl✓", "akzaR✓", "Ana√", "an√", "f✓", "TA√", "av√", "ava√", "av√", "ap✓", "Apti✓", "SaNkA√", "SaNk√", "iti✓");
+        List<String> refactorExpected = Arrays.asList("Pala√", "Pal√", "a4_1—prApti√", "Ap✓", "rA√", "ap✓", "Apti√", "am✓", "BAvanAl✓", "akzaR✓", "Ana√", "an√", "TA√", "av√", "ava√", "av√", "ap✓", "Apti✓", "SaNkA√", "SaNk√", "iti✓");
         assertThat(tokens, is(refactorExpected));
     }
     

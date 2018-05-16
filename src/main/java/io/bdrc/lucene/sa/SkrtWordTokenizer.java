@@ -491,7 +491,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         wentToMaxDownTheTrie = false;
                         resetNonWordBuffer(0);
                         nonWordStart = -1;
-//                        ifNoInitialsCleanupPotentialTokensAndNonwords();
                         continue;
                     }
 					
