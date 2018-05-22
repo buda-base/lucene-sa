@@ -70,7 +70,7 @@ public class BuildCompiledTrie {
 	 * @throws IOException  output file can't be written
 	 */
 	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
-		System.out.println("\tBuilding the Trie from the raw text file…");
+		System.out.println("\tBuilding the Trie from the raw text file… It will take some time!");
 	    long one = System.currentTimeMillis();
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);

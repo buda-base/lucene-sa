@@ -42,7 +42,7 @@ public class PrettyPrintResult {
         inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
         inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
         
         Set<String> keys = inputFiles.keySet();
         for (String fileName: keys) {
@@ -97,7 +97,13 @@ public class PrettyPrintResult {
             while (tokenStream.incrementToken()) { 
                 tokNo ++; 
                 String token = TermAttr.toString(); 
-                token += typeAttr.type().equals("word") ? '✓': '❌'; 
+                if (typeAttr.type() == "word") {
+                    token += '✓';
+                } else if (typeAttr.type() == "lemma") {
+                    token += '√';
+                } else {
+                    token += '❌';
+                } 
                 batchEndOffset = offsetAttr.endOffset(); 
                 wordsAndNonwords.putIfAbsent(batchEndOffset, true);
                 if (token.contains("❌")) {
