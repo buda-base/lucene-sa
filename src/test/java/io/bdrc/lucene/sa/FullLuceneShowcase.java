@@ -72,15 +72,15 @@ public class FullLuceneShowcase {
 
     @Test
     public void testTC2PYstrict() throws IOException, ParseException {
-        String inputProfile = "TC2PYstrict";
-        String queryProfile = "PYstrict";
-        String input = "丹珠尔";
-        String query = "dān zhū ěr";
+        String input = "loke ’vināśi praṇāme ’py artti";
+        String query = "loka";
 
-        Analyzer indexingAnalyzer = new SanskritAnalyzer();
-        Analyzer queryingAnalyzer = new SanskritAnalyzer();
+        // indexing in words, from iats, with stopwords
+        Analyzer indexingAnalyzer = new SanskritAnalyzer(true, 2, "src/main/resources/skrt-stopwords.txt");
+        // querying in words, from SLP, with stopwords  
+        Analyzer queryingAnalyzer = new SanskritAnalyzer(true, 0, "src/main/resources/skrt-stopwords.txt");
 
-        File testSubFolder = folder.newFolder(inputProfile);
+        File testSubFolder = folder.newFolder("test");
 
         indexTest(input, indexingAnalyzer, testSubFolder);
         int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
