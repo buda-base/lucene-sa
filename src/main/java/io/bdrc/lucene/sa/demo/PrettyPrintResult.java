@@ -42,7 +42,7 @@ public class PrettyPrintResult {
         inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
         inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
         
         Set<String> keys = inputFiles.keySet();
         for (String fileName: keys) {

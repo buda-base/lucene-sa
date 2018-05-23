@@ -489,6 +489,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         foundMatch = false;
                         foundMatchCmdIndex = -1;
                         tokenBuffer.setLength(0);
+                        tokenStart = -1;
                         wentToMaxDownTheTrie = false;
                         resetNonWordBuffer(0);
                         nonWordStart = -1;
@@ -669,8 +670,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 }
 				
 			} else if (isNonSLPprecededBySLP()) {			// we have a nonword token
-				if (allCharsFromCurrentInitialAreConsumed()) {
-				    decrement(nonWordBuffer);
+				decrement(tokenBuffer);
+				decrement(nonWordBuffer);
+			    if (allCharsFromCurrentInitialAreConsumed()) {
 				    if (nonwordIsLoneInitial()) {
                         tokenBuffer.setLength(0);
                         resetNonWordBuffer(0);
@@ -692,7 +694,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords(); 
 					tokenBuffer.setLength(0);  // there was no match in the first place (we are after "if (foundNonMaxMatch)") 
-					decrement(nonWordBuffer);
 					if (isSLPModifier(c)) {
 						continue;			   // move on and do as if the modifier didn't exist
 					} else {
@@ -700,9 +701,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				}
 			} else if (isNonSLPprecededByNotEmptyNonWord()) {
-				if (allCharsFromCurrentInitialAreConsumed() && c != ' ') {
+			    decrement(tokenBuffer);
+			    decrement(nonWordBuffer);
+			    if (allCharsFromCurrentInitialAreConsumed() && c != ' ') {
 				    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
-					if (allInitialsAreConsumed()) {
+				    decrement(nonWordBuffer);
+				    if (allInitialsAreConsumed()) {
 					    
 						ifNoInitialsCleanupPotentialTokensAndNonwords();  
 						storedInitials = null;
@@ -721,7 +725,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					tokenBuffer.setLength(0);
-					decrement(nonWordBuffer);
 					break;
 				}
 			} else {
@@ -1057,7 +1060,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    mergesInitials = false;
 				}
 			} else {
-			    System.out.println("can't be lemmatized\n");
+			    if (debug) System.out.println("can't be lemmatized\n");
 			}
 		}
 	}
