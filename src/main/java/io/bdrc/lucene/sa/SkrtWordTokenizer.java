@@ -301,6 +301,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		    if (sandhiIndex != -1) {
 		        if (sandhiIndex < bufferIndex) {
 		            ioBuffer.freeBefore(sandhiIndex);
+		            sandhiIndex = -1;
 		        } else {
 		            ioBuffer.freeBefore(bufferIndex - 4);
 		        }
