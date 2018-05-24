@@ -42,6 +42,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 
+import io.bdrc.lucene.sa.PartOfSpeechAttribute.PartOfSpeech;
 import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -78,6 +79,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
+	private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
 
 	/**
 	 * Default constructor: uses the default compiled Trie, builds it if it is missing.
@@ -785,6 +787,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
 			changeTypeOfToken(metaData[3]);
+			changePartOfSpeech(metaData[4]);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -795,7 +798,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	/**
-	 * 
+	 * Splits tokens that have a multi-token lemma.
 	 */
 	private void processMultiTokenLemmas() {
         for (int i=0; i < totalTokens.size(); i++) {
@@ -804,22 +807,22 @@ public final class SkrtWordTokenizer extends Tokenizer {
                 String[] rawTokens = token.getString().split("—");
                 LinkedList<PreToken> newTokens = new LinkedList<PreToken>();
                 for (String rawToken: rawTokens) {
-                    Integer[] metadata = token.getMetadata().clone();
-                    int base = metadata[0];
-                    int underscore = rawToken.indexOf('_');
-                    int arrow = rawToken.indexOf('>');
-                    String string = rawToken.substring(0, underscore - 1);
-                    @SuppressWarnings("unused")  // to use when implementing POS support
-                    int pos = Integer.valueOf(rawToken.substring(underscore - 1, underscore ));
-                    int startIdx = Integer.valueOf(rawToken.substring(underscore + 1, arrow )) - 1;
-                    int endIdx = Integer.valueOf(rawToken.substring(arrow + 1, rawToken.length()));
-                    int tokenLen = string.length();
+                    Integer[] metaData = token.getMetadata().clone();
+                    final int base = metaData[0];
+                    final int underscore = rawToken.indexOf('_');
+                    final int arrow = rawToken.indexOf('>');
+                    final String string = rawToken.substring(0, underscore - 1);
+                    final int pos = Integer.valueOf(rawToken.substring(underscore - 1, underscore ));
+                    final int startIdx = Integer.valueOf(rawToken.substring(underscore + 1, arrow )) - 1;
+                    final int endIdx = Integer.valueOf(rawToken.substring(arrow + 1, rawToken.length()));
+                    final int tokenLen = string.length();
                     
                     // replace with new start and end
-                    metadata[0] = base + startIdx;
-                    metadata[1] = base + endIdx;
-                    metadata[2] = tokenLen;
-                    newTokens.add(new PreToken(string, metadata));
+                    metaData[0] = base + startIdx;
+                    metaData[1] = base + endIdx;
+                    metaData[2] = tokenLen;
+                    metaData[4] = pos;
+                    newTokens.add(new PreToken(string, metaData));
                 }
                 
                 // replace the original token with the new ones
@@ -859,8 +862,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				t = lemmaDiff.split("=");
 				String diff = t[0];
 				t = t[1].split("#");
-				int sandhiType = Integer.parseInt(t[0]);
-//				String pos = t[1];  // TODO: uncomment when implementing the token filter
+				int sandhiType = Integer.valueOf(t[0]);
+				String pos = t[1];
 				if (noSandhiAndLemmatizationNotRequired(sandhiType, diff)) {
 					continue;							// there is no sandhi nor, so we skip this diff
 				}
@@ -875,7 +878,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						t[1] = "";
 					}
 
-					int toDelete = Integer.parseInt(t[0]);
+					int toDelete = Integer.valueOf(t[0]);
 					String toAdd;
 					String newInitial = "";
 
@@ -893,7 +896,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						toAdd = t[1];
 					}
 
-					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd;  // TODO: append pos once the token filter is in place
+					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd+"_"+pos;
 					totalLemmas.add(lemma);
 				}
 			}
@@ -1025,6 +1028,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
 	}
 
+	private void changePartOfSpeech(int t) {
+	    if (t == 0) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+	    } else if (t == 1) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);  // Todo: correct values
+	    } else if (t == 2) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+        } else if (t == 3) {
+            posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+        } else if (t == 4) {
+            posAtt.setPartOfSpeech(PartOfSpeech.Preverb);
+        }
+	}
+	
 	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
 		termAtt.setLength(metaData[2]);									// declare its size
@@ -1056,8 +1073,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final Set<String> lemmas = reconstructLemmas(cmd, token);
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
-				    final PreToken newToken = new PreToken(l, 
-				            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), l.length(), 2});
+				    final int underscore = l.indexOf('_');
+				    final String lemma = l.substring(0, underscore);
+				    final int pos = Integer.valueOf(l.substring(underscore + 1));
+				    final PreToken newToken = new PreToken(lemma, 
+				            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), lemma.length(), 2, pos});
 					totalTokens.add(newToken);
 					// use same start-end indices since all are from the same inflected form)
 				}
@@ -1089,12 +1109,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
 				if (lemmas.size() != 0) {
 					for (String l: lemmas) {	// multiple lemmas are possible: finals remain unanalyzed
-					    final PreToken newToken = new PreToken(l, new Integer[] {value[0], value[1], l.length(), 2});
+					    final int underscore = l.indexOf('_');
+	                    final String lemma = l.substring(0, underscore);
+	                    final int pos = Integer.valueOf(l.substring(underscore + 1));
+					    final PreToken newToken = new PreToken(lemma, 
+					            new Integer[] {value[0], value[1], l.length(), 2, pos});
 						totalTokens.add(newToken);	
 						// use same indices for all (all are from the same inflected form)
 					}
 				} else {	// there is no applicable sandhi. the form is returned as-is.
-					final PreToken newToken = new PreToken(key, new Integer[] {value[0], value[1], value[2], 1});
+					final int pos = Integer.valueOf(cmd.substring(cmd.lastIndexOf('#')+1));
+					final PreToken newToken = new PreToken(key, new Integer[] {value[0], value[1], value[2], 1, pos});
 				    totalTokens.add(newToken);
 				    mergesInitials = false;
 				}
