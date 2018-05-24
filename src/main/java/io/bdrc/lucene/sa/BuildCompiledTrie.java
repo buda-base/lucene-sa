@@ -24,7 +24,6 @@ public class BuildCompiledTrie {
 	 * 
 	 */
 	
-	static boolean optimize = false;	// change to true to optimize the Trie
 	static String outFile = "src/main/resources/skrt-compiled-trie.dump";
 	public static List<String> inputFiles = Arrays.asList(
 			"resources/sanskrit-stemming-data/output/trie_content.txt"	// all Sanskrit Heritage entries + custom entries
@@ -33,14 +32,8 @@ public class BuildCompiledTrie {
 	public static void main(String [] args){
 		
 		try {
-			Trie trie = buildTrie(inputFiles);
-			
-			if (optimize) {
-				trie = optimizeTrie(trie, new Reduce());		
-				storeTrie(trie, "src/main/resources/skrt-compiled-trie_optimized.dump");	
-			} else {
-				storeTrie(trie, outFile);
-			}
+			Trie trie = compileTrie();
+			storeTrie(trie, outFile);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -57,9 +50,9 @@ public class BuildCompiledTrie {
 	 * @throws FileNotFoundException  input or output file not found
 	 * @throws IOException  input can't be read or output can't be written
 	 */
-	public static void compileTrie() throws FileNotFoundException, IOException {
-		Trie trie = buildTrie(inputFiles);
-		storeTrie(trie, outFile);
+	public static Trie compileTrie() throws FileNotFoundException, IOException {
+		Trie trie = new Reduce().optimize(buildTrie(inputFiles));
+		return trie;
 	}
 	
 	/** 
@@ -89,23 +82,6 @@ public class BuildCompiledTrie {
 		}
 		long two = System.currentTimeMillis();
 		System.out.println("\tTime: " + (two - one) / 1000 + "s.");
-		return trie;
-	}
-	
-	/**
-	 *  
-	 * Optimizer  - optimization time: 10mn ; compiled Trie size: 10mo
-	 * Optimizer2 - optimization time: 12mn ; compiled Trie size: 12mo
-	 * 
-	 * @param trie trie to be optimized
-	 * @param optimizer  optimizer to be used
-	 * @return  the optimized trie
-	 */
-	public static Trie optimizeTrie(Trie trie, Reduce optimizer) {
-		long three = System.currentTimeMillis();
-		trie = optimizer.optimize(trie);
-		long four = System.currentTimeMillis();
-		System.out.println("Optimizing the Trie took: " + (four - three) / 1000 + "s.");
 		return trie;
 	}
 	
