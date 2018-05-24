@@ -776,7 +776,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		ifEndOfInputReachedEmptyInitials();
 
 		if (thereAreTokensToReturn()) {
-			hasTokenToEmit = true;
+		    hasTokenToEmit = true;
+		    
+		    /* deal with preverbs and other custom defined entries */
+		    processMultiTokenLemmas();
+		    
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
@@ -790,7 +794,42 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
+	/**
+	 * 
+	 */
+	private void processMultiTokenLemmas() {
+        for (int i=0; i < totalTokens.size(); i++) {
+            PreToken token = totalTokens.get(i);
+            if (token.getString().contains("—")) {
+                String[] rawTokens = token.getString().split("—");
+                LinkedList<PreToken> newTokens = new LinkedList<PreToken>();
+                for (String rawToken: rawTokens) {
+                    Integer[] metadata = token.getMetadata().clone();
+                    int base = metadata[0];
+                    int underscore = rawToken.indexOf('_');
+                    int arrow = rawToken.indexOf('>');
+                    String string = rawToken.substring(0, underscore - 1);
+                    @SuppressWarnings("unused")  // to use when implementing POS support
+                    int pos = Integer.valueOf(rawToken.substring(underscore - 1, underscore ));
+                    int startIdx = Integer.valueOf(rawToken.substring(underscore + 1, arrow )) - 1;
+                    int endIdx = Integer.valueOf(rawToken.substring(arrow + 1, rawToken.length()));
+                    int tokenLen = string.length();
+                    
+                    // replace with new start and end
+                    metadata[0] = base + startIdx;
+                    metadata[1] = base + endIdx;
+                    metadata[2] = tokenLen;
+                    newTokens.add(new PreToken(string, metadata));
+                }
+                
+                // replace the original token with the new ones
+                totalTokens.remove(i);
+                totalTokens.addAll(i, newTokens);
+            }
+        }
+    }
+
+    HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
 	    return reconstructLemmas(cmd, inflected, -1);
 	}
 	
@@ -1210,7 +1249,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (totalTokens.peekFirst() != null) {
 			final PreToken nextToken = totalTokens.removeFirst();
 			final Integer[] metaData = nextToken.getMetadata();
-                termAtt.setEmpty().append(nextToken.getString());
+			termAtt.setEmpty().append(nextToken.getString());
 			changeTypeOfToken(metaData[3]);
 			termAtt.setLength(metaData[2]);
 			finalOffset = correctOffset(metaData[1]);

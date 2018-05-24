@@ -118,19 +118,20 @@ public class TestFullTextParsing
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> expected = Arrays.asList(
-                "yad√", "kulyA√", "kulya√", "sva√", "at√", "a✓", "ya√", "yas√", "yad√", "puMs√", "va✓", "tra✓", "sPurat√", "va✓", 
-                "M❌", "kza√", "sPuwa√", "sPuw√", "ut√", "DvaMs√", "pra✓", "vi4_2—tan√", "ya√", "yas√", "yad√", 
-                "prajYa_5—anu4_7—saj√", "ucita✓", "suKa✓", "manas√", "manasA√", "SAstf√", "tattva√", "arTa✓", "ArTa✓", "Bartf√", 
-                "stabDa√", "han√", "na√", "ut√", "Cf❌", "sad√", "kAvya✓", "SrI√", "viroDa√", "buDa✓", "guRita✓", 
-                "guRa_4—AjYA_7—A4_7—han√", "eva✓", "kftvan√", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "bahu✓", "kU√", 
-                "kIrti✓", "rAjya√", "Bunakti✓", "Ara√", "Arya√", "hi√", "eha√", "iti√", "upagu✓", "hi√", "Bu√", "BU√", "BA√", "Ba√", 
-                "piSuna√", "utkarRita√", "roman√", "saBya√", "ut√", "Svas√", "Svasita√", "tulya✓", "kula✓", "ja✓", "mlAna√", "an✓", 
-                "A√", "ut√", "vi√", "Ikzita√", "Ikzitf√", "ij√", "zi❌", "ta✓", "H❌", "snih√", "vi√", "vi4_2—A√", "Alu✓", "al✓", "ul✓", "ita√", 
-                "bAzpa✓", "guru√", "tattva√", "ij√", "Ikz√", "cakzus√", "yad√", "pitf√", "BI√", "aBi✓", "DA√", "hita√", "ni✓", "rE√", "rA√", 
-                "Ikz√", "Ikza√", "ij√", "an✓", "i✓", "Kila√", "pA√", "evam✓", "uru√", "iti✓", "dfz√", "karman√", "aneka√", "amat√", "uj✓", 
-                "sadfSa√", "adButa√", "udBid√", "na✓", "harza√", "hfz√", "BU√", "Bu√", "BAva√", "BA√", "Ba√", "r❌", "AsvAdayat√", 
-                "kim√", "cid√", "vIra√", "vIrya√", "t❌", "utta✓", "tap✓", "tAS✓", "ca✓", "kim√", "cit√", "cid√", "SaraRa√", "upaga✓", 
-                "tA❌", "ya√", "yas√", "yad√", "vftti√", "vftta√", "praRAma√", "api√", "arti✓"
+                "yad√", "kulyA√", "kulya√", "sva√", "at√", "a✓", "ya√", "yas√", "yad√", "puMs√", "va✓", "tra✓", "sPurat√", 
+                "va✓", "M❌", "kza√", "sPuwa√", "sPuw√", "ut√", "DvaMs√", "pra✓", "vi√", "tan√", "ya√", "yas√", "yad√", 
+                "prajYa√", "anu√", "saj√", "ucita✓", "suKa✓", "manas√", "manasA√", "SAstf√", "tattva√", "arTa✓", "ArTa✓", 
+                "Bartf√", "stabDa√", "han√", "na√", "ut√", "Cf❌", "sad√", "kAvya✓", "SrI√", "viroDa√", "buDa✓", "guRita✓", 
+                "guRa√", "AjYA√", "A√", "han√", "eva✓", "kftvan√", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "bahu✓", 
+                "kU√", "kIrti✓", "rAjya√", "Bunakti✓", "Ara√", "Arya√", "hi√", "eha√", "iti√", "upagu✓", "hi√", "Bu√", "BU√", 
+                "BA√", "Ba√", "piSuna√", "utkarRita√", "roman√", "saBya√", "ut√", "Svas√", "Svasita√", "tulya✓", "kula✓", 
+                "ja✓", "mlAna√", "an✓", "A√", "ut√", "vi√", "Ikzita√", "Ikzitf√", "ij√", "zi❌", "ta✓", "H❌", "snih√", "vi√", "vi√", 
+                "A√", "al✓", "Alu✓", "li❌", "te✓", "na✓", "bAzpa✓", "guru√", "tattva√", "ij√", "Ikz√", "cakzus√", "yad√", "pitf√", 
+                "BI√", "aBi✓", "DA√", "hita√", "ni✓", "rE√", "rA√", "Ikz√", "Ikza√", "ij√", "an✓", "i✓", "Kila√", "pA√", "evam✓", 
+                "uru√", "iti✓", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "sadfSa√", "adButa√", "udBid√", "na✓", "harza√", 
+                "hfz√", "BU√", "Bu√", "BAva√", "BA√", "Ba√", "r❌", "AsvAdayat√", "kim√", "cid√", "vIra√", "vIrya√", "t❌", "utta✓", 
+                "tap✓", "tAS✓", "ca✓", "kim√", "cit√", "cid√", "SaraRa√", "upaga✓", "tA❌", "ya√", "yas√", "yad√", "vftti√", "vftta√", 
+                "praRAma√", "api√", "arti✓"
                 );
         assertTokenStream(words, expected);
     }

@@ -356,6 +356,19 @@ public class TestWordTokenizer
 	}
     
     @Test
+    public void testMultiTokenLemmaSplit() throws IOException
+    {
+        System.out.println("splitting multi-token lemmas");
+        String input = "guRita-guRAjYAhatAn eva";
+        Reader reader = new StringReader(input);
+        List<String> expected = Arrays.asList("guRita✓", "guRa√", "AjYA√", "A√", "han√", "eva✓");
+        System.out.println("0 " + input);
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
+        TokenStream syllables = tokenize(reader, skrtWordTokenizer);
+        assertTokenStream(syllables, expected);
+    }
+    
+    @Test
 	public void bug1InWordTokenizer() throws IOException
 	{
 		System.out.println("bug1");

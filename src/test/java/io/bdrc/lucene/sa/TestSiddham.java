@@ -372,10 +372,8 @@ public class TestSiddham
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-//        List<String> expected = Arrays.asList("kU√", "kIrti✓", "kU√", "kIrti✓", "ati✓", "kram✓", "aDi✓", "kf✓");
-        // acceptable for refactoring.
-        List<String> refactorExpected = Arrays.asList("kU√", "kIrti✓", "kU√", "kIrti✓", "ati4_3—kram√", "aDi4_3—kf√");
-        assertThat(tokens, is(refactorExpected));
+        List<String> expected = Arrays.asList("kU√", "kIrti✓", "kU√", "kIrti✓", "ati√", "kram√", "aDi√", "kf√");
+        assertThat(tokens, is(expected));
     }
     
     @Test
@@ -411,7 +409,7 @@ public class TestSiddham
     @Test
     public void bug20BAvanInfiniteLoop() throws IOException
     {
-        String input = "phalāprāptisambhāvanālakṣaṇānarthāvāptiśaṅketi";
+        String input = "phalāprāpti-sambhāvanālakṣaṇānarthāvāptiśaṅketi";
         System.out.println("0 " + input);
 //        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
@@ -419,8 +417,12 @@ public class TestSiddham
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-//        List<String> expected = Arrays.asList("Pala✓", "A✓", "prApti✓", "samBAvana✓", "A✓", "lakzaRa✓", "an✓", "arTa✓", "Apti✓", "SaNkA✓", "iti✓");
-        List<String> refactorExpected = Arrays.asList("Pala√", "Pal√", "a4_1—prApti√", "Ap✓", "rA√", "ap✓", "Apti√", "am✓", "BAvanAl✓", "akzaR✓", "Ana√", "an√", "TA√", "av√", "ava√", "av√", "ap✓", "Apti✓", "SaNkA√", "SaNk√", "iti✓");
+        // Huet's reader outputs the following:
+        // Pala✓, A✓, prApti✓, samBAvana✓, A✓, lakzaRa✓, an✓, arTa✓, Apti✓, SaNkA✓, iti✓
+        List<String> refactorExpected = Arrays.asList(
+                "Pala√", "Pal√", "a√", "prApti√", "Ap✓", "rA√", "ap✓", "Apti✓", "samBAvanAl✓", "akzaR✓", 
+                "Ana√", "an√", "TA√", "av√", "ava√", "av√", "ap✓", "Apti✓", "SaNkA√", "SaNk√", "iti✓"
+                );
         assertThat(tokens, is(refactorExpected));
     }
     
