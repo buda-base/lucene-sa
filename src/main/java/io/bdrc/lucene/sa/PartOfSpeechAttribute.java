@@ -1,8 +1,6 @@
 package io.bdrc.lucene.sa;
 
 import org.apache.lucene.util.Attribute;
-import org.apache.lucene.util.AttributeImpl;
-import org.apache.lucene.util.AttributeReflector;
 
 /**
  * 
@@ -12,7 +10,7 @@ import org.apache.lucene.util.AttributeReflector;
  * @author drupchen
  *
  */
-public interface PartOfSpeechAttribute extends Attribute {
+public interface PartOfSpeechAttribute extends Attribute {    
     public static enum PartOfSpeech {
       // added to match the Sanskrit Heritage tags as found in Heritage Resources
       Indeclinable, // encoded as 0 in the Trie
@@ -33,34 +31,4 @@ public interface PartOfSpeechAttribute extends Attribute {
     public void setPartOfSpeech(PartOfSpeech pos);
   
     public PartOfSpeech getPartOfSpeech();
-}
-
-
-final class PartOfSpeechAttributeImpl extends AttributeImpl implements PartOfSpeechAttribute {
-
-    private PartOfSpeech pos = PartOfSpeech.Unknown;
-
-    public void setPartOfSpeech(PartOfSpeech pos) {
-        this.pos = pos;
-    }
-
-    public PartOfSpeech getPartOfSpeech() {
-        return pos;
-    }
-
-    @Override
-    public void clear() {
-        pos = PartOfSpeech.Unknown;
-    }
-
-    @Override
-    public void copyTo(AttributeImpl target) {
-        ((PartOfSpeechAttribute) target).setPartOfSpeech(pos);
-    }
-
-    @Override
-    public void reflectWith(AttributeReflector reflector) {
-        // inspired by https://github.com/apache/lucene-solr/blob/branch_6_4/lucene/core/src/java/org/apache/lucene/util/AttributeImpl.java#L78
-        reflector.reflect(PartOfSpeechAttribute.class, "pos", getPartOfSpeech());
-    }
 }

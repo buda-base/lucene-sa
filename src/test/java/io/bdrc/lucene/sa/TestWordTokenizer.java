@@ -363,7 +363,7 @@ public class TestWordTokenizer
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("guRita✓", "guRa√", "AjYA√", "A√", "han√", "eva✓");
         System.out.println("0 " + input);
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, true);
         TokenStream syllables = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(syllables, expected);
     }

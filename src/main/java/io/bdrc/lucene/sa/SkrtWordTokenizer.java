@@ -808,12 +808,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		    
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
-		    mergePreverbs();
+		    if (mergePreverbs)
+		        mergePreverbs();
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
 			changeTypeOfToken(metaData[3]);
-			changePartOfSpeech(metaData[4]);
+//			changePartOfSpeech(metaData[4]);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -824,8 +825,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	private void mergePreverbs() {
-        // TODO Auto-generated method stub
-        
+        System.out.println("test");
     }
 
     /**
@@ -1059,19 +1059,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
 	}
 
-	private void changePartOfSpeech(int t) {
-	    if (t == 0) {
-	        posAtt.setPartOfSpeech(PartOfSpeech.Indeclinable);
-	    } else if (t == 1) {
-	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
-	    } else if (t == 2) {
-	        posAtt.setPartOfSpeech(PartOfSpeech.Pronoun);
-        } else if (t == 3) {
-            posAtt.setPartOfSpeech(PartOfSpeech.Verb);
-        } else if (t == 4) {
-            posAtt.setPartOfSpeech(PartOfSpeech.Preverb);
-        }
-	}
+//	private void changePartOfSpeech(int t) {
+//	    if (t == 0) {
+//	        posAtt.setPartOfSpeech(PartOfSpeech.Indeclinable);
+//	    } else if (t == 1) {
+//	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+//	    } else if (t == 2) {
+//	        posAtt.setPartOfSpeech(PartOfSpeech.Pronoun);
+//        } else if (t == 3) {
+//            posAtt.setPartOfSpeech(PartOfSpeech.Verb);
+//        } else if (t == 4) {
+//            posAtt.setPartOfSpeech(PartOfSpeech.Preverb);
+//        }
+//	}
 	
 	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
@@ -1104,7 +1104,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final Set<String> lemmas = reconstructLemmas(cmd, token);
 			if (lemmas.size() != 0) {
 				for (String l: lemmas) {
-				    final int underscore = l.indexOf('_');
+				    final int underscore = l.lastIndexOf('_');
 				    final String lemma = l.substring(0, underscore);
 				    final int pos = Integer.valueOf(l.substring(underscore + 1));
 				    final PreToken newToken = new PreToken(lemma, 
@@ -1140,7 +1140,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				final Set<String> lemmas = reconstructLemmas(cmd, key, value[1]);
 				if (lemmas.size() != 0) {
 					for (String l: lemmas) {	// multiple lemmas are possible: finals remain unanalyzed
-					    final int underscore = l.indexOf('_');
+					    final int underscore = l.lastIndexOf('_');
 	                    final String lemma = l.substring(0, underscore);
 	                    final int pos = Integer.valueOf(l.substring(underscore + 1));
 					    final PreToken newToken = new PreToken(lemma, 
