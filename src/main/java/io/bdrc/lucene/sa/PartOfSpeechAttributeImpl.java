@@ -4,7 +4,7 @@ import org.apache.lucene.util.AttributeImpl;
 import org.apache.lucene.util.AttributeReflector;
 
 /** Default implementation of {@link PartOfSpeechAttribute}. */
-final class PartOfSpeechAttributeImpl extends AttributeImpl implements PartOfSpeechAttribute {
+public class PartOfSpeechAttributeImpl extends AttributeImpl implements PartOfSpeechAttribute, Cloneable {
     
     private PartOfSpeech pos = PartOfSpeech.Unknown;
     
@@ -12,6 +12,7 @@ final class PartOfSpeechAttributeImpl extends AttributeImpl implements PartOfSpe
     
     /** Initialize this attribute with <code>pos</code> */
     public PartOfSpeechAttributeImpl(PartOfSpeech pos) {
+        super();
         this.pos = pos;
     }
     
