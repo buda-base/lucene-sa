@@ -14,12 +14,16 @@ import org.apache.lucene.util.AttributeReflector;
  */
 public interface PartOfSpeechAttribute extends Attribute {
     public static enum PartOfSpeech {
-      Noun, 
-      Verb, 
-      Preverb, // added for Sanskrit 
+      // added to match the Sanskrit Heritage tags as found in Heritage Resources
+      Indeclinable, // encoded as 0 in the Trie
+      Noun,         // encoded as 1 
+      Pronoun,      // encoded as 2
+      Verb,         // encoded as 3
+      Preverb,      // encoded as 4
+      
+      // remaining default tags 
       Adjective, 
       Adverb, 
-      Pronoun, 
       Preposition, 
       Conjunction, 
       Article, 

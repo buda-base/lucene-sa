@@ -73,7 +73,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private Trie scanner;
 	private boolean debug = false;
-	String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump"; 
+	String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump";
+	private boolean mergePreverbs = true;
+	
 
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -105,6 +107,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    }
 	}
 	
+	public SkrtWordTokenizer(boolean mergePreverbs) throws FileNotFoundException, IOException{
+	    this();
+	    this.mergePreverbs = mergePreverbs;
+	}
+	
 	/**
 	 * Builds the Trie using the the given file
 	 * @param filename the file containing the entries of the Trie
@@ -115,6 +122,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		init(filename);
 	}
 
+	public SkrtWordTokenizer(String filename, boolean mergePreverbs) throws FileNotFoundException, IOException {
+	    this(filename);
+	    this.mergePreverbs = mergePreverbs;
+	}
+	
 	/**
 	 * Opens an already compiled Trie
 	 * @param trieStream an InputStream (FileInputStream, for ex.) containing the compiled Trie
@@ -125,6 +137,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		init(trieStream);
 	}
 	
+	public SkrtWordTokenizer(InputStream trieStream, boolean mergePreverbs) throws FileNotFoundException, IOException {
+        this(trieStream);
+        this.mergePreverbs = mergePreverbs;
+    }
+	
 	/**
 	 * Uses the given Trie
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
@@ -133,7 +150,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		init(trie);
 	}
 	
-	public SkrtWordTokenizer(boolean debug) throws FileNotFoundException, IOException {
+	public SkrtWordTokenizer(Trie trie, boolean mergePreverbs) {
+        this(trie);
+        this.mergePreverbs = mergePreverbs;
+    }
+	
+	public SkrtWordTokenizer(boolean debug, boolean mergePreverbs) throws FileNotFoundException, IOException {
 		if (!new File(compiledTrieName).exists()) {
 			System.out.println("Default compiled Trie is not found\nCompiling it and writing it to file…");
 			long start = System.currentTimeMillis();
@@ -143,6 +165,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 		init(new FileInputStream(compiledTrieName));
 		this.debug = debug;
+		this.mergePreverbs = mergePreverbs;
 	}
 	
 	/**
@@ -152,9 +175,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
      * @throws FileNotFoundException the file containing the Trie can't be found
      * @throws IOException the file containing the Trie can't be read
 	 */
-	public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
+	public SkrtWordTokenizer(boolean debug, String filename, boolean mergePreverbs) throws FileNotFoundException, IOException {
 		init(filename);
 		this.debug = debug;
+		this.mergePreverbs = mergePreverbs;
 	}
 
 	/**
@@ -164,9 +188,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
      * @throws FileNotFoundException the file containing the Trie can't be found
      * @throws IOException the file containing the Trie can't be read
 	 */
-	public SkrtWordTokenizer(boolean debug, InputStream trieStream) throws FileNotFoundException, IOException {
+	public SkrtWordTokenizer(boolean debug, InputStream trieStream, boolean mergePreverbs) throws FileNotFoundException, IOException {
 		init(trieStream);
 		this.debug = debug;
+		this.mergePreverbs = mergePreverbs;
 	}
 	
 	/**
@@ -174,9 +199,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param debug print debuging information if true
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
-	public SkrtWordTokenizer(boolean debug, Trie trie) {
+	public SkrtWordTokenizer(boolean debug, Trie trie, boolean mergePreverbs) {
 		init(trie);
 		this.debug = debug;
+		this.mergePreverbs = mergePreverbs;
 	}
 	
 	/**
@@ -782,7 +808,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		    
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
-		    
+		    mergePreverbs();
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
@@ -797,7 +823,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 	}
 	
-	/**
+	private void mergePreverbs() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
 	 * Splits tokens that have a multi-token lemma.
 	 */
 	private void processMultiTokenLemmas() {
@@ -1030,13 +1061,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void changePartOfSpeech(int t) {
 	    if (t == 0) {
-	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+	        posAtt.setPartOfSpeech(PartOfSpeech.Indeclinable);
 	    } else if (t == 1) {
-	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);  // Todo: correct values
-	    } else if (t == 2) {
 	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+	    } else if (t == 2) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Pronoun);
         } else if (t == 3) {
-            posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+            posAtt.setPartOfSpeech(PartOfSpeech.Verb);
         } else if (t == 4) {
             posAtt.setPartOfSpeech(PartOfSpeech.Preverb);
         }
