@@ -42,6 +42,7 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 
+import io.bdrc.lucene.sa.PartOfSpeechAttribute.PartOfSpeech;
 import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
 
@@ -813,7 +814,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
 			changeTypeOfToken(metaData[3]);
-//			changePartOfSpeech(metaData[4]);
+			changePartOfSpeech(metaData[4]);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -1058,19 +1059,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
 	}
 
-//	private void changePartOfSpeech(int t) {
-//	    if (t == 0) {
-//	        posAtt.setPartOfSpeech(PartOfSpeech.Indeclinable);
-//	    } else if (t == 1) {
-//	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
-//	    } else if (t == 2) {
-//	        posAtt.setPartOfSpeech(PartOfSpeech.Pronoun);
-//        } else if (t == 3) {
-//            posAtt.setPartOfSpeech(PartOfSpeech.Verb);
-//        } else if (t == 4) {
-//            posAtt.setPartOfSpeech(PartOfSpeech.Preverb);
-//        }
-//	}
+	private void changePartOfSpeech(int t) {
+	    if (t == 0) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Indeclinable);
+	    } else if (t == 1) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Noun);
+	    } else if (t == 2) {
+	        posAtt.setPartOfSpeech(PartOfSpeech.Pronoun);
+        } else if (t == 3) {
+            posAtt.setPartOfSpeech(PartOfSpeech.Verb);
+        } else if (t == 4) {
+            posAtt.setPartOfSpeech(PartOfSpeech.Preposition);
+        }
+	}
 	
 	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
@@ -1143,7 +1144,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    final String lemma = l.substring(0, underscore);
 	                    final int pos = Integer.valueOf(l.substring(underscore + 1));
 					    final PreToken newToken = new PreToken(lemma, 
-					            new Integer[] {value[0], value[1], l.length(), 2, pos});
+					            new Integer[] {value[0], value[1], lemma.length(), 2, pos});
 						totalTokens.add(newToken);	
 						// use same indices for all (all are from the same inflected form)
 					}

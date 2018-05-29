@@ -17,12 +17,11 @@ public interface PartOfSpeechAttribute extends Attribute {
       Noun,         // encoded as 1 
       Pronoun,      // encoded as 2
       Verb,         // encoded as 3
-      Preverb,      // encoded as 4
+      Preposition,      // encoded as 4
       
       // remaining default tags 
       Adjective, 
-      Adverb, 
-      Preposition, 
+      Adverb,  
       Conjunction, 
       Article, 
       Unknown
