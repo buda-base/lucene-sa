@@ -40,10 +40,11 @@ public class TestFilters {
     static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
         try {
             List<String> termList = new ArrayList<String>();
+            PartOfSpeechAttribute posAttribute= tokenStream.addAttribute(PartOfSpeechAttribute.class);
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
             while (tokenStream.incrementToken()) {
-                System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
+                System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
                 if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
                 } else if (typeAttribute.type().equals("word")) {
