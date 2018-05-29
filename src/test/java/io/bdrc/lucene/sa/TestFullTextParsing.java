@@ -86,6 +86,7 @@ public class TestFullTextParsing
 			List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
+			PartOfSpeechAttribute posAttribute= tokenStream.addAttribute(PartOfSpeechAttribute.class);
 			while (tokenStream.incrementToken()) {
                 if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
@@ -94,7 +95,7 @@ public class TestFullTextParsing
                 } else if (typeAttribute.type().equals("lemma")) {
                     termList.add(charTermAttribute.toString()+"√");
                 } 
-				System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
+				System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
 			}
 			System.out.println("1 " + String.join(" ", expected));
 			System.out.println("2 " + String.join(" ", termList) + "\n");
