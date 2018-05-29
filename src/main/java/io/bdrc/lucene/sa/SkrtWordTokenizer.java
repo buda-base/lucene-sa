@@ -1306,6 +1306,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			final PreToken nextToken = totalTokens.removeFirst();
 			final Integer[] metaData = nextToken.getMetadata();
 			termAtt.setEmpty().append(nextToken.getString());
+			changePartOfSpeech(metaData[4]);
 			changeTypeOfToken(metaData[3]);
 			termAtt.setLength(metaData[2]);
 			finalOffset = correctOffset(metaData[1]);
