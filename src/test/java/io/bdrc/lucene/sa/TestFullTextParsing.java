@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -50,11 +49,9 @@ public class TestFullTextParsing
 	static private SkrtWordTokenizer fillWordTokenizer() {
 		try {
 			skrtWordTokenizer = new SkrtWordTokenizer(true);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
 		return skrtWordTokenizer;
 	}
 	

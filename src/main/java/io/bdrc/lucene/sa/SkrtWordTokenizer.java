@@ -20,8 +20,6 @@
 package io.bdrc.lucene.sa;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,9 +104,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	        init(stream);
 	    }
 	}
+
+    public SkrtWordTokenizer(boolean debug) throws Exception {
+        this();
+        this.debug = debug;
+    }
 	
 	/**
 	 * Builds the Trie using the the given file
+	 * (might take a long time, depending on the size of the Trie to build)
+	 * 
 	 * @param filename the file containing the entries of the Trie
      * @throws FileNotFoundException the file containing the Trie can't be found
      * @throws IOException the file containing the Trie can't be read
@@ -116,6 +121,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
 		init(filename);
 	}
+	
+    public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
+        this(filename);
+        this.debug = debug;
+    }
 	
 	/**
 	 * Opens an already compiled Trie
@@ -126,6 +136,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public SkrtWordTokenizer(InputStream trieStream) throws FileNotFoundException, IOException {
 		init(trieStream);
 	}
+
+    public SkrtWordTokenizer(boolean debug, InputStream trieStream) throws FileNotFoundException, IOException {
+        this(trieStream);
+        this.debug = debug;
+    }
 	
 	/**
 	 * Uses the given Trie
@@ -135,55 +150,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		init(trie);
 	}
 	
-	/**
-	 * Not for production. Will attempt to write the built trie to file.
-	 * 
-	 * @param debug prints messages if true
-	 * @throws FileNotFoundException  file not found
-	 * @throws IOException  file can't be read
-	 */
-	public SkrtWordTokenizer(boolean debug) throws FileNotFoundException, IOException {
-		String fileCompiledTrieName = "src/main/resources/" + compiledTrieName;
-	    if (!new File(fileCompiledTrieName).exists()) {
-			final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
-			        + "\n\tAborting...";
-			throw new MissingResourceException(msg, "", "");
-		}
-		init(new FileInputStream(fileCompiledTrieName));
-		this.debug = debug;
-	}
-	
-	/**
-	 * Builds the Trie using the the given file. Prints debug info
-	 * @param debug print debug information
-	 * @param filename the file containing the entries of the Trie
-     * @throws FileNotFoundException the file containing the Trie can't be found
-     * @throws IOException the file containing the Trie can't be read
-	 */
-	public SkrtWordTokenizer(boolean debug, String filename, boolean mergePreverbs) throws FileNotFoundException, IOException {
-		init(filename);
-		this.debug = debug;
-	}
-
-	/**
-	 * Opens an already compiled Trie. Prints debug info
-	 * @param debug print debuging information if true
-	 * @param trieStream  an InputStream (FileInputStream, for ex.) containing the compiled Trie
-     * @throws FileNotFoundException the file containing the Trie can't be found
-     * @throws IOException the file containing the Trie can't be read
-	 */
-	public SkrtWordTokenizer(boolean debug, InputStream trieStream, boolean mergePreverbs) throws FileNotFoundException, IOException {
-		init(trieStream);
-		this.debug = debug;
-	}
-	
-	/**
-	 * Uses the given Trie. Prints debug info
-	 * @param debug print debuging information if true
-	 * @param trie a Trie built using {@link BuildCompiledTrie}
-	 */
 	public SkrtWordTokenizer(boolean debug, Trie trie) {
-		init(trie);
+		this(trie);
 		this.debug = debug;
 	}
 	

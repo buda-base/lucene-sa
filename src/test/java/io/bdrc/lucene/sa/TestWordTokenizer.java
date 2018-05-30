@@ -356,7 +356,7 @@ public class TestWordTokenizer
 	}
     
     @Test
-    public void testMultiTokenLemmaSplit() throws IOException
+    public void testMultiTokenLemmaSplit() throws Exception
     {
         System.out.println("splitting multi-token lemmas");
         String input = "guRita-guRAjYAhatAn eva";

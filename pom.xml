@@ -58,23 +58,34 @@
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
-			<version>6.4.1</version>
+			<version>${lucene.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
-			<version>6.4.1</version>
+			<version>${lucene.version}</version>
 		</dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>6.4.1</version>
+            <version>${lucene.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.sanskrit-coders</groupId>
             <artifactId>indic-transliteration_2.12</artifactId>
             <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 	</dependencies>
     <profiles>

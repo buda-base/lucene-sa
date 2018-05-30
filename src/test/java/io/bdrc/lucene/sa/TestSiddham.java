@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -41,8 +40,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.bdrc.lucene.stemmer.Trie;
-
 /**
  * Unit tests for the Sanskrit filters and SylTokenizer.
  */
@@ -53,9 +50,7 @@ public class TestSiddham
     static private SkrtWordTokenizer fillWordTokenizer() {
         try {
             skrtWordTokenizer = new SkrtWordTokenizer(true);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return skrtWordTokenizer;
