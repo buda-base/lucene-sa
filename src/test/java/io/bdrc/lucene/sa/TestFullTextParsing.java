@@ -66,21 +66,6 @@ public class TestFullTextParsing
 		return tokenizer;
 	}
 	
-	static private void printTokenStream(TokenStream tokenStream) {
-		try {
-			List<String> termList = new ArrayList<String>();
-			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
-			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
-			while (tokenStream.incrementToken()) {
-				termList.add(charTermAttribute.toString());
-				System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
-			}
-			System.out.println(String.join(" ", termList) + "\n");
-		} catch (IOException e) {
-			assertTrue(false);
-		}
-	}
-	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
 			List<String> termList = new ArrayList<String>();
@@ -200,7 +185,7 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("upa√", "ita√", "i√");
+        List<String> expected = Arrays.asList("upa√", "ita√", "ita√", "i√");
         assertTokenStream(words, expected);
     }
     

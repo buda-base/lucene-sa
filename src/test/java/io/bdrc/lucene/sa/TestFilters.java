@@ -30,9 +30,7 @@ public class TestFilters {
     }
     
     static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {        
-        List<String> inputFiles = Arrays.asList(trieName + ".txt");
-        
-        Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+        Trie trie = BuildCompiledTrie.buildTrie(trieName + ".txt");
 
         return new SkrtWordTokenizer(true, trie);
     }
@@ -44,7 +42,6 @@ public class TestFilters {
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
             while (tokenStream.incrementToken()) {
-                System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
                 if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
                 } else if (typeAttribute.type().equals("word")) {
@@ -52,6 +49,7 @@ public class TestFilters {
                 } else if (typeAttribute.type().equals("lemma")) {
                     termList.add(charTermAttribute.toString()+"√");
                 } 
+                System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
             }
             System.out.println("1 " + String.join(" ", expected));
             System.out.println("2 " + String.join(" ", termList) + "\n");

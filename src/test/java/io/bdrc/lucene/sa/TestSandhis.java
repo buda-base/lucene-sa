@@ -77,10 +77,8 @@ public class TestSandhis
 		assertTokenStream(syllables, expected);
 	}
 	
-	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {		
-		List<String> inputFiles = Arrays.asList(trieName + ".txt");
-		
-		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {
+		Trie trie = BuildCompiledTrie.buildTrie(trieName + ".txt");
 		
 		return new SkrtWordTokenizer(true, trie);
 	}

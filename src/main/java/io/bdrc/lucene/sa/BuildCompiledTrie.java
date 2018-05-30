@@ -5,11 +5,10 @@ import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.List;
 
 import io.bdrc.lucene.stemmer.Reduce;
 import io.bdrc.lucene.stemmer.Trie;
@@ -25,33 +24,23 @@ public class BuildCompiledTrie {
 	 */
 	
 	static String outFile = "src/main/resources/skrt-compiled-trie.dump";
-	public static List<String> inputFiles = Arrays.asList(
-			"resources/sanskrit-stemming-data/output/trie_content.txt"	// all Sanskrit Heritage entries + custom entries
-			);
+	public static String inputFile = "resources/sanskrit-stemming-data/output/trie_content.txt";
 	
-	public static void main(String [] args){
-		
-		try {
+	public static void main(String [] args) throws IOException{
 			Trie trie = compileTrie();
 			storeTrie(trie, outFile);
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
 	 * used in {@link SkrtWordTokenizer} constructors
 	 * 
-	 * builds the Trie, then stores it to a file (no optimization)
+	 * builds the Trie
 	 * 
 	 * @throws FileNotFoundException  input or output file not found
 	 * @throws IOException  input can't be read or output can't be written
 	 */
-	public static Trie compileTrie() throws FileNotFoundException, IOException {
-		Trie trie = new Reduce().optimize(buildTrie(inputFiles));
+	public static Trie compileTrie() throws IOException {
+		Trie trie = new Reduce().optimize(buildTrie(inputFile));
 		return trie;
 	}
 	
@@ -62,38 +51,35 @@ public class BuildCompiledTrie {
 	 * @throws FileNotFoundException  input file not found
 	 * @throws IOException  output file can't be written
 	 */
-	public static Trie buildTrie(List<String> inputFiles) throws FileNotFoundException, IOException {
+	public static Trie buildTrie(String filename) throws IOException {
 		System.out.println("\tBuilding the Trie from the raw text file… It will take some time!");
 	    long one = System.currentTimeMillis();
 		/* Fill the Trie with the content of all inputFiles*/
 		Trie trie = new Trie(true);
-		for (String filename: inputFiles) {
-			try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-				String line;
-				while ((line = br.readLine()) != null) {
-					final int sepIndex = line.indexOf(',');
-					if (sepIndex == -1) {
-						throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
-					} else {
-						trie.add(line.substring(0, sepIndex), line.substring(sepIndex+1));
-					}
-				}
-			}
-		}
+		BufferedReader br = CommonHelpers.getFileContent(filename);
+		String line;
+		while ((line = br.readLine()) != null) {
+            final int sepIndex = line.indexOf(',');
+            if (sepIndex == -1) {
+                throw new IllegalArgumentException("The dictionary file is corrupted in the following line.\n" + line);
+            } else {
+                trie.add(line.substring(0, sepIndex), line.substring(sepIndex+1));
+            }
+        }
 		long two = System.currentTimeMillis();
-		System.out.println("\tTime: " + (two - one) / 1000 + "s.");
+		String msg = "\tTime: " + (two - one) / 1000 + "s.";
+		System.out.println(msg);
+		CommonHelpers.logger.info(msg);
 		return trie;
 	}
-	
-	/**
-	 * 
-	 * @param trie  the trie to store in binary format
-	 * @param outFilename  the path+filename of the output file
-     * @throws FileNotFoundException  output file not found
-     * @throws IOException  output file can't be written
-	 */
-	public static void storeTrie(Trie trie, String outFilename) throws FileNotFoundException, IOException {
-		OutputStream output = new DataOutputStream(new FileOutputStream(outFilename));
-		trie.store((DataOutput) output);
-	}	
+    
+    public static void storeTrie(Trie trie, String outFilename) throws IOException {
+        try {
+            OutputStream output = new DataOutputStream(new FileOutputStream(outFilename));
+            trie.store((DataOutput) output);
+        } catch (FileNotFoundException e) {
+            CommonHelpers.logger.info("could not find file {}", outFilename);
+            return;
+        }
+    }
 }

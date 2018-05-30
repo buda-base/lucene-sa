@@ -76,9 +76,9 @@ public class FullLuceneShowcase {
         String query = "loka";
 
         // indexing in words, from iats, with stopwords
-        Analyzer indexingAnalyzer = new SanskritAnalyzer(true, 2, "src/main/resources/skrt-stopwords.txt");
+        Analyzer indexingAnalyzer = new SanskritAnalyzer(true, 2, "skrt-stopwords.txt");
         // querying in words, from SLP, with stopwords  
-        Analyzer queryingAnalyzer = new SanskritAnalyzer(true, 0, "src/main/resources/skrt-stopwords.txt");
+        Analyzer queryingAnalyzer = new SanskritAnalyzer(true, 0, "skrt-stopwords.txt");
 
         File testSubFolder = folder.newFolder("test");
 

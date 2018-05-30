@@ -27,12 +27,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -55,13 +55,20 @@ import io.bdrc.lucene.stemmer.Trie;
  *
  * <p>
  * The necessary information for unsandhying finals and initials is taken from
- * {@code resources/sanskrit-stemming-data/output/total_output.txt} 
+ * {@code resources/sanskrit-stemming-data/output/total_output.txt} (a submodule).
  * 
- * <br>
+ * <p>
  * Due to its design, this tokenizer doesn't deal with contextual ambiguities.<br>
  * For example, "nagaraM" could either be a word of its own or "na" + "garaM",
- * but is always parsed as a single word
- *
+ * but is always parsed as a single word in the default behavior.
+ * <br>
+ * In order to get the correct segmentation, we provide a mechanism to include
+ * custom entries in the Trie that will contain multi-token lemmas. The provided information
+ * will then be used by this tokenizer to correctly tokenize the problematic passages. 
+ * <p>
+ * See <a href="https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data#multi-token-lemmas">here</a>
+ * for more information.
+ * <p>
  * Derived from Lucene 6.4.1 CharTokenizer, but differs by using a RollingCharBuffer
  * to still find tokens that are on the IO_BUFFER_SIZE (4096 chars)
  *
@@ -73,7 +80,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private Trie scanner;
 	private boolean debug = false;
-	String compiledTrieName = "src/main/resources/skrt-compiled-trie.dump";
+	String compiledTrieName = "skrt-compiled-trie.dump";
 
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -82,7 +89,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
 
 	/**
-	 * Default constructor: uses the default compiled Trie, builds it if it is missing.
+	 * Default constructor: uses the default compiled Trie, builds it in memory if it is missing.
 	 * 
 	 * @throws FileNotFoundException the file containing the Trie can't be found
 	 * @throws IOException the file containing the Trie can't be read
@@ -90,16 +97,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
 	    InputStream stream = null;
-	    stream = SkrtWordTokenizer.class.getResourceAsStream("/skrt-compiled-trie.dump");
-	    if (stream == null) {  // we're not using the jar, there is no resource, assuming we're running the code
-	        if (!new File(compiledTrieName).exists()) {
-	            System.out.println("The default compiled Trie is not found ; building it will take some time!");
-	            long start = System.currentTimeMillis();
-	            BuildCompiledTrie.compileTrie();
-	            long end = System.currentTimeMillis();
-	            System.out.println("Trie built and stored in " + (end - start) / 1000 + "s.");
-	        }
-	        init(new FileInputStream(compiledTrieName));    
+	    stream = CommonHelpers.getResourceOrFile(compiledTrieName);
+	    if (stream == null) {
+	        final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
+	                + "\n\tAborting...";
+	        throw new MissingResourceException(msg, "", "");
 	    } else {
 	        init(stream);
 	    }
@@ -133,15 +135,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		init(trie);
 	}
 	
+	/**
+	 * Not for production. Will attempt to write the built trie to file.
+	 * 
+	 * @param debug prints messages if true
+	 * @throws FileNotFoundException  file not found
+	 * @throws IOException  file can't be read
+	 */
 	public SkrtWordTokenizer(boolean debug) throws FileNotFoundException, IOException {
-		if (!new File(compiledTrieName).exists()) {
-			System.out.println("Default compiled Trie is not found\nCompiling it and writing it to file…");
-			long start = System.currentTimeMillis();
-			BuildCompiledTrie.compileTrie();
-			long end = System.currentTimeMillis();
-			System.out.println("Time: " + (end - start) / 1000 + "s.");
+		String fileCompiledTrieName = "src/main/resources/" + compiledTrieName;
+	    if (!new File(fileCompiledTrieName).exists()) {
+			final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
+			        + "\n\tAborting...";
+			throw new MissingResourceException(msg, "", "");
 		}
-		init(new FileInputStream(compiledTrieName));
+		init(new FileInputStream(fileCompiledTrieName));
 		this.debug = debug;
 	}
 	
@@ -187,12 +195,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @throws IOException compiled trie could not open
 	 */
 	private void init(InputStream inputStream) throws FileNotFoundException, IOException {
-	    System.out.println("Loading the compiled Trie…");
 	    long start = System.currentTimeMillis();
-	    DataInputStream inStream = new DataInputStream(inputStream);
-		this.scanner = new Trie(inStream);
+		this.scanner = new Trie(new DataInputStream(inputStream));
 		long end = System.currentTimeMillis();
-		System.out.println("Time: " + (end - start) / 1000 + "s.");
+		String msg = "Trie loaded in: " + (end - start) / 1000 + "s.";
+		CommonHelpers.logger.info(msg);
+		System.out.println(msg);
 		
 		ioBuffer = new RollingCharBuffer();
 		ioBuffer.reset(input);
@@ -206,7 +214,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
      * @throws IOException trie could not open
 	 */
 	private void init(String filename) throws FileNotFoundException, IOException {
-		this.scanner = BuildCompiledTrie.buildTrie(Arrays.asList(filename));
+		this.scanner = BuildCompiledTrie.buildTrie(filename);
 		
 		ioBuffer = new RollingCharBuffer();
 		ioBuffer.reset(input);

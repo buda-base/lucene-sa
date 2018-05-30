@@ -69,19 +69,12 @@ public class TestSiddham
         return tokenizer;
     }
     
-    static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {        
-        List<String> inputFiles = Arrays.asList(trieName + ".txt");
-        
-        Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
-
-        return new SkrtWordTokenizer(true, trie);
-    }
-    
     static private List<String> generateTokenStream(TokenStream tokenStream) {
         try {
             List<String> termList = new ArrayList<String>();
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
             TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
+            PartOfSpeechAttribute posAttribute= tokenStream.addAttribute(PartOfSpeechAttribute.class);
             while (tokenStream.incrementToken()) {
                 if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
@@ -90,6 +83,7 @@ public class TestSiddham
                 } else if (typeAttribute.type().equals("lemma")) {
                     termList.add(charTermAttribute.toString()+"√");
                 } 
+                System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
             }
             System.out.println("1 " + String.join(" ", termList) + "\n");
             return termList;
@@ -124,7 +118,6 @@ public class TestSiddham
         System.out.println("non-maximal match 2");
         String input = "loke ’vināśi praṇāme ’py artti";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/avagraha_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -140,7 +133,6 @@ public class TestSiddham
         System.out.println("non-maximal match 2");
         String input = "śrī- loke śāstra anekāny evam sadṛśāny evam vṛtte praṇāme ";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -155,7 +147,6 @@ public class TestSiddham
     {
         String input = "sphuṭoddhvaṃsita";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -171,7 +162,6 @@ public class TestSiddham
         System.out.println("non-maximal match 2");
         String input = "praṇāme ";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -186,7 +176,6 @@ public class TestSiddham
     {
         String input = "bhāva";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -201,7 +190,6 @@ public class TestSiddham
     {
         String input = "sabhyeṣūcchvasiteṣu";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -216,7 +204,6 @@ public class TestSiddham
     {
         String input = "tattvekṣiṇā";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -231,7 +218,6 @@ public class TestSiddham
     {
         String input = "pitrābhihito";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -246,7 +232,6 @@ public class TestSiddham
     {
         String input = "pāhy evam";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -261,7 +246,6 @@ public class TestSiddham
     {
         String input = "urvvīm";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -276,7 +260,6 @@ public class TestSiddham
     {
         String input = "dṛṣṭvā";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -291,7 +274,6 @@ public class TestSiddham
     {
         String input = "keciT";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -306,7 +288,6 @@ public class TestSiddham
     {
         String input = "kecic charaṇam";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -321,7 +302,6 @@ public class TestSiddham
     {
         String input = "praṇāme ’py artti";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -336,7 +316,6 @@ public class TestSiddham
     {
         String input = "paricārakīkṛta";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -351,7 +330,6 @@ public class TestSiddham
     {
         String input = "nyāyārjane rthasya";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -366,7 +344,6 @@ public class TestSiddham
     {
         String input = "kavitākīrtti kavitākīrtti atikramati adhikaroti";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -381,7 +358,6 @@ public class TestSiddham
     {
         String input = "saṃtataṃ ciraṃ sudarśanaṃ";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -396,7 +372,6 @@ public class TestSiddham
     {
         String input = "samaye nivāsya pātra-cīvaram";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -411,7 +386,6 @@ public class TestSiddham
     {
         String input = "phalāprāpti-sambhāvanālakṣaṇānarthāvāptiśaṅketi";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -431,7 +405,6 @@ public class TestSiddham
     {
         String input = "uṣyaṃ tattva";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -446,14 +419,13 @@ public class TestSiddham
     {
         String input = "upetaiḥ| ";
         System.out.println("0 " + input);
-//        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/SAstra_test");
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-//        List<String> tokens = generateTokenStream(words);
-//        List<String> expected = Arrays.asList("uz√", "vas√", "M❌", "tattva✓");
-//        assertThat(tokens, is(expected));
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("upa√", "ita√", "ita√", "i√");
+        assertThat(tokens, is(expected));
     }
     
     @AfterClass

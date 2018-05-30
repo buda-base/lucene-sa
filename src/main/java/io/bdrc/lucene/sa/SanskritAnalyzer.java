@@ -48,9 +48,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	boolean segmentInWords = false;
 	boolean mergePrepositions = true;
 	int inputEncoding = 0;
-	CharArraySet skrtStopWords;
-	@SuppressWarnings("unused")
-	private CharArraySet srktStopSet;
+	CharArraySet skrtStopWords = null;
 	
 	/**
 	 * Creates a new {@link SanskritAnalyzer}
@@ -66,19 +64,13 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * @throws FileNotFoundException  the file containing the stoplist can not be read
 	 * @throws IOException  the file containing the stoplist can not be found
 	 */
-	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename) throws FileNotFoundException, IOException {
+	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename) throws IOException {
 		this.segmentInWords = segmentInWords;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-		      InputStream stream = null;
-		      stream = SanskritAnalyzer.class.getResourceAsStream("/skrt-stopwords.txt");
-		      if (stream == null ) {    // we're not using the jar, these is no resource, assuming we're running the code
-		          this.srktStopSet = StopFilter.makeStopSet(getWordList(new FileInputStream(stopFilename), "#"));
-		      } else {
-		          this.srktStopSet = StopFilter.makeStopSet(getWordList(stream, "#"));
-		      }
-		} else {
-			this.skrtStopWords = null;
+            InputStream stream = null;
+            stream = CommonHelpers.getResourceOrFile(stopFilename);
+            this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		}
 	}
 	
@@ -108,7 +100,7 @@ public final class SanskritAnalyzer extends Analyzer {
      * @throws FileNotFoundException  the file containing the stoplist can not be read
      * @throws IOException  the file containing the stoplist can not be found
      */
-	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename, boolean mergePrepositions) throws FileNotFoundException, IOException {
+	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename, boolean mergePrepositions) throws IOException {
 	    this(segmentInWords, inputEncoding, stopFilename);
 	    this.mergePrepositions = mergePrepositions;
 	}
@@ -122,8 +114,8 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * @throws IOException the file containing the stoplist can not be read
 	 * @throws FileNotFoundException  the file containing the stoplist can not be found 
 	 */
-	public SanskritAnalyzer() throws FileNotFoundException, IOException {
-		this(true, 0, "src/main/resources/skrt-stopwords.txt");
+	public SanskritAnalyzer() throws IOException {
+		this(true, 0, "skrt-stopwords.txt");
 	}
 	
 	/**
@@ -185,8 +177,10 @@ public final class SanskritAnalyzer extends Analyzer {
 				source = new SkrtWordTokenizer();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+				return null;
 			} catch (IOException e) {
 				e.printStackTrace();
+				return null;
 			}
 		} else {
 			source = new SkrtSyllableTokenizer();

@@ -58,10 +58,8 @@ public class TestWordTokenizer
 		return tokenizer;
 	}
 	
-	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {		
-		List<String> inputFiles = Arrays.asList(trieName + ".txt");
-		
-		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
+	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {
+		Trie trie = BuildCompiledTrie.buildTrie(trieName + ".txt");
 
 		return new SkrtWordTokenizer(true, trie);
 	}
@@ -71,6 +69,7 @@ public class TestWordTokenizer
 			List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
+            PartOfSpeechAttribute posAttribute= tokenStream.addAttribute(PartOfSpeechAttribute.class);
 			while (tokenStream.incrementToken()) {
                 System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
                 if (typeAttribute.type().equals("non-word")) {
@@ -79,7 +78,8 @@ public class TestWordTokenizer
                     termList.add(charTermAttribute.toString()+"✓");
                 } else if (typeAttribute.type().equals("lemma")) {
                     termList.add(charTermAttribute.toString()+"√");
-                } 
+                }
+                System.out.println(charTermAttribute.toString() + ", tokenType: " + typeAttribute.type()+ ", POS: " + posAttribute.getPartOfSpeech());
 			}
 			System.out.println("1 " + String.join(" ", expected));
 			System.out.println("2 " + String.join(" ", termList) + "\n");
