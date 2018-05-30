@@ -63,7 +63,7 @@ public class TestWordTokenizer
 		
 		Trie trie = BuildCompiledTrie.buildTrie(inputFiles);
 
-		return new SkrtWordTokenizer(true, trie, true);
+		return new SkrtWordTokenizer(true, trie);
 	}
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
@@ -363,7 +363,7 @@ public class TestWordTokenizer
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("guRita✓", "guRa√", "AjYA√", "A√", "han√", "eva✓");
         System.out.println("0 " + input);
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true, true);
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true);
         TokenStream syllables = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(syllables, expected);
     }
