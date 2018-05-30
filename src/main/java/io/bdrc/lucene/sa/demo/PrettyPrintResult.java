@@ -1,6 +1,5 @@
 package io.bdrc.lucene.sa.demo;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -35,7 +34,7 @@ public class PrettyPrintResult {
     static SLPToIAST slp2iast = new SLPToIAST();
     static DvnToSLP deva2slp = new DvnToSLP();
     
-    public static void main(String[] args) throws FileNotFoundException, IOException{
+    public static void main(String[] args) throws Exception{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
         inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);

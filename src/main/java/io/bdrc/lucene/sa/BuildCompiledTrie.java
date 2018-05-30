@@ -34,8 +34,8 @@ public class BuildCompiledTrie {
 	 * 
 	 * builds the Trie
 	 * 
-	 * @throws FileNotFoundException  input or output file not found
 	 * @throws IOException  input can't be read or output can't be written
+	 * @return the built Trie
 	 */
 	public static Trie compileTrie() throws IOException {
 		Trie trie = new Reduce().optimize(buildTrie(inputFile));
@@ -44,9 +44,8 @@ public class BuildCompiledTrie {
 	
 	/** 
 	 * 
-	 * @param inputFiles  the list of files to feed the Trie with
+	 * @param filename  the file with the Trie's content
 	 * @return the non-optimized Trie
-	 * @throws FileNotFoundException  input file not found
 	 * @throws IOException  output file can't be written
 	 */
 	public static Trie buildTrie(String filename) throws IOException {

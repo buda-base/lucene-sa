@@ -174,13 +174,10 @@ public final class SanskritAnalyzer extends Analyzer {
 		if (segmentInWords) {
 			try {
 				source = new SkrtWordTokenizer();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return null;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
+			} catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
 		} else {
 			source = new SkrtSyllableTokenizer();
 		}		

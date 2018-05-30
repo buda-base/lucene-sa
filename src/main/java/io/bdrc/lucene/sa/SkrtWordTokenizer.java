@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -88,18 +87,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	/**
 	 * Default constructor: uses the default compiled Trie, builds it in memory if it is missing.
-	 * 
-	 * @throws FileNotFoundException the file containing the Trie can't be found
-	 * @throws IOException the file containing the Trie can't be read
+	 * @throws Exception missing resource
 	 * 
 	 */
-	public SkrtWordTokenizer() throws FileNotFoundException, IOException {
+	public SkrtWordTokenizer() throws Exception {
 	    InputStream stream = null;
 	    stream = CommonHelpers.getResourceOrFile(compiledTrieName);
 	    if (stream == null) {
 	        final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
 	                + "\n\tAborting...";
-	        throw new MissingResourceException(msg, "", "");
+	        throw new Exception(msg);
 	    } else {
 	        init(stream);
 	    }

@@ -10,7 +10,10 @@ public class PartOfSpeechAttributeImpl extends AttributeImpl implements PartOfSp
     
     public PartOfSpeechAttributeImpl() {}
     
-    /** Initialize this attribute with <code>pos</code> */
+    /**
+     * Initialize this attribute with <code>pos</code>
+     * @param pos part of speech
+     */
     public PartOfSpeechAttributeImpl(PartOfSpeech pos) {
         super();
         this.pos = pos;
