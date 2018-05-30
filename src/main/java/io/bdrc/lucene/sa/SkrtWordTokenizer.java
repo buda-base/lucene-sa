@@ -808,8 +808,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		    
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
-		    if (mergePreverbs)
-		        mergePreverbs();
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
@@ -823,10 +821,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return true;						// we exit incrementToken()
 		}
 	}
-	
-	private void mergePreverbs() {
-        System.out.println("test");
-    }
 
     /**
 	 * Splits tokens that have a multi-token lemma.
