@@ -30,9 +30,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -71,7 +71,6 @@ public class TestWordTokenizer
 			TypeAttribute typeAttribute = tokenStream.addAttribute(TypeAttribute.class);
             PartOfSpeechAttribute posAttribute= tokenStream.addAttribute(PartOfSpeechAttribute.class);
 			while (tokenStream.incrementToken()) {
-                System.out.println(charTermAttribute.toString() + " tokenType: " + typeAttribute.type());
                 if (typeAttribute.type().equals("non-word")) {
                     termList.add(charTermAttribute.toString()+"❌");
                 } else if (typeAttribute.type().equals("word")) {
@@ -105,9 +104,9 @@ public class TestWordTokenizer
     {
     	System.out.println("CmdParser: parse cmd of Darma");
     	String input = "$/=0#0|$-0+n/=0#1|r$-0+n/- r+f=1#1|cC$-0+n/- cC+C=8#1|$/=0#1|r$/- r+f=1#1|cC$/- cC+C=8#1|A:i:I:u:U:f:e:E:o:O$-0+n/- +=1#1|A:i:I:u:U:f:e:E:o:O$/- +=1#1";
-    	String expected = "{acC=[0+n/C=8#1, 0+/C=8#1], aA=[0+n/A=1#1], aE=[0+n/E=1#1], aI=[0+n/I=1#1], aO=[0+n/O=1#1], aU=[0+n/U=1#1], ae=[0+n/e=1#1], af=[0+n/f=1#1], ai=[0+n/i=1#1], ao=[0+n/o=1#1], ar=[0+/f=1#1, 0+n/f=1#1], au=[0+n/u=1#1], a=[0+n=0#1]}";
+    	String expected = "{acC=[0+/C=8#1, 0+n/C=8#1], aA=[0+n/A=1#1], aE=[0+n/E=1#1], aI=[0+n/I=1#1], aO=[0+n/O=1#1], aU=[0+n/U=1#1], ae=[0+n/e=1#1], af=[0+n/f=1#1], ai=[0+n/i=1#1], ao=[0+n/o=1#1], ar=[0+/f=1#1, 0+n/f=1#1], au=[0+n/u=1#1], a=[0+n=0#1]}";
     	System.out.println("0 " + input);
-    	Map<String, HashSet<String>> res = new CmdParser().parse("Darma", input);    	
+    	Map<String, TreeSet<String>> res = new CmdParser().parse("Darma", input);    	
     	System.out.println("1 " + expected);
     	System.out.println("2 " + res.toString() + "\n");
     	assertTrue(res.toString().equals(expected));
@@ -158,7 +157,7 @@ public class TestWordTokenizer
 		System.out.println("sandhied compounds");
 		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darman√", "Darma√", "aTa✓", "Darman√", "Darma√", "ADa❌", "Darman√", "Darma√", "aTa✓");
+		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa✓", "Darma√", "Darman√", "aDa❌", "Darma√", "Darman√", "aTa✓");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -169,7 +168,7 @@ public class TestWordTokenizer
 	public void testStartingWithNonword() throws IOException
 	{
 		System.out.println("Testing input starting with non-word");
-		String input = "aTaAB CDEaTaFGH IJaTa"; // Darm is not in the Trie, aTa is
+		String input = "aTaAB CDEaTaFGH IJaTa";
 		Reader reader = new StringReader(input);
 		List<String> expected = Arrays.asList("aTa✓", "AB❌", "CDE❌", "aTa✓", "FGH❌", "IJ❌", "aTa✓");
 		System.out.println("0 " + input);
@@ -275,7 +274,7 @@ public class TestWordTokenizer
 		System.out.println("deleting initials on end of input");
 		String input = "kanyA";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("kanya√", "kanyA√", "kana√");
+		List<String> expected = Arrays.asList("kana√", "kanyA√", "kanya√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -290,17 +289,20 @@ public class TestWordTokenizer
 													+"'nAmA is split here because we lemmatize and 'na' exists in the Trie"); 
 		String input = "aTa rAjakanyA candravatI nAmABinavarupayOvanasampannA saKIdvitIyEkasminmahotsavadivase nagaraM nirikzamARAsti";
 		Reader reader = new StringReader(input);
-//		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanya√", "kana√", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
-//		        "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava√", "divasa√", "na✓", "garaM❌", "nirikzamARAsti❌");
-		// fAja❌ is due to "r$/- r+f=1#0" found in the cmd of aTa
+		// Ideally: 
+		// "aTa√", "rAj√", "rAjan√", "kanya√", "kana√", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
+		// "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava√", "divasa√", "na✓", "garaM❌", "nirikzamARAsti❌");
+		
+		// fAja❌ is due to a sandhi("r$/- r+f=1#0") found in the cmd of aTa 
+		//                 and to the fact a space is not a word-break since sandhis can be applied across spaces 
 		// kanyA✓ is due to the context not allowing any sandhi from the cmd
 		// utsava✓ idem
-		List<String> refactorExpected = Arrays.asList("aTa√", "fAja❌", "kanyA✓", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
+		List<String> expected = Arrays.asList("aTa√", "fAja❌", "kanyA✓", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
                 "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava✓", "divasa√", "na✓", "garaM❌", "nirikzamARAsti❌");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, refactorExpected);
+		assertTokenStream(syllables, expected);
 	}
     
     @Test
@@ -308,11 +310,11 @@ public class TestWordTokenizer
     { 
         String input = "varupayOvanasampannA ";
         Reader reader = new StringReader(input);
-        List<String> refactorExpected = Arrays.asList("varupayOva❌", "na✓", "sampannA❌");
+        List<String> expected = Arrays.asList("varupayOva❌", "na✓", "sampannA❌");
         System.out.println("0 " + input);
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
         TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-        assertTokenStream(syllables, refactorExpected);
+        assertTokenStream(syllables, expected);
     }
     
     @Test
@@ -347,7 +349,7 @@ public class TestWordTokenizer
 		System.out.println("mixed SLP non-SLP");
 		String input = "«»(**-éàÀ%$–@)aTa rAjakanyA«»(**- éàÀ%$–@)aTa rAjakanyA «»(**- éàÀ%$–@)";
 		Reader reader = new StringReader(input);
-//		List<String> expected = Arrays.asList("aTa✓", "rAj√", "rAjan√", "kanyA√", "aTa✓", "rAj✓", "rAjan✓", "kanyA✓");
+        //  same remark as for testLongInput() about rAja
 		List<String> expected = Arrays.asList("aTa√", "fAja❌", "kanyA✓", "aTa√", "fAja❌", "kanyA✓");    // due to "r$/- r+f=1#0" found in the cmd of aTa
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
@@ -374,12 +376,12 @@ public class TestWordTokenizer
 		System.out.println("bug1");
 		String input = "aTa rAjakanyA";
 		Reader reader = new StringReader(input);
-//		List<String> expected = Arrays.asList("aTa√", "rAj√", "rAjan√", "kanyA✓");
-		List<String> refactorExpected = Arrays.asList("aTa√", "fAja❌", "kanyA✓");    // due to "r$/- r+f=1#0" found in the cmd of aTa
+		//	same remark as for testLongInput() about rAja
+		List<String> expected = Arrays.asList("aTa√", "fAja❌", "kanyA✓");    // due to "r$/- r+f=1#0" found in the cmd of aTa
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
-		assertTokenStream(syllables, refactorExpected);
+		assertTokenStream(syllables, expected);
 	}
 
     @Test
@@ -388,7 +390,7 @@ public class TestWordTokenizer
 		System.out.println("bug2");
 		String input = "kanyA candravatI";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("kanya√", "kanyA√", "kana√", "candravatI❌");
+		List<String> expected = Arrays.asList("kana√", "kanyA√", "kanya√", "candravatI❌");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);

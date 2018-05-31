@@ -20,8 +20,8 @@
 package io.bdrc.lucene.sa;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /** 
  * Parses cmds from the total Trie {@code total_output.txt} and reconstructs
@@ -52,7 +52,7 @@ public class CmdParser {
 	private String initialCharsOriginal = null;
 	private String toAdd = null;
 	
-	private TreeMap<String, HashSet<String>> sandhis = null;
+	private TreeMap<String, TreeSet<String>> sandhis = null;
 
 	/**
 	 * note: currently, parsing cmd is not done using indexes. this method might be slow.
@@ -87,9 +87,9 @@ public class CmdParser {
 	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 	 * @return: parsed structure 
 	 */
-	public TreeMap<String, HashSet<String>> parse(String inflected, String cmd) { // TODO: create a class to parse the cmds
+	public TreeMap<String, TreeSet<String>> parse(String inflected, String cmd) {
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		sandhis = new TreeMap<String, HashSet<String>>(new LengthComp());
+		sandhis = new TreeMap<String, TreeSet<String>>(new LengthComp());
 		
 		String[] fullEntries = cmd.split("\\|");								// <fullEntry>|<fullEntry>|<...>
 		for (String fullEntry: fullEntries) {
@@ -221,7 +221,7 @@ public class CmdParser {
 	}
 	
 	private void addEntry(String sandhied, String unsandhied) {
-		sandhis.putIfAbsent(sandhied, new HashSet<String>());
+		sandhis.putIfAbsent(sandhied, new TreeSet<String>());
 		sandhis.get(sandhied).add(unsandhied);
 	}
 	

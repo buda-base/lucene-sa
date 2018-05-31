@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -356,6 +357,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				bufferIndex -= charCount;
 				if (tokenBuffer.length() == 0 && nonWordBuffer.length() == 0) {
 					finalOffset = correctOffset(bufferIndex);
+				    initials = null;                // discard all initial-related content
+				    initialsIterator = null;
+				    initialCharsIterator = null;
 					return false;
 				}
 				break;
@@ -560,6 +564,14 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                            sandhiIndex = -1;
 	                            break;
 	                        }
+	                        resetInitialCharsIterator();
+	                        restoreInitialsOrigState();
+	                        if (wentToMaxDownTheTrie && initialsNotEmpty()) {
+	                            foundNonMaxMatch = false;
+	                            resetNonWordBuffer(0);
+	                        }
+	                        wentToMaxDownTheTrie = false;
+	                        applyOtherInitial = true;
 						} else {
 							if (foundNonMaxMatch) {
 								restoreNonMaxMatchState();
@@ -804,7 +816,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
     }
 
-    HashSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
+    TreeSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
 	    return reconstructLemmas(cmd, inflected, -1);
 	}
 	
@@ -817,16 +829,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 *
 	 * @return: the list of all the possible lemmas given the current context
 	 */
-	HashSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
-		HashSet<String> totalLemmas = new HashSet<String>();	// uses HashSet to avoid duplicates
+	TreeSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
+		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses HashSet to avoid duplicates
 		String[] t = new String[0];
 		
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 		
-		TreeMap<String, HashSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
-		for (Entry<String, HashSet<String>> current: parsedCmd.entrySet()) {
+		TreeMap<String, TreeSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		for (Entry<String, TreeSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
-			HashSet<String> diffs = current.getValue();
+			TreeSet<String> diffs = current.getValue();
 			boolean foundAsandhi = false; 
 			for (String lemmaDiff: diffs) {
 				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
@@ -1011,6 +1023,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
             posAtt.setPartOfSpeech(PartOfSpeech.Verb);
         } else if (t == 4) {
             posAtt.setPartOfSpeech(PartOfSpeech.Preposition);
+        } else {
+            posAtt.setPartOfSpeech(PartOfSpeech.Unknown);
         }
 	}
 	
@@ -1063,7 +1077,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		final String nonWord = nonWordBuffer.toString();
 		if (nonWord.length() > 0) {
 		    final PreToken newToken = new PreToken(nonWord,
-		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, 0});
+		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, -1});
 			totalTokens.add(newToken);
 			// ignore all potential tokens. add the non-word with sandhied initials
 			return true;
@@ -1202,7 +1216,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void addNonwordToPotentialTokensIfThereIsOne() {
-		if (nonWordBuffer.length() != 0) {
+		if (nonWordBuffer.length() != 0 && nonWordStart < tokenStart) {
 		    potentialTokens.put(nonWordBuffer.toString(),  
 	                new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWordBuffer.length(), 0, -1});
 		}
