@@ -316,7 +316,7 @@ public class TestSiddham
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("paricAraka√", "Ikf✓", "ij√", "fta✓");   // ought to be kfta, maxmatch issue
+        List<String> expected = Arrays.asList("paricAraka√", "Ikf✓", "ij√", "ta✓");   // ought to be kfta, maxmatch issue
         assertThat(tokens, is(expected));
     }
     
@@ -389,8 +389,8 @@ public class TestSiddham
         // Huet's reader outputs the following:
         // Pala✓, A✓, prApti✓, samBAvana✓, A✓, lakzaRa✓, an✓, arTa✓, Apti✓, SaNkA✓, iti✓
         List<String> expected = Arrays.asList(
-                "Pala√", "Pal√", "Ap✓", "a√", "prApti√", "samBAvanAl✓", "akzaR✓", 
-                "Ana√", "an√", "TA√", "av√", "av√", "ava√", "Apti✓", "ap✓", "SaNkA√", "SaNk√", "iti✓"
+                "Pal√", "Pala√", "Ap✓", "a√", "prApti√", "samBAvanAl✓", "akzaR✓", 
+                "Ana√", "an√", "TA√", "av√", "ava√", "Apti✓", "ap✓", "SaNkA√", "SaNk√", "iti✓"
                 );
         assertThat(tokens, is(expected));
     }
@@ -420,6 +420,20 @@ public class TestSiddham
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
         List<String> expected = Arrays.asList("upa√", "i√", "ita√", "ita√");
+        assertThat(tokens, is(expected));
+    }
+    
+    @Test
+    public void bug23() throws IOException
+    {
+        String input = "ānarthāvāptiśaṅketi";
+        System.out.println("0 " + input);
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("Ana√", "an√", "TA√", "av√", "ava√", "Apti✓", "ap✓", "SaNkA√", "SaNk√", "iti✓");
         assertThat(tokens, is(expected));
     }
     

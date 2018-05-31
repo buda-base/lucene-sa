@@ -103,17 +103,17 @@ public class TestFullTextParsing
         List<String> expected = Arrays.asList(
                 "yad√", "kulyA√", "kulya√", "sva√", "sva√", "at√", "a✓", "ya√", "yad√", "yas√", "yas√", "puMs√", "va✓", "tra✓", "sPurat√", 
                 "va✓", "M❌", "kza√", "sPuw√", "sPuwa√", "ut√", "DvaMs√", "pra✓", "vi√", "tan√", "ya√", "yad√", "yas√", "yas√", "prajYa√", 
-                "anu√", "saj√", "ucita✓", "suKa✓", "manasA√", "manas√", "SAstf√", "tattva√", "ArTa✓", "arTa✓", "Bartf√", "stabDa√", "han√", 
-                "na√", "ut√", "Sf✓", "sad√", "kAvya✓", "SrI√", "viroDa√", "buDa✓", "guRita✓", "guRa√", "AjYA√", "A√", "han√", "eva✓", 
-                "kftvan√", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "bahu✓", "kU√", "kIrti✓", "rAjya√", "Bunakti✓", "Ara√", 
-                "Arya√", "hi√", "eha√", "iti√", "iti√", "upagu✓", "hi√", "BA√", "BA√", "BU√", "Ba√", "Bu√", "piSuna√", "utkarRita√", "roman√", 
+                "anu√", "saj√", "ucita✓", "suKa✓", "manasA√", "manas√", "SAstf√", "tattva√", "ArTa✓", "arTa✓", "Bartf√", "stabDa√", 
+                "han√", "na√", "ut√", "Sf✓", "sad√", "kAvya✓", "SrI√", "viroDa√", "buDa✓", "guRita✓", "guRa√", "AjYA√", "A√", "han√", "eva✓", 
+                "kftvan√", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "bahu✓", "kU√", "kIrti✓", "rAjya√", "Bunakti✓", "Ara√", "Arya√", 
+                "hi√", "eha√", "iti√", "iti√", "upagu✓", "hi√", "BA√", "BA√", "BU√", "Ba√", "Bu√", "piSuna√", "utkarRita√", "roman√", 
                 "saBya√", "ut√", "Svas√", "Svasita√", "tulya✓", "kula✓", "ja✓", "mlAna√", "an✓", "A√", "ut√", "vi√", "Ikzita√", "Ikzitf√", 
-                "ij√", "zi❌", "ta✓", "H❌", "snih√", "vi√", "A√", "vi√", "Alu✓", "al✓", "ul✓", "ita√", "ita√", "bAzpa✓", "guru√", "tattva√", "Ikz√", 
-                "ij√", "zziRA❌", "RA✓", "cakzus√", "yad√", "pitf√", "BI√", "aBi✓", "DA√", "hita√", "ni✓", "rA√", "rE√", "Ikz√", "Ikza√", "ij√", 
-                "an✓", "i✓", "Kila√", "pA√", "evam✓", "uru√", "iti✓", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "sadfSa√", "sadfSa√", 
-                "adButa√", "udBid√", "na✓", "harza√", "hfz√", "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "r✓", "AsvAdayat√", "kim√", "cid√", 
-                "vIra√", "vIrya√", "vIrya√", "t❌", "utta✓", "tap✓", "tAS✓", "ca✓", "kim√", "cid√", "cit√", "Cara✓", "SaraRa√", "upaga✓", 
-                "tA❌", "ya√", "yad√", "yas√", "yas√", "vftta√", "vftti√", "praRAma√", "api√", "arti✓"
+                "ij√", "z❌", "ne✓", "han√", "vi√", "A√", "vi√", "Alu✓", "al✓", "li❌", "te✓", "na✓", "bAzpa✓", "guru√", "tattva√", "Ikz√", "ij√", 
+                "cakzus√", "yad√", "pitf√", "BI√", "aBi✓", "DA√", "hita√", "ni✓", "rA√", "rE√", "Ikz√", "Ikza√", "ij√", "niKila√", "pA√", "evam✓", 
+                "uru√", "iti✓", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "sadfSa√", "sadfSa√", "adButa√", "udBid√", "na✓", "harza√", 
+                "hfz√", "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "r✓", "AsvAdayat√", "kim√", "cid√", "vIra√", "vIrya√", "vIrya√", "t❌", 
+                "utta✓", "tap✓", "tAS✓", "ca✓", "kim√", "cid√", "cit√", "Cara✓", "SaraRa√", "upaga✓", "tA❌", "ya√", "yad√", "yas√", "yas√", 
+                "vftta√", "vftti√", "praRAma√", "api√", "arti✓"
                 );
         assertTokenStream(words, expected);
     }
