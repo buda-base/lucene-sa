@@ -89,8 +89,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	/**
 	 * Default constructor: uses the default compiled Trie loaded at class level
-	 * @throws Exception missing resource
-	 * 
 	 */
 	public SkrtWordTokenizer() {
 	    this.scanner = getTrie();
