@@ -77,10 +77,10 @@ import io.bdrc.lucene.stemmer.Trie;
  */
 public final class SkrtWordTokenizer extends Tokenizer {
 	
-	private Trie scanner;
 	private boolean debug = false;
 	String compiledTrieName = "skrt-compiled-trie.dump";
-
+	private Trie scanner; 
+	
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
@@ -88,37 +88,38 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
 
 	/**
-	 * Default constructor: uses the default compiled Trie, builds it in memory if it is missing.
+	 * Default constructor: uses the default compiled Trie loaded at class level
 	 * @throws Exception missing resource
 	 * 
 	 */
-	public SkrtWordTokenizer() throws Exception {
-	    InputStream stream = null;
-	    stream = CommonHelpers.getResourceOrFile(compiledTrieName);
-	    if (stream == null) {
-	        final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
-	                + "\n\tAborting...";
-	        throw new Exception(msg);
-	    } else {
-	        init(stream);
-	    }
+	public SkrtWordTokenizer() {
+	    this.scanner = getTrie();
+	    ioBuffer = new RollingCharBuffer();
+        ioBuffer.reset(input);
 	}
 
-    public SkrtWordTokenizer(boolean debug) throws Exception {
+    public SkrtWordTokenizer(boolean debug) {
         this();
         this.debug = debug;
     }
 	
 	/**
-	 * Builds the Trie using the the given file
-	 * (might take a long time, depending on the size of the Trie to build)
+	 * Builds a Trie from a file containing raw Trie data. (might take a long time, depending on the size of the Trie to build)
+	 * <br> Does so in memory without storing to an external file.
+	 * <br> Is best used with small Tries, such as for testing purposes.
+     * <p>
+     * <a href="https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data">sanskrit-stemming-data</a> 
+     * should be used to parse custom data in the accepted format.  
 	 * 
 	 * @param filename the file containing the entries of the Trie
      * @throws FileNotFoundException the file containing the Trie can't be found
      * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
-		init(filename);
+        this.scanner = BuildCompiledTrie.buildTrie(filename);
+        
+        ioBuffer = new RollingCharBuffer();
+        ioBuffer.reset(input);
 	}
 	
     public SkrtWordTokenizer(boolean debug, String filename) throws FileNotFoundException, IOException {
@@ -127,13 +128,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
     }
 	
 	/**
-	 * Opens an already compiled Trie
+	 * Opens an already compiled Trie that was saved to disk.
+	 * <p>
+     * <a href="https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data">sanskrit-stemming-data</a> 
+     * should be used to parse custom data in the accepted format.
+     * <p> 
+     * The compiled Trie should then be built and saved to disk 
+     * with {@link BuildCompiledTrie#main(String[])}
+	 * 
 	 * @param trieStream an InputStream (FileInputStream, for ex.) containing the compiled Trie
      * @throws FileNotFoundException the file containing the Trie can't be found
      * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(InputStream trieStream) throws FileNotFoundException, IOException {
-		init(trieStream);
+	      getTrie(trieStream);
+	        
+	      ioBuffer = new RollingCharBuffer();
+	      ioBuffer.reset(input);
 	}
 
     public SkrtWordTokenizer(boolean debug, InputStream trieStream) throws FileNotFoundException, IOException {
@@ -146,7 +157,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
 	public SkrtWordTokenizer(Trie trie) {
-		init(trie);
+	    this.scanner = trie;
+        
+        ioBuffer = new RollingCharBuffer();
+        ioBuffer.reset(input);
 	}
 	
 	public SkrtWordTokenizer(boolean debug, Trie trie) {
@@ -154,48 +168,35 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		this.debug = debug;
 	}
 	
-	/**
-	 * Opens an existing compiled Trie
-	 * 
-	 * @param inputStream the compiled Trie opened as a Stream 
-	 * @throws FileNotFoundException compiled trie not found
-	 * @throws IOException compiled trie could not open
-	 */
-	private void init(InputStream inputStream) throws FileNotFoundException, IOException {
+	private Trie getTrie() {
+	    Trie trie = null;
+	    InputStream stream = null;
+        stream = CommonHelpers.getResourceOrFile(compiledTrieName);
+        if (stream == null) {
+            final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
+                    + "\n\tAborting...";
+            CommonHelpers.logger.error(msg);
+            return null;
+        } else {
+            trie = getTrie(stream);
+        }
+        return trie;
+	}
+	
+	private Trie getTrie(InputStream stream) {
+	    Trie trie = null;
 	    long start = System.currentTimeMillis();
-		this.scanner = new Trie(new DataInputStream(inputStream));
-		long end = System.currentTimeMillis();
-		String msg = "Trie loaded in: " + (end - start) / 1000 + "s.";
-		CommonHelpers.logger.info(msg);
-		System.out.println(msg);
-		
-		ioBuffer = new RollingCharBuffer();
-		ioBuffer.reset(input);
-	}
-	
-	/**
-	 * Builds a Trie from the given file
-	 * 
-	 * @param filename the Trie as a {@code .txt} file
-     * @throws FileNotFoundException trie not found
-     * @throws IOException trie could not open
-	 */
-	private void init(String filename) throws FileNotFoundException, IOException {
-		this.scanner = BuildCompiledTrie.buildTrie(filename);
-		
-		ioBuffer = new RollingCharBuffer();
-		ioBuffer.reset(input);
-	}
-	
-	/**
-	 * Uses the given Trie
-	 * @param trie  a Trie built using {@link BuildCompiledTrie}
-	 */
-	private void init(Trie trie) {
-		this.scanner = trie;
-		
-		ioBuffer = new RollingCharBuffer();
-		ioBuffer.reset(input);
+        try {
+            trie = new Trie(new DataInputStream(stream));
+        } catch (IOException e) {
+            CommonHelpers.logger.error("error in inputstream conversion for Trie", e);
+            return null;
+        }
+        long end = System.currentTimeMillis();
+        String msg = "Trie loaded in: " + (end - start) / 1000 + "s.";
+        CommonHelpers.logger.info(msg);
+        System.out.println(msg);
+	    return trie;
 	}
 	
 	/* current token related */
