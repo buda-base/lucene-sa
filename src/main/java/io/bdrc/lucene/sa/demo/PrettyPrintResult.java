@@ -23,16 +23,13 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import io.bdrc.lucene.sa.Deva2SlpFilter;
 import io.bdrc.lucene.sa.GeminateNormalizingFilter;
 import io.bdrc.lucene.sa.Roman2SlpFilter;
+import io.bdrc.lucene.sa.SLP2RomanFilter;
 import io.bdrc.lucene.sa.SiddhamFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
-import com.sktutilities.transliteration.SLPToIAST;
-import com.sktutilities.transliteration.DvnToSLP;
 
 public class PrettyPrintResult {
     
     static OutputStreamWriter writer;
-    static SLPToIAST slp2iast = new SLPToIAST();
-    static DvnToSLP deva2slp = new DvnToSLP();
     
     public static void main(String[] args) throws Exception{
         int tokensOnLine = 20;
@@ -59,6 +56,7 @@ public class PrettyPrintResult {
             cs = new SiddhamFilter(cs);
             cs = new GeminateNormalizingFilter(cs);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
+            words = new SLP2RomanFilter(words);
             long tokenizing = System.currentTimeMillis();
             produceTokens(words, inputStr, tokensOnLine, inputFiles.get(fileName));
             long tokenized = System.currentTimeMillis();
@@ -147,10 +145,9 @@ public class PrettyPrintResult {
     
     private static void writeLines(int batchStartOffset, int batchEndOffset, String tokensLine, String inputStr, int batchNum, Integer encoding) throws IOException { 
         writer.append(batchNum + "\n");
-        String substring = inputStr.substring(batchStartOffset, batchEndOffset);
-        String tokens = slp2iast.transform(tokensLine); 
+        String substring = inputStr.substring(batchStartOffset, batchEndOffset); 
         
         writer.append(substring+"\n"); 
-        writer.append(tokens+"\n");         
+        writer.append(tokensLine+"\n");         
     }
 }
