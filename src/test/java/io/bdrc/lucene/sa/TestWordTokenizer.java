@@ -157,7 +157,7 @@ public class TestWordTokenizer
 		System.out.println("sandhied compounds");
 		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa✓", "Darma√", "Darman√", "aDa❌", "Darma√", "Darman√", "aTa✓");
+		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa✓", "Darma√", "Darman√", "ADa❌", "Darma√", "Darman√", "aTa✓");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);

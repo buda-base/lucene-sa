@@ -108,11 +108,11 @@ public class TestFullTextParsing
                 "kftvan√", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "bahu✓", "kU√", "kIrti✓", "rAjya√", "Bunakti✓", "Ara√", "Arya√", 
                 "hi√", "eha√", "iti√", "iti√", "upagu✓", "hi√", "BA√", "BA√", "BU√", "Ba√", "Bu√", "piSuna√", "utkarRita√", "roman√", 
                 "saBya√", "ut√", "Svas√", "Svasita√", "tulya✓", "kula✓", "ja✓", "mlAna√", "an✓", "A√", "ut√", "vi√", "Ikzita√", "Ikzitf√", 
-                "ij√", "z❌", "ne✓", "han√", "vi√", "A√", "vi√", "Alu✓", "al✓", "li❌", "te✓", "na✓", "bAzpa✓", "guru√", "tattva√", "Ikz√", "ij√", 
-                "cakzus√", "yad√", "pitf√", "BI√", "aBi✓", "DA√", "hita√", "ni✓", "rA√", "rE√", "Ikz√", "Ikza√", "ij√", "niKila√", "pA√", "evam✓", 
+                "snih√", "vi√", "A√", "vi√", "Alu✓", "li❌", "te✓", "na✓", "bAzpa✓", "guru√", "tattva√", "Ikz√", 
+                "cakzus√", "yad√", "pitf√", "BI√", "DA√", "hita√", "ni✓", "rA√", "rE√", "Ikz√", "Ikza√", "niKila√", "pA√", "evam✓", 
                 "uru√", "iti✓", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "sadfSa√", "sadfSa√", "adButa√", "udBid√", "na✓", "harza√", 
-                "hfz√", "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "r✓", "AsvAdayat√", "kim√", "cid√", "vIra√", "vIrya√", "vIrya√", "t❌", 
-                "utta✓", "tap✓", "tAS✓", "ca✓", "kim√", "cid√", "cit√", "Cara✓", "SaraRa√", "upaga✓", "tA❌", "ya√", "yad√", "yas√", "yas√", 
+                "hfz√", "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "r✓", "AsvAdayat√", "kim√", "cid√", "vIra√", "vIrya√", "vIrya√", 
+                "utta✓", "p❌", "tAS✓", "ca✓", "kim√", "cid√", "cit√", "Cara✓", "SaraRa√", "upaga✓", "tA❌", "ya√", "yad√", "yas√", "yas√", 
                 "vftta√", "vftti√", "praRAma√", "api√", "arti✓"
                 );
         assertTokenStream(words, expected);
@@ -165,7 +165,7 @@ public class TestFullTextParsing
     @Test
     public void bug5FreeBeforeFails() throws Exception {
         System.out.println("bug5");
-        String input = "prathamaṃ manobhir anvāgatās sa-suta-bandhu-janās sametya|| mattebha-gaṇḍa-taṭa-vicyuta-dāna-bindu-sikt-opalācala-sahasra-vibhūṣaṇāyāḥ puṣpāvanamra-taru-ṣaṇḍa-vataṃsakāyā bhūmef puran tilaka-bhūtam idaṃ krameṇa|| taṭottha-vṛkṣa-cyuta-naika-puṣpa-vicitra-tīrānta-jalāni bhānti| praphulla-padmābharaṇāni yatra sarāṃsi kāraṇḍava-saṃkulāni|| vilola-vīcī-calitāravinda-patad-rajaḥ-piñjaritaiś ca hamsaiḥ sva-kesarodāra-bharāvabhugnaiḥ kvacit sarāṃsy amburuhaiś ca bhānti| sva-puṣpa-bhārāvanatair nnagendrair mmada-pragalbhāli-kula-svanaiś ca| ajasra-gābhiś ca purāṅganābhir vvanāni yasmin samalaṃkṛtāni|| calat-patākāny abalā-sanāthāny atyarttha-śuklāny adhikonnatāni| taḍil-latā-citra-sitābbhra-kūṭa-tulyopamānāni gṛhāṇi yatra|| kailāsa-tuṅga-śikhara-pratimāni cānyāny ābhānti dīrggha-valabhīni sa-vedikāni| gāndharvva-śabda-mukharāṇi niviṣṭa-citra-karmmāṇi lola-kadalī-vana-śobhitāni|| prāsāda-mālābhir alaṃkṛtāni dharāṃ vidāryyeva samutthitāni| vimāna-mālā-sadṛśāni yattra gṛhāṇi pūrṇṇendu-karāmalāni|| yad bhāty abhiramya-sarid-dvayena capalormmiṇā samupagūḍhaṃ rahasi kuca-śālinībhyāṃ prīti-ratibhyāṃ smarāṅgam iva|| satya-kṣamādama-śama-vrata-śauca-dhairyya-svāddhyāya-vṛtta-vinaya-sthiti-buddhy-upetaiḥ";
+        String input = "vidāryyeva samutthitāni prathamaṃ manobhir anvāgatās sa-suta-bandhu-janās sametya|| mattebha-gaṇḍa-taṭa-vicyuta-dāna-bindu-sikt-opalācala-sahasra-vibhūṣaṇāyāḥ puṣpāvanamra-taru-ṣaṇḍa-vataṃsakāyā bhūmef puran tilaka-bhūtam idaṃ krameṇa|| taṭottha-vṛkṣa-cyuta-naika-puṣpa-vicitra-tīrānta-jalāni bhānti| praphulla-padmābharaṇāni yatra sarāṃsi kāraṇḍava-saṃkulāni|| vilola-vīcī-calitāravinda-patad-rajaḥ-piñjaritaiś ca hamsaiḥ sva-kesarodāra-bharāvabhugnaiḥ kvacit sarāṃsy amburuhaiś ca bhānti| sva-puṣpa-bhārāvanatair nnagendrair mmada-pragalbhāli-kula-svanaiś ca| ajasra-gābhiś ca purāṅganābhir vvanāni yasmin samalaṃkṛtāni|| calat-patākāny abalā-sanāthāny atyarttha-śuklāny adhikonnatāni| taḍil-latā-citra-sitābbhra-kūṭa-tulyopamānāni gṛhāṇi yatra|| kailāsa-tuṅga-śikhara-pratimāni cānyāny ābhānti dīrggha-valabhīni sa-vedikāni| gāndharvva-śabda-mukharāṇi niviṣṭa-citra-karmmāṇi lola-kadalī-vana-śobhitāni|| prāsāda-mālābhir alaṃkṛtāni dharāṃ vidāryyeva samutthitāni| vimāna-mālā-sadṛśāni yattra gṛhāṇi pūrṇṇendu-karāmalāni|| yad bhāty abhiramya-sarid-dvayena capalormmiṇā samupagūḍhaṃ rahasi kuca-śālinībhyāṃ prīti-ratibhyāṃ smarāṅgam iva|| satya-kṣamādama-śama-vrata-śauca-dhairyya-svāddhyāya-vṛtta-vinaya-sthiti-buddhy-upetaiḥ";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
@@ -182,6 +182,30 @@ public class TestFullTextParsing
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> expected = Arrays.asList("upa√", "i√", "ita√", "ita√");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug7() throws Exception {
+        System.out.println("bug5");
+        String input = "tayorbhedo—viśeṣaḥ .";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("tad√", "Urj√", "Beda√", "viSeza√");
+        assertTokenStream(words, expected);
+    }
+
+    @Test
+    public void bug8() throws Exception {
+        System.out.println("bug5");
+        String input = "grahaṇam—anyāpohasya—anyavyavacchedasya";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("grahaRa√", "an√", "anya√", "anya√", "Ap√", "Apa√", "apoha√", "an√", "vyavacCeda√");
         assertTokenStream(words, expected);
     }
     

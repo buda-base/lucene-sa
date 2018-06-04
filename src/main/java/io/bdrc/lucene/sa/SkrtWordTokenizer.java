@@ -321,7 +321,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		
 		// furthest char visited when iterating over the initials.
 		// ensures we do MaxMatch in case the match of the last initial is shorter
-		int longestIdx = 0;  
+		int longestIdx = -1;  
 		
 		tokenBuffer.setLength(0);
 		boolean potentialTokensContainMatches = false;
@@ -353,6 +353,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
 			
 			ifIsNeededInitializeStartingIndexOfNonword();
+			if (initialsOrigBufferIndex == -1) 
+			    storeCurrentState();
 			
 			if (debug) System.out.print((char) c);
 			
@@ -380,7 +382,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  					initialsIterator = null;
  					initialCharsIterator = null;
  					ifNoInitialsCleanupPotentialTokensAndNonwords();
- 					nonWordStart = -1;
+ 					reinitializeState(); 			// set storedinitials to null ?
  					continue;
  					
  				} else if (startConsumingInitials()) {	
@@ -441,6 +443,39 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					        restoreNoMatchState();
 					        storedNoMatchState = 0;
 					        continue;
+					    
+					    } else if (longestIdx != -1) {
+					        if (allCharsFromCurrentInitialAreConsumed() || (initialsIterator == null || initialCharsIterator == null)) {
+		                        if (allInitialsAreConsumed()) {
+		                            cutOffTokenFromNonWordBuffer();
+		                            if (!foundAToken()) {
+		                                tokenBuffer.setLength(0);
+		                            }
+		                            if (longestIdx != -1) {
+		                                resetNonWordBuffer(0);
+		                            }
+		                            bufferIndex = longestIdx;
+		                            longestIdx = -1;
+		                            if (potentialTokens.isEmpty() 
+		                                    && tokenBuffer.length() == 0 
+		                                    && nonWordBuffer.length() == 0) {
+		                                continue;
+		                            } else {
+		                                break;
+		                            }
+		                        } else {
+		                            resetInitialCharsIterator();
+		                            restoreInitialsOrigState();
+		                            reinitializeState();
+		                            foundNonMaxMatch = false;
+		                            resetNonWordBuffer(0);
+		                            applyOtherInitial = true;
+		                            bufferIndex = longestIdx;
+                                    longestIdx = -1;
+		                            continue;
+		                        }
+		                    }
+					        
 					    } else if (!foundNonMaxMatch) {
 					        match = tryToFindMatchIn(rootRow, c);
 					        continuing = tryToContinueDownTheTrie(rootRow, c);
@@ -499,6 +534,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    if (longestIdx < bufferIndex) 
                             longestIdx = bufferIndex;
 					    restoreInitialsOrigState();
+					    reinitializeState();
 	                    resetNonWordBuffer(0);
 	                    wentToMaxDownTheTrie = false;
 	                    applyOtherInitial = true;
@@ -513,6 +549,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				
 				} else if (thereAreRemainingInitialsToTest()) {
 				    restoreInitialsOrigState();
+				    reinitializeState();
 				    resetNonWordBuffer(0);
 				    wentToMaxDownTheTrie = false;
                     applyOtherInitial = true;
@@ -546,17 +583,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
                             longestIdx = bufferIndex;
 						resetInitialCharsIterator();
 						restoreInitialsOrigState();
+						reinitializeState();
 						if (wentToMaxDownTheTrie && initialsNotEmpty()) {
 						    foundNonMaxMatch = false;
 						    resetNonWordBuffer(0);
 						}
 						wentToMaxDownTheTrie = false;
+						foundNonMaxMatch = false;
 						applyOtherInitial = true;
 					} else {
 						ifNoInitialsCleanupPotentialTokensAndNonwords(); 
                         potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
                         addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
-						break;
+                        storedInitials = null;
+                        sandhiIndex = -1;
+                        break;
 					}
 				} else {													// we are within a potential token					
 					if (reachedEndOfInputString()) {
@@ -575,6 +616,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                            longestIdx = bufferIndex;
 	                        resetInitialCharsIterator();
 	                        restoreInitialsOrigState();
+	                        reinitializeState();
 	                        if (wentToMaxDownTheTrie && initialsNotEmpty()) {
 	                            foundNonMaxMatch = false;
 	                            resetNonWordBuffer(0);
@@ -617,9 +659,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
                             ifNoInitialsCleanupPotentialTokensAndNonwords();
                             storedInitials = null;
                             sandhiIndex = -1;
-                            if (thereIsNoTokenAndNoNonword()) {
+                            if (thereIsNoTokenAndNoNonword() || longestIdx == -1) {
                                 continue;                           // resume looping over ioBuffer
                             } else {
+                                if (longestIdx != -1) {
+                                    resetNonWordBuffer(0);
+                                }
                                 break;                              // and resume looping over ioBuffer
                             }
                         } else {
@@ -628,6 +673,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                             resetNonWordBuffer(0);
                             resetInitialCharsIterator();
                             restoreInitialsOrigState();
+                            reinitializeState();
                             wentToMaxDownTheTrie = false;
                             applyOtherInitial = true;
                             continue;
@@ -661,6 +707,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         resetNonWordBuffer(0);
                         resetInitialCharsIterator();
                         restoreInitialsOrigState();
+                        reinitializeState();
                         wentToMaxDownTheTrie = false;
                         applyOtherInitial = true;
                         continue;
@@ -691,6 +738,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordBuffer(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
+					reinitializeState();
 					wentToMaxDownTheTrie = false;
 					applyOtherInitial = true;
 				} else {
@@ -724,12 +772,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					resetNonWordBuffer(0);
 					resetInitialCharsIterator();
 					restoreInitialsOrigState();	
+					reinitializeState();
 					wentToMaxDownTheTrie = false;
 					applyOtherInitial = true;
 				} else {
 					ifNoInitialsCleanupPotentialTokensAndNonwords();
 					tokenBuffer.setLength(0);
-					break;
+					if (potentialTokens.isEmpty() && tokenBuffer.length() == 0 && nonWordBuffer.length() == 0) {
+					    reinitializeState();
+					    continue;
+					} else {
+					    break;
+					}
 				}
 			} else {
 			    decrement(tokenBuffer);
@@ -744,6 +798,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		initialCharsIterator = null;
 		if (bufferIndex < longestIdx)
 		    bufferIndex = longestIdx;
+		longestIdx = -1;
 		
 		/* B.1. FILLING totalTokens */
 		if (unsandhyingInitialsYieldedPotentialTokens()) {				
@@ -1097,16 +1152,26 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private boolean ifThereIsNonwordAddItToTotalTokens() {
-		final String nonWord = nonWordBuffer.toString();
+		boolean containsNonWord = false;
+	    final String nonWord = nonWordBuffer.toString();
 		if (nonWord.length() > 0) {
 		    final PreToken newToken = new PreToken(nonWord,
 		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, -1});
 		    if (!isDupe(newToken))
                 totalTokens.add(newToken);
 			// ignore all potential tokens. add the non-word with sandhied initials
-			return true;
+			containsNonWord = true;
 		}
-		return false;
+		for (Entry<String, Integer[]> potential: potentialTokens.entrySet()) {
+		    if (potential.getValue()[3] == 0) {
+		        final PreToken newToken = new PreToken(potential.getKey(), potential.getValue());
+	            if (!isDupe(newToken)) {
+	                totalTokens.add(newToken);
+	                containsNonWord = true;
+	            }
+		    }
+		}
+		return containsNonWord;
 	}
 
 	private void unsandhiFinalsAndAddLemmatizedMatchesToTotalTokens() throws NumberFormatException, IOException {
@@ -1244,7 +1309,32 @@ public final class SkrtWordTokenizer extends Tokenizer {
         currentRow = rootRow;
         tokenBuffer.setLength(0);
         tokenBuffer.append(initialsOrigBuffer);
+    }
+    
+    private void reinitializeState() {
+        cmdIndex = -1;
+        foundMatchCmdIndex = -1;
+        foundMatch = false;
+        afterNonwordMatch = false;
+        
+        
+        nonMaxBuffer.setLength(0);
+        nonMaxTokenStart = -1;      
+        nonMaxBufferIndex = -1;
+        nonMaxFoundMatchCmdIndex = -1;
+        nonMaxNonWordLength = -1;
+        foundNonMaxMatch = false;
+        firstInitialIndex = -1;
+
+        noMatchBuffer.setLength(0);
+        noMatchTokenStart = -1;      
+        noMatchBufferIndex = -1;
         storedNoMatchState = -1;
+        noMatchFoundMatchCmdIndex = -1;
+        
+        initialsOrigBuffer.setLength(0);
+        initialsOrigTokenStart = -1;
+        initialsOrigBufferIndex = -1;
     }
 
 	private void resetNonWordBuffer(int i) {
@@ -1429,11 +1519,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean allInitialsAreConsumed() {
-		return !initialsIterator.hasNext();
+		return initialsIterator != null && !initialsIterator.hasNext();
 	}
 
 	final private void resetInitialCharsIterator() {
-		initialCharsIterator.setIndex(0);
+		if (initialCharsIterator != null) initialCharsIterator.setIndex(0);
 	}
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
