@@ -40,6 +40,8 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.bdrc.lucene.sa.PartOfSpeechAttribute.PartOfSpeech;
 import io.bdrc.lucene.stemmer.Row;
@@ -79,7 +81,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	private boolean debug = false;
 	String compiledTrieName = "skrt-compiled-trie.dump";
-	private Trie scanner; 
+	private static Trie defaultTrie;
+	private Trie scanner;
+	static final Logger logger = LoggerFactory.getLogger(SkrtWordTokenizer.class);
 	
 	/* attributes allowing to modify the values of the generated terms */
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
@@ -167,18 +171,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	private Trie getTrie() {
+	    if (defaultTrie != null)
+	        return defaultTrie;
 	    Trie trie = null;
 	    InputStream stream = null;
         stream = CommonHelpers.getResourceOrFile(compiledTrieName);
         if (stream == null) {
             final String msg = "The default compiled Trie is not found. Either rebuild the Jar or run BuildCompiledTrie.main()"
                     + "\n\tAborting...";
-            CommonHelpers.logger.error(msg);
+            logger.error(msg);
             return null;
         } else {
             trie = getTrie(stream);
         }
-        return trie;
+        defaultTrie = trie;
+        return defaultTrie;
 	}
 	
 	private Trie getTrie(InputStream stream) {
@@ -187,12 +194,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
         try {
             trie = new Trie(new DataInputStream(stream));
         } catch (IOException e) {
-            CommonHelpers.logger.error("error in inputstream conversion for Trie", e);
+            logger.error("error in inputstream conversion for Trie", e);
             return null;
         }
         long end = System.currentTimeMillis();
         String msg = "Trie loaded in: " + (end - start) / 1000 + "s.";
-        CommonHelpers.logger.info(msg);
+        logger.info(msg);
         System.out.println(msg);
 	    return trie;
 	}
