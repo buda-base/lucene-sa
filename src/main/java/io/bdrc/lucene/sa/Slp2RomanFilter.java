@@ -37,11 +37,11 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
  *
  */
 
-public class SLP2RomanFilter extends TokenFilter {
+public class Slp2RomanFilter extends TokenFilter {
 
     private static final HashMap<String, String> map = getMapping();
 
-    public SLP2RomanFilter(TokenStream in) {
+    public Slp2RomanFilter(TokenStream in) {
         super(in);
     }
 
