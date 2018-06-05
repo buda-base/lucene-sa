@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class TestLenient {
 
-	static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
+    static TokenStream tokenize(Reader reader, Tokenizer tokenizer) throws IOException {
 		tokenizer.close();
 		tokenizer.end();
 		tokenizer.setReader(reader);
@@ -37,49 +37,42 @@ public class TestLenient {
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
 			}
-			System.out.println("1 " + String.join(" ", expected));
-			System.out.println("2 " + String.join(" ", termList) + "\n");
+			System.out.println("found: " + String.join(" ", termList) + "\n");
 			assertThat(termList, is(expected));
 		} catch (IOException e) {
 			assertTrue(false);
 		}
 	}
 
+	// Both tests have the same input and the same expected output.
+	// This ensures an equivalent treatment at indexing and querying times.
+	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh";
+	private static final List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
+            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh");	
+	
 	@BeforeClass
 	public static void init() {
-		System.out.println("before the test sequence");
+		System.out.println("input:\n       " + input);
+		System.out.println("expected:\n       " + String.join(" ", expected));
 	}
 	
     @Test
     public void testLenientTokenFilter() throws Exception {
-    	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
-    	String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh"; 
+    	System.out.println("Testing LenientTokenFilter");
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-    	System.out.println("0 " + input);
+    	
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	ts = new Slp2RomanFilter(ts);
     	ts = new LenientTokenFilter(ts);
-    	List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-    			"nn", "pp", "bbb", "sss", "rrr", "lll", "hh");
-    	assertTokenStream(ts, expected);
+        assertTokenStream(ts, expected);
     }
 
     @Test
     public void testLenientCharFilter() throws Exception {
-        System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
-        String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh"; 
+        System.out.println("Testing LenientCharFilter"); 
         CharFilter cs = new Roman2SlpFilter(new StringReader(input));
         cs = new LenientCharFilter(cs);
-        System.out.println("0 " + input);
         TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-        List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-                "nn", "pp", "bbb", "sss", "rrr", "lll", "hh");
         assertTokenStream(ts, expected);
     }
-    
-	@AfterClass
-	public static void finish() {
-		System.out.println("after the test sequence");
-		System.out.println("Legend:\n0: input string\n1: expected output\n2: actual output\n");
-	}
 }
