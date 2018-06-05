@@ -23,7 +23,7 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import io.bdrc.lucene.sa.Deva2SlpFilter;
 import io.bdrc.lucene.sa.GeminateNormalizingFilter;
 import io.bdrc.lucene.sa.Roman2SlpFilter;
-import io.bdrc.lucene.sa.SLP2RomanFilter;
+import io.bdrc.lucene.sa.Slp2RomanFilter;
 import io.bdrc.lucene.sa.SiddhamFilter;
 import io.bdrc.lucene.sa.SkrtWordTokenizer;
 
@@ -56,7 +56,7 @@ public class PrettyPrintResult {
             cs = new SiddhamFilter(cs);
             cs = new GeminateNormalizingFilter(cs);
             TokenStream words = tokenize(cs, skrtWordTokenizer);
-            words = new SLP2RomanFilter(words);
+            words = new Slp2RomanFilter(words);
             long tokenizing = System.currentTimeMillis();
             produceTokens(words, inputStr, tokensOnLine, inputFiles.get(fileName));
             long tokenized = System.currentTimeMillis();
