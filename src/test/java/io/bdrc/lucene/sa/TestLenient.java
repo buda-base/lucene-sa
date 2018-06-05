@@ -51,18 +51,32 @@ public class TestLenient {
 	}
 	
     @Test
-    public void test1() throws Exception {
+    public void testLenientTokenFilter() throws Exception {
     	System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
     	String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh"; 
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	System.out.println("0 " + input);
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
-    	ts = new LenientSearchFilter(ts);
-    	List<String> expected = Arrays.asList("krisna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-    			"nn", "pp", "bbb", "sss", "ririri", "lilili", "hh");
+    	ts = new Slp2RomanFilter(ts);
+    	ts = new LenientTokenFilter(ts);
+    	List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
+    			"nn", "pp", "bbb", "sss", "rrr", "lll", "hh");
     	assertTokenStream(ts, expected);
     }
-	
+
+    @Test
+    public void testLenientCharFilter() throws Exception {
+        System.out.println("Testing the filtering of ZWJ and ZWNJ in transliterationFilter()");
+        String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh"; 
+        CharFilter cs = new Roman2SlpFilter(new StringReader(input));
+        cs = new LenientCharFilter(cs);
+        System.out.println("0 " + input);
+        TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+        List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
+                "nn", "pp", "bbb", "sss", "rrr", "lll", "hh");
+        assertTokenStream(ts, expected);
+    }
+    
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");

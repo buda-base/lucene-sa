@@ -41,10 +41,11 @@ public class LenientCharFilter extends MappingCharFilter {
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
-        /* custom transformations */
+        /* custom transformations (must mirror those found in LenientTokenFilter)*/
         builder.add("sh", "s");
         builder.add("ri", "r");
         builder.add("li", "l");
+        builder.add("v", "b");
         
         /* lenient SLP transformations */
         // neutralize vowel length
@@ -67,6 +68,7 @@ public class LenientCharFilter extends MappingCharFilter {
         
         // aspirated consonants
         builder.add("K", "k"); // kh
+        builder.add("G", "g"); // gh
         builder.add("C", "c"); // ch
         builder.add("J", "j"); // jh
         builder.add("T", "t"); // th 
@@ -76,9 +78,13 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("B", "b"); // bh
         
         // retroflexes
-        builder.add("w", "t"); // ṭ 
+        builder.add("w", "t"); // ṭ
+        builder.add("W", "t"); // ṭh
         builder.add("q", "d"); // ḍ  
         builder.add("R", "n"); // ṇ 
+        
+        builder.add("z", "s"); // ṣ
+        builder.add("S", "s"); // ś 
         
         /* SLP to IAST */
         builder.add("O", "au");

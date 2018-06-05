@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Buddhist Digital Resource Center (BDRC)
+ * Copyright (c) 2018 Buddhist Digital Resource Center (BDRC)
  *
  * If this file is a derivation of another work the license header will appear
  * below; otherwise, this work is licensed under the Apache License, Version 2.0
@@ -60,17 +60,19 @@ public class Slp2RomanFilter extends TokenFilter {
         map.put("f", "\u1e5b"); // ṛ
         map.put("F", "\u1e5d"); // ṝ
         map.put("x", "\u1e37"); // ḷ
-        map.put("X", "\u1e38"); // Ḹ
+        map.put("X", "\u1e39"); // ḹ
         map.put("O", "au");
         map.put("E", "ai");
         map.put("M", "\u1e43"); // ṃ
         map.put("H", "\u1e25"); // ḥ
         map.put("K", "kh");
+        map.put("G", "gh");
         map.put("N", "\u1e45"); // ṅ
         map.put("C", "ch");
         map.put("J", "jh");
         map.put("Y", "\u00f1"); // ñ
         map.put("w", "\u1e6d"); // ṭ
+        map.put("W", "\u1e6dh"); // ṭh 
         map.put("q", "\u1e0d"); // ḍ
         map.put("Q", "\u1e0dh"); // ḍh
         map.put("R", "\u1e47"); // ṇ

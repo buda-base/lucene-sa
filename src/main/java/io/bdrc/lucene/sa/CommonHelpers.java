@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.MissingResourceException;
 
 import org.slf4j.Logger;
@@ -42,6 +43,17 @@ public class CommonHelpers {
             return new BufferedReader(new FileReader(baseName));
         } catch (FileNotFoundException e) {
             throw new MissingResourceException("cannot find file " + baseName, "", "");
+        }
+    }
+    
+    public static class LengthComp implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            final int lenComp = s2.length() - s1.length();
+            if (lenComp != 0) {
+                return lenComp;
+            }
+            return s1.compareTo(s2);
         }
     }
 }

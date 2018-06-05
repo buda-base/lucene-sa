@@ -19,7 +19,6 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
-import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -89,7 +88,7 @@ public class CmdParser {
 	 */
 	public TreeMap<String, TreeSet<String>> parse(String inflected, String cmd) {
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		sandhis = new TreeMap<String, TreeSet<String>>(new LengthComp());
+		sandhis = new TreeMap<String, TreeSet<String>>(new CommonHelpers.LengthComp());
 		
 		String[] fullEntries = cmd.split("\\|");								// <fullEntry>|<fullEntry>|<...>
 		for (String fullEntry: fullEntries) {
@@ -245,16 +244,5 @@ public class CmdParser {
 	final private boolean thereAreInitials() {
 		return initials.length > 0;
 	}
-}
-
-class LengthComp implements Comparator<String> {
-    @Override
-    public int compare(String s1, String s2) {
-        final int lenComp = s2.length() - s1.length();
-        if (lenComp != 0) {
-            return lenComp;
-        }
-        return s1.compareTo(s2);
-    }
 }
 
