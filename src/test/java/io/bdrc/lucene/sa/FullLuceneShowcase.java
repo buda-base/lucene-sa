@@ -71,14 +71,14 @@ public class FullLuceneShowcase {
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void testTC2PYstrict() throws IOException, ParseException {
+    public void testDefault() throws IOException, ParseException {
         String input = "loke ’vināśi praṇāme ’py artti";
         String query = "loka";
 
         // indexing in words, from iats, with stopwords
-        Analyzer indexingAnalyzer = new SanskritAnalyzer(true, 2, "skrt-stopwords.txt");
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("word", "roman");
         // querying in words, from SLP, with stopwords  
-        Analyzer queryingAnalyzer = new SanskritAnalyzer(true, 0, "skrt-stopwords.txt");
+        Analyzer queryingAnalyzer = new SanskritAnalyzer("word", "SLP");
 
         File testSubFolder = folder.newFolder("test");
 
@@ -89,6 +89,27 @@ public class FullLuceneShowcase {
         assertEquals(hits, 1);
     }
 
+    @Test
+    public void testTC2PYstrict() throws IOException, ParseException {
+        String input = "buddhaṃ śaraṇaṃ gacchāmi." + 
+                "dharmaṃ śaraṇaṃ gacchāmi." + 
+                "saṃghaṃ śaraṇaṃ gacchāmi.";
+        String query = "buddha";
+
+        // indexing in words, from iats, with stopwords
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("word", "roman", true, false, "index");
+        // querying in words, from SLP, with stopwords  
+        Analyzer queryingAnalyzer = new SanskritAnalyzer("space", "roman", false, false, "query");
+
+        File testSubFolder = folder.newFolder("test");
+
+        indexTest(input, indexingAnalyzer, testSubFolder);
+        int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        folder.delete(); // just to be sure it is done
+
+        assertEquals(hits, 1);
+    }
+    
     int searchIndex(String queryString, Analyzer analyzer, File indexFolder, int repeat)
             throws IOException, ParseException {
         String field = "contents";

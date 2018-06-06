@@ -208,6 +208,20 @@ public class TestFullTextParsing
         List<String> expected = Arrays.asList("grahaRa√", "an√", "anya√", "anya√", "Ap√", "Apa√", "apoha√", "an√", "vyavacCeda√");
         assertTokenStream(words, expected);
     }
+
+    @Test
+    public void bugbodhi() throws Exception {
+        System.out.println("bug5");
+        String input = "buddhaṃ śaraṇaṃ gacchāmi." + 
+                "dharmaṃ śaraṇaṃ gacchāmi." + 
+                "saṃghaṃ śaraṇaṃ gacchāmi.";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("grahaRa√", "an√", "anya√", "anya√", "Ap√", "Apa√", "apoha√", "an√", "vyavacCeda√");
+        assertTokenStream(words, expected);
+    }
     
 	@AfterClass
 	public static void finish() {

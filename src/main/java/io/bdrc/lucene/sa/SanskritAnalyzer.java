@@ -21,7 +21,6 @@
 package io.bdrc.lucene.sa;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +32,7 @@ import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.util.IOUtils;
 
 /**
@@ -44,33 +44,45 @@ import org.apache.lucene.util.IOUtils;
  * @author Hélios Hildt
  **/
 public final class SanskritAnalyzer extends Analyzer {	
-	boolean segmentInWords = false;
+	String mode = null;
+	String inputEncoding = null;
+	String lenient = null;
+	String stopFilename = null;
 	boolean mergePrepositions = true;
-	int inputEncoding = 0;
+	boolean filterGeminates = false;
+	
 	CharArraySet skrtStopWords = null;
 	
 	/**
-	 * Creates a new {@link SanskritAnalyzer}
 	 * 
-	 * @param segmentInWords if the segmentation is on words instead of syllables
-	 * @param inputEncoding `0` for SLP, `1` for devanagari, `2` for romanized sanskrit
-	 * @param stopFilename formatting: 
-	 * 								- in SLP encoding
-	 * 								- 1 word per line 
-	 * 								- empty lines (with and without comments), spaces and tabs are allowed 
-	 * 								- comments start with `#`
-	 * 								- lines can end with a comment
-	 * @throws FileNotFoundException  the file containing the stoplist can not be read
+	 * @param mode            `space`, `syl` or `word`
+     * @param inputEncoding   `SLP`, `deva` or `roman`
+     * @param stopFilename    path to the file
+	 * 
 	 * @throws IOException  the file containing the stoplist can not be found
 	 */
-	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename) throws IOException {
-		this.segmentInWords = segmentInWords;
+	public SanskritAnalyzer(String mode, String inputEncoding, String stopFilename) throws IOException {
+		this.mode = mode;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
             InputStream stream = null;
             stream = CommonHelpers.getResourceOrFile(stopFilename);
             this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		}
+	}
+	
+	/**
+     * 
+     * Uses the list of stopwords defined here:
+     * <a href="https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236">gist.github.com/Akhilesh28</a>
+     * 
+     * @param mode            `space`, `syl` or `word`
+     * @param inputEncoding   `SLP`, `deva` or `roman`
+     * 
+     * @throws IOException the file containing the stoplist can not be read 
+     */
+	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
+	    this(mode, inputEncoding, "skrt-stopwords.txt");
 	}
 	
 	/**
@@ -87,34 +99,37 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * "(...) in the classical language the usage is mainly restricted to prati, anu, and ā.", 
 	 * (1125.b. of <a href="https://en.wikisource.org/wiki/Page%3ASanskrit_Grammar_by_Whitney_p1.djvu/442">Whitney</a>)
 	 * 
-     * @param segmentInWords if the segmentation is on words instead of syllables
-     * @param inputEncoding `0` for SLP, `1` for devanagari, `2` for romanized sanskrit
-     * @param stopFilename formatting: 
-     *                              - in SLP encoding
-     *                              - 1 word per line 
-     *                              - empty lines (with and without comments), spaces and tabs are allowed 
-     *                              - comments start with `#`
-     *                              - lines can end with a comment
-     * @param mergePrepositions  concatenates the token containing the preposition with the next one if true.                              
-     * @throws FileNotFoundException  the file containing the stoplist can not be read
+     * @param mode              `space`, `syl` or `word`
+     * @param inputEncoding     `SLP`, `deva` or `roman`
+     * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
+     * @param filterGeminates   true or false (false by default)
+     *                              
      * @throws IOException  the file containing the stoplist can not be found
      */
-	public SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename, boolean mergePrepositions) throws IOException {
-	    this(segmentInWords, inputEncoding, stopFilename);
-	    this.mergePrepositions = mergePrepositions;
+	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates) throws IOException {
+	    this(mode, inputEncoding);
+	    this.filterGeminates = filterGeminates;
+	    if (mode == "word") {
+	        this.mergePrepositions = mergePrepositions;
+	    } else {
+	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
+	        return;
+	    }
 	}
 	
 	/**
-	 * Creates a new {@link SanskritAnalyzer} with the default values
-	 * 
-	 * Uses the list of stopwords defined here:
-	 * <a href="https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236">gist.github.com/Akhilesh28</a>
-	 * 
-	 * @throws IOException the file containing the stoplist can not be read
-	 * @throws FileNotFoundException  the file containing the stoplist can not be found 
-	 */
-	public SanskritAnalyzer() throws IOException {
-		this(true, 0, "skrt-stopwords.txt");
+     * 
+     * @param mode              `space`, `syl` or `word`
+     * @param inputEncoding     `SLP`, `deva` or `roman`
+     * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
+     * @param filterGeminates   true or false (true by default)
+     * @param lenient           `index` or `query` 
+     *                              
+     * @throws IOException  the file containing the stoplist can not be found
+     */
+	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient) throws IOException {
+	    this(mode, inputEncoding, mergePrepositions, filterGeminates);
+	    this.lenient = lenient;
 	}
 	
 	/**
@@ -151,19 +166,25 @@ public final class SanskritAnalyzer extends Analyzer {
 	
 	@Override
 	protected Reader initReader(String fieldName, Reader reader) {
-		if (this.inputEncoding == 0) {
-			return super.initReader(fieldName, reader);
-		} else {
-			if (this.inputEncoding == 1) {
-				reader = new Deva2SlpFilter(reader);
-				return super.initReader(fieldName, reader);
-			} else if (this.inputEncoding == 2) {
-				reader = new Roman2SlpFilter(reader);
-				return super.initReader(fieldName, reader);
-			} else {
-				throw new IllegalArgumentException("options for input encoding:\n0 for SLP, 1 for devanagari, 2 for romanized");
-			}
+	    if (this.inputEncoding == "deva") {
+		    reader = new Deva2SlpFilter(reader);
+		    reader = new VedicFilter(reader);
+		} else if (this.inputEncoding == "roman") {
+		    reader = new Roman2SlpFilter(reader);
+		} else if (this.inputEncoding != "SLP"){
+		    CommonHelpers.logger.error("wrong value for `mode`");
+		    return null;
 		}
+		
+	    if (this.filterGeminates == true) {
+	        reader = new GeminateNormalizingFilter(reader);
+	    }
+	    
+	    if (this.lenient == "query") {
+	        reader = new LenientCharFilter(reader);
+	    }
+	    
+		return super.initReader(fieldName, reader);
 	}
 	
 	@Override
@@ -171,16 +192,18 @@ public final class SanskritAnalyzer extends Analyzer {
 		Tokenizer source = null;
 		TokenStream filter = null;
 		
-		if (segmentInWords) {
+		if (mode == "word") {
 			try {
 				source = new SkrtWordTokenizer();
 			} catch (Exception e) {
-                e.printStackTrace();
+			    CommonHelpers.logger.error("cannot initialize SkrtWordTokenizer", e);
                 return null;
             }
-		} else {
+		} else if (mode == "syl") {
 			source = new SkrtSyllableTokenizer();
-		}		
+		} else if (mode == "space") {
+		    source = new WhitespaceTokenizer();
+		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
 			filter = new StopFilter(source, skrtStopWords);
