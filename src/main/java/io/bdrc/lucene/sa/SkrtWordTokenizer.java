@@ -608,7 +608,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				} else {													// we are within a potential token					
 					if (reachedEndOfInputString()) {
-					    tokenBuffer.setLength(0);
+//					    tokenBuffer.setLength(0);
 
 
 						if (allCharsFromCurrentInitialAreConsumed()) {

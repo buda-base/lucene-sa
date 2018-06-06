@@ -501,6 +501,41 @@ public class TestWordTokenizer
         assertTokenStream(words, expected);
     }
     
+    @Test
+    public void testDemoWords() throws IOException
+    {
+        System.out.println("bug9");
+        String input = "bodhisattvacaryāvatāra - "
+                + "Śāntideva - "
+                + "mañjuśrī nāma saṃgīti - "
+                + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
+                + "Nāmasaṅgīti - "
+                + "bodhicaryāvatāra";
+        Reader reader = new StringReader(input);
+        List<String> expected = Arrays.asList("kim√", "cid√");
+        System.out.println("0 " + input);
+        
+        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/demo_test"); 
+        TokenStream words = tokenize(reader, skrtWordTokenizer);
+        words = new Slp2RomanFilter(words);
+        assertTokenStream(words, expected);
+    }
+
+    @Test
+    public void testZeroSandhi() throws IOException
+    {
+        System.out.println("bug9");
+        String input = "SrIjYAna";
+        Reader reader = new StringReader(input);
+        List<String> expected = Arrays.asList("SrI√", "jYAna√");
+        System.out.println("0 " + input);
+        
+        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/shri_jnana_test"); 
+        TokenStream words = tokenize(reader, skrtWordTokenizer);
+        words = new Slp2RomanFilter(words);
+        assertTokenStream(words, expected);
+    }
+    
 	@AfterClass
 	public static void finish() {
 		System.out.println("after the test sequence");
