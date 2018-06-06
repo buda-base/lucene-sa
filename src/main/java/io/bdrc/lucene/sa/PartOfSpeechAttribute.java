@@ -18,7 +18,7 @@ import org.apache.lucene.util.Attribute;
  * As found in <a href="https://en.wikisource.org/wiki/Page%3ASanskrit_Grammar_by_Whitney_p1.djvu/442">Whitney</a>, Sanskrit does not have
  * prepositions in the modern sense.
  * <p>
- * Prepositions can be either be integrated inside the verb or used separately. See {@link SanskritAnalyzer#SanskritAnalyzer(boolean, int, String, boolean)}.
+ * Prepositions can be either be integrated inside the verb or used separately. See {@link SanskritAnalyzer}.
  * 
  * @author drupchen
  *

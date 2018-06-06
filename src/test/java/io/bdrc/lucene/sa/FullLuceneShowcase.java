@@ -90,16 +90,37 @@ public class FullLuceneShowcase {
     }
 
     @Test
-    public void testTC2PYstrict() throws IOException, ParseException {
-        String input = "buddhaṃ śaraṇaṃ gacchāmi." + 
-                "dharmaṃ śaraṇaṃ gacchāmi." + 
-                "saṃghaṃ śaraṇaṃ gacchāmi.";
-        String query = "buddha";
+    public void testWordLenientSearch() throws IOException, ParseException {
+        String input = "buddhaṃ śaraṇaṃ gacchāmi. " + 
+                "dharmaṃ śaraṇaṃ gacchāmi. " + 
+                "saṃghaṃ śaraṇaṃ gacchāmi. ";
+        String query = "buddha darma sarana";
 
         // indexing in words, from iats, with stopwords
         Analyzer indexingAnalyzer = new SanskritAnalyzer("word", "roman", true, false, "index");
         // querying in words, from SLP, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer("space", "roman", false, false, "query");
+
+        File testSubFolder = folder.newFolder("test");
+
+        indexTest(input, indexingAnalyzer, testSubFolder);
+        int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        folder.delete(); // just to be sure it is done
+
+        assertEquals(hits, 1);
+    }
+    
+    @Test
+    public void testSylLenientSearch() throws IOException, ParseException {
+        String input = "buddhaṃ śaraṇaṃ gacchāmi. " + 
+                "dharmaṃ śaraṇaṃ gacchāmi. " + 
+                "saṃghaṃ śaraṇaṃ gacchāmi. ";
+        String query = "budda darma";
+
+        // indexing in words, from iats, with stopwords
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "index");
+        // querying in words, from SLP, with stopwords  
+        Analyzer queryingAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
 
         File testSubFolder = folder.newFolder("test");
 

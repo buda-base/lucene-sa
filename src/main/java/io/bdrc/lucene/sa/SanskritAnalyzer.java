@@ -111,7 +111,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	    this.filterGeminates = filterGeminates;
 	    if (mode == "word") {
 	        this.mergePrepositions = mergePrepositions;
-	    } else {
+	    } else if (mergePrepositions){
 	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
 	        return;
 	    }
@@ -213,6 +213,11 @@ public final class SanskritAnalyzer extends Analyzer {
 		
 		if (mergePrepositions) {
 		    filter = new PrepositionMergingFilter(filter);
+		}
+		
+		if (lenient == "index") {
+		    filter = new Slp2RomanFilter(filter);
+		    filter = new LenientTokenFilter(filter);
 		}
 		
 		return new TokenStreamComponents(source, filter);

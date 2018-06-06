@@ -58,9 +58,11 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("F", "r"); // ṝ 
         builder.add("x", "l"); // ḷ
         builder.add("X", "l"); // Ḹ 
+        builder.add("L", "l"); // ḻ
+        builder.add("|", "l"); // ḻh
         
         // nasals and visarga
-        builder.add("M", "m"); // ṃ 
+        builder.add("M", "m"); // ṃ and ṁ
         builder.add("N", "n"); // ṅ
         builder.add("Y", "n"); // ñ
         builder.add("~", "");  // ̃  (simply deleted)

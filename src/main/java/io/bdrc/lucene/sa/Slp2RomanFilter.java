@@ -29,7 +29,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 /**
  * SLP1 → Roman TokenFilter 
  * <p>
- * Based on {@link Roman2SLPFilter} for the mapping. Differs in the following way:
+ * Based on {@link Roman2SlpFilter} for the mapping. Differs in the following way:
  * <br> - does not preserve the case (information not encoded in SLP)
  * <br> - only keep one mapping per SLP character, never the decomposed Unicode form.
  * 
@@ -47,7 +47,7 @@ public class Slp2RomanFilter extends TokenFilter {
 
     public static final HashMap<String, String> getMapping() {
         final HashMap<String, String> map = new HashMap<String, String>();
-        map.put("M", "\u1e41"); // ṁ
+        map.put("M", "\u1e41"); // ṁ TODO: conflicts with lower entry with M ???
 
         // danda 
         map.put(".", "|");

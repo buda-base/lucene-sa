@@ -18,7 +18,7 @@ mvn clean compile exec:java package
 
 The following options alter the packaging:
 
-- `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` and `io.bdrc.ewtsconverter:ewts-converter` in the produced jar file
+- `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
 
 ## Components

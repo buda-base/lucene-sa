@@ -81,6 +81,8 @@ public class LenientTokenFilter extends TokenFilter{
         lenientMap.put("ḍ", "d");
         
         lenientMap.put("ṇ", "n");
+        lenientMap.put("ṅ", "n");
+        lenientMap.put("ñ", "n");
 
         lenientMap.put("ph", "p");
         
@@ -94,8 +96,15 @@ public class LenientTokenFilter extends TokenFilter{
 
         lenientMap.put("ḹ", "l");  
         lenientMap.put("ḷ", "l");
+        lenientMap.put("ḻ", "l");
+        lenientMap.put("ḻh", "lh");
 
         lenientMap.put("ḥ", "h");  
+        
+        lenientMap.put("ṃ", "m");
+        lenientMap.put("ṁ", "m");
+        
+        lenientMap.put("\u0303", ""); // ̃  from ~ in SLP
         
         for (String toReplace : lenientMap.keySet()) {
             if (token.contains(toReplace)) {
