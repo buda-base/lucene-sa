@@ -905,7 +905,55 @@ public final class SkrtWordTokenizer extends Tokenizer {
     TreeSet<String> reconstructLemmas(String cmd, String inflected) throws NumberFormatException, IOException {
 	    return reconstructLemmas(cmd, inflected, -1);
 	}
-	
+
+    public static class LemmaInfo implements Comparable<LemmaInfo> {
+        String lemma;
+        Integer pos;
+        
+        public LemmaInfo(String lemma, int pos) {
+            this.lemma = lemma;
+            this.pos = pos;
+        }
+
+        @Override
+        public int compareTo(LemmaInfo arg0) {
+            int posDiff = pos.compareTo(arg0.pos);
+            if (posDiff != 0)
+                return posDiff;
+            return lemma.compareTo(arg0.lemma);
+        }
+    }
+    
+    public static class DiffStruct {
+        Integer nbToDelete;
+        String toAdd;
+        String initial;
+        Integer sandhiType;
+        Integer pos;
+    }
+    
+    public static DiffStruct getDiff(final String lemmaDiff) {
+        final int equalIdx = lemmaDiff.indexOf('=');
+        assert(equalIdx != -1);
+        final int hashIdx = lemmaDiff.indexOf('#', equalIdx+1);
+        assert(hashIdx != -1);
+        final DiffStruct res = new DiffStruct();
+        res.sandhiType = Integer.valueOf(lemmaDiff.substring(equalIdx+1, hashIdx));
+        res.pos = Integer.valueOf(lemmaDiff.substring(hashIdx+1));
+        final int plusIdx = lemmaDiff.indexOf('+');
+        assert(plusIdx != -1 && plusIdx < equalIdx);
+        res.nbToDelete = Integer.valueOf(lemmaDiff.substring(0, plusIdx));
+        final int slashIdx = lemmaDiff.indexOf('/', plusIdx);
+        if (slashIdx == -1) {
+            res.toAdd = lemmaDiff.substring(plusIdx+1, equalIdx);
+            res.initial = null;
+        } else {
+            res.toAdd = lemmaDiff.substring(plusIdx+1, slashIdx);
+            res.initial = lemmaDiff.substring(slashIdx+1, equalIdx);
+        }
+        return res;
+    }
+    
 	/**
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -917,56 +965,31 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	TreeSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
 		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses HashSet to avoid duplicates
-		String[] t = new String[0];
-		
+
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
-		
+
 		TreeMap<String, TreeSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
 		for (Entry<String, TreeSet<String>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 			TreeSet<String> diffs = current.getValue();
 			boolean foundAsandhi = false; 
 			for (String lemmaDiff: diffs) {
-				assert(lemmaDiff.contains("+"));		// all lemmaDiffs should contain +
-
-				t = lemmaDiff.split("=");
-				String diff = t[0];
-				t = t[1].split("#");
-				int sandhiType = Integer.valueOf(t[0]);
-				String pos = t[1];
-				if (noSandhiAndLemmatizationNotRequired(sandhiType, diff)) {
-					continue;							// there is no sandhi nor, so we skip this diff
+			    final DiffStruct diff = getDiff(lemmaDiff);
+				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial == null) {
+					continue;	// there is no sandhi nor, so we skip this diff
 				}
 				
-				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, sandhiType)) {
+				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;
-					t = diff.split("\\+");
-
-					if (diff.endsWith("+")) {			// ensures t has alway two elements
-						t = new String[2];
-						t[0] = diff.split("\\+")[0];
-						t[1] = "";
-					}
-
-					int toDelete = Integer.valueOf(t[0]);
-					String toAdd;
-					String newInitial = "";
-
-					if (t[1].contains("/")) {				// there is a change in initial
-						t = t[1].split("/");
-						toAdd = t[0];
-						newInitial = t[1];
-						if (initials == null) {
-							initials = new HashSet<String>();
-							storedInitials = new HashSet<String>();
-						}
-						initials.add(newInitial);
-						storedInitials.add(newInitial);
-					} else {								// there no change in initial
-						toAdd = t[1];
-					}
-
-					String lemma = inflected.substring(0, inflected.length()-toDelete)+toAdd+"_"+pos;
+				    if (diff.initial != null) {
+				        if (initials == null) {
+                            initials = new HashSet<String>();
+                            storedInitials = new HashSet<String>();
+                        }
+                        initials.add(diff.initial);
+                        storedInitials.add(diff.initial);
+				    }
+					final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
 					totalLemmas.add(lemma);
 				}
 			}
@@ -1441,10 +1464,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	final private boolean initialsNotEmpty() {
 	    return initials != null && storedInitials != null && !initials.isEmpty() && initials.size() <= storedInitials.size() - 1;
-	}
-	
-	final private boolean noSandhiAndLemmatizationNotRequired(int sandhiType, String diff) {
-	    return sandhiType == 0 && diff.equals("/");
 	}
 	
 	final private boolean nonwordIsLoneInitial() {

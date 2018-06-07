@@ -43,6 +43,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.bdrc.lucene.sa.SkrtWordTokenizer.DiffStruct;
 import io.bdrc.lucene.stemmer.Trie;
 
 /**
@@ -110,6 +111,21 @@ public class TestWordTokenizer
     	System.out.println("1 " + expected);
     	System.out.println("2 " + res.toString() + "\n");
     	assertTrue(res.toString().equals(expected));
+    }
+    
+    public void assertDiff(String lemmaDiff, Integer nbToDelete, String toAdd, String initial, Integer sandhiType, Integer pos) {
+        DiffStruct res = SkrtWordTokenizer.getDiff(lemmaDiff);
+        assertTrue(res.pos == pos);
+        assertTrue(res.sandhiType == sandhiType);
+        assertTrue(res.nbToDelete == nbToDelete);
+        assertTrue(res.initial.equals(initial));
+        assertTrue(res.toAdd.equals(toAdd));
+    }
+    
+    @Test
+    public void testDiffParser() {
+        assertDiff("0+/a=1#2", 0, "", "a", 1, 2);
+        assertDiff("1+a/A=2#3", 1, "a", "A", 2, 3);
     }
     
     @Test
