@@ -19,6 +19,8 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -141,7 +143,22 @@ public class CmdParser {
 					}
 				}
 			} else if (thereAreNoModifications(fullEntry)) {
-				// pass
+			    if (sandhiType == 10) {
+			        List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
+			                "c", "C", "j", "J", "Y", 
+			                "w", "W", "q", "Q", "R", 
+			                "t", "T", "d", "D", "n", 
+			                "p", "P", "b", "B", "m", 
+			                "y", "r", "l", "v", 
+			                "S", "z", "s", "h");
+			        for (String cons: consonants) {
+			            String sandhiedFinal = inflected.substring(inflected.length()-1);
+	                    String sandhied = sandhiedFinal+cons;
+	                    String unsandhied = String.format("0+/=%s#%s", sandhiType, pos);
+	                    addEntry(sandhied, unsandhied);
+			        }
+			    }
+			    // pass
 			} else {
 				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
 			}
