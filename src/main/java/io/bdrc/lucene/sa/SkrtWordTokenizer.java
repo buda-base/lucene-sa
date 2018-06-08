@@ -968,13 +968,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 
-		TreeMap<String, TreeSet<String>> parsedCmd = new CmdParser().parse(inflected, cmd);
-		for (Entry<String, TreeSet<String>> current: parsedCmd.entrySet()) {
+		TreeMap<String, TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		for (Entry<String, TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
-			TreeSet<String> diffs = current.getValue();
+			TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct> diffs = current.getValue();
 			boolean foundAsandhi = false; 
-			for (String lemmaDiff: diffs) {
-			    final DiffStruct diff = getDiff(lemmaDiff);
+			for (io.bdrc.lucene.sa.CmdParser.DiffStruct diff: diffs) {
+//			    final DiffStruct diff = getDiff(lemmaDiff);
 				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial == null) {
 					continue;	// there is no sandhi nor, so we skip this diff
 				}

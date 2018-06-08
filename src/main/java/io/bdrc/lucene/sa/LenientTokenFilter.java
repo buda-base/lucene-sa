@@ -97,7 +97,7 @@ public class LenientTokenFilter extends TokenFilter{
         lenientMap.put("ḹ", "l");  
         lenientMap.put("ḷ", "l");
         lenientMap.put("ḻ", "l");
-        lenientMap.put("ḻh", "lh");
+        lenientMap.put("ḻh", "l");
 
         lenientMap.put("ḥ", "h");  
         

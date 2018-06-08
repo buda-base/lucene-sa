@@ -53,7 +53,15 @@ public class CmdParser {
 	private String initialCharsOriginal = null;
 	private String toAdd = null;
 	
-	private TreeMap<String, TreeSet<String>> sandhis = null;
+	private TreeMap<String, TreeSet<DiffStruct>> sandhis = null;
+	
+	private static List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
+            "c", "C", "j", "J", "Y", 
+            "w", "W", "q", "Q", "R", 
+            "t", "T", "d", "D", "n", 
+            "p", "P", "b", "B", "m", 
+            "y", "r", "l", "v", 
+            "S", "z", "s", "h");
 
 	/**
 	 * note: currently, parsing cmd is not done using indexes. this method might be slow.
@@ -88,9 +96,17 @@ public class CmdParser {
 	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
 	 * @return: parsed structure 
 	 */
-	public TreeMap<String, TreeSet<String>> parse(String inflected, String cmd) {
+//	
+//	class DiffStruct {
+//	    Integer nbToDelete;
+//	    String toAdd;
+//	    String initial;
+//	    Integer sandhiType;
+//	    Integer pos;
+//	}
+	public TreeMap<String, TreeSet<DiffStruct>> parse(String inflected, String cmd) {
 		// <initial>:<initial>:<...>$<finalDiff>;<finalDiff>;<...>/<initialDiff>|
-		sandhis = new TreeMap<String, TreeSet<String>>(new CommonHelpers.LengthComp());
+		sandhis = new TreeMap<String, TreeSet<DiffStruct>>(new CommonHelpers.LengthComp());
 		
 		String[] fullEntries = cmd.split("\\|");								// <fullEntry>|<fullEntry>|<...>
 		for (String fullEntry: fullEntries) {
@@ -111,8 +127,9 @@ public class CmdParser {
 					splitDiffInitial();											// -<sandhiedInitial>+<unsandhiedInitial>
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-					String unsandhied = String.format("0+/%s=%s#%s", initialCharsOriginal, sandhiType, pos);
-					addEntry(sandhied, unsandhied);
+//					String unsandhied = String.format("0+/%s=%s#%s", initialCharsOriginal, sandhiType, pos);
+					DiffStruct df = new DiffStruct(toDelete, toAdd, null, sandhiType, pos);
+					addEntry(sandhied, df);
 					
 				} else if (onlyFinalsChange()) {
 					for (String diffFinal: diffFinals) {
@@ -122,13 +139,15 @@ public class CmdParser {
 						if (thereAreInitials()) {
 							for (String initial: initials) {
 								String sandhied = sandhiedFinal+initial;
-								String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initial, sandhiType, pos);
-								addEntry(sandhied, unsandhied);
+//								String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initial, sandhiType, pos);
+								DiffStruct df = new DiffStruct(toDelete, toAdd, initial, sandhiType, pos);
+								addEntry(sandhied, df);
 							}
 						} else {
 							String sandhied = sandhiedFinal;
-							String unsandhied = String.format("%s+%s=%s#%s", toDelete, toAdd, sandhiType, pos);
-							addEntry(sandhied, unsandhied);
+//							String unsandhied = String.format("%s+%s=%s#%s", toDelete, toAdd, sandhiType, pos);
+							DiffStruct df = new DiffStruct(toDelete, toAdd, null, sandhiType, pos);
+							addEntry(sandhied, df);
 						}
 					}
 				} else {	// both initials and finals change
@@ -138,24 +157,19 @@ public class CmdParser {
 						splitDiffInitial();										// -<sandhiedInitial>+<unsandhiedInitial>
 
 						String sandhied = sandhiedFinal+initialCharsSandhied;
-						String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
-						addEntry(sandhied, unsandhied);
+//						String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
+						DiffStruct df = new DiffStruct(toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
+						addEntry(sandhied, df);
 					}
 				}
 			} else if (thereAreNoModifications(fullEntry)) {
 			    if (sandhiType == 10) {
-			        List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
-			                "c", "C", "j", "J", "Y", 
-			                "w", "W", "q", "Q", "R", 
-			                "t", "T", "d", "D", "n", 
-			                "p", "P", "b", "B", "m", 
-			                "y", "r", "l", "v", 
-			                "S", "z", "s", "h");
 			        for (String cons: consonants) {
 			            String sandhiedFinal = inflected.substring(inflected.length()-1);
 	                    String sandhied = sandhiedFinal+cons;
-	                    String unsandhied = String.format("0+/=%s#%s", sandhiType, pos);
-	                    addEntry(sandhied, unsandhied);
+//	                    String unsandhied = String.format("0+/=%s#%s", sandhiType, pos);
+	                    DiffStruct df = new DiffStruct(null, null, null, sandhiType, pos);
+	                    addEntry(sandhied, df);
 			        }
 			    }
 			    // pass
@@ -165,7 +179,7 @@ public class CmdParser {
 		}
 		return sandhis;
 	}
-
+	
 	private String findSandhiedFinals(String inflected, int sandhiType) {
 	    if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
 		// if consonants1_vowels, visarga1 or visarga2
@@ -236,9 +250,9 @@ public class CmdParser {
 		return diff.replaceFirst("\\-", "").trim();  // remove "-" and extra space
 	}
 	
-	private void addEntry(String sandhied, String unsandhied) {
-		sandhis.putIfAbsent(sandhied, new TreeSet<String>());
-		sandhis.get(sandhied).add(unsandhied);
+	private void addEntry(String sandhied, DiffStruct diff) {
+		sandhis.putIfAbsent(sandhied, new TreeSet<DiffStruct>());
+		sandhis.get(sandhied).add(diff);
 	}
 	
 	final private boolean thereAreModifications() {
@@ -261,5 +275,46 @@ public class CmdParser {
 	final private boolean thereAreInitials() {
 		return initials.length > 0;
 	}
+	
+	public class DiffStruct {
+	    Integer nbToDelete;
+	    String toAdd;
+	    String initial;
+	    Integer sandhiType;
+	    Integer pos;
+	    
+	    public DiffStruct(Integer nbToDelete, String toAdd, String initial, Integer sandhiType, Integer pos) {
+	        this.nbToDelete = (nbToDelete != null) ? nbToDelete: -1;
+	        this.toAdd = (toAdd != null) ? toAdd: "";
+	        this.initial = (initial != null) ? initial: "";
+	        this.sandhiType = (sandhiType != null) ? sandhiType: -1;
+	        this.pos = (pos != null) ? pos: -1;
+	    }
+
+	    public DiffStruct(String nbToDelete, String toAdd, String initial, int sandhiType, String pos) {
+	        this.nbToDelete = (nbToDelete != null) ? Integer.valueOf(nbToDelete): -1;
+	        this.toAdd = (toAdd != null) ? toAdd: "";
+	        this.initial = (initial != null) ? initial: "";
+	        this.sandhiType = (sandhiType != -1) ? sandhiType: -1;
+	        this.pos =  (pos != null) ? Integer.valueOf(pos): -1;
+	    }
+	}
 }
 
+class LemmaInfo implements Comparable<LemmaInfo> {
+    String lemma;
+    Integer pos;
+    
+    public LemmaInfo(String lemma, int pos) {
+        this.lemma = lemma;
+        this.pos = pos;
+    }
+
+    @Override
+    public int compareTo(LemmaInfo arg0) {
+        int posDiff = pos.compareTo(arg0.pos);
+        if (posDiff != 0)
+            return posDiff;
+        return lemma.compareTo(arg0.lemma);
+    }
+}
