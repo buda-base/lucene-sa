@@ -43,6 +43,7 @@ import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.bdrc.lucene.sa.CmdParser.DiffStruct;
 import io.bdrc.lucene.sa.PartOfSpeechAttribute.PartOfSpeech;
 import io.bdrc.lucene.stemmer.Row;
 import io.bdrc.lucene.stemmer.Trie;
@@ -924,36 +925,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
         }
     }
     
-    public static class DiffStruct {
-        Integer nbToDelete;
-        String toAdd;
-        String initial;
-        Integer sandhiType;
-        Integer pos;
-    }
-    
-    public static DiffStruct getDiff(final String lemmaDiff) {
-        final int equalIdx = lemmaDiff.indexOf('=');
-        assert(equalIdx != -1);
-        final int hashIdx = lemmaDiff.indexOf('#', equalIdx+1);
-        assert(hashIdx != -1);
-        final DiffStruct res = new DiffStruct();
-        res.sandhiType = Integer.valueOf(lemmaDiff.substring(equalIdx+1, hashIdx));
-        res.pos = Integer.valueOf(lemmaDiff.substring(hashIdx+1));
-        final int plusIdx = lemmaDiff.indexOf('+');
-        assert(plusIdx != -1 && plusIdx < equalIdx);
-        res.nbToDelete = Integer.valueOf(lemmaDiff.substring(0, plusIdx));
-        final int slashIdx = lemmaDiff.indexOf('/', plusIdx);
-        if (slashIdx == -1) {
-            res.toAdd = lemmaDiff.substring(plusIdx+1, equalIdx);
-            res.initial = null;
-        } else {
-            res.toAdd = lemmaDiff.substring(plusIdx+1, slashIdx);
-            res.initial = lemmaDiff.substring(slashIdx+1, equalIdx);
-        }
-        return res;
-    }
-    
 	/**
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
@@ -968,20 +939,18 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 
-		TreeMap<String, TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct>> parsedCmd = new CmdParser().parse(inflected, cmd);
-		for (Entry<String, TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct>> current: parsedCmd.entrySet()) {
+		TreeMap<String, TreeSet<DiffStruct>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		for (Entry<String, TreeSet<DiffStruct>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
-			TreeSet<io.bdrc.lucene.sa.CmdParser.DiffStruct> diffs = current.getValue();
+			TreeSet<DiffStruct> diffs = current.getValue();
 			boolean foundAsandhi = false; 
-			for (io.bdrc.lucene.sa.CmdParser.DiffStruct diff: diffs) {
-//			    final DiffStruct diff = getDiff(lemmaDiff);
-				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial == null) {
+			for (DiffStruct diff: diffs) {
+				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
 					continue;	// there is no sandhi nor, so we skip this diff
 				}
-				
 				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;
-				    if (diff.initial != null) {
+				    if (diff.initial.isEmpty()) {
 				        if (initials == null) {
                             initials = new HashSet<String>();
                             storedInitials = new HashSet<String>();

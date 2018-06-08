@@ -43,7 +43,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.bdrc.lucene.sa.SkrtWordTokenizer.DiffStruct;
 import io.bdrc.lucene.stemmer.Trie;
 
 /**
@@ -105,27 +104,12 @@ public class TestWordTokenizer
     {
     	System.out.println("CmdParser: parse cmd of Darma");
     	String input = "$/=0#0|$-0+n/=0#1|r$-0+n/- r+f=1#1|cC$-0+n/- cC+C=8#1|$/=0#1|r$/- r+f=1#1|cC$/- cC+C=8#1|A:i:I:u:U:f:e:E:o:O$-0+n/- +=1#1|A:i:I:u:U:f:e:E:o:O$/- +=1#1";
-    	String expected = "{acC=[0+/C=8#1, 0+n/C=8#1], aA=[0+n/A=1#1], aE=[0+n/E=1#1], aI=[0+n/I=1#1], aO=[0+n/O=1#1], aU=[0+n/U=1#1], ae=[0+n/e=1#1], af=[0+n/f=1#1], ai=[0+n/i=1#1], ao=[0+n/o=1#1], ar=[0+/f=1#1, 0+n/f=1#1], au=[0+n/u=1#1], a=[0+n=0#1]}";
+    	String expected = "{acC=[0+/C=8#1, 0+n/C=8#1], aA=[0+n/A=1#1], aE=[0+n/E=1#1], aI=[0+n/I=1#1], aO=[0+n/O=1#1], aU=[0+n/U=1#1], ae=[0+n/e=1#1], af=[0+n/f=1#1], ai=[0+n/i=1#1], ao=[0+n/o=1#1], ar=[0+/f=1#1, 0+n/f=1#1], au=[0+n/u=1#1], a=[0+n/=0#1]}";
     	System.out.println("0 " + input);
-    	Map<String, TreeSet<String>> res = new CmdParser().parse("Darma", input);    	
+    	Map<String, TreeSet<CmdParser.DiffStruct>> res = new CmdParser().parse("Darma", input);    	
     	System.out.println("1 " + expected);
     	System.out.println("2 " + res.toString() + "\n");
     	assertTrue(res.toString().equals(expected));
-    }
-    
-    public void assertDiff(String lemmaDiff, Integer nbToDelete, String toAdd, String initial, Integer sandhiType, Integer pos) {
-        DiffStruct res = SkrtWordTokenizer.getDiff(lemmaDiff);
-        assertTrue(res.pos == pos);
-        assertTrue(res.sandhiType == sandhiType);
-        assertTrue(res.nbToDelete == nbToDelete);
-        assertTrue(res.initial.equals(initial));
-        assertTrue(res.toAdd.equals(toAdd));
-    }
-    
-    @Test
-    public void testDiffParser() {
-        assertDiff("0+/a=1#2", 0, "", "a", 1, 2);
-        assertDiff("1+a/A=2#3", 1, "a", "A", 2, 3);
     }
     
     @Test
@@ -548,7 +532,6 @@ public class TestWordTokenizer
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/shri_jnana_test"); 
         TokenStream words = tokenize(reader, skrtWordTokenizer);
-        words = new Slp2RomanFilter(words);
         assertTokenStream(words, expected);
     }
     
