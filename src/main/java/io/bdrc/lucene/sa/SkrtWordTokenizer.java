@@ -950,7 +950,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				}
 				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;
-				    if (diff.initial.isEmpty()) {
+				    if (!diff.initial.isEmpty()) {
 				        if (initials == null) {
                             initials = new HashSet<String>();
                             storedInitials = new HashSet<String>();
