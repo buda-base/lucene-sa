@@ -193,8 +193,13 @@ public class CmdParser {
 					}
 				}
 			} else if (thereAreNoModifications(fullEntry)) {
+			    if (idempotentGroup == 9) {
+			        final String sandhiedFinal = inflected.substring(inflected.length()-1);
+			        final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);
+			        addEntry(sandhiedFinal, df);
+			    }
 //			    if (sandhiType == 10) {
-//			        for (String cons: consonants) {
+//			        for (String cons: idempotentInitials.get(9)) {
 //			            final String sandhiedFinal = inflected.substring(inflected.length()-1);
 //	                    final String sandhied = sandhiedFinal+cons;
 //	                    final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);

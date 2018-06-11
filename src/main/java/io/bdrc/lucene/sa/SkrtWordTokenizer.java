@@ -952,7 +952,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			boolean foundAsandhi = false; 
 			for (DiffStruct diff: diffs) {
 				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
-					continue;	// there is no sandhi nor, so we skip this diff
+//					continue;	// there is no sandhi nor, so we skip this diff
 				}
 				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;

@@ -107,7 +107,7 @@ public class TestWordTokenizer
     	String expected = "{acC=[0+/C=8£4#1, 0+n/C=8£4#1], aA=[0+/A=1£1#1, 0+n/A=1£1#1], aE=[0+/E=1£1#1, 0+n/E=1£1#1], aI=[0+/I=1£1#1, "
     	        + "0+n/I=1£1#1], aO=[0+/O=1£1#1, 0+n/O=1£1#1], aU=[0+/U=1£1#1, 0+n/U=1£1#1], ae=[0+/e=1£1#1, 0+n/e=1£1#1], af=[0+/f=1£1#1, "
     	        + "0+n/f=1£1#1], ai=[0+/i=1£1#1, 0+n/i=1£1#1], ao=[0+/o=1£1#1, 0+n/o=1£1#1], ar=[0+/f=1£1#1, 0+n/f=1£1#1], au=[0+/u=1£1#1, "
-    	        + "0+n/u=1£1#1], a=[0+n/=0£9#1]}";
+    	        + "0+n/u=1£1#1], a=[0+/=0£-1#1, 0+n/=0£9#1]}";
     	System.out.println("0 " + input);
     	Map<String, TreeSet<CmdParser.DiffStruct>> res = new CmdParser().parse("Darma", input);    	
     	System.out.println("1 " + expected);
@@ -137,7 +137,7 @@ public class TestWordTokenizer
     	buffer.get(0);
     	int bufferIdx = 4;
     	String sandhied = "A";
-    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 1); 
+    	boolean res = SkrtWordTokenizer.containsSandhiedCombination(buffer, bufferIdx, sandhied, 2);
     	assertTrue(res);
     }
 
@@ -160,7 +160,7 @@ public class TestWordTokenizer
 		System.out.println("sandhied compounds");
 		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa✓", "Darma√", "Darman√", "ADa❌", "Darma√", "Darman√", "aTa✓");
+		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa√", "Darma√", "Darman√", "ADa❌", "Darma√", "Darman√", "aTa√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -173,7 +173,7 @@ public class TestWordTokenizer
 		System.out.println("Testing input starting with non-word");
 		String input = "aTaAB CDEaTaFGH IJaTa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("aTa✓", "AB❌", "CDE❌", "aTa✓", "FGH❌", "IJ❌", "aTa✓");
+		List<String> expected = Arrays.asList("aTa√", "AB❌", "CDE❌", "aTa√", "FGH❌", "IJ❌", "aTa√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -251,7 +251,7 @@ public class TestWordTokenizer
 		System.out.println("space in sandhi");
 		String input = "te 'pi te'pi";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("tad√", "yuzmad√", "api✓", "tad√", "yuzmad√", "api✓");
+		List<String> expected = Arrays.asList("tad√", "yuzmad√", "api√", "tad√", "yuzmad√", "api√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/te'pi_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -264,7 +264,7 @@ public class TestWordTokenizer
 		System.out.println("non-sandhied compound");
 		String input = "budDaDarma";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("budDa✓", "Darman√");
+		List<String> expected = Arrays.asList("budDa✓", "Darma√", "Darman√");
 		System.out.println("0 " + input);
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
 		TokenStream words = tokenize(reader, skrtWordTokenizer);
@@ -300,8 +300,8 @@ public class TestWordTokenizer
 		//                 and to the fact a space is not a word-break since sandhis can be applied across spaces 
 		// kanyA✓ is due to the context not allowing any sandhi from the cmd
 		// utsava✓ idem
-		List<String> expected = Arrays.asList("aTa√", "fAja❌", "kanyA✓", "candravatI❌", "nAmABi❌", "na✓", "varupayOva❌", "na✓", 
-                "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava✓", "divasa√", "na✓", "garaM❌", "nirikzamARAsti❌");
+		List<String> expected = Arrays.asList("aTa√", "fAja❌", "kanyA✓", "candravatI❌", "nAmABi❌", "na√", "varupayOva❌", "na✓", 
+                "sampannA❌", "saKi√", "dvitIya√", "eka√", "mah√", "mahat√", "utsava√", "divasa√", "na√", "garaM❌", "nirikzamARAsti❌");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -406,7 +406,7 @@ public class TestWordTokenizer
 		System.out.println("bug3");
 		String input = "divase na";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("divasa√", "na✓");
+		List<String> expected = Arrays.asList("divasa√", "na√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/aTa_test");
 		TokenStream syllables = tokenize(reader, skrtWordTokenizer);
@@ -443,7 +443,7 @@ public class TestWordTokenizer
     public void bug6IoBufferSizeLimit() throws IOException
     {
     	System.out.println("bug6");
-    	List<String> expected = Arrays.asList("budDa✓", "Darman√");
+    	List<String> expected = Arrays.asList("budDa✓", "Darma√", "Darman√");
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/budDaDarma_test");
     	
     	HashMap<Integer, Integer> ranges = new HashMap<Integer, Integer>();
@@ -468,7 +468,7 @@ public class TestWordTokenizer
     	System.out.println("bug7");
     	String input = "mAdivyApArarahitaM";
     	Reader reader = new StringReader(input);
-    	List<String> expected = Arrays.asList("mAdin√", "vyApAra√", "ahi✓", "taM❌");
+    	List<String> expected = Arrays.asList("mAdin√", "vyApAra√", "ahi√", "taM❌");
     	System.out.println("0 " + input);
     	
     	SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/vyApArarahi_test");
@@ -496,7 +496,7 @@ public class TestWordTokenizer
         System.out.println("bug9");
         String input = "kecit";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("kim√", "cid√", "cit√");
+        List<String> expected = Arrays.asList("kim√", "cid√", "cit√", "cit√");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/kecit_test"); 
@@ -516,8 +516,8 @@ public class TestWordTokenizer
                 + "bodhicaryāvatara";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("bodhi√", "bodhin√", "caryā√", "avatara√", "bodhisattva✓", "caryā√", 
-                "avatara√", "śāntideva✓", "mañjuśrī√", "nāman√", "samgīti✓", "mañjuśrī√", "jñāna✓", "ij✓", 
-                "sattvasya✓", "parama√", "ārtha✓", "artha✓", "nāman√", "samgīti✓", "nāman√", "samgīti✓", 
+                "avatara√", "śāntideva√", "mañjuśrī√", "nāman√", "samgīti√", "mañjuśrī√", "jñāna√", "ij√", 
+                "sattvasya√", "parama√", "ārtha√", "artha√", "nāman√", "samgīti√", "nāman√", "samgīti√", 
                 "bodhi√", "bodhin√", "caryā√", "avatara√");
         System.out.println("0 " + input);
         
@@ -535,7 +535,7 @@ public class TestWordTokenizer
         System.out.println("bug9");
         String input = "SrIjYAna";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("SrI√", "jYAna✓", "ij✓");
+        List<String> expected = Arrays.asList("SrI√", "jYAna√", "ij√");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/shri_jnana_test"); 
