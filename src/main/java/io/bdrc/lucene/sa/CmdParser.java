@@ -20,6 +20,8 @@
 package io.bdrc.lucene.sa;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -54,8 +56,50 @@ public class CmdParser {
 	private String toAdd = null;
 	
 	private TreeMap<String, TreeSet<DiffStruct>> sandhis = null;
+
+    private int idempotentGroup = -1;
 	
-	private static final List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
+	private static final HashMap<Integer, List<String>> idempotentInitials = new HashMap<Integer, List<String>>() 
+	{
+        private static final long serialVersionUID = 1L;
+
+    { 
+	    // vowels
+        put(1, Arrays.asList("F", "x", "X", "k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", 
+	            "w", "W", "q", "L", "Q", "|", "R", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", 
+	            "y", "r", "l", "v", "S", "z", "s", "h", "H", "Z", "V"));
+	    // consonants1
+        put(2, Arrays.asList("a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e", "E", "o", "O", 
+                "k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", "w", "W", "q", "L", "Q", "|", "R", 
+                "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "H", "Z", "V"));
+	    // consonants2
+	    put(3, Arrays.asList("a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e", "E", "o", "O", 
+	            "N", "Y", "L", "|", "R", "y", "r", "l", "v", "S", "z", "s", "h", "H", "Z", "V"));
+	    // cC_words
+	    put(4, Arrays.asList("a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e", "E", "o", "O", 
+	            "k", "K", "g", "G", "N", "c", "j", "J", "Y", "w", "W", "q", "L", "Q", "|", "R", 
+	            "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "z", "s", 
+	            "h", "H", "Z", "V"));
+	    // consonants1_vowels
+	    put(5, Arrays.asList("F", "x", "X", "k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", 
+	            "w", "W", "q", "L", "Q", "|", "R", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", 
+	            "y", "r", "l", "v", "S", "z", "s", "h", "H", "Z", "V"));
+	    // visarga1
+	    put(6, Arrays.asList("F", "x", "X", "k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", 
+	            "w", "W", "q", "L", "Q", "|", "R", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", 
+	            "H", "Z", "V"));
+	    // visarga2
+	    put(7, Arrays.asList("a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e", "E", "o", "O", 
+	            "N", "Y", "L", "|", "R", "y", "r", "l", "v", "S", "z", "s", "h", "H", "Z", "V"));
+	    // punar
+	    put(8, Arrays.asList("I", "F", "x", "X", "L", "|", "H", "Z", "V"));
+	    // all SLP
+	    put(9, Arrays.asList("a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e", "E", "o", "O", 
+	            "k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", "w", "W", "q", "L", "Q", "|", "R", 
+	            "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "z", "s", 
+	            "h", "H", "Z", "V", "M"));
+	}};
+    private static final List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
             "c", "C", "j", "J", "Y", 
             "w", "W", "q", "Q", "R", 
             "t", "T", "d", "D", "n", 
@@ -120,8 +164,7 @@ public class CmdParser {
 					splitDiffInitial();											// -<sandhiedInitial>+<unsandhiedInitial>
 					
 					String sandhied = sandhiedFinal+initialCharsSandhied;
-//					String unsandhied = String.format("0+/%s=%s#%s", initialCharsOriginal, sandhiType, pos);
-					DiffStruct df = new DiffStruct(0, toAdd, initialCharsOriginal, sandhiType, pos);
+					DiffStruct df = new DiffStruct(0, toAdd, initialCharsOriginal, sandhiType, pos, idempotentGroup);
 					addEntry(sandhied, df);
 					
 				} else if (onlyFinalsChange()) {
@@ -131,13 +174,11 @@ public class CmdParser {
 						
 						if (thereAreInitials()) {
 							for (String initial: initials) {
-//								String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initial, sandhiType, pos);
-								final DiffStruct df = new DiffStruct(toDelete, toAdd, initial, sandhiType, pos);
+								final DiffStruct df = new DiffStruct(toDelete, toAdd, initial, sandhiType, pos, idempotentGroup);
 								addEntry(sandhiedFinal+initial, df);
 							}
 						} else {
-//							String unsandhied = String.format("%s+%s=%s#%s", toDelete, toAdd, sandhiType, pos);
-							final DiffStruct df = new DiffStruct(toDelete, toAdd, null, sandhiType, pos);
+							final DiffStruct df = new DiffStruct(toDelete, toAdd, null, sandhiType, pos, idempotentGroup);
 							addEntry(sandhiedFinal, df);
 						}
 					}
@@ -147,28 +188,43 @@ public class CmdParser {
 						splitDiffFinal(diffFinal);								// -<toDelete>+<toAdd>
 						splitDiffInitial();										// -<sandhiedInitial>+<unsandhiedInitial>
 
-//						String unsandhied = String.format("%s+%s/%s=%s#%s", toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
-						final DiffStruct df = new DiffStruct(toDelete, toAdd, initialCharsOriginal, sandhiType, pos);
+						final DiffStruct df = new DiffStruct(toDelete, toAdd, initialCharsOriginal, sandhiType, pos, idempotentGroup);
 						addEntry(sandhiedFinal+initialCharsSandhied, df);
 					}
 				}
 			} else if (thereAreNoModifications(fullEntry)) {
-			    if (sandhiType == 10) {
-			        for (String cons: consonants) {
-			            final String sandhiedFinal = inflected.substring(inflected.length()-1);
-	                    final String sandhied = sandhiedFinal+cons;
-//	                    String unsandhied = String.format("0+/=%s#%s", sandhiType, pos);
-	                    final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos);
-	                    addEntry(sandhied, df);
-			        }
-			    }
+//			    if (sandhiType == 10) {
+//			        for (String cons: consonants) {
+//			            final String sandhiedFinal = inflected.substring(inflected.length()-1);
+//	                    final String sandhied = sandhiedFinal+cons;
+//	                    final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);
+//	                    addEntry(sandhied, df);
+//			        }
+//			    }
 			    // pass
 			} else {
 				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
 			}
 		}
 		return sandhis;
-	}
+	} 
+	
+    public HashMap<String, String> getIdemSandhied(String inflected, HashSet<Integer> idempotentToApply) {
+        HashMap<String, String> sandhied = new HashMap<String, String>();
+        String sandhiedFinal = findSandhiedFinals(inflected, 10);
+        for (Integer group: idempotentToApply) {
+            if (group == 9) {
+                for (String initial: idempotentInitials.get(group)) {
+                    sandhied.put(sandhiedFinal + initial, initial);
+                }
+            } else {
+                for (String initial: idempotentInitials.get(group)) {
+                    sandhied.put(sandhiedFinal + initial, sandhiedFinal);
+                }
+            }
+        }
+        return sandhied;
+    }
 	
 	private String findSandhiedFinals(String inflected, int sandhiType) {
 	    if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
@@ -185,8 +241,10 @@ public class CmdParser {
 		t = fullEntry.split("=");
 		entry = t[0];
 		t = t[1].split("#");
-		sandhiType = Integer.parseInt(t[0]);
 		pos = Integer.parseInt(t[1]);
+		t = t[0].split("£");
+		sandhiType = Integer.parseInt(t[0]);
+		if (t.length == 2) idempotentGroup  = Integer.parseInt(t[1]);
 	}
 	
 	private void splitEntryAndInitials() {
@@ -272,17 +330,19 @@ public class CmdParser {
 	    String initial;
 	    Integer sandhiType;
 	    Integer pos;
+	    Integer idempotentGroup;
 	    
-	    public DiffStruct(int nbToDelete, String toAdd, String initial, int sandhiType, int pos) {
+	    public DiffStruct(int nbToDelete, String toAdd, String initial, int sandhiType, int pos, int idempotentGroup) {
 	        this.nbToDelete = nbToDelete;
 	        this.toAdd = (toAdd != null) ? toAdd: "";
 	        this.initial = (initial != null) ? initial: "";
 	        this.sandhiType = sandhiType;
 	        this.pos = pos;
+	        this.idempotentGroup = idempotentGroup;
 	    }
 	    
 	    public String toString() {
-	        return String.format("%s+%s/%s=%s#%s", nbToDelete, toAdd, initial, sandhiType, pos);
+	        return String.format("%s+%s/%s=%s£%s#%s", nbToDelete, toAdd, initial, sandhiType, idempotentGroup, pos);
 	    }
 
         @Override
@@ -297,6 +357,9 @@ public class CmdParser {
             if (c != 0)
                 return c;
             c = sandhiType.compareTo(arg0.sandhiType);
+            if (c != 0)
+                return c;
+            c = idempotentGroup.compareTo(arg0.idempotentGroup);
             if (c != 0)
                 return c;
             return pos.compareTo(arg0.pos);

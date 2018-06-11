@@ -93,17 +93,17 @@ public class Slp2RomanFilter extends TokenFilter {
     @Override
     public final boolean incrementToken() throws IOException {
         while (input.incrementToken()) {
-            StringBuilder lazied = new StringBuilder();
+            StringBuilder converted = new StringBuilder();
             char[] tokenBuffer = charTermAttribute.toString().toCharArray();
             for (char t: tokenBuffer) {
                 String key = String.valueOf(t);
                 if (map.containsKey(key)) {
-                    lazied.append(map.get(key));
+                    converted.append(map.get(key));
                 } else {
-                    lazied.append(t);
+                    converted.append(t);
                 }
             }
-            charTermAttribute.setEmpty().append(lazied.toString());
+            charTermAttribute.setEmpty().append(converted.toString());
             return true;
         }
         return false;

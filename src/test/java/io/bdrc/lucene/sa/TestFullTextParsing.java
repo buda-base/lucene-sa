@@ -212,12 +212,12 @@ public class TestFullTextParsing
     @Test
     public void bugbodhi() throws Exception {
         System.out.println("bug5");
-        String input = "bodhisattvacaryāvatāra - "
+        String input = "bodhisattvacaryāvatara - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
                 + "Nāmasaṅgīti - "
-                + "bodhicaryāvatāra"
+                + "bodhicaryāvatara"
                 + "Prajñāpāramitā";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -230,7 +230,7 @@ public class TestFullTextParsing
     @Test
     public void bugShri() throws Exception {
         System.out.println("bug5");
-        String input = "mañjuśrījñāna";
+        String input = "śrījñāna"; // "mañjuśrījñāna";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);

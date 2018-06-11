@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -935,18 +936,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @return: the list of all the possible lemmas given the current context
 	 */
 	TreeSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
-		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses HashSet to avoid duplicates
-
+		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses a Set to avoid duplicates
+		HashSet<Integer> idempotentToApply = new HashSet<Integer>();
+		CmdParser parser = new CmdParser();
+		
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 
-		TreeMap<String, TreeSet<DiffStruct>> parsedCmd = new CmdParser().parse(inflected, cmd);
+		TreeMap<String, TreeSet<DiffStruct>> parsedCmd = parser.parse(inflected, cmd);
 		for (Entry<String, TreeSet<DiffStruct>> current: parsedCmd.entrySet()) {
 			String sandhied = current.getKey();
 			TreeSet<DiffStruct> diffs = current.getValue();
 			boolean foundAsandhi = false; 
 			for (DiffStruct diff: diffs) {
 				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
-					continue;	// there is no sandhi nor, so we skip this diff
+//					continue;	// there is no sandhi nor, so we skip this diff
 				}
 				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;
@@ -960,9 +963,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    }
 					final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
 					totalLemmas.add(lemma);
+					if (diff.idempotentGroup != -1)
+					    idempotentToApply.add(diff.idempotentGroup);
 				}
 			}
 			if (foundAsandhi) break;
+		}
+//		CmdParser.
+		HashMap<String, String> idemSandhied = parser.getIdemSandhied(inflected, idempotentToApply);
+		for (Entry<String, String> entry: idemSandhied.entrySet()) {
+		    if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, entry.getKey(), 10)) {
+		        initials = new HashSet<String>();
+                storedInitials = new HashSet<String>();
+		        initials.add(entry.getValue());
+		        storedInitials.add(entry.getValue());
+		    }
 		}
 		return totalLemmas;
 	}
@@ -1017,6 +1032,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		case 9:
 			return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, -4);   // special sandhi: "punar"
 			
+		case 10:
+		    return isSandhiedCombination(ioBuffer, bufferIndex, sandhied, 0);    // idempotent sandhi
 		default:
 			return false;
 		}

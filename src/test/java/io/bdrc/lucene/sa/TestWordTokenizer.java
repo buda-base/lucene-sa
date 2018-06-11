@@ -505,18 +505,20 @@ public class TestWordTokenizer
     public void testDemoWords() throws IOException
     {
         System.out.println("bug9");
-        String input = "bodhisattvacaryāvatāra - "
+        String input = "bodhicaryāvatara bodhisattvacaryāvatara - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
-                + "Nāmasaṅgīti - "
-                + "bodhicaryāvatāra";
+                + "Nāmasaṃgīti - "
+                + "bodhicaryāvatara";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("kim√", "cid√");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/demo_test"); 
+        reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
         assertTokenStream(words, expected);
     }
