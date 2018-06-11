@@ -640,6 +640,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 								break;
 							} else {
 								ifNoInitialsCleanupPotentialTokensAndNonwords();
+								if (!foundMatch && !foundNonMaxMatch) {
+								    tokenBuffer.setLength(0);
+								}
 								break;
 							}
 						}					
@@ -949,7 +952,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			boolean foundAsandhi = false; 
 			for (DiffStruct diff: diffs) {
 				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
-//					continue;	// there is no sandhi nor, so we skip this diff
+					continue;	// there is no sandhi nor, so we skip this diff
 				}
 				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 				    foundAsandhi = true;
@@ -973,8 +976,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		HashMap<String, String> idemSandhied = parser.getIdemSandhied(inflected, idempotentToApply);
 		for (Entry<String, String> entry: idemSandhied.entrySet()) {
 		    if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, entry.getKey(), 10)) {
-		        initials = new HashSet<String>();
-                storedInitials = new HashSet<String>();
+		        if (initials == null) {
+                    initials = new HashSet<String>();
+                    storedInitials = new HashSet<String>();
+                }
 		        initials.add(entry.getValue());
 		        storedInitials.add(entry.getValue());
 		    }

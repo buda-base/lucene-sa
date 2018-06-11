@@ -215,7 +215,11 @@ public class CmdParser {
         for (Integer group: idempotentToApply) {
             if (group == 9) {
                 for (String initial: idempotentInitials.get(group)) {
-                    sandhied.put(sandhiedFinal + initial, initial);
+                    if (sandhiedFinal.length() == 1) {
+                        sandhied.put(sandhiedFinal + initial, initial);
+                    } else {
+                        sandhied.put(sandhiedFinal + initial, sandhiedFinal);
+                    }                    
                 }
             } else {
                 for (String initial: idempotentInitials.get(group)) {
