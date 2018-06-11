@@ -610,8 +610,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					}
 				} else {													// we are within a potential token					
 					if (reachedEndOfInputString()) {
-//					    tokenBuffer.setLength(0);
-
 
 						if (allCharsFromCurrentInitialAreConsumed()) {
 	                        addNonwordToPotentialTokensIfThereIsOne();                  // we do have a non-word token
@@ -972,7 +970,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			}
 			if (foundAsandhi) break;
 		}
-//		CmdParser.
+		
 		HashMap<String, String> idemSandhied = parser.getIdemSandhied(inflected, idempotentToApply);
 		for (Entry<String, String> entry: idemSandhied.entrySet()) {
 		    if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, entry.getKey(), 10)) {

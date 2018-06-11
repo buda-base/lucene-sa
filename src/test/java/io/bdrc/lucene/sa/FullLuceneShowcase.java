@@ -96,7 +96,7 @@ public class FullLuceneShowcase {
                 "saṃghaṃ śaraṇaṃ gacchāmi. ";
         String query = "buddha darma sarana";
 
-        // indexing in words, from iats, with stopwords
+        // indexing in words, from iast, with stopwords
         Analyzer indexingAnalyzer = new SanskritAnalyzer("word", "roman", true, false, "index");
         // querying in words, from SLP, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer("space", "roman", false, false, "query");
@@ -117,9 +117,9 @@ public class FullLuceneShowcase {
                 "saṃghaṃ śaraṇaṃ gacchāmi. ";
         String query = "budda darma";
 
-        // indexing in words, from iats, with stopwords
+        // indexing in syllables, from iast, with stopwords
         Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "index");
-        // querying in words, from SLP, with stopwords  
+        // querying in words, from iast, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
 
         File testSubFolder = folder.newFolder("test");

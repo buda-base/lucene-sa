@@ -99,13 +99,6 @@ public class CmdParser {
 	            "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "z", "s", 
 	            "h", "H", "Z", "V", "M"));
 	}};
-    private static final List<String> consonants = Arrays.asList("k", "K", "g", "G", "N", 
-            "c", "C", "j", "J", "Y", 
-            "w", "W", "q", "Q", "R", 
-            "t", "T", "d", "D", "n", 
-            "p", "P", "b", "B", "m", 
-            "y", "r", "l", "v", 
-            "S", "z", "s", "h");
 
 	/**
 	 * note: currently, parsing cmd is not done using indexes. this method might be slow.
@@ -198,15 +191,6 @@ public class CmdParser {
 			        final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);
 			        addEntry(sandhiedFinal, df);
 			    }
-//			    if (sandhiType == 10) {
-//			        for (String cons: idempotentInitials.get(9)) {
-//			            final String sandhiedFinal = inflected.substring(inflected.length()-1);
-//	                    final String sandhied = sandhiedFinal+cons;
-//	                    final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);
-//	                    addEntry(sandhied, df);
-//			        }
-//			    }
-			    // pass
 			} else {
 				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
 			}
@@ -236,8 +220,8 @@ public class CmdParser {
     }
 	
 	private String findSandhiedFinals(String inflected, int sandhiType) {
+	 // if consonants1_vowels, visarga1 or visarga2
 	    if (sandhiType == 3 || sandhiType == 5 || sandhiType == 6) {
-		// if consonants1_vowels, visarga1 or visarga2
 			return inflected.substring(inflected.length()-2);
 		} else if (sandhiType == 9) {
 			return inflected;
