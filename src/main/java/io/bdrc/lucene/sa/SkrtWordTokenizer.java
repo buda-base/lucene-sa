@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -943,49 +944,49 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 */
 	TreeSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
 		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses a Set to avoid duplicates
-		HashSet<Integer> idempotentToApply = new HashSet<Integer>();
 		CmdParser parser = new CmdParser();
 		
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 
-		TreeMap<String, TreeSet<DiffStruct>> parsedCmd = parser.parse(inflected, cmd);
-		for (Entry<String, TreeSet<DiffStruct>> current: parsedCmd.entrySet()) {
-			String sandhied = current.getKey();
-			TreeSet<DiffStruct> diffs = current.getValue();
-			boolean foundAsandhi = false; 
-			for (DiffStruct diff: diffs) {
-				if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
-//					continue;	// there is no sandhi nor, so we skip this diff
-				}
-				if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
-				    foundAsandhi = true;
-				    if (!diff.initial.isEmpty()) {
-				        if (initials == null) {
-                            initials = new HashSet<String>();
-                            storedInitials = new HashSet<String>();
-                        }
-                        initials.add(diff.initial);
-                        storedInitials.add(diff.initial);
-				    }
-					final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
-					totalLemmas.add(lemma);
-					if (diff.idempotentGroup != -1)
-					    idempotentToApply.add(diff.idempotentGroup);
-				}
-			}
-			if (foundAsandhi) break;
-		}
+		List<TreeMap<String, TreeSet<DiffStruct>>> diffLists = Arrays.asList(parser.parse(inflected, cmd), new TreeMap<String, TreeSet<DiffStruct>>());
+//		diffLists.add(new TreeMap<String, TreeSet<DiffStruct>>());  // the second list to receive the idempotent sandhi DiffStructs
 		
-		HashMap<String, String> idemSandhied = parser.getIdemSandhied(inflected, idempotentToApply);
-		for (Entry<String, String> entry: idemSandhied.entrySet()) {
-		    if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, entry.getKey(), 10)) {
-		        if (initials == null) {
-                    initials = new HashSet<String>();
-                    storedInitials = new HashSet<String>();
-                }
-		        initials.add(entry.getValue());
-		        storedInitials.add(entry.getValue());
-		    }
+		for (TreeMap<String, TreeSet<DiffStruct>> diffList: diffLists) {
+	        for (Entry<String, TreeSet<DiffStruct>> current: diffList.entrySet()) {
+	            String sandhied = current.getKey();
+	            TreeSet<DiffStruct> diffs = current.getValue();
+	            boolean foundAsandhi = false; 
+	            for (DiffStruct diff: diffs) {
+	                if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
+	                  continue;   // there is no sandhi nor, so we skip this diff
+	                }
+	                if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
+	                    foundAsandhi = true;
+	                    if (!diff.initial.isEmpty()) {
+	                        if (initials == null) {
+	                            initials = new HashSet<String>();
+	                            storedInitials = new HashSet<String>();
+	                        }
+	                        initials.add(diff.initial);
+	                        storedInitials.add(diff.initial);
+	                    }
+	                    final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
+	                    totalLemmas.add(lemma);
+	                    if (diff.idempotentGroup != -1) {
+	                        TreeSet<DiffStruct> idemDiffs = new TreeSet<DiffStruct>();
+	                        
+	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
+	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
+	                            idemDiffs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
+	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
+	                            structs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
+	                            diffLists.get(1).put(idem.getKey(), structs);
+	                        }
+	                    }
+	                }
+	            }
+	            if (foundAsandhi) break;
+	        }
 		}
 		return totalLemmas;
 	}

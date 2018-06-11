@@ -198,22 +198,20 @@ public class CmdParser {
 		return sandhis;
 	} 
 	
-    public HashMap<String, String> getIdemSandhied(String inflected, HashSet<Integer> idempotentToApply) {
+    public HashMap<String, String> getIdemSandhied(String inflected, Integer group) {
         HashMap<String, String> sandhied = new HashMap<String, String>();
         String sandhiedFinal = findSandhiedFinals(inflected, 10);
-        for (Integer group: idempotentToApply) {
-            if (group == 9) {
-                for (String initial: idempotentInitials.get(group)) {
-                    if (sandhiedFinal.length() == 1) {
-                        sandhied.put(sandhiedFinal + initial, initial);
-                    } else {
-                        sandhied.put(sandhiedFinal + initial, sandhiedFinal);
-                    }                    
-                }
-            } else {
-                for (String initial: idempotentInitials.get(group)) {
+        if (group == 9) {
+            for (String initial: idempotentInitials.get(group)) {
+                if (sandhiedFinal.length() == 1) {
+                    sandhied.put(sandhiedFinal + initial, initial);
+                } else {
                     sandhied.put(sandhiedFinal + initial, sandhiedFinal);
-                }
+                }                    
+            }
+        } else {
+            for (String initial: idempotentInitials.get(group)) {
+                sandhied.put(sandhiedFinal + initial, sandhiedFinal);
             }
         }
         return sandhied;
