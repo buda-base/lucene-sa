@@ -39,6 +39,7 @@ import java.util.TreeSet;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.slf4j.Logger;
@@ -92,6 +93,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 	private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
+	private final PositionIncrementAttribute incrAtt = addAttribute(PositionIncrementAttribute.class);
 
 	/**
 	 * Default constructor: uses the default compiled Trie loaded at class level
@@ -479,7 +481,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                            foundNonMaxMatch = false;
 		                            resetNonWordBuffer(0);
 		                            applyOtherInitial = true;
-		                            bufferIndex = longestIdx;
+//		                            bufferIndex = longestIdx;
                                     longestIdx = -1;
 		                            continue;
 		                        }
@@ -494,7 +496,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					            afterNonwordMatch = true;
 					        }
 					    }
-						wentToMaxDownTheTrie = true;
+					    if (!continuing) {
+					        wentToMaxDownTheTrie = true;
+					    }
 						storedNoMatchState = -1;
 						if (tokenBuffer.length() == 0) {
 						    tokenBuffer.append((char) c);
@@ -856,6 +860,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			fillTermAttributeWith(firstToken.getString(), metaData);
 			changeTypeOfToken(metaData[3]);
 			changePartOfSpeech(metaData[4]);
+			incrAtt.setPositionIncrement(1);
 			return true;						// we exit incrementToken()
 		
 		} else {					// there is no non-word nor extra lemma to add. there was no sandhi for this token 			
@@ -1415,6 +1420,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			termAtt.setLength(metaData[2]);
 			finalOffset = correctOffset(metaData[1]);
 			offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);
+			incrAtt.setPositionIncrement(0);
 		} else {
 			hasTokenToEmit = false;
 		}
