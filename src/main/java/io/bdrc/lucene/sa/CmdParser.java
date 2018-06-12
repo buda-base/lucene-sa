@@ -186,11 +186,9 @@ public class CmdParser {
 					}
 				}
 			} else if (thereAreNoModifications(fullEntry)) {
-//			    if (idempotentGroup == 9) {
-			        final String sandhiedFinal = inflected.substring(inflected.length()-1);
-			        final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, -1);
-			        addEntry(sandhiedFinal, df);
-//			    }
+		        final String sandhiedFinal = inflected.substring(inflected.length()-1);
+		        final DiffStruct df = new DiffStruct(0, null, null, sandhiType, pos, 0);
+		        addEntry(sandhiedFinal, df);
 			} else {
 				throw new IllegalArgumentException("There is a problem with cmd: "+cmd);
 			}

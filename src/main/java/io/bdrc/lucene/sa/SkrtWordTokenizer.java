@@ -26,12 +26,14 @@ import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
@@ -236,8 +238,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean hasTokenToEmit;
 	
 	/* initials related */
-	private HashSet<String> initials = null;			// it is HashSet to filter duplicate initials
-	private Iterator<String> initialsIterator = null;
+	private HashMap<String, Integer> initials = null;			// it is HashSet to filter duplicate initials
+	private Iterator<Entry<String, Integer>> initialsIterator = null;
 	private StringCharacterIterator initialCharsIterator = null;
 	private static int sandhiIndex = -1;
 	
@@ -259,6 +261,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	/* previous state related*/
     private int storedNoMatchState, noMatchTokenStart, noMatchBufferIndex, noMatchFoundMatchCmdIndex;
     private StringBuilder noMatchBuffer = new StringBuilder();
+    private Integer idempotentIdx = -1;
 	
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -406,14 +409,22 @@ public final class SkrtWordTokenizer extends Tokenizer {
  		               if (debug) System.out.print("=>" + (char) c);
  		            }
  				    storeCurrentState();
-					initializeInitialCharsIteratorIfNeeded();
-					firstInitialIndex = bufferIndex;
+ 				    firstInitialIndex = bufferIndex;
+ 				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
+					if (isIdemSandhi) {
+					    bufferIndex = idempotentIdx;
+                        idempotentIdx = -1;
+                    }
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
 
 				} else if (stillConsumingInitials() || applyOtherInitial) {
 				/* we enter here if all initial chars are not yet consumed */
-					initializeInitialCharsIteratorIfNeeded();
+				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
+					if (isIdemSandhi) {
+                        bufferIndex = idempotentIdx;
+                        idempotentIdx = -1;
+                    }
 					c = applyInitialChar();
 					if (nonWordBuffer.length() > 0) decrement(nonWordBuffer);
 					if (debug) System.out.print("=>" + (char) c);
@@ -844,7 +855,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				finalsIndex = bufferIndex;				// save index of finals for currentCharIsSpaceWithinSandhi()
 			} else if (aNonwordWasAdded) {              // if a non-word was added, there was a match but no sandhi
             }
-			
 		}
 		
 		/* B.2. EXITING incrementToken() WITH THE TOKEN (OR THE FIRST ONE FROM totalTokens) */
@@ -961,27 +971,36 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                }
 	                if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 	                    foundAsandhi = true;
-	                    if (!diff.initial.isEmpty()) {
+	                    if (!diff.initial.isEmpty() || diff.idempotentGroup == -1) {
 	                        if (initials == null) {
-	                            initials = new HashSet<String>();
+	                            initials = new HashMap<String, Integer>();
 	                            storedInitials = new HashSet<String>();
 	                        }
-	                        initials.add(diff.initial);
+	                        if (diff.idempotentGroup == -1) {
+	                            initials.put(diff.initial, 1);
+	                            idempotentIdx = bufferIndex + 1;
+	                        } else {
+	                            initials.put(diff.initial, -1);
+	                        }
 	                        storedInitials.add(diff.initial);
+	                    } else if (diff.idempotentGroup == -1) {
+	                        
 	                    }
 	                    final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
 	                    totalLemmas.add(lemma);
-//	                    if (diff.idempotentGroup != -1) {
-//	                        TreeSet<DiffStruct> idemDiffs = new TreeSet<DiffStruct>();
-//	                        
-//	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
-//	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
-//	                            idemDiffs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
-//	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
-//	                            structs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
-//	                            diffLists.get(1).put(idem.getKey(), structs);
-//	                        }
-//	                    }
+	                    if (diff.idempotentGroup != -1) {
+	                        TreeMap<String, TreeSet<DiffStruct>> truc = diffLists.get(1);
+	                        
+	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
+	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
+	                            final String initial = idem.getKey().substring(idem.getKey().length()-1);
+	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
+	                            structs.add(new DiffStruct(0, null, initial, 10, diff.pos, -1));
+	                            
+	                            truc.put(idem.getKey(), structs);
+	                        }
+	                        diffLists.set(1, truc);
+	                    }
 	                }
 	            }
 	            if (foundAsandhi) break;
@@ -1138,7 +1157,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifThereAreInitialsFillIterator() {
 		if (initials != null && !initials.isEmpty()) {
-			initialsIterator = initials.iterator();		// one sandhi can yield many unsandhied initials
+			initialsIterator = initials.entrySet().iterator();		// one sandhi can yield many unsandhied initials
 		}
 	}
 
@@ -1386,17 +1405,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		return false;
 	}
 
-	private void initializeInitialCharsIteratorIfNeeded() {
-		if (initialCharsIterator == null) {
-			initialCharsIterator = new StringCharacterIterator(initialsIterator.next());	
+	private boolean initializeInitialCharsIteratorIfNeeded() {
+		boolean isIdem = false;
+	    if (initialCharsIterator == null) {
+			Entry<String, Integer> entry = initialsIterator.next();
+			if (entry.getValue() == 1) isIdem = true;
+		    initialCharsIterator = new StringCharacterIterator(entry.getKey());	
 			// initialize the iterator with the first initials
 			initialsIterator.remove();    // remove the initials just fed to the initialsCharsIterator
 		} else if (initialsIterator.hasNext()) {
 		/* either first time or initialCharsIterator has been reset AND there are more initials to process */
-			initialCharsIterator.setText(initialsIterator.next());
+	        Entry<String, Integer> entry = initialsIterator.next();
+	        if (entry.getValue() == 1) isIdem = true;
+		    initialCharsIterator.setText(entry.getKey());
 			// fill with new initials. happens if we reach the end of a token (either a Trie match or a non-word)
 			initialsIterator.remove();    // remove the initials just fed to the initialsCharsIterator
 		}	
+	    return isIdem;
 	}
 
 	private int applyInitialChar() {
