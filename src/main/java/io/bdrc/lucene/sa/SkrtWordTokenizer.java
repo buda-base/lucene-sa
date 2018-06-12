@@ -949,7 +949,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
 
 		List<TreeMap<String, TreeSet<DiffStruct>>> diffLists = Arrays.asList(parser.parse(inflected, cmd), new TreeMap<String, TreeSet<DiffStruct>>());
-//		diffLists.add(new TreeMap<String, TreeSet<DiffStruct>>());  // the second list to receive the idempotent sandhi DiffStructs
 		
 		for (TreeMap<String, TreeSet<DiffStruct>> diffList: diffLists) {
 	        for (Entry<String, TreeSet<DiffStruct>> current: diffList.entrySet()) {
@@ -972,17 +971,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    }
 	                    final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
 	                    totalLemmas.add(lemma);
-	                    if (diff.idempotentGroup != -1) {
-	                        TreeSet<DiffStruct> idemDiffs = new TreeSet<DiffStruct>();
-	                        
-	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
-	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
-	                            idemDiffs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
-	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
-	                            structs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
-	                            diffLists.get(1).put(idem.getKey(), structs);
-	                        }
-	                    }
+//	                    if (diff.idempotentGroup != -1) {
+//	                        TreeSet<DiffStruct> idemDiffs = new TreeSet<DiffStruct>();
+//	                        
+//	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
+//	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
+//	                            idemDiffs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
+//	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
+//	                            structs.add(new DiffStruct(0, null, null, 10, diff.pos, -1));
+//	                            diffLists.get(1).put(idem.getKey(), structs);
+//	                        }
+//	                    }
 	                }
 	            }
 	            if (foundAsandhi) break;
