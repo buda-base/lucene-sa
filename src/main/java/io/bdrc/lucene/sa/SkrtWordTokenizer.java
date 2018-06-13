@@ -289,13 +289,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		}
 
 		if (bufferIndex - 4 >= 0) {
-		    if (sandhiIndex != -1) {
-		        if (sandhiIndex < bufferIndex) {
-		            ioBuffer.freeBefore(sandhiIndex);
-		            sandhiIndex = -1;
-		        } else {
-		            ioBuffer.freeBefore(bufferIndex - 4);
-		        }
+		    if (sandhiIndex != -1 && sandhiIndex < bufferIndex) {
+	            ioBuffer.freeBefore(sandhiIndex);
+	            sandhiIndex = -1;
+		    } else if (idempotentIdx != -1 && idempotentIdx < bufferIndex) {
+		        ioBuffer.freeBefore(idempotentIdx);
 		    } else {
 		        ioBuffer.freeBefore(bufferIndex - 4);
 		    }
@@ -413,7 +411,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
 					if (isIdemSandhi) {
 					    bufferIndex = idempotentIdx;
-                        idempotentIdx = -1;
+//                        idempotentIdx = -1;
                     }
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
@@ -423,7 +421,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
 					if (isIdemSandhi) {
                         bufferIndex = idempotentIdx;
-                        idempotentIdx = -1;
+//                        idempotentIdx = -1;
                     }
 					c = applyInitialChar();
 					if (nonWordBuffer.length() > 0) decrement(nonWordBuffer);
@@ -887,8 +885,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void processMultiTokenLemmas() {
         for (int i=0; i < totalTokens.size(); i++) {
             PreToken token = totalTokens.get(i);
-            if (token.getString().contains("—")) {
-                String[] rawTokens = token.getString().split("—");
+            if (token.getString().contains("⟾")) {
+                String[] rawTokens = token.getString().split("⟾");
                 LinkedList<PreToken> newTokens = new LinkedList<PreToken>();
                 for (String rawToken: rawTokens) {
                     Integer[] metaData = token.getMetadata().clone();
@@ -1424,8 +1422,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	    return isIdem;
 	}
 
-	private int applyInitialChar() {
+	private int applyInitialChar() throws IOException {
 		int initial = initialCharsIterator.current();
+		if (initial == CharacterIterator.DONE) {
+		    initial = ioBuffer.get(bufferIndex);
+		}
 		if (initialCharsIterator.getIndex() == initialCharsIterator.getEndIndex()) {
 		    initialCharsIterator.setIndex(0);
 		} else {
@@ -1596,6 +1597,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens
+		idempotentIdx = -1;
 
 	}
 	
