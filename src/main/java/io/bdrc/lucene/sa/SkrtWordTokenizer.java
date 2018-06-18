@@ -394,7 +394,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
  				} else if (initialIsNotFollowedBySandhied(c)) {
  				    ifNoInitialsCleanupPotentialTokensAndNonwords();
- 				    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+ 				    if (foundMatch || foundNonMaxMatch) {
+ 				       if (!foundMatch && foundNonMaxMatch) {
+ 				           restoreNonMaxMatchState();
+ 				       }
+ 				       potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+ 				    }
                     if (longestIdx < bufferIndex) 
                         longestIdx = bufferIndex;
                     restoreInitialsOrigState();
