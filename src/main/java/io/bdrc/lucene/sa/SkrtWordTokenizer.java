@@ -393,12 +393,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
  				    continue;		// if there is a space in the sandhied substring, moves beyond the space
 
  				} else if (initialIsNotFollowedBySandhied(c)) {
- 					initials = null;
- 					initialsIterator = null;
- 					initialCharsIterator = null;
- 					ifNoInitialsCleanupPotentialTokensAndNonwords();
- 					reinitializeState(); 			// set storedinitials to null ?
- 					continue;
+ 				    ifNoInitialsCleanupPotentialTokensAndNonwords();
+ 				    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                    if (longestIdx < bufferIndex) 
+                        longestIdx = bufferIndex;
+                    restoreInitialsOrigState();
+                    reinitializeState();
+                    resetNonWordBuffer(0);
+                    wentToMaxDownTheTrie = false;
+                    applyOtherInitial = true;
+                    continue;
  					
  				} else if (startConsumingInitials()) {	
  				/* we enter here on finalOffset ==  first initials. (when all initials are consumed, initials == []) */

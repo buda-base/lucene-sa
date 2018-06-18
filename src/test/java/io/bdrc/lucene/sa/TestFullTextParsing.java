@@ -90,7 +90,7 @@ public class TestFullTextParsing
     @Test
     public void withHyphens() throws Exception {
         System.out.println("bug1");
-        String input = "nirīkṣya" +  
+        String input = "nirīkṣya nirīkṣya" +  
                 "yaḥ kulyaiḥ svai … #ātasa … yasya … … puṃva … tra … … sphuradvaṃ … kṣaḥ sphuṭoddhvaṃsita … pravitata … "
                 + "yasya prajñānuṣaṅgocita-sukha-manasaḥ śāstra-tattvārttha-bharttuḥ … stabdho … hani … nocchṛ … sat-kāvya-śrī-virodhān "
                 + "budha-guṇita-guṇājñāhatān eva kṛtvā vidval-loke ’vināśi sphuṭa-bahu-kavitā-kīrtti rājyaṃ bhunakti āryyaihīty upaguhya "
@@ -118,7 +118,7 @@ public class TestFullTextParsing
                 );
         assertTokenStream(words, expected);
     }
-	
+    
 	@Test
 	public void bug1ExtraNonwordToken() throws Exception {
 		System.out.println("bug1");
@@ -186,7 +186,7 @@ public class TestFullTextParsing
     
     @Test
     public void bug6DandaTakenAsToken() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug6");
         String input = "upetaiḥ.";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -198,7 +198,7 @@ public class TestFullTextParsing
     
     @Test
     public void bug7() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug7");
         String input = "tayorbhedo—viśeṣaḥ .";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -210,7 +210,7 @@ public class TestFullTextParsing
 
     @Test
     public void bug8() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug8");
         String input = "grahaṇam—anyāpohasya—anyavyavacchedasya";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -221,9 +221,10 @@ public class TestFullTextParsing
     }
 
     @Test
-    public void bugbodhi() throws Exception {
-        System.out.println("bug5");
-        String input = "bodhisattvacaryāvatara - "
+    public void bug9bodhi() throws Exception {
+        System.out.println("bug9");
+        String input = "paramārtha nāma saṃgīti -" +  
+                "bodhisattvacaryāvatara - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
@@ -241,14 +242,38 @@ public class TestFullTextParsing
     }
     
     @Test
-    public void bugShri() throws Exception {
-        System.out.println("bug5");
+    public void bug10Shri() throws Exception {
+        System.out.println("bug10");
         String input = "śrījñāna"; // "mañjuśrījñāna";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> expected = Arrays.asList("SrI√", "jYana√", "Ij√");
+        assertTokenStream(words, expected);
+    }
+
+    @Test
+    public void bug11SameInputDifferingOutput() throws Exception {
+        System.out.println("bug11");
+        String input = "nirīkṣya nirīkṣya";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("SrI√", "jYana√", "Ij√");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug12MissingTokenAndRollingBufferError() throws Exception {
+        System.out.println("bug12");
+        String input = "paramārtha nāma saṃgīti -";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("paramA√", "parama√", "ArTa✓", "arTa✓", "nAma√", "nAman√", "s❌", "saM✓", "gIti✓");
         assertTokenStream(words, expected);
     }
     
