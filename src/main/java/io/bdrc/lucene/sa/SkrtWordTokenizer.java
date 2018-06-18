@@ -382,7 +382,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                }
 	                break;
 			    } else {
-			        bufferIndex -= 2;
+			        bufferIndex -= 1;
 			    }
 			}
 			
@@ -506,7 +506,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					            afterNonwordMatch = true;
 					        }
 					    }
-					    if (!continuing) {
+					    if (currentRow == null) {
 					        wentToMaxDownTheTrie = true;
 					    }
 						storedNoMatchState = -1;
@@ -740,7 +740,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     break;
                 }
 				
-			} else if (isNonSLPprecededBySLP()) {			// we have a nonword token
+			} else if (isNonSLPprecededBySLP() && !isValidCharWithinSandhi(c)) {			// we have a nonword token
 				decrement(tokenBuffer);
 				decrement(nonWordBuffer);
 			    if (allCharsFromCurrentInitialAreConsumed()) {
@@ -1283,7 +1283,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private boolean tryToContinueDownTheTrie(Row row, int c) {
 		int ref = row.getRef((char) c);
 		currentRow = (ref >= 0) ? scanner.getRow(ref) : null;
-		return (currentRow == null) ? false: true;
+		return currentRow != null;
 	}
 
 	private boolean tryToFindMatchIn(Row row, int c) {
@@ -1574,7 +1574,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
-		return initials != null && !initials.isEmpty() && ioBuffer.get(bufferIndex) != -1;
+		return initials != null && !initials.isEmpty();  // && ioBuffer.get(bufferIndex) != -1;
 	}
 
 	final private boolean foundAToken() throws IOException {
