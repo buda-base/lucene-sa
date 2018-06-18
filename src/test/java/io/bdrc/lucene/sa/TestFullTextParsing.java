@@ -182,7 +182,7 @@ public class TestFullTextParsing
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         while (words.incrementToken()) {}
-    }
+    }    
     
     @Test
     public void bug6DandaTakenAsToken() throws Exception {
