@@ -402,6 +402,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     resetNonWordBuffer(0);
                     wentToMaxDownTheTrie = false;
                     applyOtherInitial = true;
+                    if (isValidCharWithinSandhi(ioBuffer.get(bufferIndex))) {
+                        bufferIndex = longestIdx;
+                    }
                     continue;
  					
  				} else if (startConsumingInitials()) {	
