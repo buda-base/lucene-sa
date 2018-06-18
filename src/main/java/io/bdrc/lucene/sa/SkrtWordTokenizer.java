@@ -420,7 +420,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
 					if (isIdemSandhi) {
 					    bufferIndex = idempotentIdx;
-					    idempotentIdx = -1;
+					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
                     }
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
@@ -430,7 +430,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
 					if (isIdemSandhi) {
                         bufferIndex = idempotentIdx;
-                        idempotentIdx = -1;
+                        if (initials == null || initials.isEmpty()) idempotentIdx = -1;
                     }
 					c = applyInitialChar();
 					if (nonWordBuffer.length() > 0) decrement(nonWordBuffer);
