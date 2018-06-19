@@ -31,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.lucene.analysis.CharArraySet;
+import io.bdrc.lucene.surrogate.CharArraySet;
+import io.bdrc.lucene.surrogate.DummyReader;
 import org.apache.lucene.analysis.CharFilter;
-import org.apache.lucene.analysis.StopFilter;
+import io.bdrc.lucene.surrogate.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
@@ -107,7 +108,7 @@ public class TestSkrtAnalyzer
     	String input = "अथ राजकन्या चन्द्रवती नामाभिनवरुपयौवनसम्पन्ना सखीद्वितीयैकस्मिन्महोत्सवदिवसे नगरं निरिक्षमाणास्ति ।"; 
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI", "nAmABinavarupayOvanasampannA", "saKIdvitIyEkasminmahotsavadivase", "nagaraM", "nirikzamARAsti", ".");
         assertTokenStream(ts, expected);
     }
@@ -119,7 +120,7 @@ public class TestSkrtAnalyzer
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	cs = new VedicFilter(cs);
     	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
         List<String> expected = Arrays.asList("aTa", "rAjakanyA", "candravatI");
         assertTokenStream(ts, expected);
     }
@@ -130,7 +131,7 @@ public class TestSkrtAnalyzer
     	String input = "\u0915\u094d\u0937 \u0915\u094d\u200D\u0937 \u0915\u094d\u200C\u0937"; // respectively क्ष  and क्‍ष 
     	CharFilter cs = new Deva2SlpFilter(new StringReader(input));
     	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
     	List<String> expected = Arrays.asList("kza", "kza", "kza");
     	assertTokenStream(ts, expected);
     }
@@ -141,7 +142,7 @@ public class TestSkrtAnalyzer
     	String input = "\u1e5d \u1e5b\u0304 r\u0323\u0304"; // NFC, semi-NFD and NFD versions of ṝ 
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
     	List<String> expected = Arrays.asList("F", "F", "F");
     	assertTokenStream(ts, expected);
     }
@@ -152,7 +153,7 @@ public class TestSkrtAnalyzer
     	String input = "ẏ m̆b ē k͟h"; // normalizations and deletions 
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	System.out.println("0 " + input);
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
     	List<String> expected = Arrays.asList("y", "e");
     	assertTokenStream(ts, expected);
     }
@@ -179,7 +180,7 @@ public class TestSkrtAnalyzer
 		List<String> expected = Arrays.asList("one", "two");
 
 		System.out.print(input + " => ");
-		TokenStream syllables = tokenize(reader, new WhitespaceTokenizer());
+		TokenStream syllables = tokenize(reader, new WhitespaceTokenizer(DummyReader.THE_READER));
 		CharArraySet stopSet = StopFilter.makeStopSet(SanskritAnalyzer.getWordList(new FileInputStream("src/main/resources/skrt-stopwords.txt"), "#"));
 		StopFilter res = new StopFilter(syllables, stopSet);
 		assertTokenStream(res, expected);

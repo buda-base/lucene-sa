@@ -22,8 +22,9 @@ package io.bdrc.lucene.sa;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.lucene.analysis.CharacterUtils;
-import org.apache.lucene.analysis.CharacterUtils.CharacterBuffer;
+import io.bdrc.lucene.surrogate.CharacterUtils;
+import io.bdrc.lucene.surrogate.CharacterUtils.CharacterBuffer;
+import io.bdrc.lucene.surrogate.DummyReader;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -48,6 +49,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSyllableTokenizer() {
+	    super(DummyReader.THE_READER);
 	}
 	
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;

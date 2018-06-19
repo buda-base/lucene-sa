@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.bdrc.lucene.surrogate.DummyReader;
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -101,7 +102,7 @@ public class TestSiddham
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         System.out.println("0 " + input);
-        TokenStream ts = tokenize(geminates, new WhitespaceTokenizer());
+        TokenStream ts = tokenize(geminates, new WhitespaceTokenizer(DummyReader.THE_READER));
         List<String> produced = generateTokenStream(ts);
         List<String> expected = Arrays.asList("loke✓", "'vinASi✓", "vyAlulitena✓", "arTa✓");
         assertThat(produced, is(expected));

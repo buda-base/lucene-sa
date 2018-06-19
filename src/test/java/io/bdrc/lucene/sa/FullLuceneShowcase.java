@@ -35,7 +35,7 @@ import java.util.Date;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LongPoint;
+//import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
@@ -50,6 +50,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -135,7 +136,7 @@ public class FullLuceneShowcase {
             throws IOException, ParseException {
         String field = "contents";
 
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(indexFolder.toPath()));
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(indexFolder/*.toPath()*/));
         IndexSearcher searcher = new IndexSearcher(reader);
         QueryParser parser = new QueryParser(field, analyzer);
         Query query = parser.parse(queryString);
@@ -175,9 +176,9 @@ public class FullLuceneShowcase {
 
         // config for indexDoc()
         final Path docPath = Paths.get(testFile.getAbsolutePath());
-        Directory dir = FSDirectory.open(Paths.get(testSubFolder.getAbsolutePath()));
+        Directory dir = FSDirectory.open(/*Paths.get(*/testSubFolder/*.getAbsolutePath())*/);
 
-        IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_4_10_4, analyzer);
         IndexWriter writer = new IndexWriter(dir, iwc);
         indexDoc(writer, docPath, Files.getLastModifiedTime(docPath).toMillis());
     }
@@ -193,7 +194,7 @@ public class FullLuceneShowcase {
             doc.add(pathField);
 
             // modified field in index (last modified date of file)
-            doc.add(new LongPoint("modified", lastModified));
+            //doc.add(new LongPoint("modified", lastModified));
 
             // file content is tokenized and indexed, but not stored. (UTF-8 expected)
             doc.add(new TextField("contents",

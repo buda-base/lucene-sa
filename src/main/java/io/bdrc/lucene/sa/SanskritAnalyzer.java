@@ -28,12 +28,14 @@ import java.io.Reader;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.util.IOUtils;
+
+import io.bdrc.lucene.surrogate.CharArraySet;
+import io.bdrc.lucene.surrogate.StopFilter;
+import io.bdrc.lucene.surrogate.DummyReader;
 
 /**
  * An Analyzer that uses {@link SkrtSyllableTokenizer} and {@link SkrtWordTokenizer} and filters with StopFilter
@@ -188,7 +190,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	}
 	
 	@Override
-	protected TokenStreamComponents createComponents(final String fieldName) {
+	protected TokenStreamComponents createComponents(final String fieldName, Reader reader) {
 		Tokenizer source = null;
 		TokenStream filter = null;
 		
@@ -202,7 +204,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		} else if (mode == "syl") {
 			source = new SkrtSyllableTokenizer();
 		} else if (mode == "space") {
-		    source = new WhitespaceTokenizer();
+		    source = new WhitespaceTokenizer(DummyReader.THE_READER);
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
