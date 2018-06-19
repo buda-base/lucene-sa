@@ -204,7 +204,7 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("tad√", "Urj√", "Beda√", "viSeza√");
+        List<String> expected = Arrays.asList("tad√", "Urj√", "Bedo", "viSeza√");
         assertTokenStream(words, expected);
     }
 
@@ -249,7 +249,7 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("SrI√", "jYana√", "Ij√");
+        List<String> expected = Arrays.asList("SrI√", "IjY❌", "Ana✓", "jYAna✓");
         assertTokenStream(words, expected);
     }
 

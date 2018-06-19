@@ -597,7 +597,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					tokenBuffer.setLength(0);		// because no word ever started in the first place
 
 				} else if (foundAToken()) {
-					if (!afterNonwordMatch) {
+					if (!afterNonwordMatch || foundMatch) {
 					    cutOffTokenFromNonWordBuffer();
 					}
 					if (isLoneInitial()) {
