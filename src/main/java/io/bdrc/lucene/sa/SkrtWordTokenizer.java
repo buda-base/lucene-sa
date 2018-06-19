@@ -999,18 +999,24 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    } else if (diff.idempotentGroup == -1) {
 	                        
 	                    }
-	                    final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
-	                    totalLemmas.add(lemma);
+	                    if (diff.idempotentGroup != 0) {
+	                        final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
+                            totalLemmas.add(lemma);
+	                    }
+	                    
 	                    if (diff.idempotentGroup > 0) {  // filters groups -1 and 0 (no sandhi)
+	                        
 	                        TreeMap<String, TreeSet<DiffStruct>> idemDiffList = diffLists.get(1);
 	                        
 	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
 	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
-	                            final String initial = idem.getKey().substring(idem.getKey().length()-1);
-	                            TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
-	                            structs.add(new DiffStruct(0, null, initial, 10, diff.pos, -1));
-	                            
-	                            idemDiffList.put(idem.getKey(), structs);
+	                            if (!idem.getKey().equals(sandhied)) {
+	                                final String initial = idem.getKey().substring(idem.getKey().length()-1);
+	                                TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
+	                                structs.add(new DiffStruct(0, null, initial, 10, diff.pos, 0));
+	                                
+	                                idemDiffList.put(idem.getKey(), structs);
+	                            }
 	                        }
 	                        diffLists.set(1, idemDiffList);
 	                    }
