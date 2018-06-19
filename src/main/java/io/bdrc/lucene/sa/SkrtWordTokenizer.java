@@ -428,6 +428,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
                     }
 					c = applyInitialChar();
+//					bufferIndex ++;
 					if (debug) System.out.print("=>" + (char) c);
 
 				} else if (stillConsumingInitials() || applyOtherInitial) {
@@ -978,7 +979,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	            TreeSet<DiffStruct> diffs = current.getValue();
 	            boolean foundAsandhi = false; 
 	            for (DiffStruct diff: diffs) {
-	                if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.initial.isEmpty()) {
+	                if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.nbToDelete == 0 && diff.initial.isEmpty()) {
 	                  continue;   // there is no sandhi nor, so we skip this diff
 	                }
 	                if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
