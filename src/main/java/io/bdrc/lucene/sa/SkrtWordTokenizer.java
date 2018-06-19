@@ -373,7 +373,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			if (c == -1) {
 			    if (initials == null || initials.isEmpty()) {
 			        bufferIndex -= charCount;
-	                if (tokenBuffer.length() == 0 && nonWordBuffer.length() == 0) {
+	                cutOffTokenFromNonWordBuffer();
+			        if ((tokenBuffer.length() == 0 && nonWordBuffer.length() == 0) || isLoneInitial()) {
 	                    finalOffset = correctOffset(bufferIndex);
 	                    initials = null;                // discard all initial-related content
 	                    initialsIterator = null;
@@ -428,7 +429,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
                     }
 					c = applyInitialChar();
-//					bufferIndex ++;
 					if (debug) System.out.print("=>" + (char) c);
 
 				} else if (stillConsumingInitials() || applyOtherInitial) {
