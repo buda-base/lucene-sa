@@ -430,6 +430,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					if (isIdemSandhi) {
 					    bufferIndex = idempotentIdx;
 					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
+					    if (previousIsSpace) {
+					        bufferIndex += charCount;
+					    }
                     }
 					c = applyInitialChar();
 					if (debug) System.out.print("=>" + (char) c);
@@ -891,6 +894,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		    
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
+		    // TODO: further cleanup the list of PreTokens here,
+		    // for ex. to remove non-words overlapping tokens from other initials.
+		    
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
