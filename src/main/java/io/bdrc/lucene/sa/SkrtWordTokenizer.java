@@ -988,7 +988,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	            boolean foundAsandhi = false; 
 	            for (DiffStruct diff: diffs) {
 	                if (diff.sandhiType == 0 && diff.toAdd.isEmpty() && diff.nbToDelete == 0 && diff.initial.isEmpty()) {
-	                  continue;   // there is no sandhi nor, so we skip this diff
+	                    final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
+                        totalLemmas.add(lemma);
+	                    continue;   // there is no sandhi nor, so we skip this diff
 	                }
 	                if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 	                    foundAsandhi = true;
