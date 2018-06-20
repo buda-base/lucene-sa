@@ -435,7 +435,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				/* we enter here if all initial chars are not yet consumed */
 				    final boolean isIdemSandhi = initializeInitialCharsIteratorIfNeeded();
 					if (isIdemSandhi) {
-                        bufferIndex = idempotentIdx;
+					    // only adjust forward; only adjust when the sandhi merges and 
+					    // we need to stay on the same character to apply the sandhis
+                        if (bufferIndex < idempotentIdx) {
+                            bufferIndex = idempotentIdx;
+                        }
                         if (initials == null || initials.isEmpty()) idempotentIdx = -1;
                     }
 					c = applyInitialChar();
@@ -484,7 +488,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					        if (allCharsFromCurrentInitialAreConsumed() || (initialsIterator == null || initialCharsIterator == null)) {
 		                        if (allInitialsAreConsumed()) {
 		                            cutOffTokenFromNonWordBuffer();
-		                            if (!foundAToken()) {
+		                            if (!foundAToken() && !foundNonMaxMatch) {
 		                                tokenBuffer.setLength(0);
 		                            }
 		                            if (longestIdx != -1) {
@@ -497,6 +501,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                                    && nonWordBuffer.length() == 0) {
 		                                continue;
 		                            } else {
+		                                if (foundNonMaxMatch) {
+		                                    restoreNonMaxMatchState();
+		                                    potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+		                                }
 		                                break;
 		                            }
 		                        } else {
@@ -984,22 +992,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                }
 	                if (containsSandhiedCombination(ioBuffer, tokenEndIdx - 1, sandhied, diff.sandhiType)) {
 	                    foundAsandhi = true;
-	                    if (!diff.initial.isEmpty() || diff.idempotentGroup == -1) {
+	                    if (!diff.initial.isEmpty() || diff.idempotentGroup == -2) {
 	                        if (initials == null) {
 	                            initials = new LinkedHashMap<String, Integer>();
 	                            storedInitials = new HashSet<String>();
 	                        }
-	                        if (diff.idempotentGroup == -1) {
+	                        if (diff.idempotentGroup == -2) {
 	                            initials.put(diff.initial, 1);
 	                            idempotentIdx = bufferIndex + 1;
 	                        } else {
 	                            initials.put(diff.initial, -1);
 	                        }
 	                        storedInitials.add(diff.initial);
-	                    } else if (diff.idempotentGroup == -1) {
-	                        
 	                    }
-	                    if (diff.idempotentGroup != 0) {
+	                    
+	                    if (diff.idempotentGroup != -2) {
 	                        final String lemma = inflected.substring(0, inflected.length()-diff.nbToDelete)+diff.toAdd+"_"+diff.pos;
                             totalLemmas.add(lemma);
 	                    }
@@ -1010,13 +1017,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                        
 	                        final HashMap<String, String> idemSandhis = parser.getIdemSandhied(inflected, diff.idempotentGroup);
 	                        for (Entry<String, String> idem: idemSandhis.entrySet()) {
-	                            if (!idem.getKey().equals(sandhied)) {
-	                                final String initial = idem.getKey().substring(idem.getKey().length()-1);
-	                                TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
-	                                structs.add(new DiffStruct(0, null, initial, 10, diff.pos, 0));
-	                                
-	                                idemDiffList.put(idem.getKey(), structs);
-	                            }
+                                final String initial = idem.getKey().substring(idem.getKey().length()-1);
+                                TreeSet<DiffStruct> structs = new TreeSet<DiffStruct>();
+                                structs.add(new DiffStruct(0, null, initial, 10, diff.pos, -2));
+                                
+                                idemDiffList.put(idem.getKey(), structs);
 	                        }
 	                        diffLists.set(1, idemDiffList);
 	                    }
@@ -1374,6 +1379,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
     }
     
     private void reinitializeState() {
+        currentRow = rootRow; // TEST
         cmdIndex = -1;
         foundMatchCmdIndex = -1;
         foundMatch = false;
