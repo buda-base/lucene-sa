@@ -260,6 +260,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
     private int storedNoMatchState, noMatchTokenStart, noMatchBufferIndex, noMatchFoundMatchCmdIndex;
     private StringBuilder noMatchBuffer = new StringBuilder();
     private Integer idempotentIdx = -1;
+    private boolean previousIsSpace;
 	
 	/**
 	 * Called on each token character to normalize it before it is added to the
@@ -304,6 +305,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		foundMatchCmdIndex = -1;
 		foundMatch = false;
 		afterNonwordMatch = false;
+		previousIsSpace = false;
 		
 		nonWordBuffer.setLength(0);
 	    nonWordStart = -1;
@@ -391,6 +393,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
  				if (currentCharIsSpaceWithinSandhi(c)) {
  				    nonWordStart = -1;
  				    if (sandhiIndex != -1) sandhiIndex += charCount;
+ 				    previousIsSpace = true;
  				    continue;		// if there is a space in the sandhied substring, moves beyond the space
 
  				} else if (initialIsNotFollowedBySandhied(c)) {
@@ -734,6 +737,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    nonWordStart = tokenStart;
 				}
                 if (allCharsFromCurrentInitialAreConsumed()) {
+                    cutOffTokenFromNonWordBuffer();
                     addNonwordToPotentialTokensIfThereIsOne();
                     potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
                     if (allInitialsAreConsumed()) {
@@ -1298,7 +1302,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void ifIsNeededInitializeStartingIndexOfNonword() {
 		if (nonWordStart == -1) {							// the starting index of a non-word token does not increment
-			nonWordStart = bufferIndex - charCount;
+		    nonWordStart = bufferIndex;
+		    if (!previousIsSpace) {
+		        nonWordStart -= charCount;
+		        previousIsSpace = false;
+		    }
 		}
 	}
 
