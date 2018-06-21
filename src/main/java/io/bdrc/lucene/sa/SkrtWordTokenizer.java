@@ -530,7 +530,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					        match = tryToFindMatchIn(rootRow, c);
 					        continuing = tryToContinueDownTheTrie(rootRow, c);
 					        tokenBuffer.setLength(0);
-					        tokenStart = bufferIndex;
+					        tokenStart = bufferIndex - 1;
 					        if (foundMatch) {
 					            afterNonwordMatch = true;
 					        }
