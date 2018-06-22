@@ -19,8 +19,6 @@
  ******************************************************************************/
 package io.bdrc.lucene.sa;
 
-import static org.junit.Assert.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
@@ -40,6 +38,8 @@ import io.bdrc.lucene.sa.SkrtWordTokenizer;
 import io.bdrc.lucene.stemmer.Trie;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for as many sandhi cases as possible.
@@ -56,14 +56,17 @@ public class TestSandhis
 	
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
-		List<String> termList = new ArrayList<String>();
+		    List<String> termList = new ArrayList<String>();
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
 			while (tokenStream.incrementToken()) {
 				termList.add(charTermAttribute.toString());
 			}
 			System.out.println("1 " + String.join(" ", expected));
 			System.out.println("2 " + String.join(" ", termList) + "\n");
-			assertThat(termList, is(expected));
+			for (String term: expected) {
+			    assertThat(termList, hasItems(term));
+			}
+			
 		} catch (IOException e) {
 			assertTrue(false);
 		}

@@ -90,7 +90,8 @@ public class TestFullTextParsing
     @Test
     public void withHyphens() throws Exception {
         System.out.println("bug1");
-        String input = "yaḥ kulyaiḥ svai … #ātasa … yasya … … puṃva … tra … … sphuradvaṃ … kṣaḥ sphuṭoddhvaṃsita … pravitata … "
+        String input = "nirīkṣya nirīkṣya" +  
+                "yaḥ kulyaiḥ svai … #ātasa … yasya … … puṃva … tra … … sphuradvaṃ … kṣaḥ sphuṭoddhvaṃsita … pravitata … "
                 + "yasya prajñānuṣaṅgocita-sukha-manasaḥ śāstra-tattvārttha-bharttuḥ … stabdho … hani … nocchṛ … sat-kāvya-śrī-virodhān "
                 + "budha-guṇita-guṇājñāhatān eva kṛtvā vidval-loke ’vināśi sphuṭa-bahu-kavitā-kīrtti rājyaṃ bhunakti āryyaihīty upaguhya "
                 + "bhāva-piśunair utkarṇṇitai romabhiḥ sabhyeṣūcchvasiteṣu tulya-kula-ja-mlānānanodvīkṣitaḥ sneha-vyāluḷitena bāṣpa-guruṇā "
@@ -117,7 +118,7 @@ public class TestFullTextParsing
                 );
         assertTokenStream(words, expected);
     }
-	
+    
 	@Test
 	public void bug1ExtraNonwordToken() throws Exception {
 		System.out.println("bug1");
@@ -165,41 +166,51 @@ public class TestFullTextParsing
     @Test
     public void bug5FreeBeforeFails() throws Exception {
         System.out.println("bug5");
-        String input = "vidāryyeva samutthitāni prathamaṃ manobhir anvāgatās sa-suta-bandhu-janās sametya|| mattebha-gaṇḍa-taṭa-vicyuta-dāna-bindu-sikt-opalācala-sahasra-vibhūṣaṇāyāḥ puṣpāvanamra-taru-ṣaṇḍa-vataṃsakāyā bhūmef puran tilaka-bhūtam idaṃ krameṇa|| taṭottha-vṛkṣa-cyuta-naika-puṣpa-vicitra-tīrānta-jalāni bhānti| praphulla-padmābharaṇāni yatra sarāṃsi kāraṇḍava-saṃkulāni|| vilola-vīcī-calitāravinda-patad-rajaḥ-piñjaritaiś ca hamsaiḥ sva-kesarodāra-bharāvabhugnaiḥ kvacit sarāṃsy amburuhaiś ca bhānti| sva-puṣpa-bhārāvanatair nnagendrair mmada-pragalbhāli-kula-svanaiś ca| ajasra-gābhiś ca purāṅganābhir vvanāni yasmin samalaṃkṛtāni|| calat-patākāny abalā-sanāthāny atyarttha-śuklāny adhikonnatāni| taḍil-latā-citra-sitābbhra-kūṭa-tulyopamānāni gṛhāṇi yatra|| kailāsa-tuṅga-śikhara-pratimāni cānyāny ābhānti dīrggha-valabhīni sa-vedikāni| gāndharvva-śabda-mukharāṇi niviṣṭa-citra-karmmāṇi lola-kadalī-vana-śobhitāni|| prāsāda-mālābhir alaṃkṛtāni dharāṃ vidāryyeva samutthitāni| vimāna-mālā-sadṛśāni yattra gṛhāṇi pūrṇṇendu-karāmalāni|| yad bhāty abhiramya-sarid-dvayena capalormmiṇā samupagūḍhaṃ rahasi kuca-śālinībhyāṃ prīti-ratibhyāṃ smarāṅgam iva|| satya-kṣamādama-śama-vrata-śauca-dhairyya-svāddhyāya-vṛtta-vinaya-sthiti-buddhy-upetaiḥ";
+        String input = "vidāryyeva samutthitāni prathamaṃ manobhir anvāgatās sa-suta-bandhu-janās sametya|| mattebha-gaṇḍa-taṭa-"
+                + "vicyuta-dāna-bindu-sikt-opalācala-sahasra-vibhūṣaṇāyāḥ puṣpāvanamra-taru-ṣaṇḍa-vataṃsakāyā bhūmef puran tilaka-"
+                + "bhūtam idaṃ krameṇa|| taṭottha-vṛkṣa-cyuta-naika-puṣpa-vicitra-tīrānta-jalāni bhānti| praphulla-padmābharaṇāni "
+                + "yatra sarāṃsi kāraṇḍava-saṃkulāni|| vilola-vīcī-calitāravinda-patad-rajaḥ-piñjaritaiś ca hamsaiḥ sva-kesarodāra-"
+                + "bharāvabhugnaiḥ kvacit sarāṃsy amburuhaiś ca bhānti| sva-puṣpa-bhārāvanatair nnagendrair mmada-pragalbhāli-kula-"
+                + "svanaiś ca| ajasra-gābhiś ca purāṅganābhir vvanāni yasmin samalaṃkṛtāni|| calat-patākāny abalā-sanāthāny atyarttha-"
+                + "śuklāny adhikonnatāni| taḍil-latā-citra-sitābbhra-kūṭa-tulyopamānāni gṛhāṇi yatra|| kailāsa-tuṅga-śikhara-pratimāni "
+                + "cānyāny ābhānti dīrggha-valabhīni sa-vedikāni| gāndharvva-śabda-mukharāṇi niviṣṭa-citra-karmmāṇi lola-kadalī-vana-"
+                + "śobhitāni|| prāsāda-mālābhir alaṃkṛtāni dharāṃ vidāryyeva samutthitāni| vimāna-mālā-sadṛśāni yattra gṛhāṇi pūrṇṇendu-"
+                + "karāmalāni|| yad bhāty abhiramya-sarid-dvayena capalormmiṇā samupagūḍhaṃ rahasi kuca-śālinībhyāṃ prīti-ratibhyāṃ "
+                + "smarāṅgam iva|| satya-kṣamādama-śama-vrata-śauca-dhairyya-svāddhyāya-vṛtta-vinaya-sthiti-buddhy-upetaiḥ";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         while (words.incrementToken()) {}
-    }
+    }    
     
     @Test
     public void bug6DandaTakenAsToken() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug6");
         String input = "upetaiḥ.";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("upa√", "i√", "ita√", "ita√");
+        List<String> expected = Arrays.asList("upa√", "i√", "ita√");
         assertTokenStream(words, expected);
     }
     
     @Test
     public void bug7() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug7");
         String input = "tayorbhedo—viśeṣaḥ .";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("tad√", "Urj√", "Beda√", "viSeza√");
+        List<String> expected = Arrays.asList("tad√", "Urj√", "Bedo", "viSeza√");
         assertTokenStream(words, expected);
     }
 
     @Test
     public void bug8() throws Exception {
-        System.out.println("bug5");
+        System.out.println("bug8");
         String input = "grahaṇam—anyāpohasya—anyavyavacchedasya";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -210,32 +221,73 @@ public class TestFullTextParsing
     }
 
     @Test
-    public void bugbodhi() throws Exception {
-        System.out.println("bug5");
-        String input = "bodhisattvacaryāvatara - "
+    public void bug9bodhi() throws Exception {
+        System.out.println("bug9");
+        String input = "paramārtha nāma saṃgīti -" +  
+                "bodhisattvacaryāvatara - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
-                + "Nāmasaṅgīti - "
+                + "Nāmasaṃgīti - "
                 + "bodhicaryāvatara"
                 + "Prajñāpāramitā";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
         List<String> expected = Arrays.asList("grahaRa√", "an√", "anya√", "anya√", "Ap√", "Apa√", "apoha√", "an√", "vyavacCeda√");
         assertTokenStream(words, expected);
     }
     
     @Test
-    public void bugShri() throws Exception {
-        System.out.println("bug5");
+    public void bug10Shri() throws Exception {
+        System.out.println("bug10");
         String input = "śrījñāna"; // "mañjuśrījñāna";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("grahaRa√", "an√", "anya√", "anya√", "Ap√", "Apa√", "apoha√", "an√", "vyavacCeda√");
+        List<String> expected = Arrays.asList("SrI√", "IjY❌", "Ana✓", "jYAna✓");
+        assertTokenStream(words, expected);
+    }
+
+    @Test
+    public void bug11SameInputDifferingOutput() throws Exception {
+        System.out.println("bug11");
+        String input = "nirīkṣya nirīkṣya";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("ni✓", "rA√", "rE√", "kzya❌", "Ikz√", "Ikza√", "ya✓", "Ikzya✓", "ni✓", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ya✓");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug12MissingTokenAndRollingBufferError() throws Exception {
+        System.out.println("bug12");
+        String input = "paramārtha nāma saṃgīti -";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> expected = Arrays.asList("paramA√", "parama√", "ArTa✓", "arTa✓", "nAma√", "nAman√", "s❌", "saM✓", "gIti✓");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug13InfiniteLoopAtDash() throws Exception {
+        System.out.println("bug13");
+        String input = "caryāvatara - Śāntideva";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("paramA√", "parama√", "ArTa✓", "arTa✓", "nAma√", "nAman√", "s❌", "saM✓", "gIti✓");
         assertTokenStream(words, expected);
     }
     
