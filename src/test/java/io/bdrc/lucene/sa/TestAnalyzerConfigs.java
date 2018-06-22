@@ -58,20 +58,23 @@ public class TestAnalyzerConfigs {
     @Test
     public void bug21indexOutOfBounds() throws IOException
     {
-        String input = "bodhicaryāvatāra - "
-                + "bodhisattvacaryāvatāra - "
+        String input = "bodhicaryāvatara - "
+                + "bodhisattvacaryāvatara - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
-                + "Nāmasaṅgīti - "
-                + "bodhicaryāvatāra";
+                + "Nāmasaṃgīti - "
+                + "bodhicaryāvatara";
         System.out.println("0 " + input);
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("uz", "vas", "M", "tattva");
+        List<String> expected = Arrays.asList("boDi", "boDin", "cara", "caryA", "carya", "at", "tAra", "boDisattva", 
+                "cara", "caryA", "carya", "at", "tAra", "SAntideva", "maYjuSrI", "nAman", "sam", "gIti", "maYjuSrI", 
+                "Ana", "an", "jYAna", "sattva", "ara", "parama", "ArTa", "arTa", "nAman", "sam", "gIti", "nAman", 
+                "aNga", "aNgin", "boDi", "boDin", "iti", "iti", "cara", "caryA", "carya", "avatara");
         assertThat(tokens, is(expected));
     }
 }

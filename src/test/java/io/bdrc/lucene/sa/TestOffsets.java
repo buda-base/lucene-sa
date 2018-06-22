@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -16,10 +15,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.junit.Test;
-
-import io.bdrc.lucene.stemmer.Trie;
 
 public class TestOffsets {
 
@@ -31,17 +27,10 @@ public class TestOffsets {
         return tokenizer;
     }
     
-    static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {
-        Trie trie = BuildCompiledTrie.buildTrie(trieName + ".txt");
-
-        return new SkrtWordTokenizer(true);
-    }
-    
     static private void assertTokenStream(TokenStream tokenStream, List<String> expected, String origString) {
         try {
             List<String> termList = new ArrayList<String>();
             CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
-            PositionIncrementAttribute incrAttribute = tokenStream.addAttribute(PositionIncrementAttribute.class);
             OffsetAttribute offsetAttribute = tokenStream.addAttribute(OffsetAttribute.class);
             String log = "";
             while (tokenStream.incrementToken()) {
@@ -69,11 +58,12 @@ public class TestOffsets {
         List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "25:29", "25:29");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/increment_position_test"); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(words, expected, input);
     }
     
+    @SuppressWarnings("resource")
     @Test
     public void testDemoWords() throws IOException
     {
@@ -91,7 +81,7 @@ public class TestOffsets {
                 "137:141", "142:149", "152:156", "156:163", "166:171", "166:171", "171:176", "175:182");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/demo_test"); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
         reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
@@ -99,6 +89,7 @@ public class TestOffsets {
         assertTokenStream(words, expected, input);
     }
     
+    @SuppressWarnings("resource")
     @Test
     public void bug1Offset() throws IOException
     {
@@ -108,7 +99,7 @@ public class TestOffsets {
         List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/demo_test"); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
         reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
