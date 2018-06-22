@@ -452,6 +452,20 @@ public class TestSiddham
         assertThat(tokens, is(expected));
     }
     
+    @Test
+    public void bug25NullPointer() throws IOException
+    {
+        String input = "nāgasen-ācyutanandi-";
+        System.out.println("0 " + input);
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        List<String> tokens = generateTokenStream(words);
+        List<String> expected = Arrays.asList("A√", "lak❌", "Ko✓", "p❌", "pakA✓", "b❌", "BAse✓");
+        assertThat(tokens, is(expected));
+    }
+    
     @AfterClass
     public static void finish() {    // vowel sandhi
         System.out.println("after the test sequence");

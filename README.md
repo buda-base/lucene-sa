@@ -5,8 +5,8 @@
 ### Build the lexical resources for the Trie:
 
  - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
- - build lexical resources for the main trie: `python3 resources/sanskrit-stemming-data/sandhify.py`
- - build sandhi test tries: `python3 resources/sanskrit-stemming-data/generate_test_tries.py`
+ - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
+ - build sandhi test tries: `cd resources/sanskrit-stemming-data/sandhify/ && python3 generate_test_tries.py`
  - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
  - compile the main trie: `io.bdrc.lucene.sa.BuildCompiledTrie.main()` (takes about 45mn on an average laptop)
 
