@@ -505,18 +505,18 @@ public class TestWordTokenizer
     {
         System.out.println("bug9");
         String input = "sattvasya paramārtha nāma"  
-                + "bodhicaryāvatara bodhisattvacaryāvatara - "
+                + "bodhicaryāvatāra bodhisattvacaryāvatāra - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
                 + "Nāmasaṃgīti - "
-                + "bodhicaryāvatara";
+                + "bodhicaryāvatāra";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("sattva√", "parama√", "ārtha√", "artha√", "nāman√", "bodhi√", 
-                "bodhin√", "caryā√", "avatara√", "bodhisattva√", "caryā√", "avatara√", "śāntideva√", 
+                "bodhin√", "caryā√", "avatāra√", "bodhisattva√", "caryā√", "avatāra√", "śāntideva√", 
                 "mañjuśrī√", "nāman√", "samgīti√", "mañjuśrī√", "jñāna√", "ij√", "sattva√", "parama√", 
                 "ārtha√", "artha√", "nāman√", "samgīti√", "nāman√", "samgīti√", "bodhi√", "bodhin√", 
-                "caryā√", "avatara√");
+                "caryā√", "avatāra√");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/demo_test"); 

@@ -225,12 +225,12 @@ public class TestFullTextParsing
     @Test
     public void bug9bodhi() throws Exception {
         System.out.println("bug9");
-        String input = "bodhisattvacaryāvatara - "
+        String input = "bodhisattvacaryāvatāra - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
                 + "Nāmasaṃgīti - "
-                + "bodhicaryāvatara"
+                + "bodhicaryāvatāra"
                 + "Prajñāpāramitā";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
@@ -239,9 +239,9 @@ public class TestFullTextParsing
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
         // "apapāramita√" found because second non-max token apa is a Preposition, which is then prepended to "pāramita√" token.
-        List<String> expected = Arrays.asList("bodhisattva√", "caryā√", "avatara√", "śāntideva√", "mañjuśrī√", "āma√", "am√", 
+        List<String> expected = Arrays.asList("bodhisattva√", "caryā√", "avatāra√", "śāntideva√", "mañjuśrī√", "āma√", "am√", 
                 "nāman√", "samgīti√", "mañjuśrī√", "āna√", "an√", "jñāna√", "sattva√", "ara√", "parama√", "ārtha√", "artha√", 
-                "nāman√", "samgīti√", "nāman√", "samgīti√", "bodhi√", "bodhin√", "caryā√", "avatara√", "prajñā√", "prajña√", "āp√", 
+                "nāman√", "samgīti√", "nāman√", "samgīti√", "bodhi√", "bodhin√", "caryā√", "avatāra√", "prajñā√", "prajña√", "āp√", 
                 "āpa√", "apa√", "apapāramita√");
         assertTokenStream(words, expected);
     }
@@ -287,14 +287,14 @@ public class TestFullTextParsing
     @Test
     public void bug13InfiniteLoopAtDash() throws Exception {
         System.out.println("bug13");
-        String input = "caryāvatara - Śāntideva";
+        String input = "caryāvatāra - Śāntideva";
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
-        List<String> expected = Arrays.asList("caryā√", "avatara√", "śāntideva√");
+        List<String> expected = Arrays.asList("caryā√", "avatāra√", "śāntideva√");
         assertTokenStream(words, expected);
     }
     

@@ -69,12 +69,12 @@ public class TestOffsets {
     {
         System.out.println("bug9");
         String input = "sattvasya paramārtha nāma" +  
-                "bodhicaryāvatara bodhisattvacaryāvatara - "
+                "bodhicaryāvatara bodhisattvacaryāvatāra - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
                 + "Nāmasaṃgīti - "
-                + "bodhicaryāvatara";
+                + "bodhicaryāvatāra";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("0:9", "10:16", "15:20", "15:20", "21:25", "25:30", "25:30", "30:35", "34:41", "42:53", "53:58", "57:64", "67:76", 
                 "79:87", "89:92", "89:92", "88:92", "93:100", "103:111", "113:117", "113:117", "111:116", "116:125", "127:131", "126:132", "131:136", "131:136", 
