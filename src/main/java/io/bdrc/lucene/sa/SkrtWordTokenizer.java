@@ -388,15 +388,75 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			        bufferIndex -= 1;
 			    }
 			}
+
+            if (isValidCharWithinSandhi(c)) {
+                if (currentCharIsSpaceWithinSandhi(c)) {
+                   nonWordStart = -1;
+                   if (sandhiIndex != -1) sandhiIndex += charCount;
+                   previousIsSpace = true;
+                   continue;       // if there is a space in the sandhied substring, moves beyond the space
+                } else if (tokenBuffer.length() != 0 || nonWordBuffer.length() != 0) {
+                    if (foundMatch || foundNonMaxMatch) {
+                        if (!foundMatch && foundNonMaxMatch) {
+                         restoreNonMaxMatchState();
+                      }
+                        cutOffTokenFromNonWordBuffer();
+                        if (nonWordBuffer.length() != 1 && !storedInitials.contains(nonWordBuffer.toString())) {
+                            addNonwordToPotentialTokensIfThereIsOne();
+                        }
+                        potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                   }
+                   
+                   if (initialsNotEmpty()) {
+                      if (longestIdx < bufferIndex) 
+                         longestIdx = bufferIndex;
+                      restoreInitialsOrigState();
+                      reinitializeState();
+                      resetNonWordBuffer(0);
+                      wentToMaxDownTheTrie = false;
+                      applyOtherInitial = true;
+                      continue;
+                   } else if (isLoneInitial()) {
+                       tokenBuffer.setLength(0);
+                   } else {
+                       break;
+                   }
+                }
+            }
 			
 			if (thereAreInitialsToConsume()) {
- 				if (currentCharIsSpaceWithinSandhi(c)) {
- 				    nonWordStart = -1;
- 				    if (sandhiIndex != -1) sandhiIndex += charCount;
- 				    previousIsSpace = true;
- 				    continue;		// if there is a space in the sandhied substring, moves beyond the space
+// 				if (isValidCharWithinSandhi(c)) {
+// 				    if (currentCharIsSpaceWithinSandhi(c)) {
+// 				       nonWordStart = -1;
+// 				       if (sandhiIndex != -1) sandhiIndex += charCount;
+// 	                   previousIsSpace = true;
+// 	                   continue;       // if there is a space in the sandhied substring, moves beyond the space
+// 				    } else {
+// 				       if (foundMatch || foundNonMaxMatch) {
+// 				          if (!foundMatch && foundNonMaxMatch) {
+// 				             restoreNonMaxMatchState();
+// 				          }
+// 				          potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+// 				          cutOffTokenFromNonWordBuffer();
+// 				       }
+// 				       addNonwordToPotentialTokensIfThereIsOne();
+// 				       
+// 				       if (initialsNotEmpty()) {
+// 				          if (longestIdx < bufferIndex) 
+// 				             longestIdx = bufferIndex;
+// 				          restoreInitialsOrigState();
+// 				          reinitializeState();
+// 	                      resetNonWordBuffer(0);
+// 	                      wentToMaxDownTheTrie = false;
+// 	                      applyOtherInitial = true;
+// 	                      continue;
+// 				       } else {
+// 				           break;
+// 				       }
+// 				    }
 
- 				} else if (initialIsNotFollowedBySandhied(c)) {
+// 				} else 
+ 				if (initialIsNotFollowedBySandhied(c)) {
  				    ifNoInitialsCleanupPotentialTokensAndNonwords();
  				    if (foundMatch || foundNonMaxMatch) {
  				       if (!foundMatch && foundNonMaxMatch) {
@@ -514,6 +574,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                                break;
 		                            }
 		                        } else {
+		                            if (foundNonMaxMatch) {
+                                        restoreNonMaxMatchState();
+                                        potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                                    }
 		                            resetInitialCharsIterator();
 		                            restoreInitialsOrigState();
 		                            reinitializeState();
@@ -609,6 +673,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    
 				} else if (reachedNonwordCharacter()) {
 					tokenBuffer.setLength(0);		// because no word ever started in the first place
+					tokenStart += charCount;
 
 				} else if (foundAToken()) {
 					if (!afterNonwordMatch || foundMatch) {
