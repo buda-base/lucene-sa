@@ -104,10 +104,11 @@ public class TestWordTokenizer
     {
     	System.out.println("CmdParser: parse cmd of Darma");
     	String input = "$-0+n/=0£9#1|$/=0£9#1|r$-0+n;-0+/- r+f=1£1#1|cC$-0+n;-0+/- cC+C=8£4#1|A:i:I:u:U:f:e:E:o:O$-0+n;-0+/- +=1£1#1";
-    	String expected = "{acC=[0+/C=8£4#1, 0+n/C=8£4#1], aA=[0+/A=1£1#1, 0+n/A=1£1#1], aE=[0+/E=1£1#1, 0+n/E=1£1#1], aI=[0+/I=1£1#1, "
-    	        + "0+n/I=1£1#1], aO=[0+/O=1£1#1, 0+n/O=1£1#1], aU=[0+/U=1£1#1, 0+n/U=1£1#1], ae=[0+/e=1£1#1, 0+n/e=1£1#1], af=[0+/f=1£1#1, "
-    	        + "0+n/f=1£1#1], ai=[0+/i=1£1#1, 0+n/i=1£1#1], ao=[0+/o=1£1#1, 0+n/o=1£1#1], ar=[0+/f=1£1#1, 0+n/f=1£1#1], au=[0+/u=1£1#1, "
-    	        + "0+n/u=1£1#1], a=[0+/=0£-1#1, 0+n/=0£9#1]}";
+    	String expected = "{acC=[0+/C=8£4#1, 0+n/C=8£4#1], aA=[0+/A=1£1#1, 0+n/A=1£1#1], aE=[0+/E=1£1#1, "
+    	        + "0+n/E=1£1#1], aI=[0+/I=1£1#1, 0+n/I=1£1#1], aO=[0+/O=1£1#1, 0+n/O=1£1#1], aU=[0+/U=1£1#1, "
+    	        + "0+n/U=1£1#1], ae=[0+/e=1£1#1, 0+n/e=1£1#1], af=[0+/f=1£1#1, 0+n/f=1£1#1], ai=[0+/i=1£1#1, "
+    	        + "0+n/i=1£1#1], ao=[0+/o=1£1#1, 0+n/o=1£1#1], ar=[0+/f=1£1#1, 0+n/f=1£1#1], au=[0+/u=1£1#1, "
+    	        + "0+n/u=1£1#1], a=[0+/=0£0#1, 0+n/=0£9#1]}";
     	System.out.println("0 " + input);
     	Map<String, TreeSet<CmdParser.DiffStruct>> res = new CmdParser().parse("Darma", input);    	
     	System.out.println("1 " + expected);
@@ -160,7 +161,7 @@ public class TestWordTokenizer
 		System.out.println("sandhied compounds");
 		String input = "DarmATa DarmADa DarmATa";
 		Reader reader = new StringReader(input);
-		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa√", "Darma√", "Darman√", "ADa❌", 
+		List<String> expected = Arrays.asList("Darma√", "Darman√", "aTa√", "Darma√", "Darman√", "Da❌", 
 		        "Darma√", "Darman√", "aTa√");
 		System.out.println("0 " + input);
 		SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/DarmATa_test");

@@ -100,20 +100,21 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList(
-                "yad√", "kulyA√", "kulya√", "sva√", "sva√", "at√", "ya√", "yad√", "yas√", "puMs√", "va✓", "tra✓", "sPurat√", "va✓", "M❌", "kza√", 
-                "sPuw√", "sPuwa√", "Ud❌", "DvaMs√", "pra√", "vi√", "tan√", "ya√", "yad√", "yas√", "prajYa√", "anu√", "saj√", "Uci❌", "ta✓", 
-                "ucita✓", "cita✓", "suKa√", "manasA√", "manas√", "SAstf√", "SAstra√", "tattva√", "ArTa√", "arTa√", "Bartf√", "stabDa√", "han√", 
-                "na√", "Cf✓", "sad√", "sat√", "kAvya√", "SrI√", "viroDa√", "buDa√", "guRita√", "guRa√", "AjYA√", "A√", "han√", "eva√", "kftvan√", 
-                "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", "sPuwa√", "bahu√", "kU√", "kIrti√", "rAjya√", "Bunakti√", "Ara√", "Arya√", "hi√", 
-                "eha√", "yu√", "iti√", "aguhya✓", "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "piSuna√", "utkarRita√", "roman√", "saBya√", "cC❌", 
-                "UcC❌", "vasita√", "tulya✓", "kula√", "ja✓", "mlAna√", "an✓", "A√", "vi√", "dU√", "dva√", "Ikzita√", "Ikzitf√", "kzi√", "kzita√", 
-                "sneha√", "snih√", "vi√", "A√", "vi√", "Alu√", "lul√", "lulita√", "bAzpa√", "guru√", "tattva√", "Ikz√", "cakzus√", "yad√", "pitf√", 
-                "BI√", "DA√", "hita√", "ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ya✓", "Kila√", "niKila√", "pA√", "evam√", "uru√", "iti√", 
-                "iti√", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "a✓", "sadfSa√", "sadfSa√", "adButa√", "Bid√", "udBid√", "harza√", "harza√", 
-                "hfz√", "na√", "✓", "AsvAdayat√", "kim√", "cid√", "cit√", "cit√", "vIra√", "vIrya√", "vIrya√", "Ut❌", "t❌", "tap√", "ca√", "kim√", 
-                "cid√", "cit√", "aRa✓", "SaraRa√", "upaga✓", "ya√", "yad√", "yas√", "vftta√", "vftti√", "praRAma√", "api√", "arti√"
-                );
+        List<String> expected = Arrays.asList("yad√", "kulyA√", "kulya√", "sva√", "sva√", "at√", "ya√", "yad√", "yas√", "puMs√", "va✓", "tra✓", 
+                "sPurat√", "va✓", "M❌", "kza√", "sPuw√", "sPuwa√", "DvaMs√", "ut√", "pra√", "vi√", "tan√", "ya√", "yad√", "yas√", "prajYa√", 
+                "anu√", "saj√", "Uci❌", "ta✓", "ucita✓", "cita✓", "suKa√", "manasA√", "manas√", "SAstf√", "SAstra√", "ad√", "tattva√", "ArTa√", 
+                "arTa√", "Bartf√", "stabDa√", "u❌", "han√", "na√", "ut√", "sad√", "sat√", "kAvya√", "SrI√", "irA√", "viroDa√", "Da✓", 
+                "buDa√", "guRita√", "guRa√", "AjYA√", "A√", "han√", "eva√", "kftvan√", "va✓", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", 
+                "sPuwa√", "bahu√", "kU√", "a✓", "kIrti√", "rAjya√", "Bunakti√", "Ara√", "Arya√", "hi√", "eha√", "iti√", "upagu√", "hi√", "av√", 
+                "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "Suna√", "Svan√", "a✓", "Suna√", "Svan√", "utkarRita√", "roman√", "saBya√", 
+                "vasita√", "ut√", "Sul❌", "tulya✓", "ya✓", "kula√", "ja✓", "mlAna√", "an✓", "A√", "vi√", "ut√", "dU√", "dva√", "Ikzita√", "Ikzitf√", 
+                "ij√", "kzi√", "kzita√", "nah√", "vi√", "A√", "vi√", "Alu√", "al✓", "lul√", "lulita√", "bAzpa√", "guru√", "tattva√", "Ikz√", "ij√", 
+                "a✓", "cakzus√", "yad√", "pitf√", "BI√", "aBi√", "aBi√", "DA√", "hita√", "ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ij√", "ya✓", 
+                "Kila√", "niKila√", "pA√", "evam√", "uru√", "iti√", "iti√", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "a✓", "sadfSa√", "sadfSa√", 
+                "adButa√", "Bid√", "udBid√", "harza√", "harza√", "hfz√", "na√", "a✓", "BA√", "Ba√", "fz√", "av√", "BA√", "BA√", "BAva√", "BAva√", 
+                "BU√", "Ba√", "Bu√", "AsvAdayat√", "kim√", "cid√", "cit√", "cit√", "vIra√", "vIrya√", "vIrya√", "tap√", "utta✓", "ca√", "kim√", 
+                "cid√", "cit√", "aRa✓", "SaraRa√", "upaga✓", "tA✓", "ya√", "yad√", "yas√", "vftta√", "vftti√", "IraRa√", "ira✓", "praRAma√", "pA√", 
+                "api√", "arti√");
         assertTokenStream(words, expected);
     }
     
@@ -237,10 +238,11 @@ public class TestFullTextParsing
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
-        List<String> expected = Arrays.asList("bodhisattva√", "caryā√", "avatara√", "śāntideva√", "mañjuśrī√", "nāman√", 
-                "samgīti√", "mañjuśrī√", "āna√", "an√", "jñāna√", "sattva√", "ara√", "parama√", "ārtha√", "artha√", "nāman√", 
-                "samgīti√", "nāman√", "samgīti√", "bodhi√", "bodhin√", "caryā√", "avatara√", "prajñā√", "prajña√", "āp√", 
-                "āpa√", "pāramita√");
+        // "apapāramita√" found because second non-max token apa is a Preposition, which is then prepended to "pāramita√" token.
+        List<String> expected = Arrays.asList("bodhisattva√", "caryā√", "avatara√", "śāntideva√", "mañjuśrī√", "āma√", "am√", 
+                "nāman√", "samgīti√", "mañjuśrī√", "āna√", "an√", "jñāna√", "sattva√", "ara√", "parama√", "ārtha√", "artha√", 
+                "nāman√", "samgīti√", "nāman√", "samgīti√", "bodhi√", "bodhin√", "caryā√", "avatara√", "prajñā√", "prajña√", "āp√", 
+                "āpa√", "apa√", "apapāramita√");
         assertTokenStream(words, expected);
     }
     
@@ -264,8 +266,8 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ya✓", "Ikz√", "Ikza√", 
-                "ni√", "ara√", "ari√", "arin√", "kz❌", "Ikz√", "Ikza√", "ya✓");
+        List<String> expected = Arrays.asList("ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ij√", "ya✓", "zi❌", "ir❌", "Ikz√", 
+                "Ikza√", "ni√", "rA√", "rE√", "kz❌", "akza√", "akzan√", "Ikz√", "Ikza√", "ij√", "ya✓");
         assertTokenStream(words, expected);
     }
     

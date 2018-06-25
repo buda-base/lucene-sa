@@ -50,7 +50,7 @@ public class TestPositionIncrement {
         String input = "SrIjYAna Darma boDi loke loke";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("SrI_1", "IjY_1", "Ana_0", "an_0", "jYAna_0", "Darma_1", "Darman_0", 
-                "boDi_1", "boDin_0", "lok_1", "loka_0", "lok_1", "loka_0");
+                "boDi_1", "boDin_0", "lok_1", "loka_0", "oka_1", "lok_0", "loka_0");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 

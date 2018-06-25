@@ -55,7 +55,7 @@ public class TestOffsets {
         System.out.println("Increment Position");
         String input = "SrIjYAna Darma boDi loke loke";  // only loka for last token as only absolute final sandhi is applicable at end of input
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "25:29", "25:29");
+        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "26:29", "25:29", "25:29");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
@@ -76,8 +76,8 @@ public class TestOffsets {
                 + "Nāmasaṃgīti - "
                 + "bodhicaryāvatara";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:9", "10:16", "15:20", "15:20", "21:25", "25:30", "25:30", "30:35", "34:41", "42:53", "53:58", "57:64", 
-                "67:76", "79:87", "88:92", "93:100", "103:111", "113:117", "113:117", "111:116", "116:125", "127:131", "126:132", "131:136", "131:136", 
+        List<String> expected = Arrays.asList("0:9", "10:16", "15:20", "15:20", "21:25", "25:30", "25:30", "30:35", "34:41", "42:53", "53:58", "57:64", "67:76", 
+                "79:87", "89:92", "89:92", "88:92", "93:100", "103:111", "113:117", "113:117", "111:116", "116:125", "127:131", "126:132", "131:136", "131:136", 
                 "137:141", "142:149", "152:156", "156:163", "166:171", "166:171", "171:176", "175:182");
         System.out.println("0 " + input);
         

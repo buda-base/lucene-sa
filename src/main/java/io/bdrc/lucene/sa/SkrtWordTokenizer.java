@@ -401,8 +401,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
                          restoreNonMaxMatchState();
                       }
                         cutOffTokenFromNonWordBuffer();
-                        if (nonWordBuffer.length() != 1 && !storedInitials.contains(nonWordBuffer.toString())) {
+                        if (nonWordBuffer.length() != 1 && storedInitials != null && !storedInitials.contains(nonWordBuffer.toString())) {
                             addNonwordToPotentialTokensIfThereIsOne();
+                        }
+                        if (isLoneInitial()) {
+                            tokenBuffer.setLength(0);
                         }
                         potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
                    }
@@ -416,8 +419,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
                       wentToMaxDownTheTrie = false;
                       applyOtherInitial = true;
                       continue;
-                   } else if (isLoneInitial()) {
+                   } else if (tokenBuffer.length() == 1 && storedInitials != null && storedInitials.contains(tokenBuffer.toString())) {
                        tokenBuffer.setLength(0);
+                   } else if (thereIsNoTokenAndNoNonword()) {
+                       foundNonMaxMatch = false;
+                       continue;
                    } else {
                        break;
                    }
@@ -425,37 +431,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
             }
 			
 			if (thereAreInitialsToConsume()) {
-// 				if (isValidCharWithinSandhi(c)) {
-// 				    if (currentCharIsSpaceWithinSandhi(c)) {
-// 				       nonWordStart = -1;
-// 				       if (sandhiIndex != -1) sandhiIndex += charCount;
-// 	                   previousIsSpace = true;
-// 	                   continue;       // if there is a space in the sandhied substring, moves beyond the space
-// 				    } else {
-// 				       if (foundMatch || foundNonMaxMatch) {
-// 				          if (!foundMatch && foundNonMaxMatch) {
-// 				             restoreNonMaxMatchState();
-// 				          }
-// 				          potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
-// 				          cutOffTokenFromNonWordBuffer();
-// 				       }
-// 				       addNonwordToPotentialTokensIfThereIsOne();
-// 				       
-// 				       if (initialsNotEmpty()) {
-// 				          if (longestIdx < bufferIndex) 
-// 				             longestIdx = bufferIndex;
-// 				          restoreInitialsOrigState();
-// 				          reinitializeState();
-// 	                      resetNonWordBuffer(0);
-// 	                      wentToMaxDownTheTrie = false;
-// 	                      applyOtherInitial = true;
-// 	                      continue;
-// 				       } else {
-// 				           break;
-// 				       }
-// 				    }
-
-// 				} else 
  				if (initialIsNotFollowedBySandhied(c)) {
  				    ifNoInitialsCleanupPotentialTokensAndNonwords();
  				    if (foundMatch || foundNonMaxMatch) {

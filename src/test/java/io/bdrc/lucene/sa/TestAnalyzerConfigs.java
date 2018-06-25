@@ -71,10 +71,10 @@ public class TestAnalyzerConfigs {
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("boDi", "boDin", "cara", "caryA", "carya", "at", "tAra", "boDisattva", 
-                "cara", "caryA", "carya", "at", "tAra", "SAntideva", "maYjuSrI", "nAman", "sam", "gIti", "maYjuSrI", 
-                "Ana", "an", "jYAna", "sattva", "ara", "parama", "ArTa", "arTa", "nAman", "sam", "gIti", "nAman", 
-                "aNga", "aNgin", "boDi", "boDin", "iti", "iti", "cara", "caryA", "carya", "avatara");
+        List<String> expected = Arrays.asList("boDi", "boDin", "caryA", "avatara", "boDisattva", "caryA", 
+                "avatara", "SAntideva", "maYjuSrI", "Ama", "am", "nAman", "sam", "gIti", "maYjuSrI", "Ana", 
+                "an", "jYAna", "sattva", "ara", "parama", "ArTa", "arTa", "nAman", "sam", "gIti", "nAman", 
+                "sam", "gIti", "boDi", "boDin", "caryA", "avatara");
         assertThat(tokens, is(expected));
     }
 }
