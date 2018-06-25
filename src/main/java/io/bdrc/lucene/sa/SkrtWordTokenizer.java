@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -954,8 +956,27 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
     private void removeOverlappingNonwords() {
-        System.out.println("truc");
-        
+        TreeSet<Integer> toDelete = new TreeSet<Integer>(Collections.reverseOrder());
+        for (int i=0; i < totalTokens.size(); i++) {
+            final Integer[] aMetadata = totalTokens.get(i).getMetadata();
+            final int aStart = aMetadata[0];
+            final int aEnd = aMetadata[1];
+            if (aMetadata[4] == -1) {
+                for (int j=0; j < totalTokens.size(); j++) {
+                    if (i != j) {
+                        final Integer[] bMetadata = totalTokens.get(j).getMetadata();
+                        final int bStart = bMetadata[0];
+                        final int bEnd = bMetadata[1];
+                        if (aStart >= bStart && aEnd <= bEnd) {
+                            toDelete.add(i);
+                        }
+                    }
+                }
+            }
+        }
+        for (int idx: toDelete) {
+            totalTokens.remove(idx);
+        }
     }
 
     /**

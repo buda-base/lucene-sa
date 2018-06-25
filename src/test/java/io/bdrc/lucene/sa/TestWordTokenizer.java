@@ -533,7 +533,7 @@ public class TestWordTokenizer
         System.out.println("bug9");
         String input = "SrIjYAna";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("SrI√", "Ij❌", "YAna√", "ij√", "jYAna√");
+        List<String> expected = Arrays.asList("SrI√", "YAna√", "ij√", "jYAna√");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = buildTokenizer("src/test/resources/tries/shri_jnana_test"); 

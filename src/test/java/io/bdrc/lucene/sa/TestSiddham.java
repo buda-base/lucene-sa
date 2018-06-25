@@ -320,7 +320,7 @@ public class TestSiddham
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("paricAraka√", "Ik❌", "fta✓", "ij√", "kf√");
+        List<String> expected = Arrays.asList("paricAraka√", "fta✓", "ij√", "kf√");
         assertThat(tokens, is(expected));
     }
     
@@ -397,7 +397,7 @@ public class TestSiddham
         // Huet's reader outputs the following:
         // Pala✓, A✓, prApti✓, samBAvana✓, A✓, lakzaRa✓, an✓, arTa✓, Apti✓, SaNkA✓, iti✓
         List<String> expected = Arrays.asList("Pal√", "Pala√", "prApti√", "a√", "samBAvanAl✓", "akzaR✓", "Ana√", 
-                "an√", "av√", "pti❌", "Apti√", "ap√", "SaNkA√", "SaNkA√", "SaNk√", "iti√", "iti√");
+                "an√", "av√", "Apti√", "ap√", "SaNkA√", "SaNkA√", "SaNk√", "iti√", "iti√");
         assertThat(tokens, is(expected));
     }
     
@@ -440,7 +440,7 @@ public class TestSiddham
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("Ana√", "an√", "av√", "pti❌", "Apti√", "ap√", "SaNkA√", "SaNkA√", "SaNk√", 
+        List<String> expected = Arrays.asList("Ana√", "an√", "av√", "Apti√", "ap√", "SaNkA√", "SaNkA√", "SaNk√", 
                 "iti√", "iti√");
         assertThat(tokens, is(expected));
     }

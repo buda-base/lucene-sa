@@ -102,14 +102,14 @@ public class TestFullTextParsing
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> expected = Arrays.asList("yad√", "kulyA√", "kulya√", "sva√", "sva√", "at√", "ya√", "yad√", "yas√", "puMs√", "va✓", "tra✓", 
                 "sPurat√", "va✓", "M❌", "kza√", "sPuw√", "sPuwa√", "DvaMs√", "ut√", "pra√", "vi√", "tan√", "ya√", "yad√", "yas√", "prajYa√", 
-                "anu√", "saj√", "Uci❌", "ta✓", "ucita✓", "cita✓", "suKa√", "manasA√", "manas√", "SAstf√", "SAstra√", "ad√", "tattva√", "ArTa√", 
+                "anu√", "saj√", "ta✓", "ucita✓", "cita✓", "suKa√", "manasA√", "manas√", "SAstf√", "SAstra√", "ad√", "tattva√", "ArTa√", 
                 "arTa√", "Bartf√", "stabDa√", "u❌", "han√", "na√", "ut√", "sad√", "sat√", "kAvya√", "SrI√", "irA√", "viroDa√", "Da✓", 
                 "buDa√", "guRita√", "guRa√", "AjYA√", "A√", "han√", "eva√", "kftvan√", "va✓", "vidvas√", "lok√", "loka√", "avinASin√", "sPuw√", 
                 "sPuwa√", "bahu√", "kU√", "a✓", "kIrti√", "rAjya√", "Bunakti√", "Ara√", "Arya√", "hi√", "eha√", "iti√", "upagu√", "hi√", "av√", 
                 "BA√", "BA√", "BAva√", "BU√", "Ba√", "Bu√", "Suna√", "Svan√", "a✓", "Suna√", "Svan√", "utkarRita√", "roman√", "saBya√", 
-                "vasita√", "ut√", "Sul❌", "tulya✓", "ya✓", "kula√", "ja✓", "mlAna√", "an✓", "A√", "vi√", "ut√", "dU√", "dva√", "Ikzita√", "Ikzitf√", 
+                "vasita√", "ut√", "tulya✓", "ya✓", "kula√", "ja✓", "mlAna√", "an✓", "A√", "vi√", "ut√", "dU√", "dva√", "Ikzita√", "Ikzitf√", 
                 "ij√", "kzi√", "kzita√", "nah√", "vi√", "A√", "vi√", "Alu√", "al✓", "lul√", "lulita√", "bAzpa√", "guru√", "tattva√", "Ikz√", "ij√", 
-                "a✓", "cakzus√", "yad√", "pitf√", "BI√", "aBi√", "aBi√", "DA√", "hita√", "ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ij√", "ya✓", 
+                "a✓", "cakzus√", "yad√", "pitf√", "BI√", "aBi√", "aBi√", "DA√", "hita√", "ni√", "rA√", "rE√", "Ikz√", "Ikza√", "ij√", "ya✓", 
                 "Kila√", "niKila√", "pA√", "evam√", "uru√", "iti√", "iti√", "dfz√", "karman√", "aneka√", "amat√", "uj✓", "a✓", "sadfSa√", "sadfSa√", 
                 "adButa√", "Bid√", "udBid√", "harza√", "harza√", "hfz√", "na√", "a✓", "BA√", "Ba√", "fz√", "av√", "BA√", "BA√", "BAva√", "BAva√", 
                 "BU√", "Ba√", "Bu√", "AsvAdayat√", "kim√", "cid√", "cit√", "cit√", "vIra√", "vIrya√", "vIrya√", "tap√", "utta✓", "ca√", "kim√", 
@@ -266,8 +266,8 @@ public class TestFullTextParsing
         CharFilter siddham = new SiddhamFilter(roman);
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
-        List<String> expected = Arrays.asList("ni√", "rA√", "rE√", "kz❌", "Ikz√", "Ikza√", "ij√", "ya✓", "zi❌", "ir❌", "Ikz√", 
-                "Ikza√", "ni√", "rA√", "rE√", "kz❌", "akza√", "akzan√", "Ikz√", "Ikza√", "ij√", "ya✓");
+        List<String> expected = Arrays.asList("ni√", "rA√", "rE√", "Ikz√", "Ikza√", "ij√", "ya✓", "Ikz√", 
+                "Ikza√", "ni√", "rA√", "rE√", "akza√", "akzan√", "Ikz√", "Ikza√", "ij√", "ya✓");
         assertTokenStream(words, expected);
     }
     
