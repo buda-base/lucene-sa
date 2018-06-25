@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -294,7 +293,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	            ioBuffer.freeBefore(sandhiIndex);
 	            sandhiIndex = -1;
 		    } else if (idempotentIdx != -1 && idempotentIdx < bufferIndex) {
-		        ioBuffer.freeBefore(idempotentIdx);
+		        ioBuffer.freeBefore(idempotentIdx - 4);
 		    } else {
 		        ioBuffer.freeBefore(bufferIndex - 4);
 		    }
@@ -366,7 +365,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			currentChar = (char) c;
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
-			
 			ifIsNeededInitializeStartingIndexOfNonword();
 			if (initialsOrigBufferIndex == -1) 
 			    storeCurrentState();
@@ -404,7 +402,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
                          restoreNonMaxMatchState();
                       }
                         cutOffTokenFromNonWordBuffer();
-                        if (nonWordBuffer.length() != 1 && storedInitials != null && !storedInitials.contains(nonWordBuffer.toString())) {
+                        if (nonWordBuffer.length() >= 1 && storedInitials != null && !storedInitials.contains(nonWordBuffer.toString())) {
                             addNonwordToPotentialTokensIfThereIsOne();
                         }
                         if (isLoneInitial()) {
@@ -469,6 +467,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    bufferIndex = idempotentIdx;
 					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
 					    if (previousIsSpace) {
+					        ioBuffer.get(bufferIndex);  // update ioBuffer
 					        bufferIndex += charCount;
 					    }
                     }
@@ -827,7 +826,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
 						storedInitials = null;
 						sandhiIndex = -1;
-						break;
+						if (foundNonMaxMatch) {
+						    restoreNonMaxMatchState();
+						    if (isLoneInitial()) {
+                                tokenBuffer.setLength(0);
+                            }
+                            potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+						} else {
+						    tokenBuffer.setLength(0);
+						}
+						if (thereIsNoTokenAndNoNonword()) {
+						    foundNonMaxMatch = false;
+						    continue;
+		                } else {
+		                    break;
+		                }
 					}
                     if (longestIdx < bufferIndex) 
                         longestIdx = bufferIndex;
@@ -961,14 +974,22 @@ public final class SkrtWordTokenizer extends Tokenizer {
             final Integer[] aMetadata = totalTokens.get(i).getMetadata();
             final int aStart = aMetadata[0];
             final int aEnd = aMetadata[1];
-            if (aMetadata[4] == -1) {
+            final int aPos = aMetadata[4];
+            if (aPos == -1) {
                 for (int j=0; j < totalTokens.size(); j++) {
                     if (i != j) {
                         final Integer[] bMetadata = totalTokens.get(j).getMetadata();
                         final int bStart = bMetadata[0];
                         final int bEnd = bMetadata[1];
+                        final int bPos = bMetadata[4];
                         if (aStart >= bStart && aEnd <= bEnd) {
-                            toDelete.add(i);
+                            if (bPos != -1) {
+                                toDelete.add(i);
+                            } else {
+                                if (!toDelete.contains(i) && !toDelete.contains(j)) {
+                                    toDelete.add(i);
+                                }
+                            }
                         }
                     }
                 }
@@ -1288,21 +1309,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		String cmd = scanner.getCommandVal(foundMatchCmdIndex);
 		if (cmd != null) {
 		    String token = tokenBuffer.toString();
-			if (debug) System.out.println("form found: " + token + "\n");
-			final Set<String> lemmas = reconstructLemmas(cmd, token);
-			if (lemmas.size() != 0) {
-				for (String l: lemmas) {
-				    final int underscore = l.lastIndexOf('_');
-				    final String lemma = l.substring(0, underscore);
-				    final int pos = Integer.valueOf(l.substring(underscore + 1));
-				    final PreToken newToken = new PreToken(lemma, 
-				            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), lemma.length(), 2, pos});
-				    if (!isDupe(newToken))
-                        totalTokens.add(newToken);
-					// use same start-end indices since all are from the same inflected form)
-				}
-				return true;
-			}
+		    if (!token.isEmpty()) {
+		        if (debug) System.out.println("form found: " + token + "\n");
+	            final Set<String> lemmas = reconstructLemmas(cmd, token);
+	            if (lemmas.size() != 0) {
+	                for (String l: lemmas) {
+	                    final int underscore = l.lastIndexOf('_');
+	                    final String lemma = l.substring(0, underscore);
+	                    final int pos = Integer.valueOf(l.substring(underscore + 1));
+	                    final PreToken newToken = new PreToken(lemma, 
+	                            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), lemma.length(), 2, pos});
+	                    if (!isDupe(newToken))
+	                        totalTokens.add(newToken);
+	                    // use same start-end indices since all are from the same inflected form)
+	                }
+	                return true;
+	            }
+		    }
 		}
 		return false;
 	}
@@ -1663,7 +1686,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean reachedEndOfInputString() throws IOException {
-		return ioBuffer.get(bufferIndex) == -1;
+	    return ioBuffer.get(bufferIndex) == -1;
 	}
 
 	final private boolean allCharsFromCurrentInitialAreConsumed() {

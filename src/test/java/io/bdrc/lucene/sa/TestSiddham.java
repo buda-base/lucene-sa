@@ -474,6 +474,30 @@ public class TestSiddham
         assertThat(tokens, is(expected));
     }
     
+    @Test
+    public void bug26NullPointer() throws IOException
+    {
+        String input = "ītāṃ ";
+        System.out.println("0 " + input);
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        while(words.incrementToken()) {}
+    }
+
+    @Test
+    public void bug27EmtpyTotalTokens() throws IOException
+    {
+        String input = "śrr̥ṇotigrāmāntare bhojanamastīti, ";
+        System.out.println("0 " + input);
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        while(words.incrementToken()) {}
+    }
+    
     @AfterClass
     public static void finish() {
         System.out.println("after the test sequence");
