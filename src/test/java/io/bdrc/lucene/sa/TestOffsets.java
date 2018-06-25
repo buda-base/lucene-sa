@@ -53,7 +53,7 @@ public class TestOffsets {
     public void testFromSLP() throws IOException
     {
         System.out.println("Increment Position");
-        String input = "SrIjYAna Darma boDi loke loke";  // only loka for last token as only absolute final sandhi is applicable at end of input
+        String input = "SrIjYAna Darma boDi loke loke";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "26:29", "25:29", "25:29");
         System.out.println("0 " + input);

@@ -55,7 +55,7 @@ import io.bdrc.lucene.stemmer.Trie;
  * A maximal-matching word tokenizer for Sanskrit that uses a {@link Trie}.
  *
  * <p>
- * 	The expected input is an SLP string<br>
+ * 	The expected input is an SLP string.<br>
  *	{@link SkrtSyllableTokenizer#isSLP(int)} is used to filter out nonSLP characters.
  *
  * <p>
@@ -389,7 +389,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			    }
 			}
 
-            if (isValidCharWithinSandhi(c)) {
+            /* Deals with spaces and soft hyphens at word boundaries */
+			if (isValidCharWithinSandhi(c)) {
                 if (currentCharIsSpaceWithinSandhi(c)) {
                    nonWordStart = -1;
                    if (sandhiIndex != -1) sandhiIndex += charCount;
@@ -559,7 +560,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                            foundNonMaxMatch = false;
 		                            resetNonWordBuffer(0);
 		                            applyOtherInitial = true;
-//		                            bufferIndex = longestIdx;
                                     longestIdx = -1;
 		                            continue;
 		                        }
@@ -932,11 +932,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (thereAreTokensToReturn()) {
 		    hasTokenToEmit = true;
 		    
+		    /* B.2.a. ADJUSTING THE LIST OF PreTokens */
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
-		    // TODO: further cleanup the list of PreTokens here,
-		    // for ex. to remove non-words overlapping tokens from other initials.
+		    removeOverlappingNonwords();
 		    
+		    /* B.2.b. RETURNING A TOKEN */
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
@@ -951,6 +952,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return true;						// we exit incrementToken()
 		}
 	}
+
+    private void removeOverlappingNonwords() {
+        System.out.println("truc");
+        
+    }
 
     /**
 	 * Splits tokens that have a multi-token lemma.
@@ -1018,8 +1024,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
 	 * only reconstructs the lemmas if there is a match.
-	 * @param i 
-	 *
+	 * <br>
+	 * Each time an idempotent sandhi is indicated by its group in the cmd, all the possibilities 
+	 * are generated and a DiffStruct is created and stored in diffLists[1]
+	 * 
+	 * @param cmd of the current word
+	 * @param inflected the inflected word to be lemmatized
+	 * @param tokenEndIdx 
 	 *
 	 * @return: the list of all the possible lemmas given the current context
 	 */
@@ -1028,7 +1039,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		CmdParser parser = new CmdParser();
 		
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
-
+		
+		// (a hack needed because we don't want to generate the idempotent sandhis of ALL sandhis in the cmd. 
+		//  we only need those from the sandhis that were applied)
+		// a list of two elements,
+		// the first contains all the contexts from the sandhis of the cmd
+		// the second will contain all the contexts from the idempotent sandhis from the sandhis that fit in the current context.
 		List<TreeMap<String, TreeSet<DiffStruct>>> diffLists = Arrays.asList(parser.parse(inflected, cmd), new TreeMap<String, TreeSet<DiffStruct>>());
 		
 		for (TreeMap<String, TreeSet<DiffStruct>> diffList: diffLists) {
@@ -1426,7 +1442,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
         initialsOrigBuffer.append(tokenBuffer);
     }
 	
-    private void restoreInitialsOrigState() {       /* return to the beginning of the token in ioBuffer */
+    /* returns to the beginning of the token in ioBuffer */
+    private void restoreInitialsOrigState() {
         bufferIndex = initialsOrigBufferIndex;
         tokenStart = initialsOrigTokenStart;
         currentRow = rootRow;
@@ -1657,7 +1674,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
-		return initials != null && !initials.isEmpty();  // && ioBuffer.get(bufferIndex) != -1;
+		return initials != null && !initials.isEmpty();
 	}
 
 	final private boolean foundAToken() throws IOException {
