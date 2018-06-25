@@ -69,7 +69,7 @@ public class TestOffsets {
     {
         System.out.println("bug9");
         String input = "sattvasya paramārtha nāma" +  
-                "bodhicaryāvatara bodhisattvacaryāvatāra - "
+                "bodhicaryāvatāra bodhisattvacaryāvatāra - "
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
