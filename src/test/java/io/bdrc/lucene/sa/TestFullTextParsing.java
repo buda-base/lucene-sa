@@ -48,7 +48,7 @@ public class TestFullTextParsing
 	
 	static private SkrtWordTokenizer fillWordTokenizer() {
 		try {
-			skrtWordTokenizer = new SkrtWordTokenizer(true);
+			skrtWordTokenizer = new SkrtWordTokenizer();
 		} catch (Exception e) {
             e.printStackTrace();
         }

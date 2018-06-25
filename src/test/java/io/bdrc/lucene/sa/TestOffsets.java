@@ -58,7 +58,7 @@ public class TestOffsets {
         List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "26:29", "25:29", "25:29");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(words, expected, input);
     }
@@ -81,7 +81,7 @@ public class TestOffsets {
                 "137:141", "142:149", "152:156", "156:163", "166:171", "166:171", "171:176", "175:182");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
         reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
@@ -99,7 +99,7 @@ public class TestOffsets {
         List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
         reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);

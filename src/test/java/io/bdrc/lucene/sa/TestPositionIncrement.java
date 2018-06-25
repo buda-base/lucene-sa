@@ -53,7 +53,7 @@ public class TestPositionIncrement {
                 "boDi_1", "boDin_0", "lok_1", "loka_0", "oka_1", "lok_0", "loka_0");
         System.out.println("0 " + input);
         
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(true); 
+        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(words, expected);
     }
