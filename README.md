@@ -59,12 +59,12 @@ Additional sandhied contexts are generated to account for cases when the expecte
 ##### Lexical resources
 Being built on top of the lexical resources compiled in the Trie, the Tokenizer is limited to the vocabulary and inflected forms found in the [XML files](https://gitlab.inria.fr/huet/Heritage_Resources/tree/master/XML/SL) of Sanskrit Heritage Resources. Although these resources are the best available both in terms of size and coverage, they were not intended to be used as self-sufficient lexical resources. So, some words or forms that obviously ought to be there will be found missing. 
 
-In order to fill in the gaps, `sanskrit-stemming-data` contains a folder to hold custom entries. Each custom entry is transformed into sandhied surface forms and the corresponding `cmd`s are generated.
+In order to fill in the gaps, `sanskrit-stemming-data`[/input/custom_entries/](https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data/tree/master/input/custom_entries) holds custom entries. Each custom entry is transformed into sandhied surface forms and the corresponding `cmd`s are generated.
 
 ##### Maximal Matching 
 By arbitrarily choosing the end of the longest word as the starting point of the next word, we can't avoid [garden paths](https://en.wikipedia.org/wiki/Garden_path_sentence), yet within the context of Lucene Analyzers, we can't afford generating forests of possible parses to choose from for a given sentence.
 
-As a workaround, entries with "multi-token lemmas" in the stead of `cmd`s can be added in `sanskrit-stemming-data`. It will then be made into different tokens by the Tokenizer as specified in the multi-token lemma. 
+As a workaround, entries with "multi-token lemmas" in the stead of `cmd`s can be added in `sanskrit-stemming-data`[/input/maxmatch_workaround/](https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data/tree/master/input/maxmatch_workaround). It will then be made into different tokens by the Tokenizer as specified in the multi-token lemma. 
 
 Given a Trie containing the following.
 - `caryā`, lemma: caryā
@@ -74,6 +74,7 @@ Parsing `caryāvatāra` will result in `caryāva` + `tāra`(non-word token).
 
 Adding the following workaround entry will solve this combination(and all sandhied variants).
  - `caryāvatāra`, lemmas: `caryā`, `avatāra` 
+ 
 The Tokenizer now outputs what is expected.
 
 #### Parsing sample from Siddham Project data
