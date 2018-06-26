@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ import io.bdrc.lucene.stemmer.Trie;
  * A maximal-matching word tokenizer for Sanskrit that uses a {@link Trie}.
  *
  * <p>
- * 	The expected input is an SLP string<br>
+ * 	The expected input is an SLP string.<br>
  *	{@link SkrtSyllableTokenizer#isSLP(int)} is used to filter out nonSLP characters.
  *
  * <p>
@@ -292,7 +293,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	            ioBuffer.freeBefore(sandhiIndex);
 	            sandhiIndex = -1;
 		    } else if (idempotentIdx != -1 && idempotentIdx < bufferIndex) {
-		        ioBuffer.freeBefore(idempotentIdx);
+		        ioBuffer.freeBefore(idempotentIdx - 4);
 		    } else {
 		        ioBuffer.freeBefore(bufferIndex - 4);
 		    }
@@ -364,7 +365,6 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			currentChar = (char) c;
 			charCount = Character.charCount(c);
 			bufferIndex += charCount; 			// increment bufferIndex for next value of c
-			
 			ifIsNeededInitializeStartingIndexOfNonword();
 			if (initialsOrigBufferIndex == -1) 
 			    storeCurrentState();
@@ -388,15 +388,51 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			        bufferIndex -= 1;
 			    }
 			}
+
+            /* Deals with spaces and soft hyphens at word boundaries */
+			if (isValidCharWithinSandhi(c)) {
+                if (currentCharIsSpaceWithinSandhi(c)) {
+                   nonWordStart = -1;
+                   if (sandhiIndex != -1) sandhiIndex += charCount;
+                   previousIsSpace = true;
+                   continue;       // if there is a space in the sandhied substring, moves beyond the space
+                } else if (tokenBuffer.length() != 0 || nonWordBuffer.length() != 0) {
+                    if (foundMatch || foundNonMaxMatch) {
+                        if (!foundMatch && foundNonMaxMatch) {
+                         restoreNonMaxMatchState();
+                      }
+                        cutOffTokenFromNonWordBuffer();
+                        if (nonWordBuffer.length() >= 1 && storedInitials != null && !storedInitials.contains(nonWordBuffer.toString())) {
+                            addNonwordToPotentialTokensIfThereIsOne();
+                        }
+                        if (isLoneInitial()) {
+                            tokenBuffer.setLength(0);
+                        }
+                        potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                   }
+                   
+                   if (initialsNotEmpty()) {
+                      if (longestIdx < bufferIndex) 
+                         longestIdx = bufferIndex;
+                      restoreInitialsOrigState();
+                      reinitializeState();
+                      resetNonWordBuffer(0);
+                      wentToMaxDownTheTrie = false;
+                      applyOtherInitial = true;
+                      continue;
+                   } else if (tokenBuffer.length() == 1 && storedInitials != null && storedInitials.contains(tokenBuffer.toString())) {
+                       tokenBuffer.setLength(0);
+                   } else if (thereIsNoTokenAndNoNonword()) {
+                       foundNonMaxMatch = false;
+                       continue;
+                   } else {
+                       break;
+                   }
+                }
+            }
 			
 			if (thereAreInitialsToConsume()) {
- 				if (currentCharIsSpaceWithinSandhi(c)) {
- 				    nonWordStart = -1;
- 				    if (sandhiIndex != -1) sandhiIndex += charCount;
- 				    previousIsSpace = true;
- 				    continue;		// if there is a space in the sandhied substring, moves beyond the space
-
- 				} else if (initialIsNotFollowedBySandhied(c)) {
+ 				if (initialIsNotFollowedBySandhied(c)) {
  				    ifNoInitialsCleanupPotentialTokensAndNonwords();
  				    if (foundMatch || foundNonMaxMatch) {
  				       if (!foundMatch && foundNonMaxMatch) {
@@ -431,6 +467,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					    bufferIndex = idempotentIdx;
 					    if (initials == null || initials.isEmpty()) idempotentIdx = -1;
 					    if (previousIsSpace) {
+					        ioBuffer.get(bufferIndex);  // update ioBuffer
 					        bufferIndex += charCount;
 					    }
                     }
@@ -514,13 +551,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                                break;
 		                            }
 		                        } else {
+		                            if (foundNonMaxMatch) {
+                                        restoreNonMaxMatchState();
+                                        potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                                    }
 		                            resetInitialCharsIterator();
 		                            restoreInitialsOrigState();
 		                            reinitializeState();
 		                            foundNonMaxMatch = false;
 		                            resetNonWordBuffer(0);
 		                            applyOtherInitial = true;
-//		                            bufferIndex = longestIdx;
                                     longestIdx = -1;
 		                            continue;
 		                        }
@@ -609,6 +649,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 				    
 				} else if (reachedNonwordCharacter()) {
 					tokenBuffer.setLength(0);		// because no word ever started in the first place
+					tokenStart += charCount;
 
 				} else if (foundAToken()) {
 					if (!afterNonwordMatch || foundMatch) {
@@ -785,7 +826,21 @@ public final class SkrtWordTokenizer extends Tokenizer {
 						ifNoInitialsCleanupPotentialTokensAndNonwords();
 						storedInitials = null;
 						sandhiIndex = -1;
-						break;
+						if (foundNonMaxMatch) {
+						    restoreNonMaxMatchState();
+						    if (isLoneInitial()) {
+                                tokenBuffer.setLength(0);
+                            }
+                            potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+						} else {
+						    tokenBuffer.setLength(0);
+						}
+						if (thereIsNoTokenAndNoNonword()) {
+						    foundNonMaxMatch = false;
+						    continue;
+		                } else {
+		                    break;
+		                }
 					}
                     if (longestIdx < bufferIndex) 
                         longestIdx = bufferIndex;
@@ -892,11 +947,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		if (thereAreTokensToReturn()) {
 		    hasTokenToEmit = true;
 		    
+		    /* B.2.a. ADJUSTING THE LIST OF PreTokens */
 		    /* deal with preverbs and other custom defined entries */
 		    processMultiTokenLemmas();
-		    // TODO: further cleanup the list of PreTokens here,
-		    // for ex. to remove non-words overlapping tokens from other initials.
+		    removeOverlappingNonwords();
 		    
+		    /* B.2.b. RETURNING A TOKEN */
 			final PreToken firstToken = totalTokens.removeFirst();
 			final Integer[] metaData = firstToken.getMetadata();
 			fillTermAttributeWith(firstToken.getString(), metaData);
@@ -911,6 +967,38 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			return true;						// we exit incrementToken()
 		}
 	}
+
+    private void removeOverlappingNonwords() {
+        TreeSet<Integer> toDelete = new TreeSet<Integer>(Collections.reverseOrder());
+        for (int i=0; i < totalTokens.size(); i++) {
+            final Integer[] aMetadata = totalTokens.get(i).getMetadata();
+            final int aStart = aMetadata[0];
+            final int aEnd = aMetadata[1];
+            final int aPos = aMetadata[4];
+            if (aPos == -1) {
+                for (int j=0; j < totalTokens.size(); j++) {
+                    if (i != j) {
+                        final Integer[] bMetadata = totalTokens.get(j).getMetadata();
+                        final int bStart = bMetadata[0];
+                        final int bEnd = bMetadata[1];
+                        final int bPos = bMetadata[4];
+                        if (aStart >= bStart && aEnd <= bEnd) {
+                            if (bPos != -1) {
+                                toDelete.add(i);
+                            } else {
+                                if (!toDelete.contains(i) && !toDelete.contains(j)) {
+                                    toDelete.add(i);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (int idx: toDelete) {
+            totalTokens.remove(idx);
+        }
+    }
 
     /**
 	 * Splits tokens that have a multi-token lemma.
@@ -978,8 +1066,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Reconstructs all the possible sandhied strings for the first word using CmdParser.parse(),
 	 * iterates through them, checking if the sandhied string is found in the sandhiable range,
 	 * only reconstructs the lemmas if there is a match.
-	 * @param i 
-	 *
+	 * <br>
+	 * Each time an idempotent sandhi is indicated by its group in the cmd, all the possibilities 
+	 * are generated and a DiffStruct is created and stored in diffLists[1]
+	 * 
+	 * @param cmd of the current word
+	 * @param inflected the inflected word to be lemmatized
+	 * @param tokenEndIdx 
 	 *
 	 * @return: the list of all the possible lemmas given the current context
 	 */
@@ -988,7 +1081,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		CmdParser parser = new CmdParser();
 		
 		if (tokenEndIdx == -1) tokenEndIdx = bufferIndex;
-
+		
+		// (a hack needed because we don't want to generate the idempotent sandhis of ALL sandhis in the cmd. 
+		//  we only need those from the sandhis that were applied)
+		// a list of two elements,
+		// the first contains all the contexts from the sandhis of the cmd
+		// the second will contain all the contexts from the idempotent sandhis from the sandhis that fit in the current context.
 		List<TreeMap<String, TreeSet<DiffStruct>>> diffLists = Arrays.asList(parser.parse(inflected, cmd), new TreeMap<String, TreeSet<DiffStruct>>());
 		
 		for (TreeMap<String, TreeSet<DiffStruct>> diffList: diffLists) {
@@ -1211,21 +1309,23 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		String cmd = scanner.getCommandVal(foundMatchCmdIndex);
 		if (cmd != null) {
 		    String token = tokenBuffer.toString();
-			if (debug) System.out.println("form found: " + token + "\n");
-			final Set<String> lemmas = reconstructLemmas(cmd, token);
-			if (lemmas.size() != 0) {
-				for (String l: lemmas) {
-				    final int underscore = l.lastIndexOf('_');
-				    final String lemma = l.substring(0, underscore);
-				    final int pos = Integer.valueOf(l.substring(underscore + 1));
-				    final PreToken newToken = new PreToken(lemma, 
-				            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), lemma.length(), 2, pos});
-				    if (!isDupe(newToken))
-                        totalTokens.add(newToken);
-					// use same start-end indices since all are from the same inflected form)
-				}
-				return true;
-			}
+		    if (!token.isEmpty()) {
+		        if (debug) System.out.println("form found: " + token + "\n");
+	            final Set<String> lemmas = reconstructLemmas(cmd, token);
+	            if (lemmas.size() != 0) {
+	                for (String l: lemmas) {
+	                    final int underscore = l.lastIndexOf('_');
+	                    final String lemma = l.substring(0, underscore);
+	                    final int pos = Integer.valueOf(l.substring(underscore + 1));
+	                    final PreToken newToken = new PreToken(lemma, 
+	                            new Integer[] {tokenStart, tokenStart + tokenBuffer.length(), lemma.length(), 2, pos});
+	                    if (!isDupe(newToken))
+	                        totalTokens.add(newToken);
+	                    // use same start-end indices since all are from the same inflected form)
+	                }
+	                return true;
+	            }
+		    }
 		}
 		return false;
 	}
@@ -1386,7 +1486,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
         initialsOrigBuffer.append(tokenBuffer);
     }
 	
-    private void restoreInitialsOrigState() {       /* return to the beginning of the token in ioBuffer */
+    /* returns to the beginning of the token in ioBuffer */
+    private void restoreInitialsOrigState() {
         bufferIndex = initialsOrigBufferIndex;
         tokenStart = initialsOrigTokenStart;
         currentRow = rootRow;
@@ -1585,7 +1686,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean reachedEndOfInputString() throws IOException {
-		return ioBuffer.get(bufferIndex) == -1;
+	    return ioBuffer.get(bufferIndex) == -1;
 	}
 
 	final private boolean allCharsFromCurrentInitialAreConsumed() {
@@ -1617,7 +1718,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	final private boolean thereAreInitialsToConsume() throws IOException {
-		return initials != null && !initials.isEmpty();  // && ioBuffer.get(bufferIndex) != -1;
+		return initials != null && !initials.isEmpty();
 	}
 
 	final private boolean foundAToken() throws IOException {

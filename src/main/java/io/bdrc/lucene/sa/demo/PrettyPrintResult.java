@@ -35,9 +35,9 @@ public class PrettyPrintResult {
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
         inputFiles.put("src/test/resources/demo_tests.txt", 0);
-//        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
-//        inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
-//        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
+        inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
+        inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
+        inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
         

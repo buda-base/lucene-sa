@@ -23,7 +23,7 @@ public class TestAnalyzerConfigs {
     
     static private SkrtWordTokenizer fillWordTokenizer() {
         try {
-            skrtWordTokenizer = new SkrtWordTokenizer(true);
+            skrtWordTokenizer = new SkrtWordTokenizer();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class TestAnalyzerConfigs {
                 + "Śāntideva - "
                 + "mañjuśrī nāma saṃgīti - "
                 + "mañjuśrījñānasattvasya paramārtha nāma saṃgīti - "
-                + "Nāmasaṅgīti - "
+                + "Nāmasaṃgīti - "
                 + "bodhicaryāvatāra";
         System.out.println("0 " + input);
         CharFilter roman = new Roman2SlpFilter(new StringReader(input));
@@ -71,7 +71,10 @@ public class TestAnalyzerConfigs {
         CharFilter geminates = new GeminateNormalizingFilter(siddham);
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         List<String> tokens = generateTokenStream(words);
-        List<String> expected = Arrays.asList("uz", "vas", "M", "tattva");
+        List<String> expected = Arrays.asList("boDi", "boDin", "caryA", "avatAra", "boDisattva", "caryA", 
+                "avatAra", "SAntideva", "maYjuSrI", "Ama", "am", "nAman", "sam", "gIti", "maYjuSrI", "Ana", 
+                "an", "jYAna", "sattva", "ara", "parama", "ArTa", "arTa", "nAman", "sam", "gIti", "nAman", 
+                "sam", "gIti", "boDi", "boDin", "caryA", "avatAra");
         assertThat(tokens, is(expected));
     }
 }
