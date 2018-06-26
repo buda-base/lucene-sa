@@ -44,10 +44,10 @@ import org.apache.lucene.util.IOUtils;
  * @author Hélios Hildt
  **/
 public final class SanskritAnalyzer extends Analyzer {	
-	String mode = null;
-	String inputEncoding = null;
-	String lenient = null;
-	String stopFilename = null;
+	String mode = "";
+	String inputEncoding = "";
+	String lenient = "";
+	String stopFilename = "";
 	boolean mergePrepositions = true;
 	boolean filterGeminates = false;
 	
@@ -109,7 +109,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates) throws IOException {
 	    this(mode, inputEncoding);
 	    this.filterGeminates = filterGeminates;
-	    if (mode == "word") {
+	    if (mode.equals("word")) {
 	        this.mergePrepositions = mergePrepositions;
 	    } else if (mergePrepositions){
 	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
@@ -166,12 +166,12 @@ public final class SanskritAnalyzer extends Analyzer {
 	
 	@Override
 	protected Reader initReader(String fieldName, Reader reader) {
-	    if (this.inputEncoding == "deva") {
+	    if (this.inputEncoding.equals("deva")) {
 		    reader = new Deva2SlpFilter(reader);
 		    reader = new VedicFilter(reader);
-		} else if (this.inputEncoding == "roman") {
+		} else if (this.inputEncoding.equals("roman")) {
 		    reader = new Roman2SlpFilter(reader);
-		} else if (this.inputEncoding != "SLP"){
+		} else if (!this.inputEncoding.equals("SLP")){
 		    CommonHelpers.logger.error("wrong value for `mode`");
 		    return null;
 		}
@@ -180,7 +180,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	        reader = new GeminateNormalizingFilter(reader);
 	    }
 	    
-	    if (this.lenient == "query") {
+	    if (this.lenient.equals("query")) {
 	        reader = new LenientCharFilter(reader);
 	    }
 	    
@@ -192,16 +192,16 @@ public final class SanskritAnalyzer extends Analyzer {
 		Tokenizer source = null;
 		TokenStream filter = null;
 		
-		if (mode == "word") {
+		if (mode.equals("word")) {
 			try {
 				source = new SkrtWordTokenizer();
 			} catch (Exception e) {
 			    CommonHelpers.logger.error("cannot initialize SkrtWordTokenizer", e);
                 return null;
             }
-		} else if (mode == "syl") {
+		} else if (mode.equals("syl")) {
 			source = new SkrtSyllableTokenizer();
-		} else if (mode == "space") {
+		} else if (mode.equals("space")) {
 		    source = new WhitespaceTokenizer();
 		}
 		
@@ -215,7 +215,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		    filter = new PrepositionMergingFilter(filter);
 		}
 		
-		if (lenient == "index") {
+		if (lenient.equals("index")) {
 		    filter = new Slp2RomanFilter(filter);
 		    filter = new LenientTokenFilter(filter);
 		}
