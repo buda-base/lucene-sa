@@ -38,16 +38,15 @@ import org.apache.lucene.util.IOUtils;
 /**
  * An Analyzer that uses {@link SkrtSyllableTokenizer} and {@link SkrtWordTokenizer} and filters with StopFilter
  * 
- * Derived from Lucene 6.4.1 analysis.core.WhitespaceAnalyzer.java
- * 
  * @author Chris Tomlinson
  * @author Hélios Hildt
  **/
 public final class SanskritAnalyzer extends Analyzer {	
-	String mode = "";
-	String inputEncoding = "";
-	String lenient = "";
-	String stopFilename = "";
+	String mode = null;
+	String inputEncoding = null;
+	String lenient = null;
+	String defaultStopFile = "skrt-stopwords.txt";
+	String stopFilename = null;
 	boolean mergePrepositions = true;
 	boolean filterGeminates = false;
 	
@@ -57,7 +56,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	 * 
 	 * @param mode            `space`, `syl` or `word`
      * @param inputEncoding   `SLP`, `deva` or `roman`
-     * @param stopFilename    path to the file
+     * @param stopFilename    path to the file, empty string (default list) or null (no stopwords)
 	 * 
 	 * @throws IOException  the file containing the stoplist can not be found
 	 */
@@ -65,8 +64,12 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.mode = mode;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-            InputStream stream = null;
-            stream = CommonHelpers.getResourceOrFile(stopFilename);
+		    InputStream stream = null;
+		    if (stopFilename.isEmpty()) {
+		        stream = CommonHelpers.getResourceOrFile(defaultStopFile);
+		    } else {
+		        stream = CommonHelpers.getResourceOrFile(stopFilename);
+		    }
             this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		}
 	}
@@ -82,7 +85,7 @@ public final class SanskritAnalyzer extends Analyzer {
      * @throws IOException the file containing the stoplist can not be read 
      */
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
-	    this(mode, inputEncoding, "skrt-stopwords.txt");
+	    this(mode, inputEncoding, "");
 	}
 	
 	/**
@@ -102,14 +105,15 @@ public final class SanskritAnalyzer extends Analyzer {
      * @param mode              `space`, `syl` or `word`
      * @param inputEncoding     `SLP`, `deva` or `roman`
      * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
-     * @param filterGeminates   true or false (false by default)
+     * @param filterGeminates   simplify geminates if true, else keep them as-is (default behavior)
+     *                              Important: must be true if using SkrtWordTokenizer to not stumble on the spelling variations
      *                              
      * @throws IOException  the file containing the stoplist can not be found
      */
 	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates) throws IOException {
 	    this(mode, inputEncoding);
 	    this.filterGeminates = filterGeminates;
-	    if (mode.equals("word")) {
+	    if (mode != null && mode.equals("word")) {
 	        this.mergePrepositions = mergePrepositions;
 	    } else if (mergePrepositions){
 	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
@@ -122,7 +126,8 @@ public final class SanskritAnalyzer extends Analyzer {
      * @param mode              `space`, `syl` or `word`
      * @param inputEncoding     `SLP`, `deva` or `roman`
      * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
-     * @param filterGeminates   true or false (true by default)
+     * @param filterGeminates   simplify geminates if true, else keep them as-is
+     *                              Important: must be true if using SkrtWordTokenizer to not stumble on the spelling variations  
      * @param lenient           `index` or `query` 
      *                              
      * @throws IOException  the file containing the stoplist can not be found
@@ -166,12 +171,12 @@ public final class SanskritAnalyzer extends Analyzer {
 	
 	@Override
 	protected Reader initReader(String fieldName, Reader reader) {
-	    if (this.inputEncoding.equals("deva")) {
+	    if (inputEncoding != null && inputEncoding.equals("deva")) {
 		    reader = new Deva2SlpFilter(reader);
 		    reader = new VedicFilter(reader);
-		} else if (this.inputEncoding.equals("roman")) {
+		} else if (inputEncoding != null && inputEncoding.equals("roman")) {
 		    reader = new Roman2SlpFilter(reader);
-		} else if (!this.inputEncoding.equals("SLP")){
+		} else if (inputEncoding != null && !inputEncoding.equals("SLP")){
 		    CommonHelpers.logger.error("wrong value for `mode`");
 		    return null;
 		}
@@ -180,7 +185,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	        reader = new GeminateNormalizingFilter(reader);
 	    }
 	    
-	    if (this.lenient.equals("query")) {
+	    if (lenient != null && lenient.equals("query")) {
 	        reader = new LenientCharFilter(reader);
 	    }
 	    
@@ -192,16 +197,16 @@ public final class SanskritAnalyzer extends Analyzer {
 		Tokenizer source = null;
 		TokenStream filter = null;
 		
-		if (mode.equals("word")) {
+		if (mode != null && mode.equals("word")) {
 			try {
 				source = new SkrtWordTokenizer();
 			} catch (Exception e) {
 			    CommonHelpers.logger.error("cannot initialize SkrtWordTokenizer", e);
                 return null;
             }
-		} else if (mode.equals("syl")) {
+		} else if (mode != null && mode.equals("syl")) {
 			source = new SkrtSyllableTokenizer();
-		} else if (mode.equals("space")) {
+		} else if (mode != null && mode.equals("space")) {
 		    source = new WhitespaceTokenizer();
 		}
 		
@@ -215,7 +220,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		    filter = new PrepositionMergingFilter(filter);
 		}
 		
-		if (lenient.equals("index")) {
+		if (lenient != null && lenient.equals("index")) {
 		    filter = new Slp2RomanFilter(filter);
 		    filter = new LenientTokenFilter(filter);
 		}
