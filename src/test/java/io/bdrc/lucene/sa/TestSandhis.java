@@ -83,7 +83,7 @@ public class TestSandhis
 	static private SkrtWordTokenizer buildTokenizer(String trieName) throws FileNotFoundException, IOException {
 		Trie trie = BuildCompiledTrie.buildTrie(trieName + ".txt");
 		
-		return new SkrtWordTokenizer(true, trie);
+		return new SkrtWordTokenizer(trie);
 	}
 	
 	@BeforeClass

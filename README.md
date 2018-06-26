@@ -1,25 +1,14 @@
 # Lucene Analyzers for Sanskrit
 
-## Building from source
+## Installation through maven:
 
-### Build the lexical resources for the Trie:
-
- - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
- - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
- - build sandhi test tries: `cd resources/sanskrit-stemming-data/sandhify/ && python3 generate_test_tries.py`
- - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
- - compile the main trie: `io.bdrc.lucene.sa.BuildCompiledTrie.main()` (takes about 45mn on an average laptop)
-
-The base command line to build a jar is:
-
+```xml
+    <dependency>
+      <groupId>io.bdrc.lucene</groupId>
+      <artifactId>lucene-sa</artifactId>
+      <version>0.1.0</version>
+    </dependency>
 ```
-mvn clean compile exec:java package
-```
-
-The following options alter the packaging:
-
-- `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
-- `-DperformRelease=true` signs the jar file with gpg
 
 ## Components
 
@@ -46,7 +35,7 @@ This tokenizer produces words through a Maximal Matching algorithm. It builds on
 It undoes the sandhi to find the correct word boundaries and lemmatizes all the produced tokens.
 
 Due to its design, this tokenizer doesn't deal with contextual ambiguities.
-For example, "nagaraM" could either be a word of its own or "na" + "garaM", but will be parsed as a single word as long as "nagaraM" is present in the lexical resources.
+For example, `nagaraM` could either be a word of its own or `na` + `garaM`, but will be parsed as a single word as long as `nagaraM` is present in the lexical resources.
 
 #### Parsing sample from Siddham Project data
 
@@ -116,9 +105,28 @@ This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
 
 ## Resources
 
-### Tries
-
 SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigitalResourceCenter/sanskrit-stemming-data) as its lexical resources.
+
+## Building from source
+
+### Build the lexical resources for the Trie:
+
+ - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
+ - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
+ - build sandhi test tries: `cd resources/sanskrit-stemming-data/sandhify/ && python3 generate_test_tries.py`
+ - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
+ - compile the main trie: `io.bdrc.lucene.sa.BuildCompiledTrie.main()` (takes about 45mn on an average laptop)
+
+The base command line to build a jar is:
+
+```
+mvn clean compile exec:java package
+```
+
+The following options alter the packaging:
+
+- `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
+- `-DperformRelease=true` signs the jar file with gpg
 
 ## Aknowledgements
 
