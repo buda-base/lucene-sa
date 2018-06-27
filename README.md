@@ -13,20 +13,53 @@
 ## Components
 
 ### SanskritAnalyzer
-The main analyzer.
-It tokenizes the input text using *SkrtWordTokenizer*, then applies *StopFilter* (see below)
 
-There are two constructors. The nullary constructor and
+#### Constructors
 
 ```
-    SanskritAnalyzer(boolean segmentInWords, int inputEncoding, String stopFilename)
-        
-    segmentInWords - if the segmentation is on words instead of syllables
-    inputEncoding - 0 for SLP, 1 for devanagari, 2 for romanized sanskrit
-    stopFilename - see below
+    SanskritAnalyzer(String mode, String inputEncoding)
 ```
+ - `mode`: `space`(tokenize at spaces), `syl`(tokenize in syllables) or `word`(tokenize in words)
+ - `inputEncoding`: `SLP`(SLP1 encoding), `deva`(devanagari script) or `roman`(IAST)
+ 
 
-The nullary constructor is equivalent to `SanskritAnalyzer(true, 0, "src/main/resources/skrt-stopwords.txt")`
+```
+    SanskritAnalyzer(String mode, String inputEncoding, String stopFilename)
+    
+```
+ - `stopFilename`: path to the file, empty string (default list) or `null` (no stopwords)
+
+```
+    SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates)
+```
+ - `mergePrepositions`: concatenates the token containing a preposition with the next one if true.
+ - `filterGeminates`: simplify geminates if `true`, else keep them as-is (default behavior).  If the input text may contain geminates and the tokenization mode is `word`, make sure this is set to true to avoid stumbling on the spelling variations.
+ 
+```
+    SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient)
+```
+ - `lenient`: `index` or `query` (requires this information to select the correct filter pipeline) 
+
+In all configurations except when lenient is activated, the output tokens of the analyzers are always encoded in SLP1.
+Lenient analyzers output a drastically simplified IAST (see below for details).
+
+#### Usecases
+Three usecases are given as examples of possible configurations
+
+##### 1. Regular search
+A text in IAST is tokenized in words for indexing. The queries are in SLP and tokenized in words. The default stopwords list is applied.
+- Indexing:  `SanskritAnalyzer("word", "roman")`
+- Querying:  `SanskritAnalyzer("word", "SLP")`
+
+##### 2. Lenient search (words)
+A text in IAST is tokenized in words. The queries in IAST are tokenized at spaces: search users provide separate words with no sandhi applied. Geminates are normalized(`true`) only at indexing time so that geminates are considered to be spelling variants instead of mistakes. The lenient search is enabled by indicating either "index" or "query", thereby selecting the appropriate pipeline of filters.
+- Indexing:  `SanskritAnalyzer("word", "roman", true, false, "index")`
+- Querying:  `SanskritAnalyzer("space", "roman", false, false, "query")`
+
+##### 3. Lenient search (syllables)
+The encoding of the text to index and that of the query is the same as above. Geminates are not normalized(yet could be) because the input text and the queries are tokenized in syllables. Lenient search is also enabled in the same way.
+- Indexing:  `SanskritAnalyzer("syl", "roman", false, false, "index")`
+- Querying:  `SanskritAnalyzer("syl", "roman", false, false, "query")`
 
 ### SkrtWordTokenizer
 
