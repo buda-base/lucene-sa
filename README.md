@@ -33,7 +33,7 @@
     SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates)
 ```
  - `mergePrepositions`: concatenates the token containing a preposition with the next one if true.
- - `filterGeminates`: simplify geminates if `true`, else keep them as-is (default behavior).  If the input text may contain geminates and the tokenization mode is `word`, make sure this is set to true to avoid stumbling on the spelling variations.
+ - `filterGeminates`: simplify geminates(see below) if `true`, else keep them as-is (default behavior).  If the input text may contain geminates and the tokenization mode is `word`, make sure this is set to true to avoid stumbling on the spelling variations.
  
 ```
     SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient)
@@ -143,7 +143,7 @@ vṛtte praṇāme ’py artti
 
 ### SkrtSyllableTokenizer
 
-Does not implement complex syllabation rules, but does the same thing as Peter Scharf's [script](http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html). 
+Produces syllable tokens using the same syllabation rules found in Peter Scharf's [script](http://www.sanskritlibrary.org/Sanskrit/SanskritTransliterate/syllabify.html). 
 
 ### Stopword Filter
 
@@ -156,6 +156,22 @@ The list must be formatted in the following way:
  - comments start with `#`
  - lines can end with a comment
 
+### GeminateNormalizingFilter
+
+Geminates of consonants besides a "r" or "y" was a common practice in old publications. These non-standard spellings need to be normalized in order to be correctly tokenized in words.
+
+This filter applies the following simplification rules:
+
+```  
+    CCr   →  Cr 
+    rCC   →  rC
+    CCy   →  Cy
+```
+
+`C` is any consonant in the following list: [k g c j ṭ ḍ ṇ t d n p b m y v l s ś ṣ]
+The second consonant can be the aspirated counterpart(ex: `rtth`), in which case the consonant that is kept is the aspirated one.
+Thus, "arttha" is normalized to "artha",  "dharmma" to "dharma".
+ 
 ### Roman2SlpFilter
 
 Transcodes the romanized sanskrit input in SLP.
@@ -165,11 +181,48 @@ In this filter, a list of non-Sanskrit and non-Devanagari characters are deleted
 
 See [here](src/main/java/io/bdrc/lucene/sa/Roman2SlpFilter.java) for the details.
 
+### Slp2RomanFilter
+
+Transcodes the SLP input in IAST.
+
+Outputs fully composed forms(single Unicode codepoints) instead of relying on extra codepoints for diacritics.
+
 ### Deva2SlpFilter
 
 Transcodes the devanagari sanskrit input in SLP.
 
 This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
+
+### Lenient Search Mode
+`SanskritAnalyzer` in lenient mode outputs tokens encoded in simplified sanskrit instead of SLP.
+ 
+This following transformations are applied to the IAST transcription:
+ - all long vowels become short
+ - all aspirated consonants become unaspirated
+ - "ṃ" and "ṁ" become "m"
+ - "ṅ" becomes "n"
+ - all remaining diacritics are removed
+
+Keeping in the same spirit, these informal conventions are modified: 
+ - "sh"(for "ś") becomes "s"
+ - "ri"(for "ṛ") becomes "r"
+ - "li"(for "ḷ") becomes "l"
+ - "v" becomes "b" (arbitrarily)
+
+In terms of implementation, the input normalization happening in `Roman2SlpFilter` and `Deva2SlpFilter` is leveraged by always applying them first, then transforming SLP into lenient sanskrit.  
+Relying on Roman2SlpFilter has the additional benefit of correctly dealing with capital letters by lower-casing the input.
+
+#### LenientCharFilter
+Used at query time.
+
+Expects SLP as input.
+Applies the modifications listed above.
+
+#### LenientTokenFilter
+Used at index time.
+
+Expects IAST as input. (`Slp2RomanFilter` can be used to achieve that)
+Applies the modifications listed above. 
 
 ## Resources
 
