@@ -38,7 +38,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import io.bdrc.lucene.surrogate.DummyReader;
+import io.bdrc.lucene.surrogate.Dummy;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -102,7 +102,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * Default constructor: uses the default compiled Trie loaded at class level
 	 */
 	public SkrtWordTokenizer() {
-	    super(DummyReader.THE_READER);
+	    super(Dummy.READER);
 	    this.scanner = getTrie();
 	    ioBuffer = new RollingCharBuffer();
         ioBuffer.reset(input);
@@ -126,7 +126,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
      * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(String filename) throws FileNotFoundException, IOException {
-        super(DummyReader.THE_READER);
+        super(Dummy.READER);
         this.scanner = BuildCompiledTrie.buildTrie(filename);
         
         ioBuffer = new RollingCharBuffer();
@@ -152,7 +152,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
      * @throws IOException the file containing the Trie can't be read
 	 */
 	public SkrtWordTokenizer(InputStream trieStream) throws FileNotFoundException, IOException {
-	      super(DummyReader.THE_READER);
+	      super(Dummy.READER);
 
 	      getTrie(trieStream);
 	        
@@ -170,7 +170,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param trie a Trie built using {@link BuildCompiledTrie}
 	 */
 	public SkrtWordTokenizer(Trie trie) {
-        super(DummyReader.THE_READER);
+        super(Dummy.READER);
 
 	    this.scanner = trie;
         

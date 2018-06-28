@@ -35,7 +35,7 @@ import org.apache.lucene.util.IOUtils;
 
 import io.bdrc.lucene.surrogate.CharArraySet;
 import io.bdrc.lucene.surrogate.StopFilter;
-import io.bdrc.lucene.surrogate.DummyReader;
+import io.bdrc.lucene.surrogate.Dummy;
 
 /**
  * An Analyzer that uses {@link SkrtSyllableTokenizer} and {@link SkrtWordTokenizer} and filters with StopFilter
@@ -204,7 +204,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		} else if (mode == "syl") {
 			source = new SkrtSyllableTokenizer();
 		} else if (mode == "space") {
-		    source = new WhitespaceTokenizer(DummyReader.THE_READER);
+		    source = new WhitespaceTokenizer(Dummy.READER);
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed

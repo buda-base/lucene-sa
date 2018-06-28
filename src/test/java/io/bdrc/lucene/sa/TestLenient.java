@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.bdrc.lucene.surrogate.DummyReader;
+import io.bdrc.lucene.surrogate.Dummy;
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -61,7 +61,7 @@ public class TestLenient {
     	System.out.println("Testing LenientTokenFilter");
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
     	
-    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
+    	TokenStream ts = tokenize(cs, new WhitespaceTokenizer(Dummy.READER));
     	ts = new Slp2RomanFilter(ts);
     	ts = new LenientTokenFilter(ts);
         assertTokenStream(ts, expected);
@@ -72,7 +72,7 @@ public class TestLenient {
         System.out.println("Testing LenientCharFilter"); 
         CharFilter cs = new Roman2SlpFilter(new StringReader(input));
         cs = new LenientCharFilter(cs);
-        TokenStream ts = tokenize(cs, new WhitespaceTokenizer(DummyReader.THE_READER));
+        TokenStream ts = tokenize(cs, new WhitespaceTokenizer(Dummy.READER));
         assertTokenStream(ts, expected);
     }
 }
