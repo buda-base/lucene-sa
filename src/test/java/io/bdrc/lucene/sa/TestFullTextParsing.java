@@ -297,6 +297,20 @@ public class TestFullTextParsing
         List<String> expected = Arrays.asList("caryā√", "avatāra√", "śāntideva√");
         assertTokenStream(words, expected);
     }
+
+    @Test
+    public void bug14InfiniteLoop() throws Exception {
+        System.out.println("bug14");
+        String input = "padmapāṇidhāraṇī.";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("caryā√", "avatāra√", "śāntideva√");
+        assertTokenStream(words, expected);
+    }
     
 	@AfterClass
 	public static void finish() {

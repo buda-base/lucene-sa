@@ -530,7 +530,7 @@ public class TestWordTokenizer
     @Test
     public void testZeroSandhi() throws IOException
     {
-        System.out.println("bug9");
+        System.out.println("bug10");
         String input = "SrIjYAna";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("SrI√", "YAna√", "ij√", "jYAna√");
