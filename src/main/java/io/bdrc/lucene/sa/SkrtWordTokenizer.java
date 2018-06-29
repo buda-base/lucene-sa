@@ -926,9 +926,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			    nonWordStart = -1;
 			}
 		}
-		if (nonWordBuffer.toString().contains("\0")) {
-		    System.out.println("truc");
-		}
+
 		/* B. HANDING THEM TO LUCENE */
 		initials = null;				// all initials are consumed. reinitialize for next call of reconstructLemmas()
 		initialsIterator = null;
