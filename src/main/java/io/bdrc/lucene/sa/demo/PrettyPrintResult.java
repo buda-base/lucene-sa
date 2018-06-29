@@ -1,7 +1,12 @@
 package io.bdrc.lucene.sa.demo;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
@@ -34,12 +39,16 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws Exception{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
+//        inputFiles.put("src/test/resources/tripitaka-titles.txt", 0);
         inputFiles.put("src/test/resources/demo_tests.txt", 0);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
         inputFiles.put("src/test/resources/tattvasangrahapanjika_raw_deva.txt", 1);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer();
+        
+        // parse the title file line per line instead of per batch of tokens
+        produceTokensByLine("src/test/resources/tripitaka-titles.txt", 0);
         
         Set<String> keys = inputFiles.keySet();
         for (String fileName: keys) {
@@ -73,6 +82,88 @@ public class PrettyPrintResult {
         tokenizer.setReader(reader);
         tokenizer.reset();
         return tokenizer;
+    }
+    
+    private static void produceTokensByLine(String fileName, Integer encoding) throws FileNotFoundException {
+        // Opening and reading the file by line is taken from https://stackoverflow.com/a/15651884
+        InputStream ins = null; // raw byte-stream
+        Reader r = null; // cooked reader
+        BufferedReader br = null; // buffered for readLine()
+        try {
+            SkrtWordTokenizer tok = new SkrtWordTokenizer();
+            String outFileName = "./" + fileName.substring(fileName.lastIndexOf('/'), fileName.lastIndexOf('.')) + "_lemmatized.txt";
+            writer = new OutputStreamWriter(new FileOutputStream(outFileName), StandardCharsets.UTF_8);
+            
+            System.out.println("Processing " + fileName + "...");
+            String line;
+            int lineNum = 0;
+            ins = new FileInputStream(fileName);
+            r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
+            br = new BufferedReader(r);
+            while ((line = br.readLine()) != null) {
+                System.out.println(lineNum + " «" + line + "»");
+                if (lineNum == 414)
+                    System.out.println("truc");
+                // create the filter pipeline
+                Reader input = new StringReader(line);
+                CharFilter cs;
+                if (encoding == 0) {
+                    cs = new Roman2SlpFilter(input);
+                } else {
+                    cs = new Deva2SlpFilter(input);
+                }
+                cs = new SiddhamFilter(cs);
+                cs = new GeminateNormalizingFilter(cs);
+                TokenStream words = tokenize(cs, tok);
+                words = new Slp2RomanFilter(words);
+                
+                // create tokens
+                CharTermAttribute TermAttr = words.addAttribute(CharTermAttribute.class); 
+                TypeAttribute typeAttr = words.addAttribute(TypeAttribute.class); 
+                OffsetAttribute offsetAttr = words.addAttribute(OffsetAttribute.class); 
+                 
+                int batchEndOffset = 0; 
+                int tmp = -1;
+                
+                StringBuilder tokensLine = new StringBuilder();
+                while (words.incrementToken()) {
+                    // token string
+                    String token = TermAttr.toString(); 
+                    if (typeAttr.type() == "word") {
+                        token += '✓';
+                    } else if (typeAttr.type() == "lemma") {
+                        token += '√';
+                    } else {
+                        token += '❌';
+                    } 
+                    batchEndOffset = offsetAttr.endOffset();  
+                    if (tmp == -1 || tmp != batchEndOffset) {
+                        tmp = batchEndOffset;
+                        tokensLine.append("¦ ");
+                    }
+                    tokensLine.append(token + " ");    
+                }
+                tokensLine.append("¦\n");
+                
+                writer.append(String.valueOf(lineNum)+ " ");
+                writer.append(line+"\n"); 
+                writer.append(tokensLine);
+                writer.flush();
+                words.close();
+                lineNum ++;
+            }
+            writer.flush();
+            writer.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage()); // handle exception
+        }
+        finally {
+            if (br != null) { try { br.close(); } catch(Throwable t) { /* ensure close happens */ } }
+            if (r != null) { try { r.close(); } catch(Throwable t) { /* ensure close happens */ } }
+            if (ins != null) { try { ins.close(); } catch(Throwable t) { /* ensure close happens */ } }
+        }
     }
 
     private static void produceTokens(TokenStream tokenStream, String inputStr, int tokensOnLine, Integer encoding) { 
