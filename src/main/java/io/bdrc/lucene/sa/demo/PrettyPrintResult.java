@@ -101,8 +101,8 @@ public class PrettyPrintResult {
             r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
             br = new BufferedReader(r);
             while ((line = br.readLine()) != null) {
-                System.out.println(lineNum + " «" + line + "»");
-                if (lineNum == 414)
+//                System.out.println(lineNum + " «" + line + "»");
+                if (lineNum == 1847)
                     System.out.println("truc");
                 // create the filter pipeline
                 Reader input = new StringReader(line);

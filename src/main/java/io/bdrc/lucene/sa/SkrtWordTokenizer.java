@@ -1358,7 +1358,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private boolean ifThereIsNonwordAddItToTotalTokens() {
 		boolean containsNonWord = false;
-	    final String nonWord = nonWordBuffer.toString();
+	    String nonWord = nonWordBuffer.toString();
+	    nonWord = nonWord.replaceAll("\\00", "");
 		if (nonWord.length() > 0) {
 		    final PreToken newToken = new PreToken(nonWord,
 		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, -1});
