@@ -385,7 +385,20 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                }
 	                break;
 			    } else {
-			        bufferIndex -= 1;
+			        if (!initials.isEmpty()) {
+	                     potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+	                     if (longestIdx < bufferIndex) 
+	                         longestIdx = bufferIndex;
+	                     restoreInitialsOrigState();
+	                     bufferIndex ++;
+	                     resetInitialCharsIterator();
+	                     reinitializeState();
+	                     resetNonWordBuffer(0);
+	                     wentToMaxDownTheTrie = false;
+	                     applyOtherInitial = true;
+			        } else {
+			            bufferIndex -= 1;
+			        }
 			    }
 			}
 

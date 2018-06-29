@@ -308,7 +308,7 @@ public class TestFullTextParsing
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
-        List<String> expected = Arrays.asList("caryā√", "avatāra√", "śāntideva√");
+        List<String> expected = Arrays.asList("padma√", "pāṇi√", "dhāraṇa√");
         assertTokenStream(words, expected);
     }
     
