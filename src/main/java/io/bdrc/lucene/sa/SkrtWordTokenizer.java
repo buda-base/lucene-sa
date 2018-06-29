@@ -381,6 +381,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                    initials = null;                // discard all initial-related content
 	                    initialsIterator = null;
 	                    initialCharsIterator = null;
+	                    sandhiIndex = -1;
 	                    return false;
 	                }
 	                break;
@@ -390,10 +391,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                     if (longestIdx < bufferIndex) 
 	                         longestIdx = bufferIndex;
 	                     restoreInitialsOrigState();
-	                     bufferIndex ++;
 	                     resetInitialCharsIterator();
 	                     reinitializeState();
 	                     resetNonWordBuffer(0);
+	                     bufferIndex ++;
 	                     wentToMaxDownTheTrie = false;
 	                     applyOtherInitial = true;
 			        } else {
@@ -504,11 +505,10 @@ public final class SkrtWordTokenizer extends Tokenizer {
 					applyOtherInitial = false;                 
 				}
 			}
-			
+	         
 			tokenBuffer.append((char) normalize(c));
 			nonWordBuffer.append((char) c);          // later remove chars belonging to a token
 			if (debug) System.out.println("");
-
 			/* A.2. PROCESSING c */
 			
 			/* A.2.1) if it's a token char */
@@ -832,6 +832,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
                         tokenBuffer.setLength(0);
                         resetNonWordBuffer(0);
                         foundMatchCmdIndex = -1;
+                        
+                        if (!initials.isEmpty()) {
+                            potentialTokensContainMatches = addFoundTokenToPotentialTokensIfThereIsOne();
+                            if (longestIdx < bufferIndex) 
+                                longestIdx = bufferIndex;
+                            restoreInitialsOrigState();
+                            resetInitialCharsIterator();
+                            reinitializeState();
+                            resetNonWordBuffer(0);
+                            wentToMaxDownTheTrie = false;
+                            applyOtherInitial = true;
+                       }
+                        
                         continue;
 				    }
 					addNonwordToPotentialTokensIfThereIsOne();
@@ -913,7 +926,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			    nonWordStart = -1;
 			}
 		}
-
+		if (nonWordBuffer.toString().contains("\0")) {
+		    System.out.println("truc");
+		}
 		/* B. HANDING THEM TO LUCENE */
 		initials = null;				// all initials are consumed. reinitialize for next call of reconstructLemmas()
 		initialsIterator = null;
