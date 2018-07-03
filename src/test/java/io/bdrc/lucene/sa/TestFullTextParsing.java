@@ -337,8 +337,8 @@ public class TestFullTextParsing
         TokenStream words = tokenize(geminates, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
-        List<String> expected = Arrays.asList("sāmānya√", "sāman√", "adha√", "dharma√", "dharman√", 
-                "ṛc√", "mara√", "maryā√", "marya√", "car√", "cara√", "caryā√", "carya√");
+        List<String> expected = Arrays.asList("guh√", "guha√", "guhya√", "āp√", "apa√", 
+                "apapanna✓", "atri√", "kim√");  // apapanna = apa(Preposition) + panna(Verb)
         assertTokenStream(words, expected);
     }
     

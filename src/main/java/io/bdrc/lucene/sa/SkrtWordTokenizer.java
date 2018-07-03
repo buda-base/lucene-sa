@@ -1358,8 +1358,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private boolean ifThereIsNonwordAddItToTotalTokens() {
 		boolean containsNonWord = false;
-	    String nonWord = nonWordBuffer.toString();
-	    nonWord = nonWord.replaceAll("\\00", "");
+	    final String nonWord = nonWordBuffer.toString();
 		if (nonWord.length() > 0) {
 		    final PreToken newToken = new PreToken(nonWord,
 		            new Integer[] {nonWordStart, nonWordStart + nonWordBuffer.length(), nonWord.length(), 0, -1});
@@ -1429,7 +1428,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
     private void cutOffTokenFromNonWordBuffer() {
 		int newSize = nonWordBuffer.length() - tokenBuffer.length();
 		newSize = newSize < 0 ? 0: newSize;   // ensure the new size is never negative
-	    nonWordBuffer.setLength(newSize);
+	    if (nonWordBuffer.length() > newSize)
+	        nonWordBuffer.setLength(newSize);
 		// end of non-word can be: a matching word starts (potentialEnd == true) OR a nonSLP char follows a nonWord.
 	}
 
@@ -1503,7 +1503,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
         tokenBuffer.setLength(0);
         tokenBuffer.append(nonMaxBuffer);
         foundMatchCmdIndex = nonMaxFoundMatchCmdIndex;
-        nonWordBuffer.setLength(nonMaxNonWordLength);
+        if (nonWordBuffer.length() > nonMaxNonWordLength)
+            nonWordBuffer.setLength(nonMaxNonWordLength);
     }
 	
     private void storeCurrentState() {
@@ -1523,7 +1524,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
     }
     
     private void reinitializeState() {
-        currentRow = rootRow; // TEST
+        currentRow = rootRow;
         cmdIndex = -1;
         foundMatchCmdIndex = -1;
         foundMatch = false;
@@ -1551,7 +1552,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 
 	private void resetNonWordBuffer(int i) {
 		if (nonWordBuffer.length() - i > 0) {
-			nonWordBuffer.setLength(i);
+			if (nonWordBuffer.length() > i)
+			    nonWordBuffer.setLength(i);
 		} else {
 			nonWordBuffer.setLength(0);
 		}

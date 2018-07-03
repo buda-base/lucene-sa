@@ -39,7 +39,6 @@ public class PrettyPrintResult {
     public static void main(String[] args) throws Exception{
         int tokensOnLine = 20;
         LinkedHashMap<String, Integer> inputFiles = new LinkedHashMap<String, Integer>(); 
-//        inputFiles.put("src/test/resources/tripitaka-titles.txt", 0);
         inputFiles.put("src/test/resources/demo_tests.txt", 0);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester.txt", 0);
         inputFiles.put("src/test/resources/Siddham-Edition Export tester_beginning.txt", 0);
@@ -101,9 +100,6 @@ public class PrettyPrintResult {
             r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
             br = new BufferedReader(r);
             while ((line = br.readLine()) != null) {
-//                System.out.println(lineNum + " «" + line + "»");
-                if (lineNum == 1847)
-                    System.out.println("truc");
                 // create the filter pipeline
                 Reader input = new StringReader(line);
                 CharFilter cs;
@@ -213,6 +209,10 @@ public class PrettyPrintResult {
                     batchNum ++;
                 } 
             }
+            if (batchEndOffset < batchStartOffset) {
+                batchEndOffset = batchStartOffset;
+            }
+            
             if (tokNo != 0) { 
                 writeLines(batchStartOffset, batchEndOffset, tokensLine.toString(), inputStr, batchNum, encoding);
                 batchNum ++;
