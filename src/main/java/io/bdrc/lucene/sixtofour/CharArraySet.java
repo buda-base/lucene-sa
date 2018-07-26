@@ -1,4 +1,4 @@
-package io.bdrc.lucene.surrogate;
+package io.bdrc.lucene.sixtofour;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -93,13 +93,20 @@ public class CharArraySet extends AbstractSet<Object> {
         map.clear();
     }
 
-    /** true if the <code>len</code> chars of <code>text</code> starting at <code>off</code>
-     * are in the set */
+    /**
+     * @param text  buffer that contains the String
+     * @param off begining index of String in the text buffer
+     * @param len length of String in the text buffer
+     * @return true if the <code>len</code> chars of <code>text</code> starting at <code>off</code>
+     * are in the set
+     */
     public boolean contains(char[] text, int off, int len) {
         return map.containsKey(text, off, len);
     }
 
-    /** true if the <code>CharSequence</code> is in the set */
+    /**
+     * @param cs the String in question
+     * @return true if the <code>CharSequence</code> is in the set */
     public boolean contains(CharSequence cs) {
         return map.containsKey(cs);
     }
@@ -114,12 +121,18 @@ public class CharArraySet extends AbstractSet<Object> {
         return map.put(o, PLACEHOLDER) == null;
     }
 
-    /** Add this CharSequence into the set */
+    /**
+     * @param text the CharSequence to add into the set
+     * @return true if the text was not added before but now
+     */
     public boolean add(CharSequence text) {
         return map.put(text, PLACEHOLDER) == null;
     }
 
-    /** Add this String into the set */
+    /**
+     * @param text the String to add into the set
+     * @return true if the text was not added before but now
+     */
     public boolean add(String text) {
         return map.put(text, PLACEHOLDER) == null;
     }
@@ -127,6 +140,8 @@ public class CharArraySet extends AbstractSet<Object> {
     /** Add this char[] directly to the set.
      * If ignoreCase is true for this Set, the text array will be directly modified.
      * The user should never modify this text array after calling this method.
+     * @param text the text to add
+     * @return true if the text was not added before but now
      */
     public boolean add(char[] text) {
         return map.put(text, PLACEHOLDER) == null;

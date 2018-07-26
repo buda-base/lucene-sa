@@ -33,9 +33,9 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.util.IOUtils;
 
-import io.bdrc.lucene.surrogate.CharArraySet;
-import io.bdrc.lucene.surrogate.StopFilter;
-import io.bdrc.lucene.surrogate.Dummy;
+import io.bdrc.lucene.sixtofour.CharArraySet;
+import io.bdrc.lucene.sixtofour.StopFilter;
+import io.bdrc.lucene.sixtofour.Dummy;
 
 /**
  * An Analyzer that uses {@link SkrtSyllableTokenizer} and {@link SkrtWordTokenizer} and filters with StopFilter

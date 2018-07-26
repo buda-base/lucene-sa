@@ -1,4 +1,4 @@
-package io.bdrc.lucene.surrogate;
+package io.bdrc.lucene.sixtofour;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -28,7 +28,6 @@ import java.io.Reader;
 
 /**
  * Utility class to write tokenizers or token filters.
- * @lucene.internal
  */
 public final class CharacterUtils {
 
@@ -85,7 +84,13 @@ public final class CharacterUtils {
     }
 
     /** Converts a sequence of Java characters to a sequence of unicode code points.
-     *  @return the number of code points written to the destination buffer */
+     * @param src source buffer
+     * @param srcOff base offset of source buffer
+     * @param srcLen source data length
+     * @param dest destination buffer
+     * @param destOff base offset of destination buffer
+     * @return the number of code points written to the destination buffer
+     */
     public static int toCodePoints(char[] src, int srcOff, int srcLen, int[] dest, int destOff) {
         if (srcLen < 0) {
             throw new IllegalArgumentException("srcLen must be >= 0");
@@ -101,7 +106,13 @@ public final class CharacterUtils {
     }
 
     /** Converts a sequence of unicode code points to a sequence of Java characters.
-     *  @return the number of chars written to the destination buffer */
+     * @param src source buffer
+     * @param srcOff base offset of source buffer
+     * @param srcLen source data length
+     * @param dest destination buffer
+     * @param destOff base offset of destination buffer
+     * @return the number of chars written to the destination buffer
+     */
     public static int toChars(int[] src, int srcOff, int srcLen, char[] dest, int destOff) {
         if (srcLen < 0) {
             throw new IllegalArgumentException("srcLen must be >= 0");
@@ -179,7 +190,13 @@ public final class CharacterUtils {
         return result;
     }
 
-    /** Convenience method which calls <code>fill(buffer, reader, buffer.buffer.length)</code>. */
+    /** Convenience method which calls <code>fill(buffer, reader, buffer.buffer.length)</code>.
+     * @param buffer see delegate method doc
+     * @param reader see delegate method doc
+     * @return see delegate method doc
+     * @throws IOException see delegate method doc
+     *           if the reader throws an {@link IOException}.
+     */
     public static boolean fill(CharacterBuffer buffer, Reader reader) throws IOException {
         return fill(buffer, reader, buffer.buffer.length);
     }

@@ -1,4 +1,4 @@
-package io.bdrc.lucene.surrogate;
+package io.bdrc.lucene.sixtofour;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -61,6 +61,7 @@ public class StopFilter extends FilteringTokenFilter {
      * an Analyzer is constructed.
      *
      * @param stopWords An array of stopwords
+     * @return A Set ({@link CharArraySet}) containing the words
      * @see #makeStopSet(java.lang.String[], boolean) passing false to ignoreCase
      */
     public static CharArraySet makeStopSet(String... stopWords) {

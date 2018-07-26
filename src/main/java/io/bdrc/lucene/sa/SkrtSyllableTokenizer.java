@@ -22,9 +22,9 @@ package io.bdrc.lucene.sa;
 import java.io.IOException;
 import java.util.HashMap;
 
-import io.bdrc.lucene.surrogate.CharacterUtils;
-import io.bdrc.lucene.surrogate.CharacterUtils.CharacterBuffer;
-import io.bdrc.lucene.surrogate.Dummy;
+import io.bdrc.lucene.sixtofour.CharacterUtils;
+import io.bdrc.lucene.sixtofour.CharacterUtils.CharacterBuffer;
+import io.bdrc.lucene.sixtofour.Dummy;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;

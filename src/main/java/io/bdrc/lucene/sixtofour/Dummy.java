@@ -1,4 +1,4 @@
-package io.bdrc.lucene.surrogate;
+package io.bdrc.lucene.sixtofour;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

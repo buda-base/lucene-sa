@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.bdrc.lucene.surrogate.CharArraySet;
-import io.bdrc.lucene.surrogate.Dummy;
+import io.bdrc.lucene.sixtofour.CharArraySet;
+import io.bdrc.lucene.sixtofour.Dummy;
 import org.apache.lucene.analysis.CharFilter;
-import io.bdrc.lucene.surrogate.StopFilter;
+import io.bdrc.lucene.sixtofour.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;

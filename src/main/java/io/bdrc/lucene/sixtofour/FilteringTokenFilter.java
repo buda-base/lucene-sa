@@ -1,4 +1,4 @@
-package io.bdrc.lucene.surrogate;
+package io.bdrc.lucene.sixtofour;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -48,7 +48,10 @@ public abstract class FilteringTokenFilter extends TokenFilter {
         super(in);
     }
 
-    /** Override this method and return if the current input token should be returned by {@link #incrementToken}. */
+    /**
+     * @return true iff the current input token should be returned by {@link #incrementToken}.
+     * @throws IOException overriding methods have the option to throw
+     */
     protected abstract boolean accept() throws IOException;
 
     @Override
