@@ -17,8 +17,8 @@ package io.bdrc.lucene.sixtofour;
  * limitations under the License.
  */
 
-import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Field;
 
 /**
  * Dummy.READER is required to migrate these 3 classes from Lucene 6 to 4:
@@ -32,15 +32,19 @@ import java.io.Reader;
  */
 public abstract class Dummy {
 
-    public static final Reader  READER = new Reader() {
-        @Override
-        public int read(char[] cbuf, int off, int len) throws IOException {
-            throw new IOException("read() not supported");
+    private static Reader  obtain_ILLEGAL_STATE_READER() {
+        try {
+            Field f = org.apache.lucene.analysis.Tokenizer.class.getDeclaredField("ILLEGAL_STATE_READER"); //NoSuchFieldException
+            f.setAccessible(true);
+            Reader isr = (Reader) f.get(org.apache.lucene.analysis.Tokenizer.class); //IllegalAccessException
+            return isr;
         }
-
-        @Override
-        public void close() throws IOException {
-            throw new IOException("close() not supported");
+        catch (NoSuchFieldException exn) {
+            throw new RuntimeException(exn);
         }
-    };
+        catch (IllegalAccessException exn) {
+            throw new RuntimeException(exn);
+        }
+    }
+    public static final Reader  READER = obtain_ILLEGAL_STATE_READER();
 }

@@ -86,8 +86,17 @@ public final class SanskritAnalyzer extends Analyzer {
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
 	    this(mode, inputEncoding, "skrt-stopwords.txt");
 	}
-	
-	/**
+
+    public SanskritAnalyzer(org.apache.lucene.util.Version version) throws IOException {
+        this();
+    }
+
+    public SanskritAnalyzer() throws IOException {
+        this("space", "roman");
+        CommonHelpers.logger.info("new SanskritAnalyzer('space', 'roman')");
+    }
+
+    /**
 	 * 
 	 * Allows to change the default value(true) of mergePrepositions.
 	 * 
@@ -221,7 +230,19 @@ public final class SanskritAnalyzer extends Analyzer {
 		    filter = new Slp2RomanFilter(filter);
 		    filter = new LenientTokenFilter(filter);
 		}
-		
+
+		// This is required for Lucene 4.10.4 (and maybe 5.x ?)
+		// as Lucene 6.4's Analyzer.tokenStream() *always* invokes components.setReader(r)
+		// no matter if it is a reused or a new components object,
+		// whereas Lucene 4.10 invokes it only on reused components object.
+		if (org.apache.lucene.util.Version.LATEST.major < 6) {
+		    try {
+		        source.setReader(reader);
+		    } catch (IOException e) {
+		        throw new RuntimeException("Unexpected: ", e);
+		    }
+		}
+
 		return new TokenStreamComponents(source, filter);
 	}
 }
