@@ -231,11 +231,11 @@ public final class SanskritAnalyzer extends Analyzer {
 		    filter = new LenientTokenFilter(filter);
 		}
 
-		// This is required for Lucene 4.10.4 (and maybe 5.x ?)
-		// as Lucene 6.4's Analyzer.tokenStream() *always* invokes components.setReader(r)
+		// This is required for Lucene versions prior to 5.0.0
+		// as Lucene 5 (and later) Analyzer.tokenStream() *always* invokes components.setReader(r)
 		// no matter if it is a reused or a new components object,
-		// whereas Lucene 4.10 invokes it only on reused components object.
-		if (org.apache.lucene.util.Version.LATEST.major < 6) {
+		// whereas Lucene up to 4.10.4 invokes it only on reused components object.
+		if (org.apache.lucene.util.Version.LATEST.major < 5) {
 		    try {
 		        source.setReader(reader);
 		    } catch (IOException e) {
