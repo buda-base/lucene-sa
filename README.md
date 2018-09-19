@@ -4,7 +4,6 @@ This repository contains bricks to implement a full analyzer pipeline in Lucene:
 
 - Filters to normalize and convert SLP, devanagari and IAST into SLP
 - stopwords filter
-- geminates filter
 - filter to merge prepositions/preverbs to the following verb
 - basic Part-Of-Speech attribution to word tokens
 - a syllable-based tokenizer
