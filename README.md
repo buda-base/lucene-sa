@@ -11,7 +11,7 @@ This repository contains bricks to implement a full analyzer pipeline in Lucene:
     - maximal matching algorithm + manual adjustment mechanism
     - normal mode to index lemmas in SLP
     - lenient mode to index in simplified IAST
-    - integrates user-defined word lists
+    - user-defined word lists
 
 ## Installation through maven:
 
