@@ -2,15 +2,16 @@
 
 This repository contains bricks to implement a full analyzer pipeline in Lucene:
 
-- Filters to normalize and convert SLP, devanagari and IAST into SLP
+- filters to normalize and convert SLP1, Devanagari and IAST into SLP1
+- indexation in SLP1 or simplified IAST with no diacritics (for lenient search)
 - stopwords filter
-- filter to merge prepositions/preverbs to the following verb
-- basic Part-Of-Speech attribution to word tokens
 - a syllable-based tokenizer
-- a word tokenizer with the following features:
-    - maximal matching algorithm + manual adjustment mechanism
-    - normal mode to index lemmas in SLP
-    - lenient mode to index in simplified IAST
+- a word tokenizer (that doesn't break compounds)
+- a compound tokenizer with the following features:
+    - maximal matching algorithm with desandhification
+    - customizable word/compound list
+    - filter to merge prepositions/preverbs to the following verb
+    - basic Part-Of-Speech attribution to word tokens
     - user-defined word lists
 
 ## Installation through maven:
