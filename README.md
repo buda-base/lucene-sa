@@ -246,11 +246,15 @@ SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigi
 
 ### Build the lexical resources for the Trie:
 
+These steps need only be done once for a fresh clone of the repo; or simply run the initialize.sh script
+
  - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
  - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
  - build sandhi test tries: `cd resources/sanskrit-stemming-data/sandhify/ && python3 generate_test_tries.py`
+     if you encounter a `ModuleNotFoundError: No module named 'click'` you may need to `python3 -m pip install click`
  - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
- - compile the main trie: `io.bdrc.lucene.sa.BuildCompiledTrie.main()` (takes about 45mn on an average laptop)
+ - compile the main trie: `mvn exec:java -Dexec.mainClass="io.bdrc.lucene.sa.BuildCompiledTrie"` 
+       (takes about 45mn on an average laptop). **This is not actually needed since it is done in the `mvn compile` (see below)**
 
 The base command line to build a jar is:
 
