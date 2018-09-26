@@ -246,7 +246,7 @@ SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigi
 
 ### Build the lexical resources for the Trie:
 
-These steps need only be done once for a fresh clone of the repo; or simply run the initialize.sh script
+These steps need only be done once for a fresh clone of the repo; or simply run the `initialize.sh` script
 
  - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
  - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
@@ -262,7 +262,7 @@ The base command line to build a jar is:
 mvn clean compile exec:java package
 ```
 
-The following options alter the packaging:
+The following options modify the package step:
 
 - `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
@@ -276,4 +276,4 @@ The following options alter the packaging:
 
 ## License
 
-The code is Copyright 2017 Buddhist Digital Resource Center, and is provided under [Apache License 2.0](LICENSE).
+The code is Copyright 2017, 2018 Buddhist Digital Resource Center, and is provided under [Apache License 2.0](LICENSE).
