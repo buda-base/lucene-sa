@@ -275,8 +275,8 @@ Following are the steps to build the appropriate jar containing SanskritAnalyzer
 2. Switch to the correct branch: **git checkout lucene4_port**
 3. Then do the mvn build step: **mvn clean compile exec:java package**
 4. Copy the newly built jar file to the appropriate eXist directory, in my case:
-   **cp <project-dir>/target/lucene-sa-0.2.0.jar <eXist-home>/lib/user/**
-5. If there is an old jar (for SanskritAnalyzer) with a different name in <eXist-home>/lib/user -- get rid of it!
+   **cp $(PRJ_DIR)/target/lucene-sa-0.2.0.jar $(EXIST_DIR)/lib/user/**
+5. If there is an old jar (for SanskritAnalyzer) with a different name in $(EXIST_DIR)/lib/user -- get rid of it!
 6. Start (or Restart) eXist
 7. Finally, edit the relevant collection.xconf file(s) to properly refer to the SanskritAnalyzer,
    providing the required _mode_ and _inputEncoding_ parameters:
