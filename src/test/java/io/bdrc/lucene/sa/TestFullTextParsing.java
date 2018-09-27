@@ -48,7 +48,7 @@ public class TestFullTextParsing
 	
 	static private SkrtWordTokenizer fillWordTokenizer() {
 		try {
-			skrtWordTokenizer = new SkrtWordTokenizer();
+			skrtWordTokenizer = new SkrtWordTokenizer(true);
 		} catch (Exception e) {
             e.printStackTrace();
         }
@@ -295,6 +295,50 @@ public class TestFullTextParsing
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
         List<String> expected = Arrays.asList("caryā√", "avatāra√", "śāntideva√");
+        assertTokenStream(words, expected);
+    }
+
+    @Test
+    public void bug14InfiniteLoop() throws Exception {
+        System.out.println("bug14");
+        String input = "padmapāṇidhāraṇī.";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("padma√", "pāṇi√", "dhāraṇa√");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug15() throws Exception {
+        System.out.println("bug14");
+        String input = "sāmānyadharmacaryā.";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("sāmānya√", "sāman√", "adha√", "dharma√", "dharman√", 
+                "ṛc√", "mara√", "maryā√", "marya√", "car√", "cara√", "caryā√", "carya√");
+        assertTokenStream(words, expected);
+    }
+    
+    @Test
+    public void bug16() throws Exception {
+        System.out.println("bug14");
+        String input = "guhyāpannapattrikā.";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("guh√", "guha√", "guhya√", "āp√", "apa√", 
+                "apapanna✓", "atri√", "kim√");  // apapanna = apa(Preposition) + panna(Verb)
         assertTokenStream(words, expected);
     }
     
