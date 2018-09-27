@@ -27,6 +27,9 @@ public class PrepositionMergingFilter extends TokenFilter{
                 final int previousLen = termAtt.length();
                 sb.append(termAtt);
                 final boolean nextToken = input.incrementToken();
+                // TODO: check other things like starting offsets and/or position increments 
+                // In the long term, apply the Preposition not only to the first token but to all 
+                // of those that share a position increment slot.
                 if (!nextToken)
                     return true;
                 final int totalLen = termAtt.length()+previousLen;

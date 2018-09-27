@@ -4,7 +4,7 @@
     <groupId>io.bdrc.lucene</groupId>
 	<artifactId>lucene-sa</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<name>lucene-sa-pi</name>
 	<description>Sanskrit and Pali Lucene analyzer and components</description>
     <url>https://github.com/drupchen/lucene-sa</url>
@@ -40,9 +40,9 @@
 		</repository>
 	</distributionManagement>
 	<scm>
-		<connection>scm:git:git://github.com/drupchen/lucene-sa.git</connection>
-		<developerConnection>scm:git:ssh://github.com:drupchen/lucene-sa.git</developerConnection>
-		<url>http://github.com/drupchen/lucene-sa/tree/master</url>
+		<connection>scm:git:git://github.com/BuddhistDigitalResourceCenter/lucene-sa.git</connection>
+		<developerConnection>scm:git:ssh://github.com:BuddhistDigitalResourceCenter/lucene-sa.git</developerConnection>
+		<url>http://github.com/BuddhistDigitalResourceCenter/lucene-sa/tree/master</url>
 	</scm>
 	<dependencies>
 		<dependency>
