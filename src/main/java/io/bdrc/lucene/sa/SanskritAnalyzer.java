@@ -66,7 +66,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.mode = mode;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-		    InputStream stream = null;
+		    InputStream stream;
 		    if (stopFilename.isEmpty()) {
 		        stream = CommonHelpers.getResourceOrFile(defaultStopFile);
 		    } else {
@@ -88,15 +88,26 @@ public final class SanskritAnalyzer extends Analyzer {
      */
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
 	    this(mode, inputEncoding, "");
+	    CommonHelpers.logger.info("new SanskritAnalyzer('" + mode + "', '" + inputEncoding + "')");
 	}
 
-    public SanskritAnalyzer(org.apache.lucene.util.Version version) throws IOException {
-        this();
+    /**
+     * This constructor is required by eXist (3.4.1 may be higher as well)
+     * Apart from the version parameter, it is identical to the constructor by mode and inputEncoding
+     *
+     * @param version         Apache Lucene version that eXist employs
+     * @param mode            `space`, `syl` or `word`
+     * @param inputEncoding   `SLP`, `deva` or `roman`
+     *
+     * @throws IOException the file containing the stoplist can not be read
+     */
+    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding) throws IOException {
+        this(mode, inputEncoding);
     }
 
     public SanskritAnalyzer() throws IOException {
-        this("space", "roman");
-        CommonHelpers.logger.info("new SanskritAnalyzer('space', 'roman')");
+        this("XYZ", "XYZ");
+        CommonHelpers.logger.info("new (default c-tor) SanskritAnalyzer()");
     }
 
     /**

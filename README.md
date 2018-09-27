@@ -267,6 +267,28 @@ The following options modify the package step:
 - `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
 
+## Building and using SanskritAnalyzer with eXist db
+
+For the sake of 84000.co SanskritAnalyzer was (back)ported to work with Lucene 4.10.4 and eXist db 3.4.1
+Following are the steps to build the appropriate jar containing SanskritAnalyzer and plugging it in eXist db:
+1. Follow the steps specified in section **Building from source** up to (but not including) the mvn build step
+2. Switch to the correct branch: **git checkout lucene4_port**
+3. Then do the mvn build step: **mvn clean compile exec:java package**
+4. Copy the newly built jar file to the appropriate eXist directory, in my case:
+   **cp <project-dir>/target/lucene-sa-0.2.0.jar <eXist-home>/lib/user/**
+5. If there is an old jar (for SanskritAnalyzer) with a different name in <eXist-home>/lib/user -- get rid of it!
+6. Start (or Restart) eXist
+7. Finally, edit the relevant collection.xconf file(s) to properly refer to the SanskritAnalyzer,
+   providing the required _mode_ and _inputEncoding_ parameters:
+
+        <lucene diacritics="no">
+            <analyzer class="io.bdrc.lucene.sa.SanskritAnalyzer">
+            	<param name="mode" type="java.lang.String" value="word"/> <!-- may be "space", "syl" or "word" -->
+            	<param name="inputEncoding" type="java.lang.String" value="roman"/> <!-- may be "SLP", "deva" or "roman" -->
+            </analyzer>
+            ...
+8. Voilà!
+
 ## Aknowledgements
 
  - https://gist.github.com/Akhilesh28/b012159a10a642ed5c34e551db76f236
