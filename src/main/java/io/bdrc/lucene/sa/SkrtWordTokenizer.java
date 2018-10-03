@@ -1641,16 +1641,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			termAtt.setLength(metaData[2]);
 			int initialOffset = correctOffset(metaData[0]);
 			finalOffset = correctOffset(metaData[1]);
-		     if (initialOffset < -1) {
-		            logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-		                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
-		            initialOffset = 0;
-		        }
-		        if (finalOffset < initialOffset) {
-		            logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-		                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
-		            finalOffset = initialOffset;
-		        }
+			if (initialOffset < -1) {
+			    logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+			            "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+			    initialOffset = 0;
+		    }
+		    if (finalOffset < initialOffset) {
+		        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+		                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+		        finalOffset = initialOffset;
+		    }
 			offsetAtt.setOffset(initialOffset, finalOffset);
 			incrAtt.setPositionIncrement(0);
 		} else {

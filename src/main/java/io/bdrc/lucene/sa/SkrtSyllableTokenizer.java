@@ -259,7 +259,6 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 			previousChar = c;
 		}
 		termAtt.setLength(length);
-		assert start != -1;
 		finalOffset = correctOffset(end);
 	    int initialOffset = correctOffset(start);
 	    finalOffset = correctOffset(start + buffer.length);
