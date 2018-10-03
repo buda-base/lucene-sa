@@ -1,5 +1,19 @@
 # Lucene Analyzers for Sanskrit
 
+This repository contains bricks to implement a full analyzer pipeline in Lucene:
+
+- filters to normalize and convert SLP1, Devanagari and IAST into SLP1
+- indexation in SLP1 or simplified IAST with no diacritics (for lenient search)
+- stopwords filter
+- a syllable-based tokenizer
+- a word tokenizer (that doesn't break compounds)
+- a compound tokenizer with the following features:
+    - maximal matching algorithm with desandhification
+    - customizable word/compound list
+    - filter to merge prepositions/preverbs to the following verb
+    - basic Part-Of-Speech attribution to word tokens
+    - user-defined word lists
+
 ## Installation through maven:
 
 ```xml
@@ -232,11 +246,15 @@ SkrtWordTokenizer uses the data generated [here](https://github.com/BuddhistDigi
 
 ### Build the lexical resources for the Trie:
 
+These steps need only be done once for a fresh clone of the repo; or simply run the `initialize.sh` script
+
  - make sure the submodules are initialized (`git submodule init`, then `git submodule update`), first from the root of the repo, then from `resources/sanskrit-stemming-data`
  - build lexical resources for the main trie: `cd resources/sanskrit-stemming-data/sandhify/ && python3 sandhifier.py`
  - build sandhi test tries: `cd resources/sanskrit-stemming-data/sandhify/ && python3 generate_test_tries.py`
+     if you encounter a `ModuleNotFoundError: No module named 'click'` you may need to `python3 -m pip install click`
  - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
- - compile the main trie: `io.bdrc.lucene.sa.BuildCompiledTrie.main()` (takes about 45mn on an average laptop)
+ - compile the main trie: `mvn exec:java -Dexec.mainClass="io.bdrc.lucene.sa.BuildCompiledTrie"` 
+       (takes about 45mn on an average laptop). **This is not actually needed since it is done in the `mvn compile` (see below)**
 
 The base command line to build a jar is:
 
@@ -244,7 +262,7 @@ The base command line to build a jar is:
 mvn clean compile exec:java package
 ```
 
-The following options alter the packaging:
+The following options modify the package step:
 
 - `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
@@ -258,4 +276,4 @@ The following options alter the packaging:
 
 ## License
 
-The code is Copyright 2017 Buddhist Digital Resource Center, and is provided under [Apache License 2.0](LICENSE).
+The code is Copyright 2017, 2018 Buddhist Digital Resource Center, and is provided under [Apache License 2.0](LICENSE).
