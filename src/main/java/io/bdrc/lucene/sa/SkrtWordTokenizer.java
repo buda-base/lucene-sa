@@ -1277,8 +1277,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void finalizeSettingTermAttribute() {
-		finalOffset = correctOffset(tokenStart + tokenBuffer.length());
-		offsetAtt.setOffset(correctOffset(tokenStart), finalOffset);
+		int initialOffset = correctOffset(tokenStart);
+	    finalOffset = correctOffset(tokenStart + tokenBuffer.length());
+	    if (initialOffset < -1) {
+	        logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+	        initialOffset = 0;
+	    }
+	    if (finalOffset < initialOffset) {
+	        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+	        finalOffset = initialOffset;
+	    }
+		offsetAtt.setOffset(initialOffset, finalOffset);
 		termAtt.setEmpty().append(tokenBuffer.toString());
 	}
 
@@ -1311,8 +1322,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
 		termAtt.setLength(metaData[2]);									// declare its size
-		finalOffset = correctOffset(metaData[1]);						// get final offset 
-		offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);	// set its offsets (initial & final)
+		int initialOffset = correctOffset(metaData[0]);
+		finalOffset = correctOffset(metaData[1]);						// get final offset
+        if (initialOffset < -1) {
+            logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+            initialOffset = 0;
+        }
+        if (finalOffset < initialOffset) {
+            logger.warn("finalOffset incorrect start: ", initialOffset, "end: ", finalOffset, 
+                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+            finalOffset = initialOffset;
+        }
+		offsetAtt.setOffset(initialOffset, finalOffset);	// set its offsets (initial & final)
 	}
 
 	private void ifThereAreInitialsFillIterator() {
@@ -1617,8 +1639,19 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			changePartOfSpeech(metaData[4]);
 			changeTypeOfToken(metaData[3]);
 			termAtt.setLength(metaData[2]);
+			int initialOffset = correctOffset(metaData[0]);
 			finalOffset = correctOffset(metaData[1]);
-			offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);
+		     if (initialOffset < -1) {
+		            logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+		                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+		            initialOffset = 0;
+		        }
+		        if (finalOffset < initialOffset) {
+		            logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+		                    "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+		            finalOffset = initialOffset;
+		        }
+			offsetAtt.setOffset(initialOffset, finalOffset);
 			incrAtt.setPositionIncrement(0);
 		} else {
 			hasTokenToEmit = false;

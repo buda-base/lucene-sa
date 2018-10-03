@@ -27,6 +27,8 @@ import org.apache.lucene.analysis.CharacterUtils.CharacterBuffer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /** 
@@ -82,6 +84,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
+	static final Logger logger = LoggerFactory.getLogger(SkrtWordTokenizer.class);
 	
 	private static final HashMap<Integer, Integer> skrtPunct = punctMap();
 	private static final HashMap<Integer, Integer> punctMap()
@@ -258,7 +261,17 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		termAtt.setLength(length);
 		assert start != -1;
 		finalOffset = correctOffset(end);
-		offsetAtt.setOffset(correctOffset(start), finalOffset);
+	    int initialOffset = correctOffset(start);
+	    finalOffset = correctOffset(start + buffer.length);
+	    if (initialOffset < -1) {
+	        logger.warn("initialOFfset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
+	        initialOffset = 0;
+	    }
+	    if (finalOffset < initialOffset) {
+	        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
+	        finalOffset = initialOffset;
+	    }
+	    offsetAtt.setOffset(initialOffset, finalOffset);
 		return true;
 	}
 
