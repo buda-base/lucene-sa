@@ -1279,7 +1279,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void finalizeSettingTermAttribute() {
 		int initialOffset = correctOffset(tokenStart);
 	    finalOffset = correctOffset(tokenStart + tokenBuffer.length());
-	    if (initialOffset < -1) {
+	    if (initialOffset < 0) {
 	        logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
 	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
 	        initialOffset = 0;
@@ -1289,7 +1289,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
 	        finalOffset = initialOffset;
 	    }
-		offsetAtt.setOffset(initialOffset, finalOffset);
+        try {
+            offsetAtt.setOffset(initialOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtWordTokenizer.finalizeSettingTermAttribute error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+        }
 		termAtt.setEmpty().append(tokenBuffer.toString());
 	}
 
@@ -1324,7 +1328,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		termAtt.setLength(metaData[2]);									// declare its size
 		int initialOffset = correctOffset(metaData[0]);
 		finalOffset = correctOffset(metaData[1]);						// get final offset
-        if (initialOffset < -1) {
+        if (initialOffset < 0) {
             logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
                     "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
             initialOffset = 0;
@@ -1334,7 +1338,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
             finalOffset = initialOffset;
         }
-		offsetAtt.setOffset(initialOffset, finalOffset);	// set its offsets (initial & final)
+        try {
+            offsetAtt.setOffset(initialOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtWordTokenizer.fillTermAttributeWith error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+        }
 	}
 
 	private void ifThereAreInitialsFillIterator() {
@@ -1641,7 +1649,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			termAtt.setLength(metaData[2]);
 			int initialOffset = correctOffset(metaData[0]);
 			finalOffset = correctOffset(metaData[1]);
-			if (initialOffset < -1) {
+			if (initialOffset < 0) {
 			    logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
 			            "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
 			    initialOffset = 0;
@@ -1651,7 +1659,11 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
 		        finalOffset = initialOffset;
 		    }
-			offsetAtt.setOffset(initialOffset, finalOffset);
+	        try {
+	            offsetAtt.setOffset(initialOffset, finalOffset);
+	        } catch (Exception ex) {
+	            logger.error("SkrtWordTokenizer.addExtraToken error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+	        }
 			incrAtt.setPositionIncrement(0);
 		} else {
 			hasTokenToEmit = false;
@@ -1790,7 +1802,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	@Override
 	public final void end() throws IOException {
 		super.end();
-		offsetAtt.setOffset(finalOffset, finalOffset);	// set final offset
+        if (finalOffset < 0) {
+            logger.warn("finalOffset incorrect. start: ", finalOffset, "end: ", finalOffset, 
+                    "string: ", tokenBuffer.subSequence(finalOffset, finalOffset));
+            finalOffset = 0;
+        }
+        try {
+            offsetAtt.setOffset(finalOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtSyllableTokenizer.incrementToken error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+        }
 	}
 
 	@Override

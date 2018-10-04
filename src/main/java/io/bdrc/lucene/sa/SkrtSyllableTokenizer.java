@@ -180,6 +180,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 
 	@Override
 	public final boolean incrementToken() throws IOException {
+	    String origTermAtt = termAtt.toString(); // added to capture info
 		clearAttributes();
 		int length = 0;
 		int start = -1; // this variable is always initialized
@@ -262,7 +263,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		finalOffset = correctOffset(end);
 	    int initialOffset = correctOffset(start);
 	    finalOffset = correctOffset(start + buffer.length);
-	    if (initialOffset < -1) {
+	    if (initialOffset < 0) {
 	        logger.warn("initialOFfset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
 	        initialOffset = 0;
 	    }
@@ -270,7 +271,11 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
 	        finalOffset = initialOffset;
 	    }
-	    offsetAtt.setOffset(initialOffset, finalOffset);
+	    try {
+	        offsetAtt.setOffset(initialOffset, finalOffset);
+	    } catch (Exception ex) {
+            logger.error("SkrtSyllableTokenizer.incrementToken error on term: " + origTermAtt + "; message: " + ex.getMessage());
+        }
 		return true;
 	}
 

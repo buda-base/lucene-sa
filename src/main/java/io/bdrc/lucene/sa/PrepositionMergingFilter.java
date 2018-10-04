@@ -6,9 +6,13 @@ import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.bdrc.lucene.sa.PartOfSpeechAttribute.PartOfSpeech;
 
 public class PrepositionMergingFilter extends TokenFilter{
+    static final Logger logger = LoggerFactory.getLogger(PrepositionMergingFilter.class);
 
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
@@ -33,7 +37,11 @@ public class PrepositionMergingFilter extends TokenFilter{
                 if (!nextToken)
                     return true;
                 final int totalLen = termAtt.length()+previousLen;
-                offsetAtt.setOffset(bOffset, offsetAtt.endOffset());
+                try {
+                    offsetAtt.setOffset(bOffset, offsetAtt.endOffset());;
+                } catch (Exception ex) {
+                    logger.error("PrepositionMergingFilter.incrementToken error on term: " + termAtt.toString() + "; message: " + ex.getMessage());
+                }
                 sb.append(termAtt);
                 termAtt.setEmpty();
                 termAtt.resizeBuffer(totalLen);
