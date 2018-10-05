@@ -254,18 +254,32 @@ These steps need only be done once for a fresh clone of the repo; or simply run 
      if you encounter a `ModuleNotFoundError: No module named 'click'` you may need to `python3 -m pip install click`
  - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
  - compile the main trie: `mvn exec:java -Dexec.mainClass="io.bdrc.lucene.sa.BuildCompiledTrie"` 
-       (takes about 45mn on an average laptop). **This is not actually needed since it is done in the `mvn compile` (see below)**
+       (takes about 45mn on an average laptop). This step generally need only be run once 
+       unless there are changes to the lexical resources for the main trie.
+       If this step is run initially then it is sufficient to use the second base command 
+       line form below.
 
-The base command line to build a jar is:
+The base command line to build a jar is either:
 
 ```
 mvn clean compile exec:java package
 ```
 
+which will build the main trie if it has not been built as indicated above, or:
+
+```
+mvn clean compile package
+```
+
+if the main trie has already been built.
+
 The following options modify the package step:
 
 - `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
+
+be aware that only one analyzer jar should have the `io.bdrc.lucene:stemmer` included when more 
+than one of the BDRC analyzers are used together.
 
 ## Aknowledgements
 
