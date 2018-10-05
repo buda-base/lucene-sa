@@ -26,7 +26,7 @@ public class PrepositionMergingFilter extends TokenFilter{
     public final boolean incrementToken() throws IOException {
         while(input.incrementToken()) {
             if (posAtt.getPartOfSpeech() == PartOfSpeech.Preposition) {
-                final int bOffset = offsetAtt.startOffset();
+                int bOffset = offsetAtt.startOffset();
                 final StringBuilder sb = new StringBuilder();
                 final int previousLen = termAtt.length();
                 sb.append(termAtt);
@@ -34,9 +34,17 @@ public class PrepositionMergingFilter extends TokenFilter{
                 // TODO: check other things like starting offsets and/or position increments 
                 // In the long term, apply the Preposition not only to the first token but to all 
                 // of those that share a position increment slot.
-                if (!nextToken)
+                
+                // Do not merge if the preposition Token comes from a previous input string 
+                // and not one of the possible token of the current input string (should work in most cases)  
+                if (!nextToken || bOffset >= offsetAtt.startOffset())
                     return true;
                 final int totalLen = termAtt.length()+previousLen;
+                if (offsetAtt.startOffset() < bOffset) {
+                    logger.warn("beginning offset incorrect. start of preposition token: ", bOffset, "start of next token: ", offsetAtt.startOffset(), 
+                            "preposition token: ", sb.toString(), "next token: ", termAtt.toString());
+                    bOffset = offsetAtt.startOffset();  // catches the potential cases not taken care of above
+                }
                 try {
                     offsetAtt.setOffset(bOffset, offsetAtt.endOffset());;
                 } catch (Exception ex) {
