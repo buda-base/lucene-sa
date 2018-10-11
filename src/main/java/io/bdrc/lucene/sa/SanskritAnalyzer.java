@@ -171,21 +171,23 @@ public final class SanskritAnalyzer extends Analyzer {
 	
 	@Override
 	protected Reader initReader(String fieldName, Reader reader) {
-	    if (inputEncoding != null && inputEncoding.equals("deva")) {
+	    if ("deva".equals(inputEncoding)) {
 		    reader = new Deva2SlpFilter(reader);
 		    reader = new VedicFilter(reader);
-		} else if (inputEncoding != null && inputEncoding.equals("roman")) {
+		} else if ("roman".equals(inputEncoding)) {
 		    reader = new Roman2SlpFilter(reader);
-		} else if (inputEncoding != null && !inputEncoding.equals("SLP")){
+		} else if ("SLP".equals(inputEncoding)) {
 		    CommonHelpers.logger.error("wrong value for `mode`");
 		    return null;
 		}
 		
-	    if (this.filterGeminates == true) {
+	    if (filterGeminates == true) {
 	        reader = new GeminateNormalizingFilter(reader);
 	    }
 	    
-	    if (lenient != null && lenient.equals("query")) {
+	    // what happens in lenient mode is that first the input is transformed
+	    // into SLP then into SLP->Lenient. This is a bit awkward but it should work
+	    if ("query".equals(lenient)) {
 	        reader = new LenientCharFilter(reader);
 	    }
 	    
