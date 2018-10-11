@@ -77,7 +77,7 @@ public class TestSyllableTokenizer {
         System.out.println("analyzer index mode");
         String input = "nāma-saṅgīti";
         Reader reader = new StringReader(input);
-        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, false, "index");
+        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, true, "index");
         List<String> expected = Arrays.asList("na", "ma", "sa", "ngi", "ti");
         System.out.println("0 " + input);
         TokenStream words = sa.tokenStream("", reader);
