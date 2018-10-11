@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.junit.Test;
 
 public class TestSyllableTokenizer {
@@ -30,10 +30,10 @@ public class TestSyllableTokenizer {
         try {
             final List<String> termList = new ArrayList<String>();
             final CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
-            final PositionIncrementAttribute positionAttribute = tokenStream.addAttribute(PositionIncrementAttribute.class);
+            final OffsetAttribute offsetAttribute = tokenStream.addAttribute(OffsetAttribute.class);
             while (tokenStream.incrementToken()) {
                 termList.add(charTermAttribute.toString());
-                System.out.println(charTermAttribute.toString()+" "+positionAttribute.getPositionIncrement());
+                System.out.println(charTermAttribute.toString()+" "+offsetAttribute.startOffset()+"-"+offsetAttribute.endOffset());
             }
             System.out.println("1 " + String.join(" ", expected));
             System.out.println("2 " + String.join(" ", termList) + "\n");

@@ -99,7 +99,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	static final HashMap<Integer, Integer> charType = createMap();
 	private static final HashMap<Integer, Integer> createMap()
 	{
-		HashMap<Integer, Integer> charType = new HashMap<>();
+		final HashMap<Integer, Integer> charType = new HashMap<>();
 		// vowels
 		charType.put((int)'a', VOWEL);
 		charType.put((int)'A', VOWEL);
@@ -180,11 +180,10 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-	    String origTermAtt = termAtt.toString(); // added to capture info
+	    final String origTermAtt = termAtt.toString(); // added to capture info
 		clearAttributes();
 		int length = 0;
 		int start = -1; // this variable is always initialized
-		int end = -1;
 		char[] buffer = termAtt.buffer();
 		while (true) {
 			if (bufferIndex >= dataLen) {
@@ -203,7 +202,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 				bufferIndex = 0;
 			}
 			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
-			int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			final int charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
@@ -211,12 +210,11 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 				if (length == 0) {                // start of token
 					assert start == -1;
 					start = offset + bufferIndex - charCount;
-					end = start;
 				} else if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 					buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 				}
-				end += charCount;
-				length += Character.toChars(c, buffer, length); // buffer it
+				Character.toChars(c, buffer, length); // buffer it 
+				length += charCount;
 				
 				// Here is where the syllabation logic really happens
 				int maybeTrailingConsonants = afterConsonantCluster(ioBuffer, bufferIndex-1);
@@ -244,7 +242,6 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 					// setting the cursor one step back and ending this token/syllable 
 					bufferIndex = bufferIndex - charCount;
 					length = length - charCount;
-					end = end - charCount;
 					previousChar = c;
                     break;
 				}  // end of syllabation logic
@@ -260,9 +257,8 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 			previousChar = c;
 		}
 		termAtt.setLength(length);
-		finalOffset = correctOffset(end);
 	    int initialOffset = correctOffset(start);
-	    finalOffset = correctOffset(start + buffer.length);
+	    finalOffset = correctOffset(start + length);
 	    if (initialOffset < 0) {
 	        logger.warn("initialOFfset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
 	        initialOffset = 0;
@@ -280,16 +276,16 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	}
 
 	
-	public static boolean isSLP(int c) {
+	public static boolean isSLP(final int c) {
 		/**
 		 * filters only legal SLP1 characters
 		 * @return true if c is a SLP character, else false
 		 */
-		Integer res = charType.get(c);
+		final Integer res = charType.get(c);
 		return (res != null); 
 	}
 	
-	public int syllEndingCombinations(int char1, int char2) {
+	public int syllEndingCombinations(final int char1, final int char2) {
 		/**
 		 * Finds all combinations that correspond to a syllable ending
 		 * 
@@ -323,14 +319,14 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		}
 	}
 	
-	private int afterConsonantCluster(CharacterBuffer inputBuffer, int currentIdx ) {
+	private int afterConsonantCluster(final CharacterBuffer inputBuffer, final int currentIdx ) {
 		/**
 		 * checks whether the next consonants constitute a trailing cluster of consonants or not.
 		 * @return the combination
 		 */
 		// see who comes first, a vowel, a legal punctuation or the end of the buffer
 		int nextSylEndIdx = currentIdx;
-		char[] buffer = inputBuffer.getBuffer();
+		final char[] buffer = inputBuffer.getBuffer();
 		while (nextSylEndIdx < inputBuffer.getLength()) {
 			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
 				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
