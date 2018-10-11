@@ -72,9 +72,9 @@ public class TestSyllableTokenizer {
     }
     
     @Test
-    public void withAnalyzer() throws IOException
+    public void withAnalyzerIndex() throws IOException
     {
-        System.out.println("analyzer case");
+        System.out.println("analyzer index mode");
         String input = "nāma-saṅgīti";
         Reader reader = new StringReader(input);
         SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, false, "index");
@@ -83,5 +83,21 @@ public class TestSyllableTokenizer {
         TokenStream words = sa.tokenStream("", reader);
         words.reset();
         assertTokenStream(words, expected);
+        sa.close();
+    }
+    
+    @Test
+    public void withAnalyzerQuery() throws IOException
+    {
+        System.out.println("analyzer query mode");
+        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, false, "query");
+        String input = "nama sangiti";
+        Reader reader = new StringReader(input);
+        List<String> expected = Arrays.asList("na", "ma", "sa", "ngi", "ti");
+        System.out.println("0 " + input);
+        TokenStream words = sa.tokenStream("", reader);
+        words.reset();
+        assertTokenStream(words, expected);
+        sa.close();
     }
 }
