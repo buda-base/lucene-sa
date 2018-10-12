@@ -93,6 +93,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		skrtPunct.put((int)'.', PUNCT);
 		skrtPunct.put((int)' ', PUNCT);
 		skrtPunct.put((int)',', PUNCT);
+		skrtPunct.put((int)'-', PUNCT);
 		return skrtPunct;
 	}
 
@@ -180,7 +181,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-	    logger.trace("incrementToken");
+	    logger.trace("incrementToken, offset={}, bufferIndex={}, dataLen={}, finalOffset={}, previousChar={}", offset, bufferIndex, dataLen, finalOffset, previousChar);
 		clearAttributes();
 		int length = 0;
 		int start = -1; // this variable is always initialized
@@ -214,8 +215,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 				} else if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 					buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 				}
-				Character.toChars(c, buffer, length); // buffer it 
-				length += charCount;
+				length += Character.toChars(c, buffer, length); // buffer it 
 				
 				// Here is where the syllabation logic really happens
 				int maybeTrailingConsonants = afterConsonantCluster(ioBuffer, bufferIndex-1);
@@ -290,6 +290,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	    bufferIndex = 0;
 	    offset = 0;
 	    dataLen = 0;
+	    previousChar = -1;
 	    finalOffset = 0;
 	    ioBuffer.reset(); // make sure to reset the IO buffer!!
 	}
