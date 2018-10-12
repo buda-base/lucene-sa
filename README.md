@@ -20,7 +20,7 @@ This repository contains bricks to implement a full analyzer pipeline in Lucene:
     <dependency>
       <groupId>io.bdrc.lucene</groupId>
       <artifactId>lucene-sa</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
 ```
 
