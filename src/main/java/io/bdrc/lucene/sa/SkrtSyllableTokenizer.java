@@ -277,6 +277,22 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		return true;
 	}
 
+	  @Override
+	  public final void end() throws IOException {
+	    super.end();
+	    // set final offset
+	    offsetAtt.setOffset(finalOffset, finalOffset);
+	  }
+
+	  @Override
+	  public void reset() throws IOException {
+	    super.reset();
+	    bufferIndex = 0;
+	    offset = 0;
+	    dataLen = 0;
+	    finalOffset = 0;
+	    ioBuffer.reset(); // make sure to reset the IO buffer!!
+	}
 	
 	public static boolean isSLP(final int c) {
 		/**

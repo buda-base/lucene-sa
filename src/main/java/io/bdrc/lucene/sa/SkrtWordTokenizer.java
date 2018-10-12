@@ -1280,19 +1280,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		int initialOffset = correctOffset(tokenStart);
 	    finalOffset = correctOffset(tokenStart + tokenBuffer.length());
 	    if (initialOffset < 0) {
-	        logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+	        logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 	        initialOffset = 0;
 	    }
 	    if (finalOffset < initialOffset) {
-	        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-	                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+	        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 	        finalOffset = initialOffset;
 	    }
         try {
             offsetAtt.setOffset(initialOffset, finalOffset);
         } catch (Exception ex) {
-            logger.error("SkrtWordTokenizer.finalizeSettingTermAttribute error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+            logger.error("SkrtWordTokenizer.finalizeSettingTermAttribute error on term: {}; message {}", tokenBuffer, ex.getMessage());
         }
 		termAtt.setEmpty().append(tokenBuffer.toString());
 	}
@@ -1650,19 +1648,17 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			int initialOffset = correctOffset(metaData[0]);
 			finalOffset = correctOffset(metaData[1]);
 			if (initialOffset < 0) {
-			    logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-			            "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+			    logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 			    initialOffset = 0;
 		    }
 		    if (finalOffset < initialOffset) {
-		        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
-		                "string: ", tokenBuffer.subSequence(initialOffset, finalOffset));
+		        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 		        finalOffset = initialOffset;
 		    }
 	        try {
 	            offsetAtt.setOffset(initialOffset, finalOffset);
 	        } catch (Exception ex) {
-	            logger.error("SkrtWordTokenizer.addExtraToken error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+	            logger.error("SkrtWordTokenizer.addExtraToken error on term: {}; messsage: ", tokenBuffer, ex.getMessage());
 	        }
 			incrAtt.setPositionIncrement(0);
 		} else {
@@ -1803,14 +1799,13 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	public final void end() throws IOException {
 		super.end();
         if (finalOffset < 0) {
-            logger.warn("finalOffset incorrect. start: ", finalOffset, "end: ", finalOffset, 
-                    "string: ", tokenBuffer.subSequence(finalOffset, finalOffset));
+            logger.warn("finalOffset incorrect: {}", finalOffset);
             finalOffset = 0;
         }
         try {
             offsetAtt.setOffset(finalOffset, finalOffset);
         } catch (Exception ex) {
-            logger.error("SkrtSyllableTokenizer.incrementToken error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+            logger.error("SkrtSyllableTokenizer.incrementToken error on term: {}; message: {}", tokenBuffer, ex.getMessage());
         }
 	}
 
