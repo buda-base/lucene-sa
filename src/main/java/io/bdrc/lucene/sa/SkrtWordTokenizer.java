@@ -1816,11 +1816,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		finalOffset = 0;
 		ioBuffer.reset(input);		// make sure to reset the IO buffer!!
 		totalTokens = new LinkedList<PreToken>();
-
+		initialCharsIterator = null;
+		sandhiIndex = -1;
+		initials = null;
+		initialsIterator = null;
+		storedInitials = null;
+		mergesInitials = false;
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens
 		idempotentIdx = -1;
-
 	}
 	
 	public static class PreToken implements Comparable<PreToken>{
