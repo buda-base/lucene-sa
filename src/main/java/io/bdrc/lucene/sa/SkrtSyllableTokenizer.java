@@ -84,7 +84,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
-	static final Logger logger = LoggerFactory.getLogger(SkrtWordTokenizer.class);
+	static final Logger logger = LoggerFactory.getLogger(SkrtSyllableTokenizer.class);
 	
 	private static final HashMap<Integer, Integer> skrtPunct = punctMap();
 	private static final HashMap<Integer, Integer> punctMap()
@@ -180,7 +180,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-	    final String origTermAtt = termAtt.toString(); // added to capture info
+	    logger.trace("incrementToken");
 		clearAttributes();
 		int length = 0;
 		int start = -1; // this variable is always initialized
@@ -195,6 +195,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 						break;
 					} else {
 						finalOffset = correctOffset(offset);
+						logger.trace("incrementToken, returning false");
 						return false;
 					}
 				}
@@ -260,18 +261,19 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	    int initialOffset = correctOffset(start);
 	    finalOffset = correctOffset(start + length);
 	    if (initialOffset < 0) {
-	        logger.warn("initialOFfset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
+	        logger.warn("initialOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
 	        initialOffset = 0;
 	    }
 	    if (finalOffset < initialOffset) {
-	        logger.warn("finalOffset incorrect. start: ", initialOffset, "end: ", finalOffset, "string: ", termAtt.toString());
+	        logger.warn("finalOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
 	        finalOffset = initialOffset;
 	    }
 	    try {
 	        offsetAtt.setOffset(initialOffset, finalOffset);
 	    } catch (Exception ex) {
-            logger.error("SkrtSyllableTokenizer.incrementToken error on term: " + origTermAtt + "; message: " + ex.getMessage());
+            logger.error("SkrtSyllableTokenizer.incrementToken error on term: {}; message: {}", termAtt, ex.getMessage());
         }
+	    logger.trace("incrementToken, returning token with offsets {}-{}, termAtt='{}'", initialOffset, finalOffset, termAtt);
 		return true;
 	}
 
