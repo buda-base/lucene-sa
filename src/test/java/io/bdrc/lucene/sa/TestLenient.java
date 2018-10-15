@@ -45,9 +45,9 @@ public class TestLenient {
 
 	// Both tests have the same input and the same expected output.
 	// This ensures an equivalent treatment at indexing and querying times.
-	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh";
+	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
 	private static final List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh");	
+            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh", "sr");	
 	
 	@BeforeClass
 	public static void init() {
