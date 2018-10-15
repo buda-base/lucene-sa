@@ -46,12 +46,23 @@ import org.slf4j.LoggerFactory;
  */
 public final class SkrtSyllableTokenizer extends Tokenizer {
 
+    final HashMap<Integer, Integer> charType;
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSyllableTokenizer() {
+	    this(false);
 	}
-	
+
+    public SkrtSyllableTokenizer(final boolean lenientMode) {
+        super();
+        if (lenientMode) {
+            this.charType = charTypeLenient;
+        } else {
+            this.charType = charTypeNonLenient;
+        }
+    }
+
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
 	private int previousChar = -1;
 	public static final int DEFAULT_MAX_WORD_LEN = 255;
@@ -97,86 +108,101 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		return skrtPunct;
 	}
 
-	static final HashMap<Integer, Integer> charType = createMap();
-	private static final HashMap<Integer, Integer> createMap()
+	static final HashMap<Integer, Integer> charTypeNonLenient = new HashMap<>();
+	static final HashMap<Integer, Integer> charTypeLenient = new HashMap<>();
+	
+	static void addToMap(int c, int type) {
+	    charTypeNonLenient.put(c, type);
+	    charTypeLenient.put(c, type);
+	}
+
+    static void addToMap(int c, int type, boolean lenient) {
+        if (lenient) {
+            charTypeLenient.put(c, type);
+        } else {
+            charTypeNonLenient.put(c, type);            
+        }
+    }
+	
+	static
 	{
-		final HashMap<Integer, Integer> charType = new HashMap<>();
 		// vowels
-		charType.put((int)'a', VOWEL);
-		charType.put((int)'A', VOWEL);
-		charType.put((int)'i', VOWEL);
-		charType.put((int)'I', VOWEL);
-		charType.put((int)'u', VOWEL);
-		charType.put((int)'U', VOWEL);
-		charType.put((int)'f', VOWEL);
-		charType.put((int)'F', VOWEL);
-		charType.put((int)'x', VOWEL);
-		charType.put((int)'X', VOWEL);
-		charType.put((int)'e', VOWEL);
-		charType.put((int)'E', VOWEL);
-		charType.put((int)'o', VOWEL);
-		charType.put((int)'O', VOWEL);
+		addToMap((int)'a', VOWEL);
+		addToMap((int)'A', VOWEL);
+		addToMap((int)'i', VOWEL);
+		addToMap((int)'I', VOWEL);
+		addToMap((int)'u', VOWEL);
+		addToMap((int)'U', VOWEL);
+		addToMap((int)'f', VOWEL);
+		addToMap((int)'F', VOWEL);
+		addToMap((int)'x', VOWEL);
+		addToMap((int)'X', VOWEL);
+		addToMap((int)'e', VOWEL);
+		addToMap((int)'E', VOWEL);
+		addToMap((int)'o', VOWEL);
+		addToMap((int)'O', VOWEL);
 		// special class for anusvara & visarga, jihvamuliya, upadhmaniya
-		charType.put((int)'M', SPECIALPHONEME);
-		charType.put((int)'H', SPECIALPHONEME);
-		charType.put((int)'V', SPECIALPHONEME);
-		charType.put((int)'Z', SPECIALPHONEME);
-		charType.put((int)'~', SPECIALPHONEME);
+		addToMap((int)'M', SPECIALPHONEME);
+		addToMap((int)'H', SPECIALPHONEME);
+		addToMap((int)'V', SPECIALPHONEME);
+		addToMap((int)'Z', SPECIALPHONEME);
+		addToMap((int)'~', SPECIALPHONEME);
 		// consonants
-		charType.put((int)'k', CONSONANT);
-		charType.put((int)'K', CONSONANT);
-		charType.put((int)'g', CONSONANT);
-		charType.put((int)'G', CONSONANT);
-		charType.put((int)'N', CONSONANT);
-		charType.put((int)'c', CONSONANT);
-		charType.put((int)'C', CONSONANT);
-		charType.put((int)'j', CONSONANT);
-		charType.put((int)'J', CONSONANT);
-		charType.put((int)'Y', CONSONANT);
-		charType.put((int)'w', CONSONANT);
-		charType.put((int)'W', CONSONANT);
-		charType.put((int)'q', CONSONANT);
-		charType.put((int)'Q', CONSONANT);
-		charType.put((int)'R', CONSONANT);
-		charType.put((int)'t', CONSONANT);
-		charType.put((int)'T', CONSONANT);
-		charType.put((int)'d', CONSONANT);
-		charType.put((int)'D', CONSONANT);
-		charType.put((int)'n', CONSONANT);
-		charType.put((int)'p', CONSONANT);
-		charType.put((int)'P', CONSONANT);
-		charType.put((int)'b', CONSONANT);
-		charType.put((int)'B', CONSONANT);
-		charType.put((int)'m', CONSONANT);
-		charType.put((int)'y', CONSONANT);
-		charType.put((int)'r', CONSONANT);
-		charType.put((int)'l', CONSONANT);
-		charType.put((int)'v', CONSONANT);
-		charType.put((int)'L', CONSONANT);
-		charType.put((int)'|', CONSONANT);
-		charType.put((int)'S', CONSONANT);
-		charType.put((int)'z', CONSONANT);
-		charType.put((int)'s', CONSONANT);
-		charType.put((int)'h', CONSONANT);
+		addToMap((int)'k', CONSONANT);
+		addToMap((int)'K', CONSONANT);
+		addToMap((int)'g', CONSONANT);
+		addToMap((int)'G', CONSONANT);
+		addToMap((int)'N', CONSONANT);
+		addToMap((int)'c', CONSONANT);
+		addToMap((int)'C', CONSONANT);
+		addToMap((int)'j', CONSONANT);
+		addToMap((int)'J', CONSONANT);
+		addToMap((int)'Y', CONSONANT);
+		addToMap((int)'w', CONSONANT);
+		addToMap((int)'W', CONSONANT);
+		addToMap((int)'q', CONSONANT);
+		addToMap((int)'Q', CONSONANT);
+		addToMap((int)'R', CONSONANT);
+		addToMap((int)'t', CONSONANT);
+		addToMap((int)'T', CONSONANT);
+		addToMap((int)'d', CONSONANT);
+		addToMap((int)'D', CONSONANT);
+		addToMap((int)'n', CONSONANT);
+		addToMap((int)'p', CONSONANT);
+		addToMap((int)'P', CONSONANT);
+		addToMap((int)'b', CONSONANT);
+		addToMap((int)'B', CONSONANT);
+		addToMap((int)'m', CONSONANT);
+		addToMap((int)'y', CONSONANT);
+		addToMap((int)'r', CONSONANT, false);
+		addToMap((int)'r', VOWEL, true);
+		addToMap((int)'l', CONSONANT, false);
+		addToMap((int)'l', VOWEL, true);
+		addToMap((int)'v', CONSONANT);
+		addToMap((int)'L', CONSONANT);
+		addToMap((int)'|', CONSONANT);
+		addToMap((int)'S', CONSONANT);
+		addToMap((int)'z', CONSONANT);
+		addToMap((int)'s', CONSONANT);
+		addToMap((int)'h', CONSONANT);
 		
 		// Modifiers
-		charType.put((int)'_', MODIFIER);
-		charType.put((int)'=', MODIFIER);
-		charType.put((int)'!', MODIFIER);
-		charType.put((int)'#', MODIFIER);
-		charType.put((int)'1', MODIFIER);
-		charType.put((int)'2', MODIFIER);
-		charType.put((int)'3', MODIFIER);
-		charType.put((int)'4', MODIFIER);
-		charType.put((int)'/', MODIFIER);
-		charType.put((int)'\\', MODIFIER);
-		charType.put((int)'^', MODIFIER);
-		charType.put((int)'6', MODIFIER);
-		charType.put((int)'7', MODIFIER);
-		charType.put((int)'8', MODIFIER);
-		charType.put((int)'9', MODIFIER);
-		charType.put((int)'+', MODIFIER);
-		return charType;
+		addToMap((int)'_', MODIFIER);
+		addToMap((int)'=', MODIFIER);
+		addToMap((int)'!', MODIFIER);
+		addToMap((int)'#', MODIFIER);
+		addToMap((int)'1', MODIFIER);
+		addToMap((int)'2', MODIFIER);
+		addToMap((int)'3', MODIFIER);
+		addToMap((int)'4', MODIFIER);
+		addToMap((int)'/', MODIFIER);
+		addToMap((int)'\\', MODIFIER);
+		addToMap((int)'^', MODIFIER);
+		addToMap((int)'6', MODIFIER);
+		addToMap((int)'7', MODIFIER);
+		addToMap((int)'8', MODIFIER);
+		addToMap((int)'9', MODIFIER);
+		addToMap((int)'+', MODIFIER);
 	}
 
 	@Override
@@ -300,7 +326,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		 * filters only legal SLP1 characters
 		 * @return true if c is a SLP character, else false
 		 */
-		final Integer res = charType.get(c);
+		final Integer res = charTypeNonLenient.get(c);
 		return (res != null); 
 	}
 	
@@ -347,15 +373,19 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		int nextSylEndIdx = currentIdx;
 		final char[] buffer = inputBuffer.getBuffer();
 		while (nextSylEndIdx < inputBuffer.getLength()) {
-			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
+		    final int nextChar = (int)buffer[nextSylEndIdx];
+		    Integer nextCharType = charType.get(nextChar);
+			if (nextCharType != null && nextCharType == CONSONANT) {
 				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
 					return CLUSTER_N_END;
 				}// if char at nextSylIdx
-				else if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
-					return CLUSTER_N_VOWEL;
-				} else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
-					//System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
-					return CLUSTER_N_PUNCT;
+				else {
+				    if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
+				        return CLUSTER_N_VOWEL;
+				    } else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
+				        //System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
+				        return CLUSTER_N_PUNCT;
+				    }
 				}
 			}
 			nextSylEndIdx++;

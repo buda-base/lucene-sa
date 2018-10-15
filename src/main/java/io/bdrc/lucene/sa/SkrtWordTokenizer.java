@@ -1710,7 +1710,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
-	    return SkrtSyllableTokenizer.charType.get(c) != null;
+	    return SkrtSyllableTokenizer.charTypeNonLenient.get(c) != null;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
 		// TODO: If a modifier occurs between two sandhied words, second word won't be considered sandhied
 	}
@@ -1724,7 +1724,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPModifier(int c) {
-		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) == SkrtSyllableTokenizer.MODIFIER;
+	    final Integer type = SkrtSyllableTokenizer.charTypeNonLenient.get(c);
+		return type != null && type == SkrtSyllableTokenizer.MODIFIER;
 	}
 	
 	final private boolean thereIsNoTokenAndNoNonword() {

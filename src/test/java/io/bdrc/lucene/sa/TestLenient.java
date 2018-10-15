@@ -42,6 +42,8 @@ public class TestLenient {
             while (tokenStream2.incrementToken()) {
                 termList2.add(charTermAttribute2.toString());
             }
+            System.out.println("found: " + String.join(" ", termList1) + " and");
+            System.out.println("found: " + String.join(" ", termList2) + "\n");
             assertThat(termList1, is(termList2));
         } catch (IOException e) {
             assertTrue(false);
@@ -88,7 +90,7 @@ public class TestLenient {
     @Test
     public void testLenientAnalyzer() throws Exception {
         System.out.println("Testing Lenient Analyzer");
-        String i = "kṛṣṇa mañjuśrī";
+        String i = "kṛṣṇa mañjuśrī mañjuśrījñā";
         Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
         Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
         TokenStream indexTk = indexingAnalyzer.tokenStream("", i);

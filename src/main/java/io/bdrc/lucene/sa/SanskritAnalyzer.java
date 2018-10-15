@@ -207,7 +207,7 @@ public final class SanskritAnalyzer extends Analyzer {
                 return null;
             }
 		} else if (mode != null && mode.equals("syl")) {
-			source = new SkrtSyllableTokenizer();
+			source = new SkrtSyllableTokenizer(this.lenient != null);
 		} else if (mode != null && mode.equals("space")) {
 		    source = new WhitespaceTokenizer();
 		}
