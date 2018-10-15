@@ -91,11 +91,12 @@ public class TestLenient {
     public void testLenientAnalyzer() throws Exception {
         System.out.println("Testing Lenient Analyzer");
         String i = "kṛṣṇa mañjuśrī mañjuśrījñā";
+        String li = "krishna manjushri manjushrijna";
         Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
         Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
         TokenStream indexTk = indexingAnalyzer.tokenStream("", i);
         indexTk.reset();
-        TokenStream queryTk = queryAnalyzer.tokenStream("", i);
+        TokenStream queryTk = queryAnalyzer.tokenStream("", li);
         queryTk.reset();
         assertTokenStream(indexTk, queryTk);
         indexingAnalyzer.close();
