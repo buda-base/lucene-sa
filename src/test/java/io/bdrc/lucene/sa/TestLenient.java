@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
@@ -28,7 +29,25 @@ public class TestLenient {
 		tokenizer.reset();
 		return tokenizer;
 	}
-	
+
+    static private void assertTokenStream(TokenStream tokenStream1, TokenStream tokenStream2) {
+        try {
+            List<String> termList1 = new ArrayList<String>();
+            CharTermAttribute charTermAttribute1 = tokenStream1.addAttribute(CharTermAttribute.class);
+            while (tokenStream1.incrementToken()) {
+                termList1.add(charTermAttribute1.toString());
+            }
+            List<String> termList2 = new ArrayList<String>();
+            CharTermAttribute charTermAttribute2 = tokenStream2.addAttribute(CharTermAttribute.class);
+            while (tokenStream2.incrementToken()) {
+                termList2.add(charTermAttribute2.toString());
+            }
+            assertThat(termList1, is(termList2));
+        } catch (IOException e) {
+            assertTrue(false);
+        }
+    }
+
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
 			List<String> termList = new ArrayList<String>();
@@ -64,6 +83,21 @@ public class TestLenient {
     	ts = new Slp2RomanFilter(ts);
     	ts = new LenientTokenFilter(ts);
         assertTokenStream(ts, expected);
+    }
+
+    @Test
+    public void testLenientAnalyzer() throws Exception {
+        System.out.println("Testing Lenient Analyzer");
+        String i = "kṛṣṇa mañjuśrī";
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
+        Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
+        TokenStream indexTk = indexingAnalyzer.tokenStream("", i);
+        indexTk.reset();
+        TokenStream queryTk = queryAnalyzer.tokenStream("", i);
+        queryTk.reset();
+        assertTokenStream(indexTk, queryTk);
+        indexingAnalyzer.close();
+        queryAnalyzer.close();
     }
 
     @Test

@@ -85,7 +85,7 @@ public class TestSyllableTokenizer {
         assertTokenStream(words, expected);
         sa.close();
     }
-    
+
     @Test
     public void withAnalyzerQuery() throws IOException
     {

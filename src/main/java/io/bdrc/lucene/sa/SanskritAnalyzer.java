@@ -187,13 +187,13 @@ public final class SanskritAnalyzer extends Analyzer {
 	    
 	    // what happens in lenient mode is that first the input is transformed
 	    // into SLP then into SLP->Lenient. This is a bit awkward but it should work
-	    if ("query".equals(lenient)) {
+	    if (lenient != null) {
 	        reader = new LenientCharFilter(reader);
 	    }
 	    
 		return super.initReader(fieldName, reader);
 	}
-	
+
 	@Override
 	protected TokenStreamComponents createComponents(final String fieldName) {
 		Tokenizer source = null;
