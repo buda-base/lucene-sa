@@ -253,7 +253,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/* ioBuffer related (contains the input string) */
 	private RollingCharBuffer ioBuffer;
-	private int bufferIndex = 0, finalOffset = 0;
+	private int bufferIndex = 0, finalOffset = 0, lastStartOffset = 0;
 	private int charCount;
 	int MAX_WORD_LEN = 255;
     
@@ -1284,10 +1284,12 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	        logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 	        initialOffset = 0;
 	    }
+        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+        lastStartOffset = initialOffset;
 	    if (finalOffset < initialOffset) {
 	        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 	        finalOffset = initialOffset;
-	    }
+	    }	    
         try {
             offsetAtt.setOffset(initialOffset, finalOffset);
         } catch (Exception ex) {
@@ -1333,6 +1335,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
                     "string: ", tokenBuffer);
             initialOffset = 0;
         }
+        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+        lastStartOffset = initialOffset;
         if (finalOffset < initialOffset) {
             logger.warn("finalOffset incorrect start: ", initialOffset, "end: ", finalOffset, 
                     "string: ", tokenBuffer);
@@ -1654,7 +1658,9 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			    logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 			    initialOffset = 0;
 		    }
-		    if (finalOffset < initialOffset) {
+	        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+	        lastStartOffset = initialOffset;
+	        if (finalOffset < initialOffset) {
 		        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
 		        finalOffset = initialOffset;
 		    }

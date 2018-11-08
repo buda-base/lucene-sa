@@ -63,7 +63,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
         }
     }
 
-	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
+	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0, lastStartOffset = 0;
 	private int previousChar = -1;
 	public static final int DEFAULT_MAX_WORD_LEN = 255;
 	private static final int IO_BUFFER_SIZE = 4096;
@@ -295,7 +295,9 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	        logger.warn("finalOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
 	        finalOffset = initialOffset;
 	    }
-	    try {
+        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+        lastStartOffset = initialOffset;
+        try {
 	        offsetAtt.setOffset(initialOffset, finalOffset);
 	    } catch (Exception ex) {
             logger.error("SkrtSyllableTokenizer.incrementToken error on term: {}; message: {}", termAtt, ex.getMessage());
