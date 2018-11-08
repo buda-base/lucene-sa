@@ -285,6 +285,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		}
 		termAtt.setLength(length);
 	    int initialOffset = correctOffset(start);
+	    if (initialOffset <= finalOffset) { initialOffset = finalOffset + 1; }
 	    finalOffset = correctOffset(start + length);
 	    if (initialOffset < 0) {
 	        logger.warn("initialOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
