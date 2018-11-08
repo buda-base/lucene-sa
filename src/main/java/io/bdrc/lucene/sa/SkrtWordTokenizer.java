@@ -1806,7 +1806,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
         try {
             offsetAtt.setOffset(finalOffset, finalOffset);
         } catch (Exception ex) {
-            logger.error("SkrtSyllableTokenizer.incrementToken error on term: {}; message: {}", tokenBuffer, ex.getMessage());
+            logger.error("SkrtWordTokenizer.end error on term: {}; message: {}", tokenBuffer, ex.getMessage());
         }
 	}
 

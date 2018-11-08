@@ -303,12 +303,16 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		return true;
 	}
 
-	  @Override
-	  public final void end() throws IOException {
+	@Override
+	public final void end() throws IOException {
 	    super.end();
-	    // set final offset
-	    offsetAtt.setOffset(finalOffset, finalOffset);
-	  }
+	    try {
+	        // set final offset
+	        offsetAtt.setOffset(finalOffset, finalOffset);
+	    } catch (Exception ex) {
+	        logger.error("SkrtSyllableTokenizer.end error on term: {}; message: {}", termAtt, ex.getMessage());
+	    }
+	}
 
 	  @Override
 	  public void reset() throws IOException {

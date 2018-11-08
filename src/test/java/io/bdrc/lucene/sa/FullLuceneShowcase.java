@@ -148,7 +148,7 @@ public class FullLuceneShowcase {
             for (int i = 0; i < repeat; i++) {
                 results = searcher.search(query, 100);
                 hits = results.scoreDocs;
-                numTotalHits = results.totalHits;
+                numTotalHits = (int) results.totalHits;
             }
             Date end = new Date();
             System.out.println("Time: " + (end.getTime() - start.getTime()) + "ms");
