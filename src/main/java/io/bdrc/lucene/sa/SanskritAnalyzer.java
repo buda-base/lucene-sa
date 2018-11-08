@@ -176,7 +176,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		    reader = new VedicFilter(reader);
 		} else if ("roman".equals(inputEncoding)) {
 		    reader = new Roman2SlpFilter(reader);
-		} else if ("SLP".equals(inputEncoding)) {
+		} else if (!"SLP".equals(inputEncoding)) {
 		    CommonHelpers.logger.error("wrong value for `mode`");
 		    return null;
 		}
