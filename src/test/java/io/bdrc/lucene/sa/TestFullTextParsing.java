@@ -342,21 +342,21 @@ public class TestFullTextParsing
         assertTokenStream(words, expected);
     }
 
-//    @Test
-//    public void bug17() throws Exception {
-//        System.out.println("bug wrong offsets");
-//        String input = "vajrapāṇinīlāmbara tantra śrī mahākālīdevīstotrāṣṭaka-nāma";
-//        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
-//        CharFilter siddham = new SiddhamFilter(roman);
-//        CharFilter geminates = new GeminateNormalizingFilter(siddham);
-//        TokenStream words = tokenize(geminates, skrtWordTokenizer);
-//        words = new PrepositionMergingFilter(words);
-//        words = new Slp2RomanFilter(words);
-//        List<String> expected = Arrays.asList("vajra√", "pāṇi√", "pāṇini√", "ilā√", "ban❌", "tra✓", 
-//                "śrī√", "ahan√", "mah√", "mahat√", "kāla√", "īdādeva√", "i√", "ita√", "vā√", "rā√", 
-//                "vaś√", "aṣṭaka√", "ma✓", "āāma√", "am√");
-//        assertTokenStream(words, expected);
-//    }    
+    @Test
+    public void bug17() throws Exception {
+        System.out.println("bug wrong offsets");
+        String input = "vajrapāṇinīlāmbara tantra śrī mahākālīdevīstotrāṣṭaka-nāma";
+        CharFilter roman = new Roman2SlpFilter(new StringReader(input));
+        CharFilter siddham = new SiddhamFilter(roman);
+        CharFilter geminates = new GeminateNormalizingFilter(siddham);
+        TokenStream words = tokenize(geminates, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        List<String> expected = Arrays.asList("vajra√", "pāṇi√", "pāṇini√", "ilā√", "ban❌", "tra✓", 
+                "śrī√", "ahan√", "mah√", "mahat√", "kāla√", "īdādeva√", "i√", "ita√", "vā√", "rā√", 
+                "vaś√", "aṣṭaka√", "ma✓", "āma√", "am√");
+        assertTokenStream(words, expected);
+    }    
     
 	@AfterClass
 	public static void finish() {

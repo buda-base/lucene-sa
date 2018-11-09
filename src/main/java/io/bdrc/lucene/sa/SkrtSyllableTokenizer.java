@@ -285,7 +285,11 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		}
 		termAtt.setLength(length);
 	    int initialOffset = correctOffset(start);
-	    if (initialOffset <= finalOffset) { initialOffset = finalOffset + 1; }
+	    // for offset corrections, see
+	    // https://github.com/apache/lucene-solr/blob/branch_7_5/lucene/analysis/common/src/java/org/apache/lucene/analysis/miscellaneous/FixBrokenOffsetsFilter.java
+	    // https://issues.apache.org/jira/browse/LUCENE-7626
+	    // not sure this is necessary:
+	    //if (initialOffset <= finalOffset) { initialOffset = finalOffset; }
 	    finalOffset = correctOffset(start + length);
 	    if (initialOffset < 0) {
 	        logger.warn("initialOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
@@ -295,7 +299,9 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	        logger.warn("finalOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
 	        finalOffset = initialOffset;
 	    }
-        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+        if (initialOffset < lastStartOffset) {
+            initialOffset = lastStartOffset; 
+        }
         lastStartOffset = initialOffset;
         try {
 	        offsetAtt.setOffset(initialOffset, finalOffset);
