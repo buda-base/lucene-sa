@@ -54,7 +54,9 @@ public class LenientTokenFilter extends TokenFilter{
         /* custom transformations (must mirror those found in LenientCharFilter) */ 
         lenientMap.put("sh", "s");
         lenientMap.put("ri", "r");
+        lenientMap.put("rī", "r");
         lenientMap.put("li", "l");
+        lenientMap.put("lī", "l");
         lenientMap.put("v", "b");
         
         /* IAST lenient conversions */

@@ -55,7 +55,7 @@ public class TestOffsets {
         System.out.println("Increment Position");
         String input = "SrIjYAna Darma boDi loke loke";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "26:29", "25:29", "25:29");
+        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "5:8", "9:14", "9:14", "15:19", "15:19", "20:24", "20:24", "26:29", "26:29", "26:29");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
@@ -77,7 +77,7 @@ public class TestOffsets {
                 + "bodhicaryāvatāra";
         Reader reader = new StringReader(input);
         List<String> expected = Arrays.asList("0:9", "10:16", "15:20", "15:20", "21:25", "25:30", "25:30", "30:35", "34:41", "42:53", "53:58", "57:64", "67:76", 
-                "79:87", "89:92", "89:92", "88:92", "93:100", "103:111", "113:117", "113:117", "111:116", "116:125", "127:131", "126:132", "131:136", "131:136", 
+                "79:87", "89:92", "89:92", "89:92", "93:100", "103:111", "113:117", "113:117", "113:116", "116:125", "127:131", "127:132", "131:136", "131:136", 
                 "137:141", "142:149", "152:156", "156:163", "166:171", "166:171", "171:176", "175:182");
         System.out.println("0 " + input);
         
@@ -93,15 +93,33 @@ public class TestOffsets {
     @Test
     public void bug1Offset() throws IOException
     {
-        System.out.println("bug9");
+        System.out.println("bug1Offset");
         String input = "śrījñāna";
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "3:8");
+        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "5:8");
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
         reader = new Roman2SlpFilter(reader);
         TokenStream words = tokenize(reader, skrtWordTokenizer);
+        words = new PrepositionMergingFilter(words);
+        words = new Slp2RomanFilter(words);
+        assertTokenStream(words, expected, input);
+    }
+    
+    @SuppressWarnings("resource")
+    @Test
+    public void bug2Offset() throws IOException
+    {
+        System.out.println("bug2Offset");
+        String input = "śrījñāna";
+        Reader reader = new StringReader(input);
+        List<String> expected = Arrays.asList("0:3", "3:6", "6:8");
+        System.out.println("0 " + input);
+        
+        SkrtSyllableTokenizer skrtSyllableTokenizer = new SkrtSyllableTokenizer(); 
+        reader = new Roman2SlpFilter(reader);
+        TokenStream words = tokenize(reader, skrtSyllableTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
         assertTokenStream(words, expected, input);

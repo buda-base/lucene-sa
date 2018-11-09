@@ -45,6 +45,8 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("sh", "s");
         builder.add("ri", "r");
         builder.add("li", "l");
+        builder.add("rI", "r");
+        builder.add("lI", "l");
         builder.add("v", "b");
         
         /* lenient SLP transformations */

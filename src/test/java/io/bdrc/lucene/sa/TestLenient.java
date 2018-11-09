@@ -29,7 +29,27 @@ public class TestLenient {
 		tokenizer.reset();
 		return tokenizer;
 	}
-	
+
+    static private void assertTokenStream(TokenStream tokenStream1, TokenStream tokenStream2) {
+        try {
+            List<String> termList1 = new ArrayList<String>();
+            CharTermAttribute charTermAttribute1 = tokenStream1.addAttribute(CharTermAttribute.class);
+            while (tokenStream1.incrementToken()) {
+                termList1.add(charTermAttribute1.toString());
+            }
+            List<String> termList2 = new ArrayList<String>();
+            CharTermAttribute charTermAttribute2 = tokenStream2.addAttribute(CharTermAttribute.class);
+            while (tokenStream2.incrementToken()) {
+                termList2.add(charTermAttribute2.toString());
+            }
+            System.out.println("found: " + String.join(" ", termList1) + " and");
+            System.out.println("found: " + String.join(" ", termList2) + "\n");
+            assertThat(termList1, is(termList2));
+        } catch (IOException e) {
+            assertTrue(false);
+        }
+    }
+
 	static private void assertTokenStream(TokenStream tokenStream, List<String> expected) {
 		try {
 			List<String> termList = new ArrayList<String>();
@@ -46,9 +66,9 @@ public class TestLenient {
 
 	// Both tests have the same input and the same expected output.
 	// This ensures an equivalent treatment at indexing and querying times.
-	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh";
+	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
 	private static final List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh");	
+            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh", "sr");	
 	
 	@BeforeClass
 	public static void init() {
@@ -65,6 +85,22 @@ public class TestLenient {
     	ts = new Slp2RomanFilter(ts);
     	ts = new LenientTokenFilter(ts);
         assertTokenStream(ts, expected);
+    }
+
+    @Test
+    public void testLenientAnalyzer() throws Exception {
+        System.out.println("Testing Lenient Analyzer");
+        String i = "kṛṣṇa mañjuśrī mañjuśrījñā";
+        String li = "krishna manjushri manjushrijna";
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
+        Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
+        TokenStream indexTk = indexingAnalyzer.tokenStream("", i);
+        indexTk.reset();
+        TokenStream queryTk = queryAnalyzer.tokenStream("", li);
+        queryTk.reset();
+        assertTokenStream(indexTk, queryTk);
+        indexingAnalyzer.close();
+        queryAnalyzer.close();
     }
 
     @Test

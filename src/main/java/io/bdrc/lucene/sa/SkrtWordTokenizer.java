@@ -260,7 +260,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	
 	/* ioBuffer related (contains the input string) */
 	private RollingCharBuffer ioBuffer;
-	private int bufferIndex = 0, finalOffset = 0;
+	private int bufferIndex = 0, finalOffset = 0, lastStartOffset = 0;
 	private int charCount;
 	int MAX_WORD_LEN = 255;
     
@@ -1284,8 +1284,24 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 
 	private void finalizeSettingTermAttribute() {
-		finalOffset = correctOffset(tokenStart + tokenBuffer.length());
-		offsetAtt.setOffset(correctOffset(tokenStart), finalOffset);
+		int initialOffset = correctOffset(tokenStart);
+		if (initialOffset <= finalOffset) { initialOffset = finalOffset + 1; }
+	    finalOffset = correctOffset(tokenStart + tokenBuffer.length());
+	    if (initialOffset < 0) {
+	        logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
+	        initialOffset = 0;
+	    }
+        if (initialOffset < lastStartOffset) { initialOffset = lastStartOffset; }
+        lastStartOffset = initialOffset;
+	    if (finalOffset < initialOffset) {
+	        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
+	        finalOffset = initialOffset;
+	    }	    
+        try {
+            offsetAtt.setOffset(initialOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtWordTokenizer.finalizeSettingTermAttribute error on term: {}; message {}", tokenBuffer, ex.getMessage());
+        }
 		termAtt.setEmpty().append(tokenBuffer.toString());
 	}
 
@@ -1318,8 +1334,29 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	private void fillTermAttributeWith(String string, Integer[] metaData) {
 		termAtt.setEmpty().append(string);								// add the token string
 		termAtt.setLength(metaData[2]);									// declare its size
-		finalOffset = correctOffset(metaData[1]);						// get final offset 
-		offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);	// set its offsets (initial & final)
+		int initialOffset = correctOffset(metaData[0]);
+		// not sure this is necessary:
+		//if (initialOffset <= finalOffset) { initialOffset = finalOffset; }
+		finalOffset = correctOffset(metaData[1]);						// get final offset
+        if (initialOffset < 0) {
+            logger.warn("initialOffset incorrect. start: ", initialOffset, "end: ", finalOffset, 
+                    "string: ", tokenBuffer);
+            initialOffset = 0;
+        }
+        if (initialOffset < lastStartOffset) {
+            initialOffset = lastStartOffset;
+        }
+        lastStartOffset = initialOffset;
+        if (finalOffset < initialOffset) {
+            logger.warn("finalOffset incorrect start: ", initialOffset, "end: ", finalOffset, 
+                    "string: ", tokenBuffer);
+            finalOffset = initialOffset;
+        }
+        try {
+            offsetAtt.setOffset(initialOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtWordTokenizer.fillTermAttributeWith error on term: " + tokenBuffer.toString() + "; message: " + ex.getMessage());
+        }
 	}
 
 	private void ifThereAreInitialsFillIterator() {
@@ -1624,8 +1661,27 @@ public final class SkrtWordTokenizer extends Tokenizer {
 			changePartOfSpeech(metaData[4]);
 			changeTypeOfToken(metaData[3]);
 			termAtt.setLength(metaData[2]);
+			int initialOffset = correctOffset(metaData[0]);
+			// not sure this is necessary:
+			// if (initialOffset <= finalOffset) { initialOffset = finalOffset; }
 			finalOffset = correctOffset(metaData[1]);
-			offsetAtt.setOffset(correctOffset(metaData[0]), finalOffset);
+			if (initialOffset < 0) {
+			    logger.warn("initialOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
+			    initialOffset = 0;
+		    }
+	        if (initialOffset < lastStartOffset) { 
+	            initialOffset = lastStartOffset; 
+	        }
+	        lastStartOffset = initialOffset;
+	        if (finalOffset < initialOffset) {
+		        logger.warn("finalOffset incorrect: {}-{} in {}", initialOffset, finalOffset, tokenBuffer);
+		        finalOffset = initialOffset;
+		    }
+	        try {
+	            offsetAtt.setOffset(initialOffset, finalOffset);
+	        } catch (Exception ex) {
+	            logger.error("SkrtWordTokenizer.addExtraToken error on term: {}; messsage: ", tokenBuffer, ex.getMessage());
+	        }
 			incrAtt.setPositionIncrement(0);
 		} else {
 			hasTokenToEmit = false;
@@ -1676,7 +1732,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPTokenChar(int c) {
-	    return SkrtSyllableTokenizer.charType.get(c) != null;
+	    return SkrtSyllableTokenizer.charTypeNonLenient.get(c) != null;
 		// SLP modifiers are excluded because they are not considered to be part of a word/token. 
 		// TODO: If a modifier occurs between two sandhied words, second word won't be considered sandhied
 	}
@@ -1690,7 +1746,8 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	}
 	
 	final private boolean isSLPModifier(int c) {
-		return SkrtSyllableTokenizer.charType.get(c) != null && SkrtSyllableTokenizer.charType.get(c) == SkrtSyllableTokenizer.MODIFIER;
+	    final Integer type = SkrtSyllableTokenizer.charTypeNonLenient.get(c);
+		return type != null && type == SkrtSyllableTokenizer.MODIFIER;
 	}
 	
 	final private boolean thereIsNoTokenAndNoNonword() {
@@ -1764,7 +1821,15 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	@Override
 	public final void end() throws IOException {
 		super.end();
-		offsetAtt.setOffset(finalOffset, finalOffset);	// set final offset
+        if (finalOffset < 0) {
+            logger.warn("finalOffset incorrect: {}", finalOffset);
+            finalOffset = 0;
+        }
+        try {
+            offsetAtt.setOffset(finalOffset, finalOffset);
+        } catch (Exception ex) {
+            logger.error("SkrtWordTokenizer.end error on term: {}; message: {}", tokenBuffer, ex.getMessage());
+        }
 	}
 
 	@Override
@@ -1774,11 +1839,16 @@ public final class SkrtWordTokenizer extends Tokenizer {
 		finalOffset = 0;
 		ioBuffer.reset(input);		// make sure to reset the IO buffer!!
 		totalTokens = new LinkedList<PreToken>();
-
+		initialCharsIterator = null;
+		sandhiIndex = -1;
+		initials = null;
+		initialsIterator = null;
+		storedInitials = null;
+		mergesInitials = false;
 		finalsIndex = -1;
 		hasTokenToEmit = false;	// for emitting multiple tokens
 		idempotentIdx = -1;
-
+		lastStartOffset = 0;
 	}
 	
 	public static class PreToken implements Comparable<PreToken>{

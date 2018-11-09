@@ -20,7 +20,7 @@ This repository contains bricks to implement a full analyzer pipeline in Lucene:
     <dependency>
       <groupId>io.bdrc.lucene</groupId>
       <artifactId>lucene-sa</artifactId>
-      <version>0.1.0</version>
+      <version>1.0.5</version>
     </dependency>
 ```
 
@@ -67,12 +67,12 @@ A text in IAST is tokenized in words for indexing. The queries are in SLP and to
 
 ##### 2. Lenient search (words)
 A text in IAST is tokenized in words. The queries in IAST are tokenized at spaces: search users provide separate words with no sandhi applied. Geminates are normalized(`true`) only at indexing time so that geminates are considered to be spelling variants instead of mistakes. The lenient search is enabled by indicating either "index" or "query", thereby selecting the appropriate pipeline of filters.
-- Indexing:  `SanskritAnalyzer("word", "roman", true, false, "index")`
+- Indexing:  `SanskritAnalyzer("word", "roman", false, true, "index")`
 - Querying:  `SanskritAnalyzer("space", "roman", false, false, "query")`
 
 ##### 3. Lenient search (syllables)
-The encoding of the text to index and that of the query is the same as above. Geminates are not normalized(yet could be) because the input text and the queries are tokenized in syllables. Lenient search is also enabled in the same way.
-- Indexing:  `SanskritAnalyzer("syl", "roman", false, false, "index")`
+The encoding of the text to index and that of the query is the same as above. Lenient search is also enabled in the same way.
+- Indexing:  `SanskritAnalyzer("syl", "roman", false, true, "index")`
 - Querying:  `SanskritAnalyzer("syl", "roman", false, false, "query")`
 
 ### SkrtWordTokenizer
@@ -254,18 +254,32 @@ These steps need only be done once for a fresh clone of the repo; or simply run 
      if you encounter a `ModuleNotFoundError: No module named 'click'` you may need to `python3 -m pip install click`
  - update other test tries with lexical resources: `cd src/test/resources/tries && python3 update_tries.py`
  - compile the main trie: `mvn exec:java -Dexec.mainClass="io.bdrc.lucene.sa.BuildCompiledTrie"` 
-       (takes about 45mn on an average laptop). **This is not actually needed since it is done in the `mvn compile` (see below)**
+       (takes about 45mn on an average laptop). This step generally need only be run once 
+       unless there are changes to the lexical resources for the main trie.
+       If this step is run initially then it is sufficient to use the second base command 
+       line form below.
 
-The base command line to build a jar is:
+The base command line to build a jar is either:
 
 ```
 mvn clean compile exec:java package
 ```
 
+which will build the main trie if it has not been built as indicated above, or:
+
+```
+mvn clean compile package
+```
+
+if the main trie has already been built.
+
 The following options modify the package step:
 
 - `-DincludeDeps=true` includes `io.bdrc.lucene:stemmer` in the produced jar file
 - `-DperformRelease=true` signs the jar file with gpg
+
+be aware that only one analyzer jar should have the `io.bdrc.lucene:stemmer` included when more 
+than one of the BDRC analyzers are used together.
 
 ## Building and using SanskritAnalyzer with eXist db
 

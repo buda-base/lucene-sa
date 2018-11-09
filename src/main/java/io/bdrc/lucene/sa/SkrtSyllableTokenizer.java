@@ -28,6 +28,8 @@ import io.bdrc.lucene.sixtofour.Dummy;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /** 
@@ -45,14 +47,24 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  */
 public final class SkrtSyllableTokenizer extends Tokenizer {
 
+    final HashMap<Integer, Integer> charType;
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSyllableTokenizer() {
 	    super(Dummy.READER);
 	}
-	
-	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0;
+
+    public SkrtSyllableTokenizer(final boolean lenientMode) {
+        super();
+        if (lenientMode) {
+            this.charType = charTypeLenient;
+        } else {
+            this.charType = charTypeNonLenient;
+        }
+    }
+
+	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0, lastStartOffset = 0;
 	private int previousChar = -1;
 	public static final int DEFAULT_MAX_WORD_LEN = 255;
 	private static final int IO_BUFFER_SIZE = 4096;
@@ -84,6 +96,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
 	private final CharacterBuffer ioBuffer = CharacterUtils.newCharacterBuffer(IO_BUFFER_SIZE);
+	static final Logger logger = LoggerFactory.getLogger(SkrtSyllableTokenizer.class);
 	
 	private static final HashMap<Integer, Integer> skrtPunct = punctMap();
 	private static final HashMap<Integer, Integer> punctMap()
@@ -92,97 +105,113 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		skrtPunct.put((int)'.', PUNCT);
 		skrtPunct.put((int)' ', PUNCT);
 		skrtPunct.put((int)',', PUNCT);
+		skrtPunct.put((int)'-', PUNCT);
 		return skrtPunct;
 	}
 
-	static final HashMap<Integer, Integer> charType = createMap();
-	private static final HashMap<Integer, Integer> createMap()
+	static final HashMap<Integer, Integer> charTypeNonLenient = new HashMap<>();
+	static final HashMap<Integer, Integer> charTypeLenient = new HashMap<>();
+	
+	static void addToMap(int c, int type) {
+	    charTypeNonLenient.put(c, type);
+	    charTypeLenient.put(c, type);
+	}
+
+    static void addToMap(int c, int type, boolean lenient) {
+        if (lenient) {
+            charTypeLenient.put(c, type);
+        } else {
+            charTypeNonLenient.put(c, type);            
+        }
+    }
+	
+	static
 	{
-		HashMap<Integer, Integer> charType = new HashMap<>();
 		// vowels
-		charType.put((int)'a', VOWEL);
-		charType.put((int)'A', VOWEL);
-		charType.put((int)'i', VOWEL);
-		charType.put((int)'I', VOWEL);
-		charType.put((int)'u', VOWEL);
-		charType.put((int)'U', VOWEL);
-		charType.put((int)'f', VOWEL);
-		charType.put((int)'F', VOWEL);
-		charType.put((int)'x', VOWEL);
-		charType.put((int)'X', VOWEL);
-		charType.put((int)'e', VOWEL);
-		charType.put((int)'E', VOWEL);
-		charType.put((int)'o', VOWEL);
-		charType.put((int)'O', VOWEL);
+		addToMap((int)'a', VOWEL);
+		addToMap((int)'A', VOWEL);
+		addToMap((int)'i', VOWEL);
+		addToMap((int)'I', VOWEL);
+		addToMap((int)'u', VOWEL);
+		addToMap((int)'U', VOWEL);
+		addToMap((int)'f', VOWEL);
+		addToMap((int)'F', VOWEL);
+		addToMap((int)'x', VOWEL);
+		addToMap((int)'X', VOWEL);
+		addToMap((int)'e', VOWEL);
+		addToMap((int)'E', VOWEL);
+		addToMap((int)'o', VOWEL);
+		addToMap((int)'O', VOWEL);
 		// special class for anusvara & visarga, jihvamuliya, upadhmaniya
-		charType.put((int)'M', SPECIALPHONEME);
-		charType.put((int)'H', SPECIALPHONEME);
-		charType.put((int)'V', SPECIALPHONEME);
-		charType.put((int)'Z', SPECIALPHONEME);
-		charType.put((int)'~', SPECIALPHONEME);
+		addToMap((int)'M', SPECIALPHONEME);
+		addToMap((int)'H', SPECIALPHONEME);
+		addToMap((int)'V', SPECIALPHONEME);
+		addToMap((int)'Z', SPECIALPHONEME);
+		addToMap((int)'~', SPECIALPHONEME);
 		// consonants
-		charType.put((int)'k', CONSONANT);
-		charType.put((int)'K', CONSONANT);
-		charType.put((int)'g', CONSONANT);
-		charType.put((int)'G', CONSONANT);
-		charType.put((int)'N', CONSONANT);
-		charType.put((int)'c', CONSONANT);
-		charType.put((int)'C', CONSONANT);
-		charType.put((int)'j', CONSONANT);
-		charType.put((int)'J', CONSONANT);
-		charType.put((int)'Y', CONSONANT);
-		charType.put((int)'w', CONSONANT);
-		charType.put((int)'W', CONSONANT);
-		charType.put((int)'q', CONSONANT);
-		charType.put((int)'Q', CONSONANT);
-		charType.put((int)'R', CONSONANT);
-		charType.put((int)'t', CONSONANT);
-		charType.put((int)'T', CONSONANT);
-		charType.put((int)'d', CONSONANT);
-		charType.put((int)'D', CONSONANT);
-		charType.put((int)'n', CONSONANT);
-		charType.put((int)'p', CONSONANT);
-		charType.put((int)'P', CONSONANT);
-		charType.put((int)'b', CONSONANT);
-		charType.put((int)'B', CONSONANT);
-		charType.put((int)'m', CONSONANT);
-		charType.put((int)'y', CONSONANT);
-		charType.put((int)'r', CONSONANT);
-		charType.put((int)'l', CONSONANT);
-		charType.put((int)'v', CONSONANT);
-		charType.put((int)'L', CONSONANT);
-		charType.put((int)'|', CONSONANT);
-		charType.put((int)'S', CONSONANT);
-		charType.put((int)'z', CONSONANT);
-		charType.put((int)'s', CONSONANT);
-		charType.put((int)'h', CONSONANT);
+		addToMap((int)'k', CONSONANT);
+		addToMap((int)'K', CONSONANT);
+		addToMap((int)'g', CONSONANT);
+		addToMap((int)'G', CONSONANT);
+		addToMap((int)'N', CONSONANT);
+		addToMap((int)'c', CONSONANT);
+		addToMap((int)'C', CONSONANT);
+		addToMap((int)'j', CONSONANT);
+		addToMap((int)'J', CONSONANT);
+		addToMap((int)'Y', CONSONANT);
+		addToMap((int)'w', CONSONANT);
+		addToMap((int)'W', CONSONANT);
+		addToMap((int)'q', CONSONANT);
+		addToMap((int)'Q', CONSONANT);
+		addToMap((int)'R', CONSONANT);
+		addToMap((int)'t', CONSONANT);
+		addToMap((int)'T', CONSONANT);
+		addToMap((int)'d', CONSONANT);
+		addToMap((int)'D', CONSONANT);
+		addToMap((int)'n', CONSONANT);
+		addToMap((int)'p', CONSONANT);
+		addToMap((int)'P', CONSONANT);
+		addToMap((int)'b', CONSONANT);
+		addToMap((int)'B', CONSONANT);
+		addToMap((int)'m', CONSONANT);
+		addToMap((int)'y', CONSONANT);
+		addToMap((int)'r', CONSONANT, false);
+		addToMap((int)'r', VOWEL, true);
+		addToMap((int)'l', CONSONANT, false);
+		addToMap((int)'l', VOWEL, true);
+		addToMap((int)'v', CONSONANT);
+		addToMap((int)'L', CONSONANT);
+		addToMap((int)'|', CONSONANT);
+		addToMap((int)'S', CONSONANT);
+		addToMap((int)'z', CONSONANT);
+		addToMap((int)'s', CONSONANT);
+		addToMap((int)'h', CONSONANT);
 		
 		// Modifiers
-		charType.put((int)'_', MODIFIER);
-		charType.put((int)'=', MODIFIER);
-		charType.put((int)'!', MODIFIER);
-		charType.put((int)'#', MODIFIER);
-		charType.put((int)'1', MODIFIER);
-		charType.put((int)'2', MODIFIER);
-		charType.put((int)'3', MODIFIER);
-		charType.put((int)'4', MODIFIER);
-		charType.put((int)'/', MODIFIER);
-		charType.put((int)'\\', MODIFIER);
-		charType.put((int)'^', MODIFIER);
-		charType.put((int)'6', MODIFIER);
-		charType.put((int)'7', MODIFIER);
-		charType.put((int)'8', MODIFIER);
-		charType.put((int)'9', MODIFIER);
-		charType.put((int)'+', MODIFIER);
-		return charType;
+		addToMap((int)'_', MODIFIER);
+		addToMap((int)'=', MODIFIER);
+		addToMap((int)'!', MODIFIER);
+		addToMap((int)'#', MODIFIER);
+		addToMap((int)'1', MODIFIER);
+		addToMap((int)'2', MODIFIER);
+		addToMap((int)'3', MODIFIER);
+		addToMap((int)'4', MODIFIER);
+		addToMap((int)'/', MODIFIER);
+		addToMap((int)'\\', MODIFIER);
+		addToMap((int)'^', MODIFIER);
+		addToMap((int)'6', MODIFIER);
+		addToMap((int)'7', MODIFIER);
+		addToMap((int)'8', MODIFIER);
+		addToMap((int)'9', MODIFIER);
+		addToMap((int)'+', MODIFIER);
 	}
 
 	@Override
 	public final boolean incrementToken() throws IOException {
+	    logger.trace("incrementToken, offset={}, bufferIndex={}, dataLen={}, finalOffset={}, previousChar={}", offset, bufferIndex, dataLen, finalOffset, previousChar);
 		clearAttributes();
 		int length = 0;
 		int start = -1; // this variable is always initialized
-		int end = -1;
 		char[] buffer = termAtt.buffer();
 		while (true) {
 			if (bufferIndex >= dataLen) {
@@ -194,6 +223,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 						break;
 					} else {
 						finalOffset = correctOffset(offset);
+						logger.trace("incrementToken, returning false");
 						return false;
 					}
 				}
@@ -201,7 +231,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 				bufferIndex = 0;
 			}
 			// use CharacterUtils here to support < 3.1 UTF-16 code unit behavior if the char based methods are gone
-			int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
+			final int c = Character.codePointAt(ioBuffer.getBuffer(), bufferIndex, ioBuffer.getLength());
 			final int charCount = Character.charCount(c);
 			bufferIndex += charCount;
 
@@ -209,12 +239,10 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 				if (length == 0) {                // start of token
 					assert start == -1;
 					start = offset + bufferIndex - charCount;
-					end = start;
 				} else if (length >= buffer.length-1) { // check if a supplementary could run out of bounds
 					buffer = termAtt.resizeBuffer(2+length); // make sure a supplementary fits in the buffer
 				}
-				end += charCount;
-				length += Character.toChars(c, buffer, length); // buffer it
+				length += Character.toChars(c, buffer, length); // buffer it 
 				
 				// Here is where the syllabation logic really happens
 				int maybeTrailingConsonants = afterConsonantCluster(ioBuffer, bufferIndex-1);
@@ -242,7 +270,6 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 					// setting the cursor one step back and ending this token/syllable 
 					bufferIndex = bufferIndex - charCount;
 					length = length - charCount;
-					end = end - charCount;
 					previousChar = c;
                     break;
 				}  // end of syllabation logic
@@ -258,23 +285,66 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 			previousChar = c;
 		}
 		termAtt.setLength(length);
-		assert start != -1;
-		finalOffset = correctOffset(end);
-		offsetAtt.setOffset(correctOffset(start), finalOffset);
+	    int initialOffset = correctOffset(start);
+	    // for offset corrections, see
+	    // https://github.com/apache/lucene-solr/blob/branch_7_5/lucene/analysis/common/src/java/org/apache/lucene/analysis/miscellaneous/FixBrokenOffsetsFilter.java
+	    // https://issues.apache.org/jira/browse/LUCENE-7626
+	    // not sure this is necessary:
+	    //if (initialOffset <= finalOffset) { initialOffset = finalOffset; }
+	    finalOffset = correctOffset(start + length);
+	    if (initialOffset < 0) {
+	        logger.warn("initialOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
+	        initialOffset = 0;
+	    }
+	    if (finalOffset < initialOffset) {
+	        logger.warn("finalOffset incorrect. start: {}, end: {}, orig: {}", initialOffset, finalOffset, termAtt);
+	        finalOffset = initialOffset;
+	    }
+        if (initialOffset < lastStartOffset) {
+            initialOffset = lastStartOffset; 
+        }
+        lastStartOffset = initialOffset;
+        try {
+	        offsetAtt.setOffset(initialOffset, finalOffset);
+	    } catch (Exception ex) {
+            logger.error("SkrtSyllableTokenizer.incrementToken error on term: {}; message: {}", termAtt, ex.getMessage());
+        }
+	    logger.trace("incrementToken, returning token with offsets {}-{}, termAtt='{}'", initialOffset, finalOffset, termAtt);
 		return true;
 	}
 
+	@Override
+	public final void end() throws IOException {
+	    super.end();
+	    try {
+	        // set final offset
+	        offsetAtt.setOffset(finalOffset, finalOffset);
+	    } catch (Exception ex) {
+	        logger.error("SkrtSyllableTokenizer.end error on term: {}; message: {}", termAtt, ex.getMessage());
+	    }
+	}
+
+	  @Override
+	  public void reset() throws IOException {
+	    super.reset();
+	    bufferIndex = 0;
+	    offset = 0;
+	    dataLen = 0;
+	    previousChar = -1;
+	    finalOffset = 0;
+	    ioBuffer.reset(); // make sure to reset the IO buffer!!
+	}
 	
-	public static boolean isSLP(int c) {
+	public static boolean isSLP(final int c) {
 		/**
 		 * filters only legal SLP1 characters
 		 * @return true if c is a SLP character, else false
 		 */
-		Integer res = charType.get(c);
+		final Integer res = charTypeNonLenient.get(c);
 		return (res != null); 
 	}
 	
-	public int syllEndingCombinations(int char1, int char2) {
+	public int syllEndingCombinations(final int char1, final int char2) {
 		/**
 		 * Finds all combinations that correspond to a syllable ending
 		 * 
@@ -308,24 +378,28 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		}
 	}
 	
-	private int afterConsonantCluster(CharacterBuffer inputBuffer, int currentIdx ) {
+	private int afterConsonantCluster(final CharacterBuffer inputBuffer, final int currentIdx ) {
 		/**
 		 * checks whether the next consonants constitute a trailing cluster of consonants or not.
 		 * @return the combination
 		 */
 		// see who comes first, a vowel, a legal punctuation or the end of the buffer
 		int nextSylEndIdx = currentIdx;
-		char[] buffer = inputBuffer.getBuffer();
+		final char[] buffer = inputBuffer.getBuffer();
 		while (nextSylEndIdx < inputBuffer.getLength()) {
-			if (charType.containsKey((int)buffer[nextSylEndIdx]) && charType.get((int)buffer[nextSylEndIdx]) == CONSONANT) {
+		    final int nextChar = (int)buffer[nextSylEndIdx];
+		    Integer nextCharType = charType.get(nextChar);
+			if (nextCharType != null && nextCharType == CONSONANT) {
 				if (nextSylEndIdx+1 == inputBuffer.getLength()) {
 					return CLUSTER_N_END;
 				}// if char at nextSylIdx
-				else if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
-					return CLUSTER_N_VOWEL;
-				} else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
-					//System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
-					return CLUSTER_N_PUNCT;
+				else {
+				    if (charType.containsKey((int)buffer[nextSylEndIdx+1]) && charType.get((int)buffer[nextSylEndIdx+1]) == VOWEL) {
+				        return CLUSTER_N_VOWEL;
+				    } else if (skrtPunct.containsKey((int)buffer[nextSylEndIdx+1])) {
+				        //System.out.print(Arrays.asList(buffer).subList(0, nextSylEndIdx).toString());
+				        return CLUSTER_N_PUNCT;
+				    }
 				}
 			}
 			nextSylEndIdx++;
