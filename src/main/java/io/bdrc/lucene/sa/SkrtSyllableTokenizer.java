@@ -331,6 +331,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 	    dataLen = 0;
 	    previousChar = -1;
 	    finalOffset = 0;
+	    lastStartOffset = 0;
 	    ioBuffer.reset(); // make sure to reset the IO buffer!!
 	}
 	
