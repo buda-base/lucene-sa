@@ -47,16 +47,20 @@ import org.slf4j.LoggerFactory;
  */
 public final class SkrtSyllableTokenizer extends Tokenizer {
 
+    static final HashMap<Integer, Integer> charTypeNonLenient = new HashMap<>();
+    static final HashMap<Integer, Integer> charTypeLenient = new HashMap<>();
+
     final HashMap<Integer, Integer> charType;
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSyllableTokenizer() {
 	    super(Dummy.READER);
+        this.charType = charTypeNonLenient;
 	}
 
     public SkrtSyllableTokenizer(final boolean lenientMode) {
-        super();
+        super(Dummy.READER);
         if (lenientMode) {
             this.charType = charTypeLenient;
         } else {
@@ -108,9 +112,6 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		skrtPunct.put((int)'-', PUNCT);
 		return skrtPunct;
 	}
-
-	static final HashMap<Integer, Integer> charTypeNonLenient = new HashMap<>();
-	static final HashMap<Integer, Integer> charTypeLenient = new HashMap<>();
 	
 	static void addToMap(int c, int type) {
 	    charTypeNonLenient.put(c, type);
