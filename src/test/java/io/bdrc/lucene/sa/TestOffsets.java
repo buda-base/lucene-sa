@@ -45,6 +45,7 @@ public class TestOffsets {
             System.out.println("2 " + String.join(" ", termList) + "\n");
             assertThat(termList, is(expected));
         } catch (IOException e) {
+            e.printStackTrace();
             assertTrue(false);
         }
     }
@@ -62,8 +63,7 @@ public class TestOffsets {
         TokenStream words = tokenize(reader, skrtWordTokenizer);
         assertTokenStream(words, expected, input);
     }
-    
-    @SuppressWarnings("resource")
+
     @Test
     public void testDemoWords() throws IOException
     {
@@ -82,46 +82,43 @@ public class TestOffsets {
         System.out.println("0 " + input);
         
         SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
-        reader = new Roman2SlpFilter(reader);
-        TokenStream words = tokenize(reader, skrtWordTokenizer);
+        Reader readerF = new Roman2SlpFilter(reader);
+        TokenStream words = tokenize(readerF, skrtWordTokenizer);
         words = new PrepositionMergingFilter(words);
         words = new Slp2RomanFilter(words);
         assertTokenStream(words, expected, input);
+        reader.close();
     }
     
-    @SuppressWarnings("resource")
-    @Test
-    public void bug1Offset() throws IOException
-    {
-        System.out.println("bug1Offset");
-        String input = "śrījñāna";
+    public static void testIASTOffsets(String input, List<String> expected, boolean wordmode) throws IOException {
         Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:3", "2:5", "5:8", "5:8", "5:8");
         System.out.println("0 " + input);
-        
-        SkrtWordTokenizer skrtWordTokenizer = new SkrtWordTokenizer(); 
-        reader = new Roman2SlpFilter(reader);
-        TokenStream words = tokenize(reader, skrtWordTokenizer);
+        Tokenizer tokenizer;
+        if (wordmode) {
+            tokenizer = new SkrtWordTokenizer(); 
+        } else {
+            tokenizer = new SkrtSyllableTokenizer();
+        }
+        Reader readerF = new Roman2SlpFilter(reader);
+        TokenStream words = tokenize(readerF, tokenizer);
         words = new PrepositionMergingFilter(words);
-        words = new Slp2RomanFilter(words);
+        //words = new Slp2RomanFilter(words);
         assertTokenStream(words, expected, input);
+        reader.close();
     }
     
-    @SuppressWarnings("resource")
     @Test
     public void bug2Offset() throws IOException
     {
         System.out.println("bug2Offset");
-        String input = "śrījñāna";
-        Reader reader = new StringReader(input);
-        List<String> expected = Arrays.asList("0:3", "3:6", "6:8");
-        System.out.println("0 " + input);
-        
-        SkrtSyllableTokenizer skrtSyllableTokenizer = new SkrtSyllableTokenizer(); 
-        reader = new Roman2SlpFilter(reader);
-        TokenStream words = tokenize(reader, skrtSyllableTokenizer);
-        words = new PrepositionMergingFilter(words);
-        words = new Slp2RomanFilter(words);
-        assertTokenStream(words, expected, input);
+        testIASTOffsets("śrījñāna", Arrays.asList("0:3", "3:6", "6:8"), false);
+        testIASTOffsets("śrījñāna", Arrays.asList("0:3", "2:5", "5:8", "5:8", "5:8"), true);
+        testIASTOffsets("parāpakārarakṣā", Arrays.asList("0:4", "0:4", "3:8", "3:11", "4:11", "11:15", "11:15", "11:15", "11:15"), true);
+        testIASTOffsets("pratimāmānalakṣaṇa", Arrays.asList("0:8", "8:12", "13:17"), true);
+        testIASTOffsets("madhyamakavatara", Arrays.asList("0:10", "10:15"), true);
+        testIASTOffsets("rasāyanaśāstroddhṛti", Arrays.asList("0:6", "0:6", "6:10", "10:14", "10:14", "15:20", "15:20", "15:15", "15:20", "15:20"), true);
+        testIASTOffsets("kosalālaṃkāratattvasaṃgrahatīka", Arrays.asList("0:7", "7:9", "9:13", "13:19", "19:27", "27:30"), true);
+        testIASTOffsets("śrītrailokyavijayamaṇḍalopāyikā-āryatattvasaṃgrahatantroddhṛtā", Arrays.asList("0:3", "4:7", "4:12", "12:19", "14:19", "19:23", "23:27", "23:27", "26:29", "26:31", "34:38", "34:38", "34:38", "38:39", "39:42", "41:45", "42:50", "50:56", "50:56", "57:62", "57:62", "57:62", "57:62"), true);
     }
+    
 }
