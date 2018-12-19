@@ -1,4 +1,4 @@
-# Lucene Analyzers for Sanskrit
+# Lucene Analyzers for Sanskrit 
 
 This repository contains bricks to implement a full analyzer pipeline in Lucene:
 
