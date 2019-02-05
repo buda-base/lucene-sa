@@ -1100,7 +1100,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * @param inflected the inflected word to be lemmatized
 	 * @param tokenEndIdx 
 	 *
-	 * @return: the list of all the possible lemmas given the current context
+	 * @return the list of all the possible lemmas given the current context
 	 */
 	TreeSet<String> reconstructLemmas(String cmd, String inflected, int tokenEndIdx) throws NumberFormatException, IOException {
 		TreeSet<String> totalLemmas = new TreeSet<String>();	// uses a Set to avoid duplicates
@@ -1176,7 +1176,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
 	 * See SandhiedCombinationTests for how these figures were obtained
 	 *
 	 * @param ioBuffer: is given as parameter for the tests
-	 * @return: true if sandhied is one of the combinations; false otherwise
+	 * @return true if sandhied is one of the combinations; false otherwise
 	 */
 	static boolean containsSandhiedCombination(RollingCharBuffer ioBuffer, int bufferIndex, String sandhied, int sandhiType) throws IOException {
 		switch(sandhiType) {

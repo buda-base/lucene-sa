@@ -130,7 +130,7 @@ public class CmdParser {
 	 * 
 	 * @param inflected  the inflected form (a substring of the input string)
 	 * @param cmd to be parsed. contains the info for reconstructing lemmas 
-	 * @return: parsed structure 
+	 * @return parsed structure 
 	 */
 
 	public TreeMap<String, TreeSet<DiffStruct>> parse(String inflected, String cmd) {
