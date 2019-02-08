@@ -43,7 +43,7 @@ import io.bdrc.lucene.sixtofour.Dummy;
  * @author Chris Tomlinson
  * @author Hélios Hildt
  **/
-public final class SanskritAnalyzer extends Analyzer {	
+public final class SanskritAnalyzer extends Analyzer {
 	String mode = null;
 	String inputEncoding = null;
 	String lenient = null;
@@ -135,7 +135,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates) throws IOException {
 	    this(mode, inputEncoding);
 	    this.filterGeminates = filterGeminates;
-	    if (mode != null && mode.equals("word")) {
+	    if ("word".equals(mode)) {
 	        this.mergePrepositions = mergePrepositions;
 	    } else if (mergePrepositions){
 	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
@@ -221,17 +221,19 @@ public final class SanskritAnalyzer extends Analyzer {
 		Tokenizer source = null;
 		TokenStream filter = null;
 		
-		if (mode != null && mode.equals("word")) {
+		if ("word".equals(mode)) {
 			try {
 				source = new SkrtWordTokenizer();
 			} catch (Exception e) {
 			    CommonHelpers.logger.error("cannot initialize SkrtWordTokenizer", e);
                 return null;
             }
-		} else if (mode != null && mode.equals("syl")) {
+		} else if ("syl".equals(mode)) {
 			source = new SkrtSyllableTokenizer(this.lenient != null);
-		} else if (mode != null && mode.equals("space")) {
+		} else if ("space".equals(mode)) {
 		    source = new WhitespaceTokenizer(Dummy.READER);
+		} else {
+		    throw new IllegalArgumentException("Illegal argument 'mode' value: " + mode);
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
@@ -244,7 +246,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		    filter = new PrepositionMergingFilter(filter);
 		}
 		
-		if (lenient != null && lenient.equals("index")) {
+		if ("index".equals(lenient)) {
 		    filter = new Slp2RomanFilter(filter);
 		    filter = new LenientTokenFilter(filter);
 		}

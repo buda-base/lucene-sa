@@ -38,7 +38,7 @@ public class PrepositionMergingFilter extends TokenFilter{
                 // Do not merge if the preposition Token comes from a previous input string 
                 // and not one of the possible token of the current input string (should work in most cases)  
                 if (!nextToken || bOffset >= offsetAtt.startOffset())
-                    return true;
+                    return nextToken;
                 final int totalLen = termAtt.length()+previousLen;
                 if (offsetAtt.startOffset() < bOffset) {
                     logger.warn("beginning offset incorrect. start of preposition token: ", bOffset, "start of next token: ", offsetAtt.startOffset(), 
@@ -46,7 +46,7 @@ public class PrepositionMergingFilter extends TokenFilter{
                     bOffset = offsetAtt.startOffset();  // catches the potential cases not taken care of above
                 }
                 try {
-                    offsetAtt.setOffset(bOffset, offsetAtt.endOffset());;
+                    offsetAtt.setOffset(bOffset, offsetAtt.endOffset());
                 } catch (Exception ex) {
                     logger.error("PrepositionMergingFilter.incrementToken error on term: " + termAtt.toString() + "; message: " + ex.getMessage());
                 }

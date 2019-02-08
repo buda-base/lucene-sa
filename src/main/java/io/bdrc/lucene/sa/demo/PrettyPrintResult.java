@@ -125,9 +125,9 @@ public class PrettyPrintResult {
                 while (words.incrementToken()) {
                     // token string
                     String token = TermAttr.toString(); 
-                    if (typeAttr.type() == "word") {
+                    if ("word".equals(typeAttr.type())) {
                         token += '✓';
-                    } else if (typeAttr.type() == "lemma") {
+                    } else if ("lemma".equals(typeAttr.type())) {
                         token += '√';
                     } else {
                         token += '❌';
@@ -182,9 +182,9 @@ public class PrettyPrintResult {
             while (tokenStream.incrementToken()) { 
                 tokNo ++; 
                 String token = TermAttr.toString(); 
-                if (typeAttr.type() == "word") {
+                if ("word".equals(typeAttr.type())) {
                     token += '✓';
-                } else if (typeAttr.type() == "lemma") {
+                } else if ("lemma".equals(typeAttr.type())) {
                     token += '√';
                 } else {
                     token += '❌';

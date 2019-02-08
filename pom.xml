@@ -4,10 +4,10 @@
     <groupId>io.bdrc.lucene</groupId>
 	<artifactId>lucene-sa</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.8</version>
-	<name>lucene-sa-pi</name>
+	<version>1.0.11</version>
+	<name>lucene-sa</name>
 	<description>Sanskrit and Pali Lucene analyzer and components</description>
-    <url>https://github.com/drupchen/lucene-sa</url>
+    <url>https://github.com/BuddhistDigitalResourceCenter/lucene-sa</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
