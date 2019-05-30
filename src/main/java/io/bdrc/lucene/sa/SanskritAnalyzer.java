@@ -92,25 +92,6 @@ public final class SanskritAnalyzer extends Analyzer {
 	}
 
     /**
-     * This constructor is required by eXist (3.4.1 may be higher as well)
-     * Apart from the version parameter, it is identical to the constructor by mode and inputEncoding
-     *
-     * @param version         Apache Lucene version that eXist employs
-     * @param mode            `space`, `syl` or `word`
-     * @param inputEncoding   `SLP`, `deva` or `roman`
-     *
-     * @throws IOException the file containing the stoplist can not be read
-     */
-    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding) throws IOException {
-        this(mode, inputEncoding);
-    }
-
-    public SanskritAnalyzer() throws IOException {
-        this("XYZ", "XYZ");
-        CommonHelpers.logger.info("new (default c-tor) SanskritAnalyzer()");
-    }
-
-    /**
 	 * 
 	 * Allows to change the default value(true) of mergePrepositions.
 	 * 
@@ -158,8 +139,46 @@ public final class SanskritAnalyzer extends Analyzer {
 	    this(mode, inputEncoding, mergePrepositions, filterGeminates);
 	    this.lenient = lenient;
 	}
-	
-	/**
+
+    /**
+     * This constructor is required by eXist (3.4.1 may be higher as well)
+     * Apart from the version parameter, it is identical to the constructor by mode and inputEncoding
+     *
+     * @param version         Apache Lucene version that eXist employs
+     * @param mode            `space`, `syl` or `word`
+     * @param inputEncoding   `SLP`, `deva` or `roman`
+     *
+     * @throws IOException the file containing the stoplist can not be read
+     */
+    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding) throws IOException {
+        this(mode, inputEncoding);
+    }
+
+    /**
+     * This constructor is required by eXist (3.4.1 may be higher as well)
+     * Apart from the version parameter, it is identical to the corresponding constructor taking the rest of the params
+     *
+     * @param version         Apache Lucene version that eXist employs
+     * @param mode              `space`, `syl` or `word`
+     * @param inputEncoding     `SLP`, `deva` or `roman`
+     * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
+     * @param filterGeminates   simplify geminates if true, else keep them as-is
+     *                              Important: must be true if using SkrtWordTokenizer to not stumble on the spelling variations
+     * @param lenient           `index` or `query`
+     *
+     * @throws IOException  the file containing the stoplist can not be found
+     */
+    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient) throws IOException {
+        this(mode, inputEncoding, mergePrepositions, filterGeminates, lenient);
+    }
+
+    /** Default constructor - also required for eXist (3.4.1) integration */
+    public SanskritAnalyzer() throws IOException {
+        this("XYZ", "XYZ");
+        CommonHelpers.logger.info("new (default c-tor) SanskritAnalyzer()");
+    }
+
+    /**
 	 * @param inputStream Stream containing the list of stopwords
 	 * @param comment The string representing a comment.
 	 * @return the {@link ArrayList} of stopwords
