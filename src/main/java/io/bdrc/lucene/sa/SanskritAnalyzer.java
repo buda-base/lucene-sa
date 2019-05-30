@@ -88,7 +88,6 @@ public final class SanskritAnalyzer extends Analyzer {
      */
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
 	    this(mode, inputEncoding, "");
-	    CommonHelpers.logger.info("new SanskritAnalyzer('" + mode + "', '" + inputEncoding + "')");
 	}
 
     /**
@@ -137,6 +136,10 @@ public final class SanskritAnalyzer extends Analyzer {
      */
 	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient) throws IOException {
 	    this(mode, inputEncoding, mergePrepositions, filterGeminates);
+
+	    if (null != lenient && !"index".equals(lenient) && !"query".equals(lenient))
+            throw new IllegalArgumentException("Illegal argument 'lenient' value: " + mode);
+
 	    this.lenient = lenient;
 	}
 
@@ -152,6 +155,11 @@ public final class SanskritAnalyzer extends Analyzer {
      */
     public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding) throws IOException {
         this(mode, inputEncoding);
+        CommonHelpers.logger.info("eXist -> new SanskritAnalyzer"
+            + "( version: " + version
+            + ", mode: " + mode
+            + ", inputEncoding: " + inputEncoding
+            + " )");
     }
 
     /**
@@ -164,12 +172,20 @@ public final class SanskritAnalyzer extends Analyzer {
      * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
      * @param filterGeminates   simplify geminates if true, else keep them as-is
      *                              Important: must be true if using SkrtWordTokenizer to not stumble on the spelling variations
-     * @param lenient           `index` or `query`
+     * @param lenient           `index` or `query` or null or 'no' (equals to null)
      *
      * @throws IOException  the file containing the stoplist can not be found
      */
-    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient) throws IOException {
-        this(mode, inputEncoding, mergePrepositions, filterGeminates, lenient);
+    public SanskritAnalyzer(org.apache.lucene.util.Version version, String mode, String inputEncoding, Boolean mergePrepositions, Boolean filterGeminates, String lenient) throws IOException {
+        this(mode, inputEncoding, mergePrepositions, filterGeminates, "no".equals(lenient) ? null : lenient);
+        CommonHelpers.logger.info("eXist -> new SanskritAnalyzer"
+            + "( version: " + version
+            + ", mode: " + mode
+            + ", encoding: " + inputEncoding
+            + ", mergePrepositions: " + mergePrepositions
+            + ", filterGeminates: " + filterGeminates
+            + ", lenient: " + lenient
+            + " )");
     }
 
     /** Default constructor - also required for eXist (3.4.1) integration */
