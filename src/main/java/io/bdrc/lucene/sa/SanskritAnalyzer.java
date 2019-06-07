@@ -138,7 +138,7 @@ public final class SanskritAnalyzer extends Analyzer {
 	    this(mode, inputEncoding, mergePrepositions, filterGeminates);
 
 	    if (null != lenient && !"index".equals(lenient) && !"query".equals(lenient))
-            throw new IllegalArgumentException("Illegal argument 'lenient' value: " + mode);
+            throw new IllegalArgumentException(String.format("Illegal value for argument lenient: '%s'", lenient));
 
 	    this.lenient = lenient;
 	}
@@ -181,7 +181,7 @@ public final class SanskritAnalyzer extends Analyzer {
         CommonHelpers.logger.info("eXist -> new SanskritAnalyzer"
             + "( version: " + version
             + ", mode: " + mode
-            + ", encoding: " + inputEncoding
+            + ", inputEncoding: " + inputEncoding
             + ", mergePrepositions: " + mergePrepositions
             + ", filterGeminates: " + filterGeminates
             + ", lenient: " + lenient
@@ -268,7 +268,7 @@ public final class SanskritAnalyzer extends Analyzer {
 		} else if ("space".equals(mode)) {
 		    source = new WhitespaceTokenizer(Dummy.READER);
 		} else {
-		    throw new IllegalArgumentException("Illegal argument 'mode' value: " + mode);
+		    throw new IllegalArgumentException(String.format("Illegal value for argument mode: '%s'", mode));
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
