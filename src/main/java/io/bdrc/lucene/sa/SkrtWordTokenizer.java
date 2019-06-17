@@ -211,9 +211,7 @@ public final class SkrtWordTokenizer extends Tokenizer {
             return null;
         }
         long end = System.currentTimeMillis();
-        String msg = "Trie loaded in: " + (end - start) / 1000 + "s.";
-        logger.info(msg);
-        System.out.println(msg);
+        logger.info(String.format("Trie loaded in %d s.", (end - start) / 1000));
 	    return trie;
 	}
 	

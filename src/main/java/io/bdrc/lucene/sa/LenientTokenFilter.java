@@ -118,12 +118,14 @@ public class LenientTokenFilter extends TokenFilter{
     
     @Override
     public final boolean incrementToken() throws IOException {
-        
+        CommonHelpers.logger.info("---------------");
         while(this.input.incrementToken()) {            
-            String currentToken = this.input.getAttribute(CharTermAttribute.class).toString();
-            currentToken = renderLenient(currentToken);
-            
-            termAtt.setEmpty().append(currentToken);
+            String originalToken = this.input.getAttribute(CharTermAttribute.class).toString();
+            String lenientToken = renderLenient(originalToken);
+
+            CommonHelpers.logger.info(String.format("%s  ->  %s", originalToken, lenientToken));
+
+            termAtt.setEmpty().append(lenientToken);
             return true;
         }
         return false;
