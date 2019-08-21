@@ -67,13 +67,13 @@ A text in IAST is tokenized in words for indexing. The queries are in SLP and to
 
 ##### 2. Lenient search (words)
 A text in IAST is tokenized in words. The queries in IAST are tokenized at spaces: search users provide separate words with no sandhi applied. Geminates are normalized(`true`) only at indexing time so that geminates are considered to be spelling variants instead of mistakes. The lenient search is enabled by indicating either "index" or "query", thereby selecting the appropriate pipeline of filters.
-- Indexing:  `SanskritAnalyzer("word", "roman", false, true, "index")`
-- Querying:  `SanskritAnalyzer("space", "roman", false, false, "query")`
+- Indexing:  `SanskritAnalyzer("word", "roman", false, true, "index")` or simpler: `SanskritAnalyzer.IndexLenientWord()`
+- Querying:  `SanskritAnalyzer("space", "roman", false, false, "query")` or simpler: `SanskritAnalyzer.QueryLenientWord()`
 
 ##### 3. Lenient search (syllables)
 The encoding of the text to index and that of the query is the same as above. Lenient search is also enabled in the same way.
-- Indexing:  `SanskritAnalyzer("syl", "roman", false, true, "index")`
-- Querying:  `SanskritAnalyzer("syl", "roman", false, false, "query")`
+- Indexing:  `SanskritAnalyzer("syl", "roman", false, true, "index")` or simpler: `SanskritAnalyzer.IndexLenientSyl()`
+- Querying:  `SanskritAnalyzer("syl", "roman", false, false, "query")` or simpler: `SanskritAnalyzer.QueryLenientSyl()`
 
 ### SkrtWordTokenizer
 

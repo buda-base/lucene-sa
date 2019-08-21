@@ -43,11 +43,11 @@ import io.bdrc.lucene.sixtofour.Dummy;
  * @author Chris Tomlinson
  * @author Hélios Hildt
  **/
-public final class SanskritAnalyzer extends Analyzer {
+public class SanskritAnalyzer extends Analyzer {
 	String mode = null;
 	String inputEncoding = null;
 	String lenient = null;
-	String defaultStopFile = "skrt-stopwords.txt";
+	public static final String defaultStopFile = "skrt-stopwords.txt";
 	String stopFilename = null;
 	boolean mergePrepositions = true;
 	boolean filterGeminates = false;
@@ -66,12 +66,9 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.mode = mode;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-		    InputStream stream;
-		    if (stopFilename.isEmpty()) {
-		        stream = CommonHelpers.getResourceOrFile(defaultStopFile);
-		    } else {
-		        stream = CommonHelpers.getResourceOrFile(stopFilename);
-		    }
+		    if (stopFilename.isEmpty()) stopFilename = defaultStopFile;
+		    this.stopFilename = stopFilename; // just for bookkeeping/debugging
+            InputStream stream = CommonHelpers.getResourceOrFile(stopFilename);
             this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		}
 	}
@@ -87,7 +84,9 @@ public final class SanskritAnalyzer extends Analyzer {
      * @throws IOException the file containing the stoplist can not be read 
      */
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
-	    this(mode, inputEncoding, "");
+        // Turn stopwords filter OFF for "syl" mode:
+        this(mode, inputEncoding, "syl".equals(mode) ? null : defaultStopFile);
+        if ("syl".equals(mode)) CommonHelpers.logger.info("StopWords filter turned off due to 'syl' mode");
 	}
 
     /**
@@ -118,13 +117,19 @@ public final class SanskritAnalyzer extends Analyzer {
 	    if ("word".equals(mode)) {
 	        this.mergePrepositions = mergePrepositions;
 	    } else if (mergePrepositions){
-	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
+	        CommonHelpers.logger.error("Can only merge prepositions in 'word' mode");
 	        return;
 	    }
 	}
 	
 	/**
-     * 
+     * Instead of using this highly sophisticated c-tor,
+     * consider using one of these (inner static) classes:
+     *   class IndexLenientSyl extends SanskritAnalyzer
+     *   class QueryLenientSyl extends SanskritAnalyzer
+     *   class IndexLenientWord extends SanskritAnalyzer
+     *   class QueryLenientWord extends SanskritAnalyzer
+     *
      * @param mode              `space`, `syl` or `word`
      * @param inputEncoding     `SLP`, `deva` or `roman`
      * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
@@ -300,4 +305,28 @@ public final class SanskritAnalyzer extends Analyzer {
 
 		return new TokenStreamComponents(source, filter);
 	}
+
+    public class IndexLenientSyl extends SanskritAnalyzer {
+        public IndexLenientSyl() throws IOException {
+            super("syl", "roman", false, true, "index");
+        }
+    }
+
+    public class QueryLenientSyl extends SanskritAnalyzer {
+        public QueryLenientSyl() throws IOException {
+            super("syl", "roman", false, false, "query");
+        }
+    }
+
+    public class IndexLenientWord extends SanskritAnalyzer {
+        public IndexLenientWord() throws IOException {
+            super("word", "roman", false, true, "index");
+        }
+    }
+
+    public class QueryLenientWord extends SanskritAnalyzer {
+        public QueryLenientWord() throws IOException {
+            super("space", "roman", false, false, "query");
+        }
+    }
 }
