@@ -241,25 +241,25 @@ public class SanskritAnalyzer extends Analyzer {
 		return new TokenStreamComponents(source, filter);
 	}
 
-    public class IndexLenientSyl extends SanskritAnalyzer {
+    public static class IndexLenientSyl extends SanskritAnalyzer {
         public IndexLenientSyl() throws IOException {
             super("syl", "roman", false, true, "index");
         }
     }
 
-    public class QueryLenientSyl extends SanskritAnalyzer {
+    public static class QueryLenientSyl extends SanskritAnalyzer {
         public QueryLenientSyl() throws IOException {
             super("syl", "roman", false, false, "query");
         }
     }
 
-    public class IndexLenientWord extends SanskritAnalyzer {
+    public static class IndexLenientWord extends SanskritAnalyzer {
         public IndexLenientWord() throws IOException {
             super("word", "roman", false, true, "index");
         }
     }
 
-    public class QueryLenientWord extends SanskritAnalyzer {
+    public static class QueryLenientWord extends SanskritAnalyzer {
         public QueryLenientWord() throws IOException {
             super("space", "roman", false, false, "query");
         }
