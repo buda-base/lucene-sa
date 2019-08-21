@@ -84,6 +84,7 @@ public class SanskritAnalyzer extends Analyzer {
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
         // Turn stopwords filter OFF for "syl" mode:
         this(mode, inputEncoding, "syl".equals(mode) ? null : defaultStopFile);
+        if ("syl".equals(mode)) CommonHelpers.logger.info("StopWords filter turned off due to 'syl' mode");
 	}
 	
 	/**
@@ -114,7 +115,7 @@ public class SanskritAnalyzer extends Analyzer {
 	    if ("word".equals(mode)) {
 	        this.mergePrepositions = mergePrepositions;
 	    } else if (mergePrepositions){
-	        CommonHelpers.logger.error("Can only merge prepositions if mode == word");
+	        CommonHelpers.logger.error("Can only merge prepositions in 'word' mode");
 	        return;
 	    }
 	}
@@ -215,7 +216,7 @@ public class SanskritAnalyzer extends Analyzer {
 		} else if ("space".equals(mode)) {
 		    source = new WhitespaceTokenizer();
 		} else {
-		    throw new IllegalArgumentException("Illegal argument 'mode' value: " + mode);
+		    throw new IllegalArgumentException("Illegal argument `mode` value: " + mode);
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
