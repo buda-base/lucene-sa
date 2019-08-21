@@ -238,26 +238,26 @@ public class SanskritAnalyzer extends Analyzer {
 	}
 
     public class IndexLenientSyl extends SanskritAnalyzer {
-        public IndexLenientSyl(String inputEncoding) throws IOException {
-            super("syl", inputEncoding, false, true, "index");
+        public IndexLenientSyl() throws IOException {
+            super("syl", "roman", false, true, "index");
         }
     }
 
     public class QueryLenientSyl extends SanskritAnalyzer {
-        public QueryLenientSyl(String inputEncoding) throws IOException {
-            super("syl", inputEncoding, false, false, "query");
+        public QueryLenientSyl() throws IOException {
+            super("syl", "roman", false, false, "query");
         }
     }
 
     public class IndexLenientWord extends SanskritAnalyzer {
-        public IndexLenientWord(String inputEncoding) throws IOException {
-            super("word", inputEncoding, false, true, "index");
+        public IndexLenientWord() throws IOException {
+            super("word", "roman", false, true, "index");
         }
     }
 
     public class QueryLenientWord extends SanskritAnalyzer {
-        public QueryLenientWord(String inputEncoding) throws IOException {
-            super("word", inputEncoding, false, false, "query");
+        public QueryLenientWord() throws IOException {
+            super("space", "roman", false, false, "query");
         }
     }
 }
