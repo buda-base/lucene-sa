@@ -139,6 +139,10 @@ public class SanskritAnalyzer extends Analyzer {
      */
 	public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient) throws IOException {
 	    this(mode, inputEncoding, mergePrepositions, filterGeminates);
+
+        if (null != lenient && !"index".equals(lenient) && !"query".equals(lenient))
+            throw new IllegalArgumentException(String.format("Illegal value for argument lenient: '%s'", lenient));
+
 	    this.lenient = lenient;
 	}
 	
@@ -216,7 +220,7 @@ public class SanskritAnalyzer extends Analyzer {
 		} else if ("space".equals(mode)) {
 		    source = new WhitespaceTokenizer();
 		} else {
-		    throw new IllegalArgumentException("Illegal argument `mode` value: " + mode);
+		    throw new IllegalArgumentException(String.format("Illegal value for argument mode: '%s'", mode));
 		}
 		
 		if (skrtStopWords != null) {  // a stop list was parsed
