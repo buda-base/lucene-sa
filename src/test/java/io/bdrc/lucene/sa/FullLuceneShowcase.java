@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -50,6 +51,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -80,13 +82,13 @@ public class FullLuceneShowcase {
         // querying in words, from SLP, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer("word", "SLP");
 
-        File testSubFolder = folder.newFolder("test");
+        File testSubFolder = folder.newFolder("test-default");
 
         indexTest(input, indexingAnalyzer, testSubFolder);
-        int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        TopDocs res = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
         folder.delete(); // just to be sure it is done
 
-        assertEquals(hits, 1);
+        assertEquals(res.totalHits, 1);
     }
 
     @Test
@@ -101,18 +103,18 @@ public class FullLuceneShowcase {
         // querying in words, from SLP, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer.QueryLenientWord();
 
-        File testSubFolder = folder.newFolder("test");
+        File testSubFolder = folder.newFolder("test-word");
 
         indexTest(input, indexingAnalyzer, testSubFolder);
-        int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        TopDocs res = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
         folder.delete(); // just to be sure it is done
 
-        assertEquals(hits, 1);
+        assertEquals(res.totalHits, 1);
     }
     
     @Test
     public void testSylLenientSearch() throws IOException, ParseException {
-        String input = "buddhaṃ śaraṇaṃ gacchāmi. " + 
+        String input = "buddhaṃ śaraṇaṃ gacchāmi. " +
                 "dharmaṃ śaraṇaṃ gacchāmi. " + 
                 "saṃghaṃ śaraṇaṃ gacchāmi. ";
         String query = "budda darma";
@@ -122,16 +124,73 @@ public class FullLuceneShowcase {
         // querying in words, from iast, with stopwords  
         Analyzer queryingAnalyzer = new SanskritAnalyzer.QueryLenientSyl();
 
-        File testSubFolder = folder.newFolder("test");
+        File testSubFolder = folder.newFolder("test-syl");
 
         indexTest(input, indexingAnalyzer, testSubFolder);
-        int hits = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        TopDocs res = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
         folder.delete(); // just to be sure it is done
 
-        assertEquals(hits, 1);
+        assertEquals(res.totalHits, 1);
     }
-    
-    int searchIndex(String queryString, Analyzer analyzer, File indexFolder, int repeat)
+
+    private static boolean approxEqualas(float value, float target, float eps) {
+        float diff = target - value;
+        return -eps < diff && diff < eps;
+    }
+
+    private static boolean approxEqualas(float value, float target) {
+        return approxEqualas(value, target, 0.01f);
+    }
+
+    @Test
+    public void testSearchMaitreyapraṇidhana() throws IOException, ParseException {
+        String[] inputs = {
+            "Maitreyapraṇidhanarāja",
+            "Maitreya­praṇidhana­rāja",
+            "maitreyapraṇid",
+            "Maitreyapraṇid",
+            "MaitreyaPraṇid",
+            "Maitreyapraṇidhana",
+            "Maitreya­praṇidhana",
+            "Maitreyaṇidhana",
+        };
+        float[] targetScores = {
+            1.22f,
+            1.76f,
+            0.39f,
+            0.39f,
+            0.39f,
+            1.97f,
+            1.97f,
+            1.91f,
+        };
+
+        String query = "Maitreya­praṇidhana"; // this is soft hyphen - \u00AD
+
+        // indexing in syllables, from iast, with stopwords
+        Analyzer indexingAnalyzer = new SanskritAnalyzer.IndexLenientSyl();
+        // querying in words, from iast, with stopwords
+        Analyzer queryingAnalyzer = new SanskritAnalyzer.QueryLenientSyl();
+
+        File testSubFolder = folder.newFolder("test-maitreya");
+
+        indexTests(inputs, indexingAnalyzer, testSubFolder);
+        TopDocs res = searchIndex(query, queryingAnalyzer, testSubFolder, 1);
+        folder.delete(); // just to be sure it is done
+
+        assertEquals(res.totalHits, 8);
+        ScoreDoc[] docs = res.scoreDocs;
+        Arrays.sort(docs, (x, y) -> { return x.doc - y.doc; }); // sort docs by doc id
+        for (int i = 0; i < docs.length; ++i) {
+            if (!approxEqualas(docs[i].score, targetScores[i], 0.01f))
+                Assert.fail(String.format("doc[%d] was expected to score ~ %.2f"
+                                        + " but scored %f instead."
+                                        + " (epsilon is too tight?)",
+                                   i, targetScores[i], docs[i].score));
+        }
+    }
+
+    TopDocs searchIndex(String queryString, Analyzer analyzer, File indexFolder, int repeat)
             throws IOException, ParseException {
         String field = "contents";
 
@@ -158,11 +217,10 @@ public class FullLuceneShowcase {
         for (int i = 0; i < hits.length; i++) {
             // output raw format
             System.out.println("\tdoc=" + hits[i].doc + " score=" + hits[i].score);
-
         }
 
         reader.close();
-        return numTotalHits;
+        return results;
     }
 
     /** Bootstrapping for indexDoc() */
@@ -180,6 +238,11 @@ public class FullLuceneShowcase {
         IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
         IndexWriter writer = new IndexWriter(dir, iwc);
         indexDoc(writer, docPath, Files.getLastModifiedTime(docPath).toMillis());
+    }
+
+    void indexTests(String[] inputs, Analyzer analyzer, File testSubFolder) throws IOException {
+        for (String str : inputs)
+            indexTest(str, analyzer, testSubFolder);
     }
 
     /** Indexes a single document */
