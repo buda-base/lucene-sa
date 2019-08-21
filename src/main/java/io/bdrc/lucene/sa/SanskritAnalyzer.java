@@ -41,11 +41,11 @@ import org.apache.lucene.util.IOUtils;
  * @author Chris Tomlinson
  * @author Hélios Hildt
  **/
-public final class SanskritAnalyzer extends Analyzer {
+public class SanskritAnalyzer extends Analyzer {
 	String mode = null;
 	String inputEncoding = null;
 	String lenient = null;
-	String defaultStopFile = "skrt-stopwords.txt";
+	public static final String defaultStopFile = "skrt-stopwords.txt";
 	String stopFilename = null;
 	boolean mergePrepositions = true;
 	boolean filterGeminates = false;
@@ -64,12 +64,9 @@ public final class SanskritAnalyzer extends Analyzer {
 		this.mode = mode;
 		this.inputEncoding = inputEncoding;
 		if (stopFilename != null) {
-		    InputStream stream = null;
-		    if (stopFilename.isEmpty()) {
-		        stream = CommonHelpers.getResourceOrFile(defaultStopFile);
-		    } else {
-		        stream = CommonHelpers.getResourceOrFile(stopFilename);
-		    }
+		    if (stopFilename.isEmpty()) stopFilename = defaultStopFile;
+		    this.stopFilename = stopFilename; // just for bookkeeping/debugging
+            InputStream stream = CommonHelpers.getResourceOrFile(stopFilename);
             this.skrtStopWords = StopFilter.makeStopSet(getWordList(stream, "#"));
 		}
 	}
@@ -85,7 +82,8 @@ public final class SanskritAnalyzer extends Analyzer {
      * @throws IOException the file containing the stoplist can not be read 
      */
 	public SanskritAnalyzer(String mode, String inputEncoding) throws IOException {
-	    this(mode, inputEncoding, "");
+        // Turn stopwords filter OFF for "syl" mode:
+        this(mode, inputEncoding, "syl".equals(mode) ? null : defaultStopFile);
 	}
 	
 	/**
@@ -122,7 +120,13 @@ public final class SanskritAnalyzer extends Analyzer {
 	}
 	
 	/**
-     * 
+     * Instead of using this highly sophisticated c-tor,
+     * consider using one of these (inner static) classes:
+     *   class IndexLenientSyl extends SanskritAnalyzer
+     *   class QueryLenientSyl extends SanskritAnalyzer
+     *   class IndexLenientWord extends SanskritAnalyzer
+     *   class QueryLenientWord extends SanskritAnalyzer
+     *
      * @param mode              `space`, `syl` or `word`
      * @param inputEncoding     `SLP`, `deva` or `roman`
      * @param mergePrepositions concatenates the token containing the preposition with the next one if true.
@@ -231,4 +235,28 @@ public final class SanskritAnalyzer extends Analyzer {
 		
 		return new TokenStreamComponents(source, filter);
 	}
+
+    public class IndexLenientSyl extends SanskritAnalyzer {
+        public IndexLenientSyl(String inputEncoding) throws IOException {
+            super("syl", inputEncoding, false, true, "index");
+        }
+    }
+
+    public class QueryLenientSyl extends SanskritAnalyzer {
+        public QueryLenientSyl(String inputEncoding) throws IOException {
+            super("syl", inputEncoding, false, false, "query");
+        }
+    }
+
+    public class IndexLenientWord extends SanskritAnalyzer {
+        public IndexLenientWord(String inputEncoding) throws IOException {
+            super("word", inputEncoding, false, true, "index");
+        }
+    }
+
+    public class QueryLenientWord extends SanskritAnalyzer {
+        public QueryLenientWord(String inputEncoding) throws IOException {
+            super("word", inputEncoding, false, false, "query");
+        }
+    }
 }
