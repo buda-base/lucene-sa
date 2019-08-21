@@ -21,11 +21,14 @@ package io.bdrc.lucene.sa;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -115,15 +118,17 @@ public class LenientTokenFilter extends TokenFilter{
         }   
         return token;
     }
+
+    static final Logger logger = LoggerFactory.getLogger(LenientTokenFilter.class);
     
     @Override
     public final boolean incrementToken() throws IOException {
-        CommonHelpers.logger.info("---------------");
-        while(this.input.incrementToken()) {            
+        while(this.input.incrementToken()) {
             String originalToken = this.input.getAttribute(CharTermAttribute.class).toString();
             String lenientToken = renderLenient(originalToken);
 
-            CommonHelpers.logger.info(String.format("%s  ->  %s", originalToken, lenientToken));
+            if (!Objects.equals(originalToken, lenientToken))
+                logger.info(String.format("%s  ~>  %s", originalToken, lenientToken));
 
             termAtt.setEmpty().append(lenientToken);
             return true;
