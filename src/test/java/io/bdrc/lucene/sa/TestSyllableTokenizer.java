@@ -87,6 +87,21 @@ public class TestSyllableTokenizer {
     }
 
     @Test
+    public void nara() throws IOException
+    {
+        System.out.println("test nara combination");
+        String input = "Maitreyapraṇidhanarāja";
+        Reader reader = new StringReader(input);
+        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, true, "index");
+        List<String> expected = Arrays.asList("mai", "tre", "ya", "pra", "ni", "da", "na", "ra", "ja");
+        System.out.println("0 " + input);
+        TokenStream words = sa.tokenStream("", reader);
+        words.reset();
+        assertTokenStream(words, expected);
+        sa.close();
+    }
+    
+    @Test
     public void withAnalyzerQuery() throws IOException
     {
         System.out.println("analyzer query mode");
