@@ -182,11 +182,11 @@ public class FullLuceneShowcase {
         ScoreDoc[] docs = res.scoreDocs;
         Arrays.sort(docs, (x, y) -> { return x.doc - y.doc; }); // sort docs by doc id
         for (int i = 0; i < docs.length; ++i) {
-            if (!approxEqualas(docs[i].score, targetScores[i], 0.01f))
+            if (!approxEqualas(docs[i].score, targetScores[i], 0.05f))
                 Assert.fail(String.format("doc[%d] was expected to score ~ %.2f"
                                         + " but scored %f instead."
                                         + " (epsilon is too tight?)",
-                                   i, targetScores[i], docs[i].score));
+                                          i, targetScores[i], docs[i].score));
         }
     }
 
