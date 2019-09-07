@@ -35,8 +35,10 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
 
 public class LenientCharFilter extends MappingCharFilter {
 
+    public final static NormalizeCharMap map = getSkrtNormalizeCharMap();
+    
     public LenientCharFilter(Reader in) {
-        super(getSkrtNormalizeCharMap(), in);
+        super(map, in);
     }
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
@@ -63,12 +65,75 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("L", "l"); // ḻ
         builder.add("|", "l"); // ḻh
         
+        // here's an interesting trick: we want to normalize
+        // M and m to n when it could be an anusvara, this means
+        // that some more false positives will appear, but
+        // it's necessary in order to allow users to search
+        // m for anusvara
+        // see AnusvaraNormalizer
+        // before dentals
+        builder.add("Mt", "nt");
+        builder.add("MT", "nT");
+        builder.add("Md", "nd");
+        builder.add("MD", "nD");
+        builder.add("Ml", "nl");
+        builder.add("Ms", "ns");
+        // before retroflex
+        builder.add("Mw", "nt");
+        builder.add("MW", "nt");
+        builder.add("Mq", "nd");
+        builder.add("MQ", "nd");
+        builder.add("Mr", "nr");
+        builder.add("Mz", "ns");
+        builder.add("Mx", "nl");
+        // before palatals
+        builder.add("Mc", "nc");
+        builder.add("MC", "nc");
+        builder.add("Mj", "nj");
+        builder.add("MJ", "nj");
+        builder.add("My", "ny");
+        builder.add("MS", "ns");
+        // before velars
+        builder.add("Mk", "nk");
+        builder.add("MK", "nl");
+        builder.add("Mg", "ng");
+        builder.add("MG", "ng");
+        // else m
+        builder.add("M", "m");
+        
+        // then doing the same for m
+        builder.add("mt", "nt");
+        builder.add("mT", "nT");
+        builder.add("md", "nd");
+        builder.add("mD", "nD");
+        builder.add("ml", "nl");
+        builder.add("ms", "ns");
+        // before retroflex
+        builder.add("mw", "nt");
+        builder.add("mW", "nt");
+        builder.add("mq", "nd");
+        builder.add("mQ", "nd");
+        builder.add("mr", "nr");
+        builder.add("mz", "ns");
+        builder.add("mx", "nl");
+        // before palatals
+        builder.add("mc", "nc");
+        builder.add("mC", "nc");
+        builder.add("mj", "nj");
+        builder.add("mJ", "nj");
+        builder.add("my", "ny");
+        builder.add("mS", "ns");
+        // before velars
+        builder.add("mk", "nk");
+        builder.add("mK", "nl");
+        builder.add("mg", "ng");
+        builder.add("mG", "ng");
+        
         // nasals and visarga
-        builder.add("M", "m"); // ṃ and ṁ
         builder.add("N", "n"); // ṅ
         builder.add("Y", "n"); // ñ
-        builder.add("~", "");  // ̃  (simply deleted)
-        builder.add("H", "h"); // ḥ
+        builder.add("~", "n");  // ̃  or m̐, this could be expanded like the anusvara... but I'm not sure...
+        builder.add("H", ""); // ḥ, ignoring visargas
         
         // aspirated consonants
         builder.add("K", "k"); // kh
