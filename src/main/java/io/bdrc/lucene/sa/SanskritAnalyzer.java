@@ -49,6 +49,7 @@ public class SanskritAnalyzer extends Analyzer {
 	String stopFilename = null;
 	boolean mergePrepositions = true;
 	boolean filterGeminates = false;
+	boolean normalizeAnusvara = false;
 	
 	CharArraySet skrtStopWords = null;
 	
@@ -145,6 +146,13 @@ public class SanskritAnalyzer extends Analyzer {
 
 	    this.lenient = lenient;
 	}
+
+
+   public SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, boolean normalizeAnusvara) throws IOException {
+        this(mode, inputEncoding, mergePrepositions, filterGeminates);
+
+        this.normalizeAnusvara = normalizeAnusvara;
+    }
 	
 	/**
 	 * @param inputStream Stream containing the list of stopwords
@@ -190,9 +198,11 @@ public class SanskritAnalyzer extends Analyzer {
 		    return null;
 		}
 		
-	    if (filterGeminates == true) {
+	    if (filterGeminates)
 	        reader = new GeminateNormalizingFilter(reader);
-	    }
+	    
+	    if (normalizeAnusvara)
+	        reader = new AnusvaraNormalizer(reader);
 	    
 	    // what happens in lenient mode is that first the input is transformed
 	    // into SLP then into SLP->Lenient. This is a bit awkward but it should work
