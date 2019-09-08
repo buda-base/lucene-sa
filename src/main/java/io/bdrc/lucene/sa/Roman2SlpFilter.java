@@ -40,9 +40,10 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  */
 
 public class Roman2SlpFilter extends MappingCharFilter {
-
+    public final static NormalizeCharMap map = getSkrtNormalizeCharMap();
+    
     public Roman2SlpFilter(Reader in) {
-        super(getSkrtNormalizeCharMap(), in);
+        super(map, in);
     }
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
@@ -50,13 +51,17 @@ public class Roman2SlpFilter extends MappingCharFilter {
     	// the square brackets and the curly brackets in the <out> tag were removed as they have no equivalent in SLP
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         
-        // Sanskrit additions from ISO 15919
+        // Anusvara (including ISO 15919)
         builder.add("\u1e41", "M"); // ṁ
         builder.add("m\u0307", "M"); // NFD ṁ
         builder.add("\u1e40", "M"); // Ṁ
         builder.add("M\u0307", "M"); // NFD Ṁ
         builder.add("m\u0310", "~"); // m̐
         builder.add("M\u0310", "~"); // M̐
+        builder.add("\u1e43", "M"); // ṃ
+        builder.add("m\u0323", "M"); // NFD ṃ 
+        builder.add("\u1e42", "M"); // Ṃ
+        builder.add("M\u0323", "M"); // NFD Ṃ
 
         // Plain normalizations
         builder.add("ē", "e"); // simply normalizes to o, since Sanskrit doesn't distinguish between long and short e vowel
@@ -163,10 +168,6 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("E", "e");
         builder.add("O", "o");
         builder.add("M", "m");
-        builder.add("\u1e43", "M"); // ṃ
-        builder.add("m\u0323", "M"); // NFD ṃ 
-        builder.add("\u1e42", "M"); // Ṃ
-        builder.add("M\u0323", "M"); // NFD Ṃ
         builder.add("H", "h");
         builder.add("\u1e25", "H"); // ḥ
         builder.add("h\u0323", "H"); // NFD ḥ 

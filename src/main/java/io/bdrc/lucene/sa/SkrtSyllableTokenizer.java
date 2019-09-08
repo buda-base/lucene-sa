@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 public final class SkrtSyllableTokenizer extends Tokenizer {
 
     final HashMap<Integer, Integer> charType;
+    final boolean lenientMode;
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
@@ -56,6 +57,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 
     public SkrtSyllableTokenizer(final boolean lenientMode) {
         super();
+        this.lenientMode = lenientMode;
         if (lenientMode) {
             this.charType = charTypeLenient;
         } else {
@@ -174,10 +176,8 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		addToMap((int)'B', CONSONANT);
 		addToMap((int)'m', CONSONANT);
 		addToMap((int)'y', CONSONANT);
-		addToMap((int)'r', CONSONANT, false);
-		addToMap((int)'r', VOWEL, true);
-		addToMap((int)'l', CONSONANT, false);
-		addToMap((int)'l', VOWEL, true);
+		addToMap((int)'r', CONSONANT);
+		addToMap((int)'l', CONSONANT);
 		addToMap((int)'v', CONSONANT);
 		addToMap((int)'L', CONSONANT);
 		addToMap((int)'|', CONSONANT);

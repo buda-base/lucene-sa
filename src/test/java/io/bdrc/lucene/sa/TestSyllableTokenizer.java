@@ -86,19 +86,23 @@ public class TestSyllableTokenizer {
         sa.close();
     }
 
-    @Test
-    public void nara() throws IOException
-    {
-        System.out.println("test nara combination");
-        String input = "Maitreyapraṇidhanarāja";
+    public void assertLenient(String input, List<String> expected, String lenientMode) throws IOException {
         Reader reader = new StringReader(input);
-        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, true, "index");
-        List<String> expected = Arrays.asList("mai", "tre", "ya", "pra", "ni", "da", "na", "ra", "ja");
+        SanskritAnalyzer sa = new SanskritAnalyzer("syl", "roman", false, true, lenientMode);
         System.out.println("0 " + input);
         TokenStream words = sa.tokenStream("", reader);
         words.reset();
         assertTokenStream(words, expected);
         sa.close();
+    }
+    
+    @Test
+    public void testRnorm() throws IOException
+    {
+        assertLenient("Maitreyapraṇidhanarāja", Arrays.asList("mai", "tre", "ya", "pra", "ni", "da", "na", "ra", "ja"), "index");
+        assertLenient("ṛtāvan kṛṣṇa śrījñāna", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "index");
+        assertLenient("rtavan krshna shrjnana", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "query");
+        assertLenient("ritavan krishna shrijnana", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "query");
     }
     
     @Test

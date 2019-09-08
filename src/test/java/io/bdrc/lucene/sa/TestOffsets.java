@@ -119,6 +119,9 @@ public class TestOffsets {
         testIASTOffsets("rasāyanaśāstroddhṛti", Arrays.asList("0:6", "0:6", "6:10", "10:14", "10:14", "15:20", "15:20", "15:15", "15:20", "15:20"), true);
         testIASTOffsets("kosalālaṃkāratattvasaṃgrahatīka", Arrays.asList("0:7", "7:9", "9:13", "13:19", "19:27", "27:30"), true);
         testIASTOffsets("śrītrailokyavijayamaṇḍalopāyikā-āryatattvasaṃgrahatantroddhṛtā", Arrays.asList("0:3", "4:7", "4:12", "12:19", "14:19", "19:23", "23:27", "23:27", "26:29", "26:31", "34:38", "34:38", "34:38", "38:39", "39:42", "41:45", "42:50", "50:56", "50:56", "57:62", "57:62", "57:62", "57:62"), true);
+        // these tests pass but it's weird, they should reproduce https://github.com/buda-base/lucene-sa/issues/20
+        testIASTOffsets("nāmasaṅgīti", Arrays.asList("0:2", "2:4", "4:6", "6:9", "9:11"), false);
+        testIASTOffsets("tathāgatanāmasaṃgītikalpikabhadrālaṃkāramālā-nāma", Arrays.asList("0:2", "2:5", "5:7", "7:9", "9:11", "11:13", "13:16", "16:18", "18:20", "20:22", "22:25", "25:27", "27:30", "30:33", "33:36", "36:38", "38:40", "40:42", "42:44", "45:47", "47:49"), false);
     }
     
 }
