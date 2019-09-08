@@ -243,6 +243,7 @@ public class SanskritAnalyzer extends Analyzer {
 		    filter = new PrepositionMergingFilter(filter);
 		}
 		
+		// is that really necessary? it feels very odd...
 		if ("index".equals(lenient)) {
 		    filter = new Slp2RomanFilter(filter);
 		    filter = new LenientTokenFilter(filter);

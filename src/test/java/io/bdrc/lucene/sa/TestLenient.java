@@ -66,9 +66,9 @@ public class TestLenient {
 
 	// Both tests have the same input and the same expected output.
 	// This ensures an equivalent treatment at indexing and querying times.
-	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇn php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
+	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇnñṅ oṃ ama amta aṃta anta amba aṃba php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
 	private static final List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-            "nn", "pp", "bbb", "sss", "rrr", "lll", "hh", "sr");	
+            "nnnn", "om", "ama", "anta", "anta", "anta", "amba", "amba" ,"pp", "bbb", "sss", "rrr", "lll", "h", "sr");	
 	
 	@BeforeClass
 	public static void init() {
@@ -91,7 +91,7 @@ public class TestLenient {
     public void testLenientAnalyzer() throws Exception {
         System.out.println("Testing Lenient Analyzer");
         String i = "kṛṣṇa mañjuśrī mañjuśrījñā";
-        String li = "krishna manjushri manjushrijna";
+        String li = "krishna mamjushri manjushrijna";
         Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
         Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
         TokenStream indexTk = indexingAnalyzer.tokenStream("", i);

@@ -20,6 +20,7 @@
 package io.bdrc.lucene.sa;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -47,78 +48,79 @@ public class LenientTokenFilter extends TokenFilter{
     
     protected CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);    
     
-    public final static String renderLenient(String token) {
-        
-        Map<String, String> lenientMap = new TreeMap<String, String>(new CommonHelpers.LengthComp());
+    private final static Map<String,String> lenientMap = getMap();
+    
+    private final static Map<String,String> getMap() {
+        Map<String, String> res = new HashMap<>();//TreeMap<String, String>(new CommonHelpers.LengthComp());
         
         /* custom transformations (must mirror those found in LenientCharFilter) */ 
-        lenientMap.put("sh", "s");
-        lenientMap.put("ri", "r");
-        lenientMap.put("rī", "r");
-        lenientMap.put("li", "l");
-        lenientMap.put("lī", "l");
-        lenientMap.put("v", "b");
+        res.put("sh", "s");
+        res.put("ri", "r");
+        res.put("rī", "r");
+        res.put("li", "l");
+        res.put("lī", "l");
+        res.put("v", "b");
         
         /* IAST lenient conversions */
-        lenientMap.put("ā", "a");   
+        res.put("ā", "a");
+        res.put("ī", "i");
+        res.put("ū", "u");
+        
+        res.put("kh", "k");   
+        res.put("gh", "g");
+        
+        res.put("ch", "c");
+        res.put("jh", "j");
+        
+        res.put("(th|ṭh|ṭ)", "t");
+        
+        res.put("(dh|ḍh|ḍ)", "d");
+        
+        res.put("(ṇ|ṅ|ñ)", "n");
 
-        lenientMap.put("ī", "i");   
-        
-        lenientMap.put("ū", "u");   
-        
-        lenientMap.put("kh", "k");   
-        
-        lenientMap.put("gh", "g");
-        
-        lenientMap.put("ch", "c");
-        
-        lenientMap.put("jh", "j");
-        
-        lenientMap.put("th", "t");   
-        lenientMap.put("ṭh", "t");
-        lenientMap.put("ṭ", "t");
-        
-        lenientMap.put("dh", "d");
-        lenientMap.put("ḍh", "d");
-        lenientMap.put("ḍ", "d");
-        
-        lenientMap.put("ṇ", "n");
-        lenientMap.put("ṅ", "n");
-        lenientMap.put("ñ", "n");
+        res.put("ph", "p");
+        res.put("bh", "b");   
 
-        lenientMap.put("ph", "p");
-        
-        lenientMap.put("bh", "b");   
+        res.put("(?:ś|ṣ)", "s");
 
-        lenientMap.put("ś", "s");   
-        lenientMap.put("ṣ", "s");
+        res.put("ṝ", "r");  
+        res.put("ṛ", "r");
 
-        lenientMap.put("ṝ", "r");  
-        lenientMap.put("ṛ", "r");
+        res.put("ḹ", "l");  
+        res.put("ḷ", "l");
+        res.put("ḻ", "l");
+        res.put("ḻh", "l");
 
-        lenientMap.put("ḹ", "l");  
-        lenientMap.put("ḷ", "l");
-        lenientMap.put("ḻ", "l");
-        lenientMap.put("ḻh", "l");
-
-        lenientMap.put("ḥ", "h");  
+        res.put("ḥ", "");  
         
-        lenientMap.put("ṃ", "m");
-        lenientMap.put("ṁ", "m");
+        // normalization for anusvara
+        res.put("(ṃ|ṁ|m)t", "nt");
+        res.put("(ṃ|ṁ|m)d", "nd");
+        res.put("(ṃ|ṁ|m)l", "nl");
+        res.put("(ṃ|ṁ|m)s", "ns");
+        res.put("(ṃ|ṁ|m)r", "nr");
+        res.put("(ṃ|ṁ|m)c", "nc");
+        res.put("(ṃ|ṁ|m)j", "nj");
+        res.put("(ṃ|ṁ|m)y", "ny");
+        res.put("(ṃ|ṁ|m)k", "nk");
+        res.put("(ṃ|ṁ|m)g", "ng");
+        // else m
+        res.put("(ṃ|ṁ)", "m");
         
-        lenientMap.put("\u0303", ""); // ̃  from ~ in SLP
+        res.put("\u0303", "m"); // ̃  from ~ in SLP
         
+        return res;
+    }
+    
+    public final static String renderLenient(String token) {
         for (String toReplace : lenientMap.keySet()) {
-            if (token.contains(toReplace)) {
-                token = token.replaceAll(toReplace, lenientMap.get(toReplace));
-            }
+            token = token.replaceAll(toReplace, lenientMap.get(toReplace));
         }   
         return token;
     }
     
     @Override
     public final boolean incrementToken() throws IOException {
-        
         while(this.input.incrementToken()) {            
             String currentToken = this.input.getAttribute(CharTermAttribute.class).toString();
             currentToken = renderLenient(currentToken);
