@@ -67,13 +67,30 @@ public class TestLenient {
 	// Both tests have the same input and the same expected output.
 	// This ensures an equivalent treatment at indexing and querying times.
 	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇnñṅ oṃ ama amta aṃta anta amba aṃba php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
-	private static final List<String> expected = Arrays.asList("krsna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-            "nnnn", "om", "ama", "anta", "anta", "anta", "amba", "amba" ,"pp", "bbb", "sss", "rrr", "lll", "h", "sr");	
+	private static final List<String> expected = Arrays.asList("krisna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
+            "nnnn", "om", "ama", "anta", "anta", "anta", "amba", "amba" ,"pp", "bbb", "sss", "ririri", "lilili", "h", "sri");	
 	
 	@BeforeClass
 	public static void init() {
 		System.out.println("input:\n       " + input);
 		System.out.println("expected:\n       " + String.join(" ", expected));
+	}
+
+	public static void assertRnorm(String in, String expected) {
+	    //System.out.println(RNormalizerFilter.normalizeR(in));
+	    assertTrue(expected.equals(RNormalizerFilter.normalizeR(in)));
+	}
+
+	@Test
+	public void testRnormalizer() {
+	    assertRnorm("amrta", "amrita");
+        assertRnorm("arta", "arta");
+        assertRnorm("r", "ri");
+        assertRnorm("ara", "ara");
+	    assertRnorm("rtavan", "ritavan");
+	    assertRnorm("ritavan", "ritavan");
+	    assertRnorm("ksatriya", "ksatriya");
+	    assertRnorm("ksatrya", "ksatriya");
 	}
 	
     @Test
@@ -90,8 +107,8 @@ public class TestLenient {
     @Test
     public void testLenientAnalyzer() throws Exception {
         System.out.println("Testing Lenient Analyzer");
-        String i = "kṛṣṇa mañjuśrī mañjuśrījñā";
-        String li = "krishna mamjushri manjushrijna";
+        String i = "ṛtāvan kṛṣṇa mañjuśrī mañjuśrījñā";
+        String li = "rtavan krishna mamjushri manjushrijna";
         Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
         Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
         TokenStream indexTk = indexingAnalyzer.tokenStream("", i);

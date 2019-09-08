@@ -55,10 +55,10 @@ public class LenientTokenFilter extends TokenFilter{
         
         /* custom transformations (must mirror those found in LenientCharFilter) */ 
         res.put("sh", "s");
-        res.put("ri", "r");
-        res.put("rī", "r");
-        res.put("li", "l");
-        res.put("lī", "l");
+        //res.put("ri", "r");
+        //res.put("rī", "r");
+        //res.put("li", "l");
+        //res.put("lī", "l");
         res.put("v", "b");
         
         /* IAST lenient conversions */
@@ -83,12 +83,12 @@ public class LenientTokenFilter extends TokenFilter{
 
         res.put("(?:ś|ṣ)", "s");
 
-        res.put("ṝ", "r");  
-        res.put("ṛ", "r");
+        res.put("ṝ", "ri");  
+        res.put("ṛ", "ri");
 
-        res.put("ḹ", "l");  
-        res.put("ḷ", "l");
-        res.put("ḻ", "l");
+        res.put("ḹ", "li");  
+        res.put("ḷ", "li");
+        res.put("ḻ", "li");
         res.put("ḻh", "l");
 
         res.put("ḥ", "");  

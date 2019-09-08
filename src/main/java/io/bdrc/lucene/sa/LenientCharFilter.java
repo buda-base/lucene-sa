@@ -20,6 +20,8 @@
 package io.bdrc.lucene.sa;
 
 import java.io.Reader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
@@ -41,14 +43,14 @@ public class LenientCharFilter extends MappingCharFilter {
         super(map, in);
     }
 
-    public final static NormalizeCharMap getSkrtNormalizeCharMap() {
+    private final static NormalizeCharMap getSkrtNormalizeCharMap() {
         final NormalizeCharMap.Builder builder = new NormalizeCharMap.Builder();
         /* custom transformations (must mirror those found in LenientTokenFilter)*/
         builder.add("sh", "s");
-        builder.add("ri", "r");
-        builder.add("li", "l");
-        builder.add("rI", "r");
-        builder.add("lI", "l");
+        //builder.add("ri", "ri");
+        //builder.add("li", "li");
+        //builder.add("rI", "ri");
+        //builder.add("lI", "li");
         builder.add("v", "b");
         
         /* lenient SLP transformations */
@@ -58,11 +60,11 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("U", "u"); // ū
         
         // ri and li vowels become r and l
-        builder.add("f", "r"); // ṛ
-        builder.add("F", "r"); // ṝ 
-        builder.add("x", "l"); // ḷ
-        builder.add("X", "l"); // Ḹ 
-        builder.add("L", "l"); // ḻ
+        builder.add("f", "ri"); // ṛ
+        builder.add("F", "ri"); // ṝ 
+        builder.add("x", "li"); // ḷ
+        builder.add("X", "li"); // Ḹ 
+        builder.add("L", "li"); // ḻ
         builder.add("|", "l"); // ḻh
         
         // here's an interesting trick: we want to normalize
@@ -103,9 +105,9 @@ public class LenientCharFilter extends MappingCharFilter {
         
         // then doing the same for m
         builder.add("mt", "nt");
-        builder.add("mT", "nT");
+        builder.add("mT", "nt");
         builder.add("md", "nd");
-        builder.add("mD", "nD");
+        builder.add("mD", "nd");
         builder.add("ml", "nl");
         builder.add("ms", "ns");
         // before retroflex
@@ -132,7 +134,7 @@ public class LenientCharFilter extends MappingCharFilter {
         // nasals and visarga
         builder.add("N", "n"); // ṅ
         builder.add("Y", "n"); // ñ
-        builder.add("~", "n");  // ̃  or m̐, this could be expanded like the anusvara... but I'm not sure...
+        builder.add("~", "m");  // ̃  or m̐, this could be expanded like the anusvara... but I'm not sure...
         builder.add("H", ""); // ḥ, ignoring visargas
         
         // aspirated consonants
