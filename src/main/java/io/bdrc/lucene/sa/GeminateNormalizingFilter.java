@@ -30,6 +30,7 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  *  
  *  CCr   →  Cr 
  *  rCC   →  rC
+ *  RCC   →  RC
  *  CCy   →  Cy
  * 
  * See the mappings below.
@@ -88,10 +89,12 @@ public class GeminateNormalizingFilter extends MappingCharFilter {
         consonants.put("dD", "D");
         consonants.put("pP", "P");
         consonants.put("bB", "B");
-                
+        
+        
         for (Map.Entry<String, String> entry : consonants.entrySet()) {
             builder.add(entry.getKey()+"r", entry.getValue()+"r");
             builder.add("r"+entry.getKey(), "r"+entry.getValue());
+            builder.add("R"+entry.getKey(), "R"+entry.getValue());
             builder.add(entry.getKey()+"y", entry.getValue()+"y");
         }
 

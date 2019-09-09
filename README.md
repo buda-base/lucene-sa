@@ -44,10 +44,11 @@ This repository contains bricks to implement a full analyzer pipeline in Lucene:
  - `stopFilename`: path to the file, empty string (default list) or `null` (no stopwords)
 
 ```
-    SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates)
+    SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, boolean normalizeAnusvara)
 ```
  - `mergePrepositions`: concatenates the token containing a preposition with the next one if true.
- - `filterGeminates`: simplify geminates(see below) if `true`, else keep them as-is (default behavior).  If the input text may contain geminates and the tokenization mode is `word`, make sure this is set to true to avoid stumbling on the spelling variations.
+ - `filterGeminates`: normalize geminates (see [below](#geminatenormalizingfilter)) if `true`, else keep them as-is (default behavior)
+ - `normalizeAnusvara`: normalize anusvara (see [below](#anusvaranormalizer)) if `true`, else keep them as-is (default behavior) 
  
 ```
     SanskritAnalyzer(String mode, String inputEncoding, boolean mergePrepositions, boolean filterGeminates, String lenient)
@@ -65,13 +66,8 @@ A text in IAST is tokenized in words for indexing. The queries are in SLP and to
 - Indexing:  `SanskritAnalyzer("word", "roman")`
 - Querying:  `SanskritAnalyzer("word", "SLP")`
 
-##### 2. Lenient search (words)
-A text in IAST is tokenized in words. The queries in IAST are tokenized at spaces: search users provide separate words with no sandhi applied. Geminates are normalized(`true`) only at indexing time so that geminates are considered to be spelling variants instead of mistakes. The lenient search is enabled by indicating either "index" or "query", thereby selecting the appropriate pipeline of filters.
-- Indexing:  `SanskritAnalyzer("word", "roman", false, true, "index")` or simpler: `SanskritAnalyzer.IndexLenientWord()`
-- Querying:  `SanskritAnalyzer("space", "roman", false, false, "query")` or simpler: `SanskritAnalyzer.QueryLenientWord()`
-
-##### 3. Lenient search (syllables)
-The encoding of the text to index and that of the query is the same as above. Lenient search is also enabled in the same way.
+##### 2. Lenient search (syllables)
+A text in IAST is indexed in syllables and the queries are split into syllables in the same way. Geminates and anusvara are normalized. The lenient search is enabled by indicating either "index" or "query", thereby selecting the appropriate pipeline of filters.
 - Indexing:  `SanskritAnalyzer("syl", "roman", false, true, "index")` or simpler: `SanskritAnalyzer.IndexLenientSyl()`
 - Querying:  `SanskritAnalyzer("syl", "roman", false, false, "query")` or simpler: `SanskritAnalyzer.QueryLenientSyl()`
 
@@ -179,12 +175,22 @@ This filter applies the following simplification rules:
 ```  
     CCr   →  Cr 
     rCC   →  rC
+    ṛCC   →  ṛC
     CCy   →  Cy
 ```
 
 `C` is any consonant in the following list: [k g c j ṭ ḍ ṇ t d n p b m y v l s ś ṣ]
 The second consonant can be the aspirated counterpart(ex: `rtth`), in which case the consonant that is kept is the aspirated one.
 Thus, "arttha" is normalized to "artha",  "dharmma" to "dharma".
+
+### AnusvaraNormalizer
+
+Anusvara get normalized to:
+- `n` before dentals
+- `ṇ` before retroflex
+- `ñ` before palatals
+- `ṅ` before velars
+- `m` otherwise
  
 ### Roman2SlpFilter
 
@@ -213,15 +219,11 @@ This filter also normalizes non-Sanskrit Devanagari characters. Ex: क़ => क
 This following transformations are applied to the IAST transcription:
  - all long vowels become short
  - all aspirated consonants become unaspirated
- - "ṃ" and "ṁ" become "m"
- - "ṅ" becomes "n"
  - all remaining diacritics are removed
 
 Keeping in the same spirit, these informal conventions are modified: 
- - "sh"(for "ś") becomes "s"
- - "ri"(for "ṛ") becomes "r"
- - "li"(for "ḷ") becomes "l"
- - "v" becomes "b" (arbitrarily)
+ - "sh" (for "ś") becomes "s"
+ - "v" becomes "b"
 
 In terms of implementation, the input normalization happening in `Roman2SlpFilter` and `Deva2SlpFilter` is leveraged by always applying them first, then transforming SLP into lenient sanskrit.  
 Relying on Roman2SlpFilter has the additional benefit of correctly dealing with capital letters by lower-casing the input.
