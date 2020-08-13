@@ -146,7 +146,7 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("R\u0325", "f"); // NFD R̥
         builder.add("r\u0325\u0304", "F"); // r̥̄
         builder.add("R\u0325\u0304", "F"); // R̥̄
-        builder.add("L", "r");
+        builder.add("L", "l");
         builder.add("\u1e37", "x"); // ḷ
         builder.add("l\u0323", "x"); // NFD ḷ
         builder.add("\u1e36", "x"); // Ḷ
@@ -264,7 +264,7 @@ public class Roman2SlpFilter extends MappingCharFilter {
         builder.add("L\u0331h", "L"); // NFD Ḻh
         builder.add("\u1e3AH", "|"); // ḺH
         builder.add("L\u0331H", "L"); // NFD ḺH
-        builder.add("\u0303", "~"); // ̃  
+        builder.add("\u0303", "~"); // ̃
 
         return builder.build();
     }
