@@ -20,8 +20,6 @@
 package io.bdrc.lucene.sa;
 
 import java.io.Reader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.charfilter.MappingCharFilter;
 import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
@@ -147,6 +145,37 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("Q", "d"); // ḍh
         builder.add("P", "p"); // ph
         builder.add("B", "b"); // bh
+        builder.add("Kh", "k");
+        builder.add("Gh", "g");
+        builder.add("Ch", "c");
+        builder.add("Jh", "j");
+        builder.add("Th", "t"); 
+        builder.add("Dh", "d");
+        builder.add("Qh", "d");
+        builder.add("Ph", "p");
+        builder.add("Bh", "b");
+
+        // geminates
+        builder.add("kK", "k"); // kkh
+        builder.add("gG", "g"); // ggh
+        builder.add("cC", "c"); // cch
+        builder.add("jJ", "j"); // jjh
+        builder.add("tT", "t"); // tth 
+        builder.add("dD", "d"); // ddh
+        builder.add("qQ", "d"); // ḍḍh
+        builder.add("pP", "p"); // pph
+        builder.add("bB", "b"); // bbh
+        builder.add("kk", "k");
+        builder.add("gg", "g");
+        builder.add("cc", "c");
+        builder.add("jj", "j");
+        builder.add("tt", "t"); 
+        builder.add("dd", "d");
+        builder.add("qq", "d");
+        builder.add("pp", "p");
+        builder.add("bb", "b");
+        builder.add("hh", "h");
+        builder.add("vv", "b");
         
         // retroflexes
         builder.add("w", "t"); // ṭ
