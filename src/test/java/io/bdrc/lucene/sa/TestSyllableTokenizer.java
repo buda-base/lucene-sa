@@ -70,6 +70,21 @@ public class TestSyllableTokenizer {
         TokenStream words = tokenize(reader, skrtSylTokenizer);
         assertTokenStream(words, expected);
     }
+
+    @Test
+    public void withTransCase() throws IOException
+    {
+        System.out.println("lenient case");
+        String input = "Nāma-SaṅgīLi";
+        Reader reader = new StringReader(input);
+        reader = new Roman2SlpFilter(reader);
+        reader = new LenientCharFilter(reader);
+        List<String> expected = Arrays.asList("na", "ma", "sa", "ngi", "li");
+        System.out.println("0 " + input);
+        SkrtSyllableTokenizer skrtSylTokenizer = new SkrtSyllableTokenizer();
+        TokenStream words = tokenize(reader, skrtSylTokenizer);
+        assertTokenStream(words, expected);
+    }
     
     @Test
     public void withAnalyzerIndex() throws IOException
