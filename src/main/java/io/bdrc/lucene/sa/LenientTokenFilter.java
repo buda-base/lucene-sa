@@ -20,7 +20,9 @@
 package io.bdrc.lucene.sa;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -48,84 +50,106 @@ public class LenientTokenFilter extends TokenFilter{
     
     protected CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);    
     
-    private final static Map<String,String> lenientMap = getMap();
+    private final static Map<String,String> lenientMap = new HashMap<>();
+    private final static List<String> lenientMapKeys = new ArrayList<>();
     
-    private final static Map<String,String> getMap() {
-        Map<String, String> res = new HashMap<>();//TreeMap<String, String>(new CommonHelpers.LengthComp());
+    static {
+        fillMap();
+    }
+    
+    private final static void addReplacement(final String orig, final String repl) {
+        lenientMap.put(orig, repl);
+        lenientMapKeys.add(orig);
+    }
+    
+    private final static void fillMap() {
         
         /* custom transformations (must mirror those found in LenientCharFilter) */ 
-        res.put("sh", "s");
-        //res.put("ri", "r");
-        //res.put("rī", "r");
-        //res.put("li", "l");
-        //res.put("lī", "l");
-        res.put("v", "b");
+        addReplacement("sh", "s");
+        //addReplacement("ri", "r");
+        //addReplacement("rī", "r");
+        //addReplacement("li", "l");
+        //addReplacement("lī", "l");
+        addReplacement("v", "b");
         
         /* IAST lenient conversions */
-        res.put("ā", "a");
-        res.put("ī", "i");
-        res.put("ū", "u");
+        addReplacement("ā", "a");
+        addReplacement("ī", "i");
+        addReplacement("ū", "u");
         
-        res.put("kh", "k");   
-        res.put("gh", "g");
+        addReplacement("kh", "k");   
+        addReplacement("gh", "g");
         
-        res.put("ch", "c");
-        res.put("jh", "j");
+        addReplacement("ch", "c");
+        addReplacement("jh", "j");
         
-        res.put("(th|ṭh|ṭ)", "t");
+        addReplacement("(?:th|ṭh|ṭ)", "t");
         
-        res.put("(dh|ḍh|ḍ)", "d");
+        addReplacement("(?:dh|ḍh|ḍ)", "d");
         
-        res.put("(ṇ|ṅ|ñ)", "n");
+        addReplacement("(?:ṇ|ṅ|ñ)", "n");
 
-        res.put("ph", "p");
-        res.put("bh", "b");   
+        addReplacement("ph", "p");
+        addReplacement("bh", "b");   
 
-        res.put("(?:ś|ṣ)", "s");
+        addReplacement("(?:ś|ṣ)", "s");
 
-        res.put("ṝ", "ri");  
-        res.put("ṛ", "ri");
+        addReplacement("r", "ri");
+        addReplacement("ṝ", "ri");  
+        addReplacement("ṛ", "ri");
 
-        res.put("ḹ", "li");  
-        res.put("ḷ", "li");
-        res.put("ḻ", "li");
-        res.put("ḻh", "l");
+        addReplacement("l", "li");
+        addReplacement("ḹ", "li");  
+        addReplacement("ḷ", "li");
+        addReplacement("ḻ", "li");
+        addReplacement("ḻh", "l");
+        
+        addReplacement("ii+", "i");
+        
+        addReplacement("cc", "c");
+        addReplacement("tt", "t");
+        addReplacement("dd", "d");
+        addReplacement("gg", "g");
+        addReplacement("kk", "k");
+        addReplacement("jj", "j");
+        addReplacement("pp", "p");
+        addReplacement("bb", "b");
 
-        res.put("ḥ", "");  
+        addReplacement("ḥ", "");  
         
         // normalization for anusvara
-        res.put("(ṃ|ṁ|m)t", "nt");
-        res.put("(ṃ|ṁ|m)d", "nd");
-        res.put("(ṃ|ṁ|m)l", "nl");
-        res.put("(ṃ|ṁ|m)s", "ns");
-        res.put("(ṃ|ṁ|m)r", "nr");
-        res.put("(ṃ|ṁ|m)c", "nc");
-        res.put("(ṃ|ṁ|m)j", "nj");
-        res.put("(ṃ|ṁ|m)y", "ny");
-        res.put("(ṃ|ṁ|m)k", "nk");
-        res.put("(ṃ|ṁ|m)g", "ng");
+        addReplacement("(?:ṃ|ṁ|m)t", "nt");
+        addReplacement("(?:ṃ|ṁ|m)d", "nd");
+        addReplacement("(?:ṃ|ṁ|m)l", "nl");
+        addReplacement("(?:ṃ|ṁ|m)s", "ns");
+        addReplacement("(?:ṃ|ṁ|m)r", "nr");
+        addReplacement("(?:ṃ|ṁ|m)c", "nc");
+        addReplacement("(?:ṃ|ṁ|m)j", "nj");
+        addReplacement("(?:ṃ|ṁ|m)y", "ny");
+        addReplacement("(?:ṃ|ṁ|m)k", "nk");
+        addReplacement("(?:ṃ|ṁ|m)g", "ng");
         // else m
-        res.put("(ṃ|ṁ)", "m");
+        addReplacement("(?:ṃ|ṁ)", "m");
         
-        res.put("\u0303", "m"); // ̃  from ~ in SLP
-        
-        return res;
+        addReplacement("\u0303", "m"); // ̃  from ~ in SLP
     }
     
     public final static String renderLenient(String token) {
-        for (String toReplace : lenientMap.keySet()) {
+        for (final String toReplace : lenientMapKeys) {
+            //System.out.println("in "+token+", replace "+toReplace+" with "+lenientMap.get(toReplace));
             token = token.replaceAll(toReplace, lenientMap.get(toReplace));
+            //System.out.println("results in "+token);
         }   
         return token;
     }
     
     @Override
     public final boolean incrementToken() throws IOException {
-        while(this.input.incrementToken()) {            
+        while(this.input.incrementToken()) {
             String currentToken = this.input.getAttribute(CharTermAttribute.class).toString();
             currentToken = renderLenient(currentToken);
-            
             termAtt.setEmpty().append(currentToken);
+            termAtt.setLength(currentToken.length());
             return true;
         }
         return false;
