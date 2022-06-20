@@ -59,6 +59,14 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("I", "i"); // ī
         builder.add("U", "u"); // ū
         
+        // This is to mitigate a very rare use case in lenient mode
+        builder.add("ri", "ri");
+        builder.add("rI", "ri");
+        builder.add("li", "li");
+        builder.add("lI", "li");
+        builder.add("r", "ri");
+        builder.add("l", "li");
+        
         // ri and li vowels become r and l
         builder.add("f", "ri"); // ṛ
         builder.add("F", "ri"); // ṝ 
@@ -66,6 +74,9 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("X", "li"); // Ḹ 
         builder.add("L", "li"); // ḻ
         builder.add("|", "l"); // ḻh
+        
+        builder.add("ii", "i");
+        builder.add("Ii", "i");
         
         // here's an interesting trick: we want to normalize
         // M and m to n when it could be an anusvara, this means
@@ -147,6 +158,35 @@ public class LenientCharFilter extends MappingCharFilter {
         builder.add("Q", "d"); // ḍh
         builder.add("P", "p"); // ph
         builder.add("B", "b"); // bh
+        
+        // geminates
+        builder.add("kK", "k");
+        builder.add("gG", "g");
+        builder.add("cC", "c");
+        builder.add("jJ", "j");
+        builder.add("tT", "t");
+        builder.add("wW", "t");
+        builder.add("dD", "d");
+        builder.add("qQ", "d");
+        builder.add("pP", "p");
+        builder.add("bB", "b");
+        builder.add("cc", "c");
+        builder.add("jj", "j");
+        builder.add("tt", "t");
+        builder.add("dd", "d");
+        builder.add("gg", "g");
+        builder.add("kk", "k");
+        builder.add("pp", "p");
+        builder.add("bb", "b");
+        builder.add("mm", "m");
+        builder.add("vv", "v");
+        builder.add("ww", "t");
+        builder.add("qq", "d");
+        builder.add("ll", "l");
+        builder.add("ss", "s");
+        builder.add("SS", "s");
+        builder.add("zz", "s");
+        builder.add("yy", "y");
         
         // retroflexes
         builder.add("w", "t"); // ṭ

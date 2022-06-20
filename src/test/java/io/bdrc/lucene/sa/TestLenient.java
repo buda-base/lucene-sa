@@ -1,6 +1,7 @@
 package io.bdrc.lucene.sa;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -66,9 +67,9 @@ public class TestLenient {
 
 	// Both tests have the same input and the same expected output.
 	// This ensures an equivalent treatment at indexing and querying times.
-	private static String input = "kṛṣṇa āa īi ūu ōo khk ghg chc jhj thtṭhṭ dhdḍhḍ ṇnñṅ oṃ ama amta aṃta anta amba aṃba php bhbv śsṣ ṝṛri ḹḷli ḥh śrī";
-	private static final List<String> expected = Arrays.asList("krisna", "aa", "ii", "uu", "oo", "kk", "gg", "cc", "jj", "tttt", "dddd", 
-            "nnnn", "om", "ama", "anta", "anta", "anta", "amba", "amba" ,"pp", "bbb", "sss", "ririri", "lilili", "h", "sri");	
+	private static String input = "kṛṣṇa āa īi ūu ōo kkh ggh cch jjh tth ṭṭh ddh ḍḍh ṇnñṅ oṃ ama amta aṃta anta amba aṃba pph bbh śsṣ ṝṛri ḹḷli ḥh śrī";
+	private static final List<String> expected = Arrays.asList("krisna", "aa", "i", "uu", "oo", "k", "g", "c", "j", "t", "t", "d", "d", 
+            "nnnn", "om", "ama", "anta", "anta", "anta", "amba", "amba" ,"p", "b", "sss", "ririri", "lilili", "h", "sri");	
 	
 	@BeforeClass
 	public static void init() {
@@ -96,20 +97,20 @@ public class TestLenient {
     @Test
     public void testLenientTokenFilter() throws Exception {
     	System.out.println("Testing LenientTokenFilter");
+    	assertEquals("ri", LenientTokenFilter.renderLenient("rii"));
     	CharFilter cs = new Roman2SlpFilter(new StringReader(input));
-    	
     	TokenStream ts = tokenize(cs, new WhitespaceTokenizer());
     	ts = new Slp2RomanFilter(ts);
     	ts = new LenientTokenFilter(ts);
         assertTokenStream(ts, expected);
     }
-
+    
     @Test
     public void testLenientAnalyzer() throws Exception {
         System.out.println("Testing Lenient Analyzer");
-        String i = "ṛtāvan kṛṣṇa mañjuśrī mañjuśrījñā";
-        String li = "rtavan krishna mamjushri manjushrijna";
-        Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, true, "index");
+        String i = "ṛtāvan kṛṣṇa mañjuśrī mañjuśrījñā Pramāṇavārttikaṭīkā vajracchedikā vajracchedikā dharmma dharmma aṛtti aṛtti";
+        String li = "rtavan krishna mamjushri manjushrijna pramāṇavārttikatika vajracedika vajrachedika dharma dharmma aṛtti arti";
+        Analyzer indexingAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "index");
         Analyzer queryAnalyzer = new SanskritAnalyzer("syl", "roman", false, false, "query");
         TokenStream indexTk = indexingAnalyzer.tokenStream("", i);
         indexTk.reset();

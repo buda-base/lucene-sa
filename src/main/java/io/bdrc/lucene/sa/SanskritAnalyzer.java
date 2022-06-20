@@ -208,7 +208,7 @@ public class SanskritAnalyzer extends Analyzer {
 	    // into SLP then into SLP->Lenient. This is a bit awkward but it should work
 	    if (lenient != null) {
 	        reader = new LenientCharFilter(reader);
-	        reader = new RNormalizerFilter(reader);
+	        //reader = new RNormalizerFilter(reader);
 	    }
 	    
 		return super.initReader(fieldName, reader);
