@@ -114,7 +114,7 @@ public class TestSyllableTokenizer {
     @Test
     public void testRnorm() throws IOException
     {
-        assertLenient("Maitreyapraṇidhanarāja", Arrays.asList("mai", "tre", "ya", "pra", "ni", "da", "na", "ra", "ja"), "index");
+        assertLenient("Maitreyapraṇidhanarāja", Arrays.asList("mai", "trie", "ya", "pria", "ni", "da", "na", "ria", "ja"), "index");
         assertLenient("ṛtāvan kṛṣṇa śrījñāna", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "index");
         assertLenient("rtavan krshna shrjnana", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "query");
         assertLenient("ritavan krishna shrijnana", Arrays.asList("ri", "ta", "ban", "kri", "sna", "sri", "jna", "na"), "query");
