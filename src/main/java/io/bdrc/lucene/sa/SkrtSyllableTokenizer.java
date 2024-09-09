@@ -46,24 +46,12 @@ import org.slf4j.LoggerFactory;
  */
 public final class SkrtSyllableTokenizer extends Tokenizer {
 
-    final HashMap<Integer, Integer> charType;
-    final boolean lenientMode;
 	/**
 	 * Construct a new SkrtSyllableTokenizer.
 	 */
 	public SkrtSyllableTokenizer() {
-	    this(false);
+	    super();
 	}
-
-    public SkrtSyllableTokenizer(final boolean lenientMode) {
-        super();
-        this.lenientMode = lenientMode;
-        if (lenientMode) {
-            this.charType = charTypeLenient;
-        } else {
-            this.charType = charTypeNonLenient;
-        }
-    }
 
 	private int offset = 0, bufferIndex = 0, dataLen = 0, finalOffset = 0, lastStartOffset = 0;
 	private int previousChar = -1;
@@ -110,21 +98,11 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		return skrtPunct;
 	}
 
-	static final HashMap<Integer, Integer> charTypeNonLenient = new HashMap<>();
-	static final HashMap<Integer, Integer> charTypeLenient = new HashMap<>();
+	static final HashMap<Integer, Integer> charType = new HashMap<>();
 	
 	static void addToMap(int c, int type) {
-	    charTypeNonLenient.put(c, type);
-	    charTypeLenient.put(c, type);
+	    charType.put(c, type);
 	}
-
-    static void addToMap(int c, int type, boolean lenient) {
-        if (lenient) {
-            charTypeLenient.put(c, type);
-        } else {
-            charTypeNonLenient.put(c, type);            
-        }
-    }
 	
 	static
 	{
@@ -340,7 +318,7 @@ public final class SkrtSyllableTokenizer extends Tokenizer {
 		 * filters only legal SLP1 characters
 		 * @return true if c is a SLP character, else false
 		 */
-		final Integer res = charTypeNonLenient.get(c);
+		final Integer res = charType.get(c);
 		return (res != null); 
 	}
 	
