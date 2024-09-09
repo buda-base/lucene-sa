@@ -88,7 +88,7 @@ public class Slp2RomanFilter extends TokenFilter {
         return map;
     }
 
-    CharTermAttribute charTermAttribute = addAttribute(CharTermAttribute.class);
+    final CharTermAttribute charTermAttribute = addAttribute(CharTermAttribute.class);
 
     @Override
     public final boolean incrementToken() throws IOException {

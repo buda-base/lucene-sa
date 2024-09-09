@@ -18,7 +18,7 @@ public class PrepositionMergingFilter extends TokenFilter{
     private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
     private final PartOfSpeechAttribute posAtt = addAttribute(PartOfSpeechAttribute.class);
     
-    protected PrepositionMergingFilter(TokenStream input) {
+    public PrepositionMergingFilter(TokenStream input) {
         super(input);
     }
 
