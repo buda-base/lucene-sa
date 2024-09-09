@@ -50,9 +50,11 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  *
  */
 public class GeminateNormalizingFilter extends MappingCharFilter {
+    
+    public static final NormalizeCharMap map = getSkrtNormalizeCharMap();
 
     public GeminateNormalizingFilter(Reader in) {
-        super(getSkrtNormalizeCharMap(), in);
+        super(map, in);
     }
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {

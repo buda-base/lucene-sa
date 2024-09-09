@@ -36,9 +36,11 @@ import org.apache.lucene.analysis.charfilter.NormalizeCharMap;
  *
  */
 public class Deva2SlpFilter extends MappingCharFilter {
+    
+    public static final NormalizeCharMap map = getSkrtNormalizeCharMap();
 
-    public Deva2SlpFilter(Reader in) {
-        super(getSkrtNormalizeCharMap(), in);
+    public Deva2SlpFilter(final Reader in) {
+        super(map, in);
     }
 
     public final static NormalizeCharMap getSkrtNormalizeCharMap() {
